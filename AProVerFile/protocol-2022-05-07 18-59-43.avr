@@ -1,0 +1,18 @@
+tool value 
+Disable Server
+toolEye value 
+Eye Create Messages
+dati Alice AsymmetricPublicKey 
+fff
+dati Alice AsymmetricPrivateKey 
+dati Alice SymmetricKey 
+dati Bob AsymmetricPublicKey 
+dati Bob AsymmetricPrivateKey 
+dati Bob SymmetricKey 
+dati Eye AsymmetricPublicKey 
+dati Eye AsymmetricPrivateKey 
+dati Eye SymmetricKey 
+dati Server AsymmetricPublicKey 
+dati Server AsymmetricPrivateKey 
+dati Server SymmetricKey 
+dati Messaggi 

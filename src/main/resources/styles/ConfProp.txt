@@ -1,0 +1,4 @@
+Confidentiality   Prop1 Prop2 Prop3
+Integrity	  Prop4  Prop5
+Autentication	Prop6
+Validation Prop7

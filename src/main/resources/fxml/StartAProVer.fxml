@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unimi.Aprover.StartAProVerController">
+	<children>
+		<BorderPane prefHeight="600.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<top>
+				<MenuBar BorderPane.alignment="CENTER">
+					<menus>
+						<Menu mnemonicParsing="false" text="File">
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#selectClose" text="Close" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Tool">
+							<items>
+								<MenuItem fx:id="tool" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Help">
+							<items>
+								<MenuItem mnemonicParsing="false" text="?" visible="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+							</items>
+						</Menu>
+					</menus>
+				</MenuBar>
+			</top>
+			<left>
+				<AnchorPane prefHeight="607.0" prefWidth="284.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+					<children>
+						<Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="545.0" layoutX="3.0" layoutY="121.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 20; -fx-arc-width: 20;" width="278.0" />
+						<ComboBox fx:id="comboBoxActor" disable="true" layoutY="14.0" prefWidth="200.0" promptText="Actor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<padding>
+								<Insets left="10.0" />
+							</padding>
+						</ComboBox>
+						<VBox layoutY="149.0" prefHeight="493.0" prefWidth="264.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<children>
+								<TitledPane fx:id="titledAlice" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Alice" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Asymmetric Private Key ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="4">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledBob" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" layoutX="10.0" layoutY="130.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Bob" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Asymmetric Private Key ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="4">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledEye" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" layoutX="10.0" layoutY="243.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Eye" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Asymmetric Private Key ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="4">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledServer" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" layoutX="10.0" layoutY="17.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Server" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Asymmetric Private Key ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label text="Label" GridPane.rowIndex="4">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+							</children>
+						</VBox>
+						<ImageView fitHeight="31.0" fitWidth="66.0" layoutX="11.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/chiave2.png" />
+							</image>
+						</ImageView>
+						<Text fill="#000000c6" fontSmoothingType="LCD" layoutX="49.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KNOWLEDGE" textAlignment="CENTER" wrappingWidth="85.62890625" />
+					</children>
+				</AnchorPane>
+			</left>
+			<center>
+				<AnchorPane prefHeight="607.0" prefWidth="947.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+					<children>
+						<AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: grey;">
+							<children>
+								<Button fx:id="buttonOld" layoutX="528.0" layoutY="277.0" mnemonicParsing="false" onAction="#selectBox1" onDragDetected="#selectBox1" prefHeight="27.0" prefWidth="364.0" style="-fx-background-color: white; -fx-border-radius: 15; -fx-border-color: grey; -fx-background-radius: 15;" text="New Project" />
+								<Button layoutX="529.0" layoutY="352.0" mnemonicParsing="false" onAction="#selectBox2" onDragDetected="#selectBox2" prefHeight="27.0" prefWidth="362.0" style="-fx-background-color: white; -fx-border-radius: 15; -fx-border-color: grey; -fx-background-radius: 15;" text="Open Project" />
+								<Text layoutX="217.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: oblique;" text="An user-friendly tool" wrappingWidth="189.13671875">
+									<font>
+										<Font size="20.0" />
+									</font>
+								</Text>
+								<Text layoutX="217.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: oblique;" text="for security protocol" wrappingWidth="259.13671875">
+									<font>
+										<Font size="20.0" />
+									</font>
+								</Text>
+								<Text layoutX="217.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-style: oblique;" text="verification" wrappingWidth="161.13671875">
+									<font>
+										<Font size="20.0" />
+									</font>
+								</Text>
+								<Text fx:id="singleFile" layoutX="475.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+								<Text fill="#fc0101" layoutX="194.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+									<font>
+										<Font size="36.0" />
+									</font>
+								</Text>
+								<Text fill="WHITE" layoutX="219.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P">
+									<font>
+										<Font size="36.0" />
+									</font>
+								</Text>
+								<Text fill="WHITE" layoutX="239.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0">
+									<font>
+										<Font size="26.0" />
+									</font>
+								</Text>
+								<Text fill="WHITE" layoutX="239.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RO">
+									<font>
+										<Font size="27.0" />
+									</font>
+								</Text>
+								<Text fill="WHITE" layoutX="275.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="V">
+									<font>
+										<Font size="36.0" />
+									</font>
+								</Text>
+								<Text fill="WHITE" layoutX="297.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ER">
+									<font>
+										<Font size="27.0" />
+									</font>
+								</Text>
+                        <ImageView fitHeight="139.0" fitWidth="165.0" layoutX="26.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../styles/logo7-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+							</children>
+						</AnchorPane>
+					</children>
+				</AnchorPane>
+			</center>
+		</BorderPane>
+	</children>
+</AnchorPane>

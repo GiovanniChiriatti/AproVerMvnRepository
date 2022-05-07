@@ -1,0 +1,1415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.embed.swing.SwingNode?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+<AnchorPane fx:id="TotalAnchorPane" prefHeight="650.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unimi.Aprover.SelectAProVerController">
+	<children>
+		<BorderPane prefHeight="600.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<top>
+				<MenuBar BorderPane.alignment="CENTER">
+					<menus>
+						<Menu mnemonicParsing="false" text="File">
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save" />
+								<MenuItem mnemonicParsing="false" onAction="#selectClose" text="Close" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Tool">
+							<items>
+								<MenuItem fx:id="tool" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
+                        <MenuItem fx:id="toolEye" mnemonicParsing="false" onAction="#toolSetEye" text="Eye Create Messages" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Help">
+							<items>
+                        <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+							</items>
+						</Menu>
+					</menus>
+				</MenuBar>
+			</top>
+			<left>
+				<AnchorPane prefHeight="607.0" prefWidth="284.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+					<children>
+						<Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="545.0" layoutX="3.0" layoutY="121.0" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-height: 20; -fx-arc-width: 20;" width="278.0" />
+						<ComboBox fx:id="comboBoxActor" layoutY="14.0" onAction="#selectComboBox" onMouseExited="#relasedHelp" onMouseMoved="#helpActor" onMouseReleased="#relasedHelp" prefWidth="200.0" promptText="Actor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<padding>
+								<Insets left="10.0" />
+							</padding>
+						</ComboBox>
+						<VBox layoutY="149.0" prefHeight="493.0" prefWidth="264.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<children>
+								<TitledPane fx:id="titledAlice" alignment="CENTER" contentDisplay="TOP" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Alice" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label fx:id="aliceAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="aliceAsymmetricPrivateKey" text="Asymmetric Private Keys ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="aliceSymmetricKey" text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="aliceHash" text="Hash = {}" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledBob" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="130.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Bob" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label fx:id="bobAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="bobAsymmetricPrivateKey" text="Asymmetric Private Keys ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="bobSymmetricKey" text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="bobHash" text="Hash = {}" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledEye" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="243.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Eye" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label fx:id="eyeAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="eyeAsymmetricPrivateKey" text="Asymmetric Private Keys ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="eyeSymmetricKey" text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="eyeHash" text="Hash = {}" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+																<SwingNode layoutX="228.0" layoutY="89.0" />
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+								<TitledPane fx:id="titledServer" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="17.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Server" textFill="#c75752">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
+											<children>
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="382.0">
+															<children>
+																<GridPane prefHeight="82.0" prefWidth="265.0">
+																	<columnConstraints>
+																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+																	</columnConstraints>
+																	<rowConstraints>
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+																	</rowConstraints>
+																	<children>
+																		<Label fx:id="serverAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
+																			<GridPane.margin>
+																				<Insets left="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="serverAsymmetricPrivateKey" text="Asymmetric Private Keys ={}" GridPane.rowIndex="1">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="serverSymmetricKey" text="Symmetric Key = {}" GridPane.rowIndex="2">
+																			<padding>
+																				<Insets left="5.0" />
+																			</padding>
+																			<GridPane.margin>
+																				<Insets right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																		<Label fx:id="serverHash" text="Hash = {}" GridPane.rowIndex="3">
+																			<GridPane.margin>
+																				<Insets left="5.0" right="5.0" />
+																			</GridPane.margin>
+																		</Label>
+																	</children>
+																	<padding>
+																		<Insets top="3.0" />
+																	</padding>
+																</GridPane>
+															</children>
+														</AnchorPane>
+													</content>
+												</ScrollPane>
+											</children>
+										</AnchorPane>
+									</content>
+									<VBox.margin>
+										<Insets top="7.0" />
+									</VBox.margin>
+								</TitledPane>
+							</children>
+						</VBox>
+						<ImageView fitHeight="31.0" fitWidth="66.0" layoutX="11.0" layoutY="123.0" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" onMouseReleased="#relasedHelp" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/chiave2.png" />
+							</image>
+						</ImageView>
+						<Text layoutX="49.0" layoutY="143.0" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" strokeType="OUTSIDE" strokeWidth="0.0" text="KNOWLEDGE" textAlignment="CENTER" wrappingWidth="85.62890625" />
+					</children>
+				</AnchorPane>
+			</left>
+			<center>
+				<AnchorPane focusTraversable="true" prefHeight="666.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+					<children>
+						<AnchorPane layoutX="22.0" layoutY="65.0" prefHeight="346.0" prefWidth="1032.0">
+							<children>
+								<ScrollPane hbarPolicy="NEVER" layoutX="-6.0" layoutY="-2.0" prefHeight="392.0" prefWidth="1060.0" style="-fx-border-color: TRANSPARENT; -fx-background-color: TRANSPARENT;" vbarPolicy="ALWAYS">
+									<content>
+										<AnchorPane fx:id="ancorPulsanti" focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="1079.0">
+											<children>
+												<ImageView fx:id="lineaAlice" fitHeight="648.0" fitWidth="13.0" layoutX="58.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../styles/lineaAlice.png" />
+													</image>
+												</ImageView>
+												<ImageView fx:id="lineaEye" fitHeight="641.0" fitWidth="12.0" layoutX="318.0" layoutY="-1.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../styles/lineaEye.png" />
+													</image>
+												</ImageView>
+												<ImageView fx:id="lineaServer" fitHeight="663.0" fitWidth="28.0" layoutX="864.0" layoutY="-1.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../styles/lineaServer.png" />
+													</image>
+												</ImageView>
+												<ImageView fx:id="lineaBob" fitHeight="632.0" fitWidth="12.0" layoutX="580.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../styles/lineaBobo.png" />
+													</image>
+												</ImageView>
+												<Line fx:id="line01" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="32.0" onMouseClicked="#selLine" onMouseEntered="#moveLine" onMouseExited="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey01" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="52.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy01" endX="-99.0" layoutX="160.0" layoutY="49.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton01" layoutX="55.0" layoutY="19.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line02" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="72.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey02" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="92.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy02" endX="-99.0" layoutX="160.0" layoutY="89.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton02" layoutX="55.0" layoutY="59.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line03" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="112.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey03" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="132.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy03" endX="-99.0" layoutX="160.0" layoutY="129.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton03" layoutX="55.0" layoutY="99.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line04" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="152.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey04" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="172.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy04" endX="-99.0" layoutX="160.0" layoutY="169.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton04" layoutX="55.0" layoutY="139.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line05" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="192.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey05" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="212.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy05" endX="-99.0" layoutX="160.0" layoutY="209.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton05" layoutX="55.0" layoutY="179.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line06" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="232.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey06" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="252.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy06" endX="-99.0" layoutX="160.0" layoutY="249.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton06" layoutX="55.0" layoutY="219.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line07" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="272.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey07" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="292.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy07" endX="-99.0" layoutX="160.0" layoutY="289.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton07" layoutX="55.0" layoutY="259.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line08" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="312.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey08" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="332.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy08" endX="-99.0" layoutX="160.0" layoutY="329.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton08" layoutX="55.0" layoutY="299.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line09" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="352.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey09" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="372.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy09" endX="-99.0" layoutX="160.0" layoutY="369.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton09" layoutX="55.0" layoutY="339.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line10" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="392.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey10" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="412.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy10" endX="-99.0" layoutX="160.0" layoutY="409.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton10" layoutX="55.0" layoutY="379.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line11" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="432.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey11" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="452.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy11" endX="-99.0" layoutX="160.0" layoutY="449.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton11" layoutX="55.0" layoutY="419.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line12" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="472.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey12" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="492.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy12" endX="-99.0" layoutX="160.0" layoutY="489.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton12" layoutX="55.0" layoutY="459.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line13" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="512.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey13" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="532.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy13" endX="-99.0" layoutX="160.0" layoutY="529.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton13" layoutX="55.0" layoutY="499.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line14" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="552.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey14" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="572.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy14" endX="-99.0" layoutX="160.0" layoutY="569.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton14" layoutX="55.0" layoutY="539.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Line fx:id="line15" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="592.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="liey15" endX="-93.5" endY="-3.0" layoutX="160.0" layoutY="612.0" onMouseClicked="#selLine" onMouseExited="#relasedLine" onMouseMoved="#moveLine" onMousePressed="#relasedLine" onMouseReleased="#relasedLine" startX="-99.0" startY="-3.0" visible="false" />
+                                    <Line fx:id="livy15" endX="-99.0" layoutX="160.0" layoutY="609.0" startX="-99.0" startY="-20.0" visible="false" />
+												<Button fx:id="aliceButton15" layoutX="55.0" layoutY="579.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton01" layoutX="314.0" layoutY="19.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton02" layoutX="314.0" layoutY="59.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton03" layoutX="314.0" layoutY="99.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton04" layoutX="314.0" layoutY="139.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton05" layoutX="314.0" layoutY="179.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton06" layoutX="314.0" layoutY="219.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton07" layoutX="314.0" layoutY="259.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton08" layoutX="314.0" layoutY="299.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton09" layoutX="314.0" layoutY="339.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton10" layoutX="314.0" layoutY="379.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton11" layoutX="314.0" layoutY="419.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton12" layoutX="314.0" layoutY="459.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton13" layoutX="314.0" layoutY="499.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton14" layoutX="314.0" layoutY="539.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="eyeButton15" layoutX="314.0" layoutY="579.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton01" layoutX="577.0" layoutY="19.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton02" layoutX="577.0" layoutY="59.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton03" layoutX="577.0" layoutY="99.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton04" layoutX="577.0" layoutY="139.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton05" layoutX="577.0" layoutY="179.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton06" layoutX="577.0" layoutY="219.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton07" layoutX="577.0" layoutY="259.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton08" layoutX="577.0" layoutY="299.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton09" layoutX="577.0" layoutY="339.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton10" layoutX="577.0" layoutY="379.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton11" layoutX="577.0" layoutY="419.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton12" layoutX="577.0" layoutY="459.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton13" layoutX="577.0" layoutY="499.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton14" layoutX="577.0" layoutY="539.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="bobButton15" layoutX="577.0" layoutY="579.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton01" layoutX="863.0" layoutY="19.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton02" layoutX="863.0" layoutY="59.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton03" layoutX="863.0" layoutY="99.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton04" layoutX="863.0" layoutY="139.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton05" layoutX="863.0" layoutY="179.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton06" layoutX="863.0" layoutY="219.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton07" layoutX="863.0" layoutY="259.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton08" layoutX="863.0" layoutY="299.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton09" layoutX="863.0" layoutY="339.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton10" layoutX="863.0" layoutY="379.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton11" layoutX="863.0" layoutY="419.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton12" layoutX="863.0" layoutY="459.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton13" layoutX="863.0" layoutY="499.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton14" layoutX="863.0" layoutY="539.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<Button fx:id="serverButton15" layoutX="863.0" layoutY="579.0" mnemonicParsing="false" onAction="#selButton" onMouseExited="#relasedHelp" onMouseMoved="#helpPiu" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+													<font>
+														<Font name="Bodoni MT Black Italic" size="9.0" />
+													</font>
+												</Button>
+												<AnchorPane fx:id="msgPayloadAncorPane" layoutX="228.0" layoutY="70.0" prefHeight="74.0" prefWidth="418.0" style="-fx-background-color: #dcd445; -fx-background-radius: 15; -fx-border-color: green; -fx-border-radius: 15;" visible="false">
+													<children>
+														<TextFlow fx:id="msgPayload" layoutY="39.0" lineSpacing="12.0" prefHeight="43.0" prefWidth="532.0" style="-fx-background-color: #dcd445;" textAlignment="CENTER" visible="false" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="38.0">
+															<opaqueInsets>
+																<Insets top="50.0" />
+															</opaqueInsets>
+														</TextFlow>
+													</children>
+												</AnchorPane>
+											</children>
+										</AnchorPane>
+									</content>
+								</ScrollPane>
+							</children>
+						</AnchorPane>
+						<ImageView fx:id="faceAlice" fitHeight="42.0" fitWidth="48.0" layoutX="58.0" layoutY="23.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/alice.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="faceBob" fitHeight="56.0" fitWidth="40.0" layoutX="585.0" layoutY="20.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/bob.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="faceEye" fitHeight="45.0" fitWidth="57.0" layoutX="313.0" layoutY="23.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/eye.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="faceServer" fitHeight="53.0" fitWidth="56.0" layoutX="863.0" layoutY="17.0" opacity="0.31" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../styles/server.png" />
+							</image>
+						</ImageView>
+						<AnchorPane fx:id="initialKnowledge" layoutX="161.0" layoutY="122.0" prefHeight="290.0" prefWidth="679.0" style="-fx-background-color: #B8B5B4; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: black;" visible="false">
+							<children>
+								<Text layoutX="81.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Initial Knowledge" wrappingWidth="241.13671875">
+									<font>
+										<Font size="20.0" />
+									</font>
+								</Text>
+								<AnchorPane layoutX="80.0" layoutY="33.0" prefHeight="241.0" prefWidth="664.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="33.0">
+									<children>
+										<ScrollPane layoutX="14.0" layoutY="28.0" prefHeight="182.0" prefWidth="648.0">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="282.0" prefWidth="628.0">
+													<children>
+														<GridPane fx:id="tabeKnowledge" layoutX="-9.0" prefHeight="315.0" prefWidth="649.0" style="-fx-grid-lines-visible: true; -fx-background-color: #E6E6E6;">
+															<columnConstraints>
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="319.0" minWidth="10.0" prefWidth="45.0" />
+																<ColumnConstraints hgrow="SOMETIMES" maxWidth="604.0" minWidth="10.0" prefWidth="604.0" />
+															</columnConstraints>
+															<rowConstraints>
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+															</rowConstraints>
+															<children>
+																<Text fx:id="rowNum1" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" />
+																<Text fx:id="rowNum2" strokeType="OUTSIDE" strokeWidth="0.0" text="2" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="1" />
+																<Text fx:id="rowNum3" strokeType="OUTSIDE" strokeWidth="0.0" text="3" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="2" />
+																<Text fx:id="rowNum4" strokeType="OUTSIDE" strokeWidth="0.0" text="4" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="3" />
+																<Text fx:id="rowNum5" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="4" />
+																<Text fx:id="rowNum6" strokeType="OUTSIDE" strokeWidth="0.0" text="6" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="5" />
+																<Text fx:id="rowNum7" strokeType="OUTSIDE" strokeWidth="0.0" text="7" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="6" />
+																<Text fx:id="rowNum8" strokeType="OUTSIDE" strokeWidth="0.0" text="8" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="7" />
+																<Text fx:id="rowNum9" strokeType="OUTSIDE" strokeWidth="0.0" text="9" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="8" />
+																<Text fx:id="rowNum10" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="9" />
+																<Text fx:id="rowNum11" strokeType="OUTSIDE" strokeWidth="0.0" text="11" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="10" />
+																<TextField GridPane.columnIndex="1" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+															</children>
+														</GridPane>
+													</children>
+												</AnchorPane>
+											</content>
+										</ScrollPane>
+										<Button fx:id="piuButton" layoutX="627.0" layoutY="2.0" mnemonicParsing="false" onAction="#piuKnowledge" onMouseEntered="#helpPiuKnowledge" onMouseExited="#relasedHelp" prefHeight="24.0" prefWidth="25.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+											<font>
+												<Font name="Bodoni MT Black Italic" size="12.0" />
+											</font>
+										</Button>
+										<Button fx:id="nextButton" mnemonicParsing="false" onAction="#nextKnowledge" onMouseEntered="#helpNextKnowledge" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="84.0" style="-fx-border-color: grey; -fx-background-radius: 5; -fx-border-radius: 5;" text="NEXT" visible="false" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="212.0" />
+										<Button fx:id="prevButton" layoutX="10.0" layoutY="214.0" mnemonicParsing="false" onAction="#prevKnowledge" onMouseEntered="#helpPrevKnowledge" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="84.0" style="-fx-border-color: grey; -fx-background-radius: 5; -fx-border-radius: 5;" text="PREV" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" />
+										<Text fx:id="typeKey" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Asymmetric Public Keys" />
+										<Text fx:id="rowEdit" layoutX="498.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" visible="false" />
+										<Button fx:id="menoButton" layoutX="579.0" layoutY="2.0" mnemonicParsing="false" onAction="#menoKnowledge" onMouseEntered="#helpMenoKnowledge" onMouseExited="#relasedHelp" prefHeight="24.0" prefWidth="25.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="-" wrapText="true">
+											<font>
+												<Font name="Bodoni MT Black Italic" size="12.0" />
+											</font>
+										</Button>
+										<Text fx:id="knowPage" layoutX="234.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" visible="false" />
+										<Button fx:id="finishButton" layoutX="568.0" layoutY="211.0" mnemonicParsing="false" onAction="#finishKnowledge" onMouseEntered="#helpChiudiKnowledge" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="84.0" style="-fx-border-color: grey; -fx-background-radius: 5; -fx-border-radius: 5;" text="FINISH" />
+										<AnchorPane fx:id="msgPayloadAncorPane1" layoutX="151.0" layoutY="82.0" prefHeight="85.0" prefWidth="181.0" style="-fx-background-color: #dcd445; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: black;" visible="false">
+											<children>
+												<TextFlow fx:id="msgPayload1" layoutY="29.0" prefHeight="56.0" prefWidth="200.0" textAlignment="CENTER" />
+											</children>
+										</AnchorPane>
+									</children>
+								</AnchorPane>
+								<Button layoutX="660.0" layoutY="-1.0" mnemonicParsing="false" onAction="#chiudiKnowledge" onMouseEntered="#helpChiudiKnowledge" onMouseExited="#relasedHelp" prefHeight="41.0" prefWidth="33.0" style="-fx-background-color: TRANSPARENT; -fx-border-color: TRANSPARENT;" text="X" textAlignment="CENTER">
+									<font>
+										<Font size="18.0" />
+									</font>
+								</Button>
+								<Text fx:id="nomeActor" layoutX="-38.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alice" textAlignment="RIGHT" wrappingWidth="114.13671875">
+									<font>
+										<Font size="20.0" />
+									</font>
+								</Text>
+							</children>
+						</AnchorPane>
+						<AnchorPane layoutY="455.0" prefHeight="202.0" prefWidth="1114.0">
+							<children>
+								<TabPane fx:id="tabProprieities" layoutX="10.0" layoutY="1.0" prefHeight="200.0" prefWidth="1055.0" style="-fx-border-color: grey; -fx-border-radius: 10;" tabClosingPolicy="UNAVAILABLE">
+									<tabs>
+										<Tab fx:id="tab00" text="Tab01">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties00" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties00" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+										<Tab fx:id="tab01" text="Tab02">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties01" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties01" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+										<Tab fx:id="tab02" text="Tab03">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties02" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties02" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+										<Tab fx:id="tab03" text="Tab04">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties03" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties03" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+										<Tab fx:id="tab04" text="Tab05">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties04" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties04" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+										<Tab fx:id="tab05" text="Tab06">
+											<content>
+												<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+													<children>
+														<HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+															<children>
+																<VBox prefHeight="175.0" prefWidth="555.0">
+																	<children>
+																		<GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+																			<columnConstraints>
+																				<ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+																			</columnConstraints>
+																			<rowConstraints>
+																				<RowConstraints />
+																				<RowConstraints />
+																				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																			</rowConstraints>
+																			<VBox.margin>
+																				<Insets left="5.0" right="15.0" top="5.0" />
+																			</VBox.margin>
+																			<children>
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																				<CheckComboBox fx:id="ListProprieties05" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																					<opaqueInsets>
+																						<Insets />
+																					</opaqueInsets>
+																					<GridPane.margin>
+																						<Insets bottom="1.0" right="10.0" top="1.0" />
+																					</GridPane.margin>
+																				</CheckComboBox>
+																			</children>
+																		</GridPane>
+																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+																			<content>
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																					<children>
+																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																							<children>
+																								<GridPane fx:id="listProprieties05" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																									<columnConstraints>
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																									</columnConstraints>
+																									<rowConstraints>
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+																									</rowConstraints>
+																									<children>
+																										<TextField />
+																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+																									</children>
+																								</GridPane>
+																							</children>
+																						</AnchorPane>
+																					</children>
+																				</AnchorPane>
+																			</content>
+																		</ScrollPane>
+																	</children>
+																</VBox>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+																	<HBox.margin>
+																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+																	</HBox.margin>
+																</Rectangle>
+																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<HBox.margin>
+																		<Insets left="10.0" right="10.0" top="130.0" />
+																	</HBox.margin>
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+															</children>
+														</HBox>
+													</children>
+												</AnchorPane>
+											</content>
+										</Tab>
+									</tabs>
+								</TabPane>
+							</children>
+						</AnchorPane>
+					</children>
+				</AnchorPane>
+			</center>
+		</BorderPane>
+	</children>
+</AnchorPane>
