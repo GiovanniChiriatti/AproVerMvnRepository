@@ -1,0 +1,53 @@
+tool value 
+Enable Server
+toolEye value 
+Eye Create Messages
+dati Alice AsymmetricPublicKey 
+dati Alice AsymmetricPrivateKey 
+dati Alice SymmetricKey 
+dati Bob AsymmetricPublicKey 
+dati Bob AsymmetricPrivateKey 
+dati Bob SymmetricKey 
+dati Eye AsymmetricPublicKey 
+dati Eye AsymmetricPrivateKey 
+dati Eye SymmetricKey 
+dati Server AsymmetricPublicKey 
+dati Server AsymmetricPrivateKey 
+dati Server SymmetricKey 
+dati Messaggi 
+dati Messaggio 0
+ActorFrom Alice
+ActorTo Bob
+Eye Intercept false
+Messages {jh}
+dati SecurityFunctionsPartMessage j=0
+{jh} 
+dati listPartMessage j=0 k=0
+jh
+dati Messaggio 1
+ActorFrom Alice
+ActorTo Bob
+Eye Intercept true
+Messages {hhhhhhhhhhh}
+dati SecurityFunctionsPartMessage j=0
+{hhhhhhhhhhh} 
+dati listPartMessage j=0 k=0
+hhhhhhhhhhh
+dati Messaggio 2
+ActorFrom Bob
+ActorTo Alice
+Eye Intercept false
+Messages {jjjjjjjjjjjjjjj}
+dati SecurityFunctionsPartMessage j=0
+{jjjjjjjjjjjjjjj} 
+dati listPartMessage j=0 k=0
+jjjjjjjjjjjjjjj
+dati Messaggio 3
+ActorFrom Bob
+ActorTo Alice
+Eye Intercept true
+Messages {jhhhhhhhhhhhhhh}
+dati SecurityFunctionsPartMessage j=0
+{jhhhhhhhhhhhhhh} 
+dati listPartMessage j=0 k=0
+jhhhhhhhhhhhhhh

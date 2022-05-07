@@ -1880,7 +1880,8 @@ public class SelectAProVerController {
 	private void readFileConf() {
 		try {
 			int numberRow = -1;
-			BufferedReader reader = new BufferedReader(new FileReader("ConfigurationFile\\ConfProp.txt"));
+		 	BufferedReader reader = new BufferedReader(new FileReader("src\\main\\resources\\ConfigurationFile\\ConfProp.txt"));
+	 
 			String line = reader.readLine();
 			while (line != null) {
 				numberRow++;
