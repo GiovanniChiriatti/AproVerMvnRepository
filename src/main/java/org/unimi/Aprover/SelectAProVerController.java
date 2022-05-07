@@ -20,8 +20,6 @@ import java.util.Scanner;
 import org.controlsfx.control.CheckComboBox;
 
 import com.sun.prism.paint.Color;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -215,7 +213,7 @@ public class SelectAProVerController {
 		
 		readFileConf();
 		HBox titleBoxAlice = new HBox();
-		ImageView immageAlice = new ImageView(new Image("/styles/alicepiccola1.png",
+		ImageView immageAlice = new ImageView(new Image("/styles/images/alicepiccola1.png",
 	            0, 24, true, true));
 		titleBoxAlice.getChildren().add(immageAlice);
 		titledAlice.setGraphic(titleBoxAlice);
@@ -226,21 +224,21 @@ public class SelectAProVerController {
 		
 		
 		HBox titleBoxBob = new HBox();
-		ImageView immageBob = new ImageView(new Image("/styles/bobpiccola1.png",
+		ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png",
 	            0, 24, true, true));
 		titleBoxBob.getChildren().add(immageBob);
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		
 		HBox titleBoxEye = new HBox();
-		ImageView immageEye = new ImageView(new Image("/styles/eyepiccola1.png",
+		ImageView immageEye = new ImageView(new Image("/styles/images/eyepiccola1.png",
 	            0, 24, true, true));
 		titleBoxEye.getChildren().add(immageEye);
 		titledEye.setGraphic(titleBoxEye);
 		titledEye.setContentDisplay(ContentDisplay.RIGHT);
 		
 		HBox titleBoxServer = new HBox();
-		ImageView immageServer = new ImageView(new Image("/styles/serverpiccola1.png",
+		ImageView immageServer = new ImageView(new Image("/styles/images/serverpiccola1.png",
 	            0, 24, true, true));
 		titleBoxServer.getChildren().add(immageServer);
 		titledServer.setGraphic(titleBoxServer);
@@ -398,25 +396,25 @@ public class SelectAProVerController {
 		switch (imageName) {
 		case "Alice":
 			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/alicepiccola.png"));
+				pictures.put(imageName, new Image("/styles/images/alicepiccola.png"));
 			}
 			imageView = new ImageView(pictures.get(imageName));
 			break;
 		case "Bob":
 			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/bobpiccola.png"));
+				pictures.put(imageName, new Image("/styles/images/bobpiccola.png"));
 			}
 			imageView = new ImageView(pictures.get(imageName));
 			break;
 		case "Eye":
 			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/eyepiccola.png"));
+				pictures.put(imageName, new Image("/styles/images/eyepiccola.png"));
 			}
 			imageView = new ImageView(pictures.get(imageName));
 			break;
 		case "Server":
 			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/serverpiccola.png"));
+				pictures.put(imageName, new Image("/styles/images/serverpiccola.png"));
 			}
 			imageView = new ImageView(pictures.get(imageName));
 			break;
@@ -454,7 +452,7 @@ public class SelectAProVerController {
 				helpFlag = false;
 			} else {
 			 //	sc1.setCursor(Cursor.OPEN_HAND);
-			 	Image image = new Image("/styles/questionmarcTrasparente.png");
+			 	Image image = new Image("/styles/images/questionmarcTrasparente.png");
 			 	sc1.setCursor(new ImageCursor (image,
 			 									image.getWidth()/2,
 			 									image.getHeight() /2));
@@ -2402,8 +2400,8 @@ public class SelectAProVerController {
 
 		if (fileName == null || fileName.isEmpty()) {
 			String out = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss'.avr'").format(new Date());
-			fileName = "AProVerFile/protocol-" + out;
-			String Dir = "AProVerFile";
+			fileName = "src/main/resources/AProVerFile/protocol-" + out;
+			String Dir = "src/main/resources/AProVerFile";
 			boolean success = (new File(Dir)).mkdir();
 			File file = new File(fileName);
 			writeFile();
@@ -2525,7 +2523,7 @@ public class SelectAProVerController {
 	// se viene cliccato dal men� l'opzione about si visualizza il file PdF 
 	@FXML
 	public void about() throws IOException {
-		File file = new File("ConfigurationFile\\Help.pdf");
+		File file = new File("src\\\\main\\\\resources\\\\ConfigurationFile\\\\Help.pdf");
 		Desktop.getDesktop().open(file);
 	}
 

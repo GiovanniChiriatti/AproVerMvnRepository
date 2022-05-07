@@ -145,25 +145,25 @@ public class StartAProVerController {
 		//listFiles.add("*.DOCX");
 		System.out.println("a");
 		HBox titleBoxAlice = new HBox();
-		ImageView immageAlice = new ImageView(new Image("/styles/alicepiccola1.png", 0, 24, true, true));
+		ImageView immageAlice = new ImageView(new Image("/styles/images/alicepiccola1.png", 0, 24, true, true));
 		titleBoxAlice.getChildren().add(immageAlice);
 		titledAlice.setGraphic(titleBoxAlice);
 		titledAlice.setContentDisplay(ContentDisplay.RIGHT);
 		System.out.println("b");
 		HBox titleBoxBob = new HBox();
-		ImageView immageBob = new ImageView(new Image("/styles/bobpiccola1.png", 0, 24, true, true));
+		ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png", 0, 24, true, true));
 		titleBoxBob.getChildren().add(immageBob);
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		System.out.println("c");
 		HBox titleBoxEye = new HBox();
-		ImageView immageEye = new ImageView(new Image("/styles/eyepiccola1.png", 0, 24, true, true));
+		ImageView immageEye = new ImageView(new Image("/styles/images/eyepiccola1.png", 0, 24, true, true));
 		titleBoxEye.getChildren().add(immageEye);
 		titledEye.setGraphic(titleBoxEye);
 		titledEye.setContentDisplay(ContentDisplay.RIGHT);
 
 		HBox titleBoxServer = new HBox();
-		ImageView immageServer = new ImageView(new Image("/styles/serverpiccola1.png", 0, 24, true, true));
+		ImageView immageServer = new ImageView(new Image("/styles/images/serverpiccola1.png", 0, 24, true, true));
 		titleBoxServer.getChildren().add(immageServer);
 		titledServer.setGraphic(titleBoxServer);
 		titledServer.setContentDisplay(ContentDisplay.RIGHT);
@@ -172,7 +172,7 @@ public class StartAProVerController {
 	// se viene cliccato dal men� l'opzione about si visualizza il file PdF 
 	@FXML
 	public void about() throws IOException {
-		File file = new File("ConfigurationFile\\Help.pdf");
+		File file = new File("src\\main\\resources\\ConfigurationFile\\Help.pdf");
 		Desktop.getDesktop().open(file);
 	}
 
