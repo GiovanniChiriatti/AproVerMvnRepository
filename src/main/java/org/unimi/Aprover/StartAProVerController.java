@@ -1,35 +1,31 @@
 package org.unimi.Aprover;
 
 import java.awt.Desktop;
+//import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.text.Text;
-import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import org.unimi.Aprover.MainApp;
 
 public class StartAProVerController {
 
@@ -86,20 +82,27 @@ public class StartAProVerController {
 	private void selectBox1() throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/SelectAProVer.fxml"));
+		
+		System.out.println(getClass().getResource("/fxml/SelectAProVer.fxml").toExternalForm());
+		System.out.println("1");
+		loader.setLocation(getClass().getResource("/fxml/SelectAProVer.fxml"));
+		System.out.println("2");
         AnchorPane page = (AnchorPane) loader.load();
+        System.out.println("3");
         Stage dialogStage = new Stage();
-        
+        System.out.println("4");
         dialogStage.initModality(Modality.WINDOW_MODAL);
-        
+        System.out.println("5");
         Scene scene = new Scene(page);
-        
+        System.out.println("6");
         dialogStage.setScene(scene);
-
+        System.out.println("7");
         
         SelectAProVerController controller = loader.getController();
-        controller.setToolStart(tool.getText());
-        controller.setFileStart(singleFile.getText());
+        System.out.println("8");
+   //     controller.setToolStart(tool.getText());
+        System.out.println("9");
+    //    controller.setFileStart(singleFile.getText());
         dialogStage.setMaximized(true);
         //dialogStage.showAndWait();
         dialogStage.show();
@@ -136,7 +139,7 @@ public class StartAProVerController {
 	}
 
 	@FXML
-	public void initialize() {
+	public void initialize() throws IOException {
 		// comboBox.setValue("Alice");
 		listFiles = new ArrayList<>();
 		listFiles.add("*.avr");
@@ -145,26 +148,30 @@ public class StartAProVerController {
 		//listFiles.add("*.DOCX");
 		System.out.println("a");
 		HBox titleBoxAlice = new HBox();
-		ImageView immageAlice = new ImageView(new Image("/styles/images/alicepiccola1.png", 0, 24, true, true));
+//		ImageView immageAlice = new ImageView(new Image("../resources/styles/images/alicepiccola1.png", 0, 24, true, true));
+		
+		ImageView immageAlice = new ImageView(new Image(getClass().getResource("/styles/images/alicepiccola1.png").toExternalForm(),0, 24, true, true));
+
 		titleBoxAlice.getChildren().add(immageAlice);
 		titledAlice.setGraphic(titleBoxAlice);
 		titledAlice.setContentDisplay(ContentDisplay.RIGHT);
 		System.out.println("b");
 		HBox titleBoxBob = new HBox();
-		ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png", 0, 24, true, true));
+		//ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png", 0, 24, true, true));
+		ImageView immageBob = new ImageView(new Image(getClass().getResource("/styles/images/bobpiccola1.png").toExternalForm(),0, 24, true, true));
 		titleBoxBob.getChildren().add(immageBob);
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		System.out.println("c");
 		HBox titleBoxEye = new HBox();
-		ImageView immageEye = new ImageView(new Image("/styles/images/eyepiccola1.png", 0, 24, true, true));
-		titleBoxEye.getChildren().add(immageEye);
+ 		ImageView immageEye = new ImageView(new Image(getClass().getResource("/styles/images/eyepiccola1.png").toExternalForm(),0, 24, true, true));
+ 		titleBoxEye.getChildren().add(immageEye);
 		titledEye.setGraphic(titleBoxEye);
 		titledEye.setContentDisplay(ContentDisplay.RIGHT);
 
 		HBox titleBoxServer = new HBox();
-		ImageView immageServer = new ImageView(new Image("/styles/images/serverpiccola1.png", 0, 24, true, true));
-		titleBoxServer.getChildren().add(immageServer);
+		ImageView immageServer = new ImageView(new Image(getClass().getResource("/styles/images/serverpiccola1.png").toExternalForm(),0, 24, true, true));
+ 		titleBoxServer.getChildren().add(immageServer);
 		titledServer.setGraphic(titleBoxServer);
 		titledServer.setContentDisplay(ContentDisplay.RIGHT);
 	}
@@ -173,7 +180,7 @@ public class StartAProVerController {
 	@FXML
 	public void about() throws IOException {
 		File file = new File("src\\main\\resources\\ConfigurationFile\\Help.pdf");
-		Desktop.getDesktop().open(file);
+	 	Desktop.getDesktop().open(file);
 	}
 
 }

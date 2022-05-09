@@ -1,6 +1,7 @@
 package org.unimi.Aprover;
 
 import java.awt.Desktop;
+//import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +20,7 @@ import java.util.Scanner;
 
 import org.controlsfx.control.CheckComboBox;
 
-import com.sun.prism.paint.Color;
+//import com.sun.prism.paint.Color;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -62,9 +63,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import org.unimi.model.*;
 
-import org.unimi.Aprover.MainApp;
+import org.unimi.model.*;
 
 public class SelectAProVerController {
 
@@ -210,11 +210,10 @@ public class SelectAProVerController {
 	@FXML
 	public void initialize() {
 // legge il file di configurazione delle propriet� da testare		
-		
+		System.out.println("entro in select");
 		readFileConf();
 		HBox titleBoxAlice = new HBox();
-		ImageView immageAlice = new ImageView(new Image("/styles/images/alicepiccola1.png",
-	            0, 24, true, true));
+		ImageView immageAlice = new ImageView(new Image(getClass().getResource("/styles/images/alicepiccola1.png").toExternalForm(),0, 24, true, true));
 		titleBoxAlice.getChildren().add(immageAlice);
 		titledAlice.setGraphic(titleBoxAlice);
 		titledAlice.setContentDisplay(ContentDisplay.RIGHT);
@@ -224,22 +223,19 @@ public class SelectAProVerController {
 		
 		
 		HBox titleBoxBob = new HBox();
-		ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png",
-	            0, 24, true, true));
+		ImageView immageBob = new ImageView(new Image(getClass().getResource("/styles/images/bobpiccola1.png").toExternalForm(),0, 24, true, true));
 		titleBoxBob.getChildren().add(immageBob);
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		
 		HBox titleBoxEye = new HBox();
-		ImageView immageEye = new ImageView(new Image("/styles/images/eyepiccola1.png",
-	            0, 24, true, true));
+		ImageView immageEye = new ImageView(new Image(getClass().getResource("/styles/images/eyepiccola1.png").toExternalForm(),0, 24, true, true));
 		titleBoxEye.getChildren().add(immageEye);
 		titledEye.setGraphic(titleBoxEye);
 		titledEye.setContentDisplay(ContentDisplay.RIGHT);
 		
 		HBox titleBoxServer = new HBox();
-		ImageView immageServer = new ImageView(new Image("/styles/images/serverpiccola1.png",
-	            0, 24, true, true));
+		ImageView immageServer = new ImageView(new Image(getClass().getResource("/styles/images/serverpiccola1.png").toExternalForm(),0, 24, true, true));
 		titleBoxServer.getChildren().add(immageServer);
 		titledServer.setGraphic(titleBoxServer);
 		titledServer.setContentDisplay(ContentDisplay.RIGHT);
@@ -392,36 +388,46 @@ public class SelectAProVerController {
 	}
 
 	private static ImageView getImageView(String imageName) {
+		System.out.println("immageview");
+		
+		SelectAProVerController cell = new SelectAProVerController();
 		ImageView imageView = null;
+		
+			if (!pictures.containsKey(imageName)) {
+				pictures.put(imageName, cell.getImage(imageName));
+				//pictures.put(imageName,new Image(getClass().getResource("/styles/images/alicepiccola1.png").toExternalForm());
+			}
+			imageView = new ImageView(pictures.get(imageName));
+		System.out.println("immageview exit");
+		return imageView;
+	}
+	
+	
+	
+	private Image getImage(String imageName) {
+		Image image = null;
 		switch (imageName) {
 		case "Alice":
-			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/images/alicepiccola.png"));
-			}
-			imageView = new ImageView(pictures.get(imageName));
+			image = new Image(getClass().getResource("/styles/images/alicepiccola.png").toExternalForm());
 			break;
+			
 		case "Bob":
-			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/images/bobpiccola.png"));
-			}
-			imageView = new ImageView(pictures.get(imageName));
+			image = new Image(getClass().getResource("/styles/images/bobpiccola.png").toExternalForm());
 			break;
+			
 		case "Eye":
-			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/images/eyepiccola.png"));
-			}
-			imageView = new ImageView(pictures.get(imageName));
+			image = new Image(getClass().getResource("/styles/images/eyepiccola.png").toExternalForm());
 			break;
+			
 		case "Server":
-			if (!pictures.containsKey(imageName)) {
-				pictures.put(imageName, new Image("/styles/images/serverpiccola.png"));
-			}
-			imageView = new ImageView(pictures.get(imageName));
+			image = new Image(getClass().getResource("/styles/images/serverpiccola.png").toExternalForm());
 			break;
+
 		default:
 			imageName = null;
 		}
-		return imageView;
+		return image;
+		
 	}
 
 // Chiusura PAgina	
@@ -2524,7 +2530,7 @@ public class SelectAProVerController {
 	// se viene cliccato dal men� l'opzione about si visualizza il file PdF 
 	@FXML
 	public void about() throws IOException {
-		File file = new File("src\\\\main\\\\resources\\\\ConfigurationFile\\\\Help.pdf");
+		File file = new File("src\\main\\resources\\ConfigurationFile\\Help.pdf");
 		Desktop.getDesktop().open(file);
 	}
 

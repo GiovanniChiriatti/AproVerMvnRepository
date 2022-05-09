@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.sun.prism.paint.Color;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,9 +49,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
-import org.unimi.model.*;
 
-import org.unimi.Aprover.MainApp;
+import org.unimi.model.*;
 
 public class CreateMessageAProVer {
 
