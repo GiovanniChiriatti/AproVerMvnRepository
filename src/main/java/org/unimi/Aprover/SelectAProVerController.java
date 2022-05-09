@@ -1731,7 +1731,7 @@ public class SelectAProVerController {
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
-		
+		System.out.println("modificl la riga : "+riga);
 		showModifyMessage(messagges.getMessage(riga - 1).getActorfrom().toString(),riga);
 	}
 	@FXML
@@ -1797,7 +1797,7 @@ public class SelectAProVerController {
 	public void showModifyMessage(String actorFrom, int messageNumber) throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("CreateMessageAProVer.fxml"));
+		loader.setLocation(getClass().getResource("/fxml/CreateMessageAProVer.fxml"));
 		AnchorPane page = (AnchorPane) loader.load();
 
 		Stage dialogStage = new Stage();
