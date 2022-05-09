@@ -100,9 +100,9 @@ public class StartAProVerController {
         
         SelectAProVerController controller = loader.getController();
         System.out.println("8");
-   //     controller.setToolStart(tool.getText());
+         controller.setToolStart(tool.getText());
         System.out.println("9");
-    //    controller.setFileStart(singleFile.getText());
+         controller.setFileStart(singleFile.getText());
         dialogStage.setMaximized(true);
         //dialogStage.showAndWait();
         dialogStage.show();
