@@ -386,6 +386,7 @@ public class CreateMessageAProVer {
 		
 		Node nodeLastSecurytyFunction = searchLastMsgSecurityFuncion();
 		Node nodePedice = null;
+		Node nodePedice2 = null;
 		if (nodeLastSecurytyFunction != null) {
 			for (Node node : ((TextFlow) nodeLastSecurytyFunction).getChildren()) {
 				if (((Text) node).getTranslateY() > 0) {
@@ -394,9 +395,17 @@ public class CreateMessageAProVer {
 					nodePedice = null;
 				}
 			}
+			for (Node node : ((TextFlow) textFlowSecurity).getChildren()) {
+				if (((Text) node).getTranslateY() > 0) {
+					nodePedice2 = node;
+				} else {
+					nodePedice2 = null;
+				}
+			}
 			if (nodePedice != null) {
 				messaggioSecurity = ((((Text) nodePedice).getText()) + "," + messaggioSecurity);
 				((Text) nodePedice).setText(messaggioSecurity);
+				((Text) nodePedice2).setText(messaggioSecurity);
 			} else {
 				Text normal = new Text("normal");
 				Text sub = new Text(messaggioSecurity);
