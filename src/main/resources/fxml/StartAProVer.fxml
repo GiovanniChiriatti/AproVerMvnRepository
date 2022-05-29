@@ -197,7 +197,7 @@
 										<Insets top="7.0" />
 									</VBox.margin>
 								</TitledPane>
-								<TitledPane fx:id="titledEye" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" layoutX="10.0" layoutY="243.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Eye" textFill="#c75752">
+								<TitledPane fx:id="titledEve" alignment="CENTER" contentDisplay="TOP" disable="true" expanded="false" layoutX="10.0" layoutY="243.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Eve" textFill="#c75752">
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
 											<children>
@@ -401,6 +401,11 @@
 										<Font size="27.0" />
 									</font>
 								</Text>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../styles/images/logo7-removebg-preview.png" />
+                           </image>
+                        </ImageView>
 							</children>
 						</AnchorPane>
 					</children>

@@ -75,7 +75,7 @@ public class CreateMessageAProVer {
     private ComboBox actorTo;
 
     @FXML
-    private AnchorPane initialKnowledge, AncorPaneMEssagePayloadGroup,msgPayloadAncorPane;
+    private AnchorPane initialKnowledge,msgPayloadAncorPane;
 
     @FXML
     private Text rowNum1,rowNum2,rowNum3,rowNum4,rowNum5,rowNum6,rowNum7, rowNum8;
@@ -97,10 +97,10 @@ public class CreateMessageAProVer {
     private MenuButton menuSecurityFunction;
     
     @FXML
-    private TextFlow txtPreview, payloadField, payloadField2;
+    private TextFlow txtPreview, payloadField, payloadField2,textFlowSecurity;
 
     @FXML
-    private CheckBox ceckPayloadField,ceckPayloadField2, eyesIntercept;
+    private CheckBox ceckPayloadField,ceckPayloadField2, evesIntercept;
 //
 // Routin di inizializzazione del Controller
 // 
@@ -140,14 +140,15 @@ public class CreateMessageAProVer {
  // qui viene passato il numero del messaggio quando si sta effettuando la modifica del messaggio gia creato in precedenza
  // in questo caso il controller imposta le informazioni registrate nella classe Message
     public void setMessage(int numMessage) {
+    	
     	this.numMessage = numMessage;
     	
         this.actorFrom.setText(message.getActorfrom());
-        this.eyesIntercept.setSelected(message.getEyesIntercept());
+        this.evesIntercept.setSelected(message.getEvesIntercept());
         comboBoxList = FXCollections.observableArrayList(message.getActorTo());
         actorTo.setItems(comboBoxList);
         actorTo.getSelectionModel().selectFirst();
-        eyesIntercept.setDisable(true);
+        evesIntercept.setDisable(true);
 
 		for (int j = 0; j < 16; j++) {
 			oldSecurityFunction[j] = "";
@@ -162,7 +163,7 @@ public class CreateMessageAProVer {
             	}
 			}
 			if (message.getPayload().isEmpty()) {
-				AncorPaneMEssagePayloadGroup.setVisible(false);
+				textFlowSecurity.getChildren().clear();
 				txtPreview.getChildren().clear();
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(false);
@@ -173,7 +174,7 @@ public class CreateMessageAProVer {
 				payloadField.setVisible(false);
 				payloadField2.setVisible(false);
 			} else {
-				AncorPaneMEssagePayloadGroup.setVisible(true);
+				textFlowSecurity.getChildren().clear();
 				txtPreview.getChildren().clear();
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(true);
@@ -196,13 +197,13 @@ public class CreateMessageAProVer {
 // prima di essere creata la Scene il controller precedente inizializza le informazioni di questo controller
 // in questo caso si richiede di creare un nuovo messaggio e il controller riceve l'acctor da cui parte il messaggio
 // si inizializza la combobox per la ricerca dell'actor destinatario del messaggio (nell'elenco si esclude l'actor di partenza)    
-    public void setActorFrom(String actorFrom,int numMessage, String tool, String toolEye) {
+    public void setActorFrom(String actorFrom,int numMessage, String tool, String toolEve) {
         this.numMessage = numMessage;
         this.actorFrom.setText(actorFrom);
         boolean unicAcrotTo = false;
                
 		if (tool.contains("Disable")) {
-			if (toolEye.contains("Eye Create Messages")) {
+			if (toolEve.contains("Eve Create Messages")) {
 				switch (actorFrom) {
 				case "Alice":
 					comboBoxList = FXCollections.observableArrayList("Bob", "Server");
@@ -210,50 +211,50 @@ public class CreateMessageAProVer {
 				case "Bob":
 					comboBoxList = FXCollections.observableArrayList("Alice", "Server");
 					break;
-				case "Eye":
+				case "Eve":
 					comboBoxList = FXCollections.observableArrayList("Alice", "Server");
 					break;
 				case "Server":
-					comboBoxList = FXCollections.observableArrayList("Alice", "Eye");
+					comboBoxList = FXCollections.observableArrayList("Alice", "Bob");
 					break;
 				}
 			}
 		}
 		if (tool.contains("Disable")) {
-			if (toolEye.contains("Eye Doesn't Create Messages")) {
+			if (toolEve.contains("Eve Doesn't Create Messages")) {
 				switch (actorFrom) {
 				case "Alice":
-					comboBoxList = FXCollections.observableArrayList("Bob", "Eye", "Server");
+					comboBoxList = FXCollections.observableArrayList("Bob", "Eve", "Server");
 					break;
 				case "Bob":
-					comboBoxList = FXCollections.observableArrayList("Alice", "Eye", "Server");
+					comboBoxList = FXCollections.observableArrayList("Alice", "Eve", "Server");
 					break;
-				case "Eye":
+				case "Eve":
 					comboBoxList = FXCollections.observableArrayList("Alice", "Bob", "Server");
 					break;
 				case "Server":
-					comboBoxList = FXCollections.observableArrayList("Alice", "Bob", "Eye");
+					comboBoxList = FXCollections.observableArrayList("Alice", "Bob", "Eve");
 					break;
 				}
 			}
 		}
 		if (tool.contains("Enable")) {
-			if (toolEye.contains("Eye Doesn't Create Messages")) {
+			if (toolEve.contains("Eve Doesn't Create Messages")) {
 				switch (actorFrom) {
 				case "Alice":
-					comboBoxList = FXCollections.observableArrayList("Bob", "Eye");
+					comboBoxList = FXCollections.observableArrayList("Bob", "Eve");
 					break;
 				case "Bob":
-					comboBoxList = FXCollections.observableArrayList("Alice", "Eye");
+					comboBoxList = FXCollections.observableArrayList("Alice", "Eve");
 					break;
-				case "Eye":
+				case "Eve":
 					comboBoxList = FXCollections.observableArrayList("Alice", "Bob");
 					break;
 				}
 			}
 		}
 		if (tool.contains("Enable")) {
-			if (toolEye.contains("Eye Create Messages")) {
+			if (toolEve.contains("Eve Create Messages")) {
 				unicAcrotTo = true;
 				switch (actorFrom) {
 				case "Alice":
@@ -262,7 +263,7 @@ public class CreateMessageAProVer {
 				case "Bob":
 					comboBoxList = FXCollections.observableArrayList("Alice");
 					break;
-				case "Eye":
+				case "Eve":
 					comboBoxList = FXCollections.observableArrayList("Alice");
 					break;
 				}
@@ -300,6 +301,8 @@ public class CreateMessageAProVer {
 
     	this.securityKey = securityKey;
     	this.message = message;
+    	
+    	textFlowSecurity.getChildren().clear();
     	
     	if (securityKey.getAsymmetricPublicKey() !=null && !securityKey.getAsymmetricPublicKey().isEmpty() ) {
     		Menu menu = new Menu();
@@ -365,8 +368,9 @@ public class CreateMessageAProVer {
             }
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	AncorPaneMEssagePayloadGroup.setVisible(false);
+       	
 		txtPreview.getChildren().clear();
+		textFlowSecurity.getChildren().clear();
 		ceckPayloadField.setSelected(false);
 		ceckPayloadField.setVisible(false);
 		ceckPayloadField2.setSelected(false);
@@ -398,6 +402,9 @@ public class CreateMessageAProVer {
 				Text sub = new Text(messaggioSecurity);
 				sub.setTranslateY(normal.getFont().getSize() * 0.3);
 				((TextFlow) nodeLastSecurytyFunction).getChildren().add(sub);
+				Text sub2 = new Text(messaggioSecurity);
+				sub2.setTranslateY(normal.getFont().getSize() * 0.3);
+				((TextFlow) textFlowSecurity).getChildren().add(sub2);
 			}
 		}
 	}
@@ -418,16 +425,16 @@ public class CreateMessageAProVer {
 
     	return actorTo.getValue().toString();
     }
-    public Boolean getEyesIntercept() {
+    public Boolean getEvesIntercept() {
  	
-    	return eyesIntercept.isSelected();
+    	return evesIntercept.isSelected();
     }
     @FXML
     private void acotrToSelect() {
     	String actorFromAppo = actorFrom.getText();    	
     	message.setActorTo(actorTo.getValue().toString());
     	message.setActorFrom(actorFrom.getText());
-    	message.setEyesIntercept(eyesIntercept.isSelected());
+    	message.setEvesIntercept(evesIntercept.isSelected());
     }
     
 // metodo attivato quando si preme il button "+" presente nel "message Payload Filed
@@ -475,6 +482,7 @@ public class CreateMessageAProVer {
     		piuTabeMessage.setVisible(false);
     		doneButton.setVisible(true);
     		menuSecurityFunction.setVisible(true);
+    		textFlowSecurity.setVisible(true);
     		
     	}
     	System.out.println("----------elenco valori tabella----------" + NumNodiSecurityFunctions);
@@ -501,12 +509,17 @@ public class CreateMessageAProVer {
 				if (((Text)node).getTranslateY() > 0){
 					Text normal = new Text("normal");
 					Text sub = new Text (((Text) node).getText().toString());
+					Text sub2 = new Text (((Text) node).getText().toString());
 					sub.setTranslateY(normal.getFont().getSize() * 0.3);
+					sub2.setTranslateY(normal.getFont().getSize() * 0.3);
 					((TextFlow)node1).getChildren().add(sub);
+					textFlowSecurity.getChildren().add(sub2);
 	    			oldMessagePayloadField[NumNodiSecurityFunctions][numNodiMessagePayloadField] = oldMessagePayloadField[NumNodiSecurityFunctions][numNodiMessagePayloadField] + " - " + (((Text) node).getText()) +  " - ";
 	    		} else {
 	    			Text sub = new Text (((Text) node).getText().toString());
+	    			Text sub2 = new Text (((Text) node).getText().toString());
 					((TextFlow)node1).getChildren().add(sub);
+					textFlowSecurity.getChildren().add(sub2);
 	    			oldMessagePayloadField[NumNodiSecurityFunctions][numNodiMessagePayloadField] = oldMessagePayloadField[NumNodiSecurityFunctions][numNodiMessagePayloadField]  + (((Text) node).getText());
 	    		}
 			}
@@ -518,7 +531,9 @@ public class CreateMessageAProVer {
     		return;
     	}
     	Text normal = new Text(appMessage);
+    	Text normal2 = new Text(appMessage);
      	((TextFlow)node).getChildren().add(normal);
+     	textFlowSecurity.getChildren().add(normal2);
     }
     private void inserisciInSecurityFuncionPedice(Node node1, String appMessage) {
     	if (node1 == null) {
@@ -573,6 +588,7 @@ public class CreateMessageAProVer {
 		doneButton.setVisible(false);
 		menuSecurityFunction.setVisible(false);
 		numNodiMessagePayloadField = -1;
+		textFlowSecurity.getChildren().clear();
 		if (NumNodiSecurityFunctions >= 0) {
 			cleanTabeMessage();
 			int i = 0;
@@ -615,7 +631,7 @@ public class CreateMessageAProVer {
 				((TextFlow) nodeLastSecurytyFunction).getChildren().clear();
 				NumNodiSecurityFunctions--;
 				if (NumNodiSecurityFunctions >= 0) {
-					AncorPaneMEssagePayloadGroup.setVisible(true);
+					
 					ceckPayloadField.setVisible(true);
 					ceckPayloadField2.setVisible(true);
 					payloadField.getChildren().clear();
@@ -628,7 +644,7 @@ public class CreateMessageAProVer {
 		 			writeTextField(nodeLastSecurytyFunction);
 				} else {
 					message.setPayload("");
-					AncorPaneMEssagePayloadGroup.setVisible(false);
+					
 					txtPreview.getChildren().clear();
 					ceckPayloadField.setSelected(false);
 					ceckPayloadField.setVisible(false);
@@ -696,7 +712,7 @@ public class CreateMessageAProVer {
     	if (actorTo.getValue() !="" && actorTo.getValue() != null  && !riempito) {
         	message.setActorTo(actorTo.getValue().toString());
         	message.setActorFrom(actorFrom.getText());
-        	message.setEyesIntercept(eyesIntercept.isSelected());
+        	message.setEvesIntercept(evesIntercept.isSelected());
     		dialogStage.close();
     		return;
     	}
@@ -737,30 +753,32 @@ public class CreateMessageAProVer {
 		Node nodeLastSecurytyFunction = searchLastSecurityFuncion(NumNodiSecurityFunctions);
 		String compactMessage="";
 		if (nodeLastSecurytyFunction != null) {
-			AncorPaneMEssagePayloadGroup.setVisible(true);
+			
 			ceckPayloadField.setVisible(true);
 			ceckPayloadField2.setVisible(true);
 			payloadField.setVisible(true);
 			payloadField2.setVisible(true);
 			compactMessage = setComboBoxpayloadFieldList(nodeLastSecurytyFunction);
+			System.out.println("----------> compactMessage " +compactMessage);
 			message.addSecurityFunctionsPartMessage(compactMessage);
 			setTabMessageListPartMessage();
 
 		}
+		
 		if (NumNodiSecurityFunctions>=0) {
-			AncorPaneMEssagePayloadGroup.setVisible(true);
+			
 			message.setPayload(createPreviewField());
 			writeTxtPreview(createPreviewField());
 			nodeLastSecurytyFunction = searchLastSecurityFuncion(NumNodiSecurityFunctions);
  			writeTextField(nodeLastSecurytyFunction);
 		}else {
-			AncorPaneMEssagePayloadGroup.setVisible(false);
+			
 			txtPreview.getChildren().clear();
 			payloadField2.getChildren().clear();
 			payloadField.getChildren().clear();
 		}
-		
-
+		textFlowSecurity.getChildren().clear();
+		textFlowSecurity.setVisible(false);
     }
     
     private void setTabMessageListPartMessage() {

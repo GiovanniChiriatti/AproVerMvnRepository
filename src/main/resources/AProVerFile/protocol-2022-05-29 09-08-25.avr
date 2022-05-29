@@ -1,0 +1,35 @@
+tool value 
+Enable Server
+toolEve value 
+Eve Create Messages
+dati Alice AsymmetricPublicKey 
+aa
+bb
+cc
+dati Alice AsymmetricPrivateKey 
+dd
+ee
+dati Alice SymmetricKey 
+ff
+dati Bob AsymmetricPublicKey 
+hh
+dati Bob AsymmetricPrivateKey 
+ii
+dati Bob SymmetricKey 
+dd
+dati Eve AsymmetricPublicKey 
+dati Eve AsymmetricPrivateKey 
+dati Eve SymmetricKey 
+dati Server AsymmetricPublicKey 
+dati Server AsymmetricPrivateKey 
+dati Server SymmetricKey 
+dati Messaggi 
+dati Messaggio 0
+ActorFrom Alice
+ActorTo Bob
+Eve Intercept true
+Messages {vvvvvv}-bb-
+dati SecurityFunctionsPartMessage j=0
+{vvvvvv}  - bb - 
+dati listPartMessage j=0 k=0
+vvvvvv

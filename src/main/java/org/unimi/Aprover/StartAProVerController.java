@@ -39,7 +39,7 @@ public class StartAProVerController {
 	private Text singleFile;
 
 	@FXML
-	private TitledPane titledAlice, titledEye, titledBob, titledServer;
+	private TitledPane titledAlice, titledEve, titledBob, titledServer;
 	@FXML
 	private Button buttonNew, buttonOld;
 
@@ -70,10 +70,8 @@ public class StartAProVerController {
 	private void toolSet() {
 		if (tool.getText().contains("Disable")) {
 			tool.setText("Enable Server");
-			titledServer.setVisible(false);
 		} else {
 			tool.setText("Disable Server");
-			titledServer.setVisible(true);
 		}
 	}
 
@@ -163,11 +161,11 @@ public class StartAProVerController {
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		System.out.println("c");
-		HBox titleBoxEye = new HBox();
- 		ImageView immageEye = new ImageView(new Image(getClass().getResource("/styles/images/eyepiccola1.png").toExternalForm(),0, 24, true, true));
- 		titleBoxEye.getChildren().add(immageEye);
-		titledEye.setGraphic(titleBoxEye);
-		titledEye.setContentDisplay(ContentDisplay.RIGHT);
+		HBox titleBoxEve = new HBox();
+ 		ImageView immageEve = new ImageView(new Image(getClass().getResource("/styles/images/evepiccola1.png").toExternalForm(),0, 24, true, true));
+ 		titleBoxEve.getChildren().add(immageEve);
+		titledEve.setGraphic(titleBoxEve);
+		titledEve.setContentDisplay(ContentDisplay.RIGHT);
 
 		HBox titleBoxServer = new HBox();
 		ImageView immageServer = new ImageView(new Image(getClass().getResource("/styles/images/serverpiccola1.png").toExternalForm(),0, 24, true, true));

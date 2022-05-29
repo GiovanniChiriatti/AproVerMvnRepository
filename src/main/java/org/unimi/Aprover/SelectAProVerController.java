@@ -42,7 +42,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -70,7 +73,7 @@ public class SelectAProVerController {
 
 
     static HashMap<String, Image> pictures = new HashMap<>();
-	//ObservableList<String> comboBoxList = FXCollections.observableArrayList("Alice", "Bob", "Eye", "Server");
+	//ObservableList<String> comboBoxList = FXCollections.observableArrayList("Alice", "Bob", "Eve", "Server");
 
 	private MainApp main;
 
@@ -82,18 +85,18 @@ public class SelectAProVerController {
 	final String hashKnow = "Hash";
 	SecurityKey alice = new SecurityKey();
 	SecurityKey bob = new SecurityKey();
-	SecurityKey eye = new SecurityKey();
+	SecurityKey eve = new SecurityKey();
 	SecurityKey server = new SecurityKey();
 	Messages messagges = new Messages();
 	ConfigurationDataProprieties confProp = new ConfigurationDataProprieties();
 	private String appoOldKnowledge= null;
 	boolean toolFlag = false;
 	boolean helpFlag = false;
-	boolean eyeIntercept=false;
+	boolean eveIntercept=false;
 	String fileName;
 	int numMessage, numMessagePrec;
 	
-	Node node,node1,node2,node3,node4, line,liey,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
+	Node node,node1,node2,node3,node4, line,liey,msg,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
 
 	@FXML
 	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane;
@@ -108,13 +111,15 @@ public class SelectAProVerController {
 	private CheckComboBox ListProprieties00, ListProprieties01, ListProprieties02,ListProprieties03,ListProprieties04,ListProprieties05;
 
 	@FXML
-	private TitledPane titledEye;
+	private TitledPane titledEve;
 
 	@FXML
 	private TitledPane titledServer;
 	
 	@FXML
 	private TextFlow msgPayload,  msgPayload1;
+	@FXML
+	private TextFlow msg01, msg02, msg03, msg04, msg05, msg06, msg07, msg08, msg09, msg10, msg11, msg12, msg13, msg14, msg15;
 	@FXML
 	//private ComboBox<Label> comboBoxActor;
 	private ComboBox comboBoxActor;
@@ -127,7 +132,7 @@ public class SelectAProVerController {
 	private Line livy01, livy02, livy03, livy04, livy05, livy06, livy07, livy08, livy09, livy10, livy11, livy12, livy13, livy14, livy15;
 
 	@FXML
-	private ImageView faceAlice, faceBob, faceEye, faceServer, lineaBob, lineaEye, lineVEye, lineaAlice, lineaServer;
+	private ImageView faceAlice, faceBob, faceEve, faceServer, lineaBob, lineaEve, lineVEve, lineaAlice, lineaServer;
 
 	@FXML
 	private Text nomeActor, typeKey, rowEdit, knowPage;
@@ -136,45 +141,48 @@ public class SelectAProVerController {
 	private Text rowNum1, rowNum2, rowNum3, rowNum4, rowNum5, rowNum6, rowNum7, rowNum8, rowNum9, rowNum10, rowNum11;
 
 	@FXML
-	private Button nextButton, prevButton, piuButton, menoButton, finishButton;
+	private Button nextButton, prevButton, finishButton;
 	
 	@FXML
-	private Button aliceButton01, bobButton01, eyeButton01, serverButton01;
+	private Button aliceButton01, bobButton01, eveButton01, serverButton01;
 	
 	@FXML
-	private Button aliceButton02, bobButton02, eyeButton02, serverButton02;
+	private Button aliceButton02, bobButton02, eveButton02, serverButton02;
 	@FXML
-	private Button aliceButton03, bobButton03, eyeButton03, serverButton03;
+	private Button aliceButton03, bobButton03, eveButton03, serverButton03;
 	@FXML
-	private Button aliceButton04, bobButton04, eyeButton04, serverButton04;
+	private Button aliceButton04, bobButton04, eveButton04, serverButton04;
 	
 	@FXML
-	private Button aliceButton05, bobButton05, eyeButton05, serverButton05;
+	private Button aliceButton05, bobButton05, eveButton05, serverButton05;
 	
 	@FXML
-	private Button aliceButton06, bobButton06, eyeButton06, serverButton06;
+	private Button aliceButton06, bobButton06, eveButton06, serverButton06;
 	
 	@FXML
-	private Button aliceButton07, bobButton07, eyeButton07, serverButton07;
+	private Button aliceButton07, bobButton07, eveButton07, serverButton07;
 		
 	@FXML
-	private Button aliceButton08, bobButton08, eyeButton08, serverButton08;
+	private Button aliceButton08, bobButton08, eveButton08, serverButton08;
 	@FXML
-	private Button aliceButton09, bobButton09, eyeButton09, serverButton09;
+	private Button aliceButton09, bobButton09, eveButton09, serverButton09;
 	@FXML
-	private Button aliceButton10, bobButton10, eyeButton10, serverButton10;
+	private Button aliceButton10, bobButton10, eveButton10, serverButton10;
 	@FXML
-	private Button aliceButton11, bobButton11, eyeButton11, serverButton11;
+	private Button aliceButton11, bobButton11, eveButton11, serverButton11;
 	@FXML
-	private Button aliceButton12, bobButton12, eyeButton12, serverButton12;
+	private Button aliceButton12, bobButton12, eveButton12, serverButton12;
 	@FXML
-	private Button aliceButton13, bobButton13, eyeButton13, serverButton13;	
+	private Button aliceButton13, bobButton13, eveButton13, serverButton13;	
 	@FXML
-	private Button aliceButton14, bobButton14, eyeButton14, serverButton14;
+	private Button aliceButton14, bobButton14, eveButton14, serverButton14;
 	@FXML
-	private Button aliceButton15, bobButton15, eyeButton15, serverButton15;
+	private Button aliceButton15, bobButton15, eveButton15, serverButton15;
 	@FXML
 	private Button insertSelect00,insertSelect01,insertSelect02,insertSelect03,insertSelect04,insertSelect05;
+	
+	@FXML
+	private Button serverButton;
 	
 	@FXML
 	private AnchorPane ancorPulsanti;
@@ -187,7 +195,7 @@ public class SelectAProVerController {
 	@FXML
 	private Label bobAsymmetricPublicKey, bobAsymmetricPrivateKey, bobSymmetricKey, bobHash;
 	@FXML
-	private Label eyeAsymmetricPublicKey, eyeAsymmetricPrivateKey, eyeSymmetricKey, eyeHash;
+	private Label eveAsymmetricPublicKey, eveAsymmetricPrivateKey, eveSymmetricKey, eveHash;
 	@FXML
 	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash;
 
@@ -201,14 +209,14 @@ public class SelectAProVerController {
 	private MenuButton choices;
 	
 	@FXML
-	private MenuItem tool,toolEye;
+	private MenuItem tool,toolEve;
 
 //
 // Routin di inizializzazione del Controller
 // 
 
 	@FXML
-	public void initialize() {
+	private void initialize() {
 // legge il file di configurazione delle propriet� da testare		
 		System.out.println("entro in select");
 		readFileConf();
@@ -219,7 +227,8 @@ public class SelectAProVerController {
 		titledAlice.setContentDisplay(ContentDisplay.RIGHT);
 		
 		tool.setDisable(false);
-		toolEye.setDisable(false);
+		toolEve.setDisable(false);
+		serverButton.setDisable(false);
 		
 		
 		HBox titleBoxBob = new HBox();
@@ -228,11 +237,11 @@ public class SelectAProVerController {
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
 		
-		HBox titleBoxEye = new HBox();
-		ImageView immageEye = new ImageView(new Image(getClass().getResource("/styles/images/eyepiccola1.png").toExternalForm(),0, 24, true, true));
-		titleBoxEye.getChildren().add(immageEye);
-		titledEye.setGraphic(titleBoxEye);
-		titledEye.setContentDisplay(ContentDisplay.RIGHT);
+		HBox titleBoxEve = new HBox();
+		ImageView immageEve = new ImageView(new Image(getClass().getResource("/styles/images/evepiccola1.png").toExternalForm(),0, 24, true, true));
+		titleBoxEve.getChildren().add(immageEve);
+		titledEve.setGraphic(titleBoxEve);
+		titledEve.setContentDisplay(ContentDisplay.RIGHT);
 		
 		HBox titleBoxServer = new HBox();
 		ImageView immageServer = new ImageView(new Image(getClass().getResource("/styles/images/serverpiccola1.png").toExternalForm(),0, 24, true, true));
@@ -250,10 +259,10 @@ public class SelectAProVerController {
 // si abilitano le visibilit� della combobox per la selezione degli actor
 		
 		if (tool.getText().contains("Enable")) {
-			comboBoxActor.getItems().addAll("Alice", "Eye", "Bob");
+			comboBoxActor.getItems().addAll("Alice", "Eve" , "Bob");
 			
 		} else {
-			comboBoxActor.getItems().addAll("Alice", "Eye", "Bob", "Server");
+			comboBoxActor.getItems().addAll("Alice", "Eve", "Bob", "Server");
 		}
 		
         //Set the cellFactory property
@@ -268,16 +277,16 @@ public class SelectAProVerController {
 		lineaAlice.setVisible(true);
 		faceBob.setVisible(true);
 		lineaBob.setVisible(true);
-		faceEye.setVisible(true);
-		lineaEye.setVisible(true);
+		faceEve.setVisible(true);
+		lineaEve.setVisible(true);
 		if (tool.getText().contains("Enable")) {
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
-			titledServer.setVisible(false);
+			titledServer.setDisable(true);
 		} else {
 			faceServer.setVisible(true);
 			lineaServer.setVisible(true);
-			titledServer.setVisible(true);
+			titledServer.setDisable(false);
 		}
 			
 // si disabilita la visibilit� del Ancor per l'inserimento dei parametri di knowledge		
@@ -289,78 +298,78 @@ public class SelectAProVerController {
 		
 		aliceButton01.setVisible(false);
 		bobButton01.setVisible(false);
-		eyeButton01.setVisible(false);
+		eveButton01.setVisible(false);
 		
 		serverButton01.setVisible(false);
 		
 		aliceButton02.setVisible(false);
 		bobButton02.setVisible(false);
-		eyeButton02.setVisible(false);
+		eveButton02.setVisible(false);
 		serverButton02.setVisible(false);
 		
 		aliceButton03.setVisible(false);
 		bobButton03.setVisible(false);
-		eyeButton03.setVisible(false);
+		eveButton03.setVisible(false);
 		serverButton03.setVisible(false);
 			
 		aliceButton04.setVisible(false);
 		bobButton04.setVisible(false);
-		eyeButton04.setVisible(false);
+		eveButton04.setVisible(false);
 		serverButton04.setVisible(false);
 			
 		aliceButton05.setVisible(false);
 		bobButton05.setVisible(false);
-		eyeButton05.setVisible(false);
+		eveButton05.setVisible(false);
 		serverButton05.setVisible(false);
 			
 		aliceButton06.setVisible(false);
 		bobButton06.setVisible(false);
-		eyeButton06.setVisible(false);
+		eveButton06.setVisible(false);
 		serverButton06.setVisible(false);
 			
 		aliceButton07.setVisible(false);
 		bobButton07.setVisible(false);
-		eyeButton07.setVisible(false);
+		eveButton07.setVisible(false);
 		serverButton07.setVisible(false);
 			
 		aliceButton08.setVisible(false);
 		bobButton08.setVisible(false);
-		eyeButton08.setVisible(false);
+		eveButton08.setVisible(false);
 		serverButton08.setVisible(false);
 			
 		aliceButton09.setVisible(false);
 		bobButton09.setVisible(false);
-		eyeButton09.setVisible(false);
+		eveButton09.setVisible(false);
 		serverButton09.setVisible(false);
 			
 		aliceButton10.setVisible(false);
 		bobButton10.setVisible(false);
-		eyeButton10.setVisible(false);
+		eveButton10.setVisible(false);
 		serverButton10.setVisible(false);
 	
 		aliceButton11.setVisible(false);
 		bobButton11.setVisible(false);
-		eyeButton11.setVisible(false);
+		eveButton11.setVisible(false);
 		serverButton11.setVisible(false);
 			
 		aliceButton12.setVisible(false);
 		bobButton12.setVisible(false);
-		eyeButton12.setVisible(false);
+		eveButton12.setVisible(false);
 		serverButton12.setVisible(false);
 	
 		aliceButton13.setVisible(false);
 		bobButton13.setVisible(false);
-		eyeButton13.setVisible(false);
+		eveButton13.setVisible(false);
 		serverButton13.setVisible(false);
 	
 		aliceButton14.setVisible(false);
 		bobButton14.setVisible(false);
-		eyeButton14.setVisible(false);
+		eveButton14.setVisible(false);
 		serverButton14.setVisible(false);
 		
 		aliceButton15.setVisible(false);
 		bobButton15.setVisible(false);
-		eyeButton15.setVisible(false);
+		eveButton15.setVisible(false);
 		serverButton15.setVisible(false);
 		
 
@@ -415,8 +424,8 @@ public class SelectAProVerController {
 			image = new Image(getClass().getResource("/styles/images/bobpiccola.png").toExternalForm());
 			break;
 			
-		case "Eye":
-			image = new Image(getClass().getResource("/styles/images/eyepiccola.png").toExternalForm());
+		case "Eve":
+			image = new Image(getClass().getResource("/styles/images/evepiccola.png").toExternalForm());
 			break;
 			
 		case "Server":
@@ -475,7 +484,7 @@ public class SelectAProVerController {
 				msgPayload.getChildren().clear();
 				msgPayloadAncorPane.setLayoutX(0);
 				msgPayloadAncorPane.setLayoutY(40);
-				writeTxtPreview("this section contains view of knowledge of key of all actor \n (Alice Bob Eyes Server) "  );
+				writeTxtPreview("this section contains view of knowledge of key of all actor \n (Alice Bob Eves Server) "  );
 				
 				msgPayload.setVisible(true);
 				msgPayloadAncorPane.setVisible(true);
@@ -515,7 +524,7 @@ public class SelectAProVerController {
 			
 			if (data.contains("alice")) partMessage2 = "Alice";
 			if (data.contains("bob")) partMessage2 = "Bob";
-			if (data.contains("eye")) partMessage2 = "Eyes";
+			if (data.contains("eve")) partMessage2 = "Eves";
 			if (data.contains("server")) partMessage2 = "Server";
 			
 			if (((Button) node).getText().equals("-")) {
@@ -542,8 +551,8 @@ public class SelectAProVerController {
 				msgPayload1.getChildren().clear();
 				msgPayloadAncorPane1.setLayoutX(400);
 				msgPayloadAncorPane1.setLayoutY(40);
-				Text msg= new Text("Select to Close Page");
-				msgPayload1.getChildren().addAll(msg);
+				Text msgText= new Text("Select to Close Page");
+				msgPayload1.getChildren().addAll(msgText);
 				//writeTxtPreview("Select X for close"  );
 				
 				msgPayload1.setVisible(true);
@@ -558,8 +567,8 @@ public class SelectAProVerController {
 				msgPayload1.getChildren().clear();
 				msgPayloadAncorPane1.setLayoutX(400);
 				msgPayloadAncorPane1.setLayoutY(40);
-				Text msg= new Text("Select + for insert new row");
-				msgPayload1.getChildren().addAll(msg);
+				Text msgText= new Text("Select + for insert new row");
+				msgPayload1.getChildren().addAll(msgText);
 				//writeTxtPreview("Select X for close"  );
 				
 				msgPayload1.setVisible(true);
@@ -574,8 +583,8 @@ public class SelectAProVerController {
 				msgPayload1.getChildren().clear();
 				msgPayloadAncorPane1.setLayoutX(400);
 				msgPayloadAncorPane1.setLayoutY(40);
-				Text msg= new Text("Select for delete row");
-				msgPayload1.getChildren().addAll(msg);
+				Text msgText= new Text("Select for delete row");
+				msgPayload1.getChildren().addAll(msgText);
 				//writeTxtPreview("Select X for close"  );
 				
 				msgPayload1.setVisible(true);
@@ -590,8 +599,8 @@ public class SelectAProVerController {
 				msgPayload1.getChildren().clear();
 				msgPayloadAncorPane1.setLayoutX(400);
 				msgPayloadAncorPane1.setLayoutY(70);
-				Text msg= new Text("Select NEXT for enter new type of knowledge");
-				msgPayload1.getChildren().addAll(msg);
+				Text msgText= new Text("Select NEXT for enter new type of knowledge");
+				msgPayload1.getChildren().addAll(msgText);
 				//writeTxtPreview("Select X for close"  );
 				
 				msgPayload1.setVisible(true);
@@ -606,8 +615,8 @@ public class SelectAProVerController {
 				msgPayload1.getChildren().clear();
 				msgPayloadAncorPane1.setLayoutX(400);
 				msgPayloadAncorPane1.setLayoutY(70);
-				Text msg= new Text("Select PREV to enter the previous knowledge type");
-				msgPayload1.getChildren().addAll(msg);
+				Text msgText= new Text("Select PREV to enter the previous knowledge type");
+				msgPayload1.getChildren().addAll(msgText);
 				//writeTxtPreview("Select X for close"  );
 				
 				msgPayload1.setVisible(true);
@@ -637,8 +646,8 @@ public class SelectAProVerController {
 		boolean viewLineOK = false;
 		if (faceAlice.getOpacity() == 1 &&
 				faceBob.getOpacity() == 1 &&
-				faceEye.getOpacity() == 1 && (
-				faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))) {
+			//	faceEve.getOpacity() == 1 && 
+				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))) {
 				viewLineOK = true;
 			}
 //rende visibile le icone e le righe delle immagini dei vari attori
@@ -646,24 +655,24 @@ public class SelectAProVerController {
 		lineaAlice.setVisible(true);
 		faceBob.setVisible(true);
 		lineaBob.setVisible(true);
-		faceEye.setVisible(true);
-		lineaEye.setVisible(true);
+		faceEve.setVisible(true);
+		lineaEve.setVisible(true);
 		if (tool.getText().contains("Enable")) {
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
-			titledServer.setVisible(false);
+			titledServer.setDisable(true);
 		} else {
 			faceServer.setVisible(true);
 			lineaServer.setVisible(true);
-			titledServer.setVisible(true);
+			titledServer.setDisable(false);
 		}
 
 		/*
 		 * 
 		 * lineaBob.setOpacity(0.31); faceAlice.setOpacity(0.31);
 		 * lineaAlice.setOpacity(0.31); faceBob.setOpacity(0.31);
-		 * lineaBob.setOpacity(0.31); faceEye.setOpacity(0.31);
-		 * lineaEye.setOpacity(0.31); faceServer.setOpacity(0.31);
+		 * lineaBob.setOpacity(0.31); faceEve.setOpacity(0.31);
+		 * lineaEve.setOpacity(0.31); faceServer.setOpacity(0.31);
 		 * lineaServer.setOpacity(0.31);
 		 */
 //rende visibile le icone e le righe delle immagini dei vari actor
@@ -673,9 +682,9 @@ public class SelectAProVerController {
 		typeKey.setText("Asymmetric Public Keys");
 		prevButton.setVisible(false);
 		nextButton.setVisible(true);
-		finishButton.setVisible(false);
-		piuButton.setVisible(true);
-		menoButton.setVisible(false);
+		//finishButton.setVisible(false);
+		//piuButton.setVisible(true);
+		
 		knowPage.setText("1");
 
 //verifica quale Actor � stato selezionato e abilita la visibilit� della form di knowledge (initialKnowledge.setVisible(true);)
@@ -695,13 +704,13 @@ public class SelectAProVerController {
 			loadTable(bob, "1");
 			loadTitledBob(bob);
 		}
-		if (comboBoxActor.getValue().toString().contains("Eye")) {
-			nomeActor.setText("Eye's");
+		if (comboBoxActor.getValue().toString().contains("Eve")) {
+			nomeActor.setText("Eve's");
 			initialKnowledge.setVisible(true);
-			faceEye.setOpacity(1);
-			lineaEye.setOpacity(1);
-			loadTable(eye, "1");
-			loadTitledEye(eye);
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			loadTable(eve, "1");
+			loadTitledEve(eve);
 		}
 		if (comboBoxActor.getValue().toString().contains("Server")) {
 			nomeActor.setText("Server's");
@@ -714,8 +723,8 @@ public class SelectAProVerController {
 //se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
 		if (faceAlice.getOpacity() == 1 &&
 			faceBob.getOpacity() == 1 &&
-			faceEye.getOpacity() == 1 && (
-			faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))&&
+		//	faceEve.getOpacity() == 1 && 
+			(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))&&
 			!viewLineOK) {
 			viewLine("01");
 		}
@@ -739,45 +748,71 @@ public class SelectAProVerController {
 		@FXML
 
 		private void finishKnowledge() {
+			if (compattaKnowledge()!=null) {
+				System.out.println("elemento duplicato " + compattaKnowledge());
+				final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+				Alert.AlertType type =  Alert.AlertType.ERROR;
+				Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Modify or Delete the Duplicate Value");
+		    	alert.getDialogPane().setHeaderText("Duplicate Value Found : " + compattaKnowledge());
+		    	alert.showAndWait();
+				return;
+			}
+			
 			piuKnowledge();	
 			chiudiKnowledge();	
 
 		}
-//quando nella form di knowledge si preme next si abilitano/disabilitano alcuni pulsanti e si modifica il tipo di kyavi da inserire (es: hash,symmetric,asymmetric etc)	
+//quando nella form di knowledge si preme next si abilitano/disabilitano alcuni pulsanti e si modifica il tipo di kiavi da inserire (es: hash,symmetric,asymmetric etc)	
 	
 	@FXML
 
 	private void nextKnowledge() {
-
-		piuKnowledge();
 		
+		if (compattaKnowledge()!=null) {
+			System.out.println("elemento duplicato " + compattaKnowledge());
+			final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+			Alert.AlertType type =  Alert.AlertType.ERROR;
+			Alert alert = new Alert(type, "");
+	    	alert.initModality(Modality.APPLICATION_MODAL);
+	    	alert.initOwner(stage);
+	    	alert.getDialogPane().setContentText("Modify or Delete the Duplicate Value");
+	    	alert.getDialogPane().setHeaderText("Duplicate Value Found : " + compattaKnowledge());
+	    	alert.showAndWait();
+			return;
+		}
+		
+		
+		piuKnowledge();
+
+ 		
 		if (knowPage.getText().equals("3")) {
 			//piuKnowledge();
 			typeKey.setText(hashKnow);
 			nextButton.setVisible(false);
-			finishButton.setVisible(true);
+			
+			//finishButton.setVisible(true);
 			prevButton.setVisible(true);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("4");
 		}
 		if (knowPage.getText().equals("2")) {
 			typeKey.setText(symmetricKnow);
 			nextButton.setVisible(true);
-			finishButton.setVisible(false);
+			//finishButton.setVisible(false);
 			prevButton.setVisible(true);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("3");
 		}
 
 		if (knowPage.getText().equals("1")) {
 			typeKey.setText(privateKnow);
 			nextButton.setVisible(true);
-			finishButton.setVisible(false);
+			//finishButton.setVisible(false);
 			prevButton.setVisible(true);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("2");
 		}
 
@@ -789,47 +824,157 @@ public class SelectAProVerController {
 			loadTable(bob, knowPage.getText());
 			loadTitledBob(bob);
 		}
-		if (comboBoxActor.getValue().toString().contains("Eye")) {
-			loadTable(eye, knowPage.getText());
-			loadTitledEye(eye);
+		if (comboBoxActor.getValue().toString().contains("Eve")) {
+			loadTable(eve, knowPage.getText());
+			loadTitledEve(eve);
 		}
 		if (comboBoxActor.getValue().toString().contains("Server")) {
 			loadTable(server, knowPage.getText());
 			loadTitledServer(server);
 		}
+		 
 	}
 
+// La routin legge gli elementi di knowledge inseriti e li compatta eliminando sia le righe bianche che gli spazi
+// dopo aver compattato verifica se ci sono duplicati sia all'interno che in altre kiavi 	
+	private String compattaKnowledge(){
+		int indice=0;
+		String[] elencoKnowledge = new String[15];
+		for (Node node : tabeKnowledge.getChildren()) {
+			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty()) {
+				elencoKnowledge[indice] = ((TextField) node).getText().trim(); 
+				if (!elencoKnowledge[indice].isEmpty()) {
+					indice ++;
+				}
+			}
+		}
+		
+		for (int i=0; i<15; i++) {
+			if (elencoKnowledge[i]== null) {
+				elencoKnowledge[i] ="";
+			}
+		}
+		
+		
+		int appRow;
+		int appColumn;
+		tabeKnowledge.setGridLinesVisible(true);
+		for (Node node : tabeKnowledge.getChildren()) {
+			
+			if (tabeKnowledge.getRowIndex(node) != null) {
+				appRow = tabeKnowledge.getRowIndex(node);
+			} else {
+				appRow = 0;
+			}
+			if (tabeKnowledge.getColumnIndex(node) != null) {
+				appColumn = tabeKnowledge.getColumnIndex(node);
+			} else {
+				appColumn = 0;
+			}
+				if (node instanceof TextField) {
+					((TextField) node).setText(elencoKnowledge[appRow]);
+			}
+
+		}
+		
+// verifica duplicati all'interno dell'elenco
+		Boolean doppioni = false;
+		for (int i=0; i<15; i++) {
+			for (int j=i+1 ; j<15; j++) {
+				if (!(elencoKnowledge[i] == null) && elencoKnowledge[i].equals(elencoKnowledge[j]) && !elencoKnowledge[i].isEmpty()) {
+					System.out.println("trovato doppioni");
+					return elencoKnowledge[i]; 
+				}
+			}
+		}
+
+		
+		// verifica duplicati su altri elenchi
+		if (comboBoxActor.getValue().toString().contains("Alice")) {
+			for (int i = 0; i < 15; i++) {
+				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
+					if (alice.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
+						System.out.println("trovato doppioni");
+						return elencoKnowledge[i];
+					}
+				}
+			}
+		}
+		if (comboBoxActor.getValue().toString().contains("Bob")) {
+			for (int i = 0; i < 15; i++) {
+				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
+					if (bob.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
+						System.out.println("trovato doppioni");
+						return elencoKnowledge[i];
+					}
+				}
+			}
+		}
+		if (comboBoxActor.getValue().toString().contains("Eve")) {
+			for (int i = 0; i < 15; i++) {
+				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
+					if (eve.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
+						System.out.println("trovato doppioni");
+						return elencoKnowledge[i];
+					}
+				}
+			}
+		}
+		if (comboBoxActor.getValue().toString().contains("Server")) {
+			for (int i = 0; i < 15; i++) {
+				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
+					if (server.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
+						System.out.println("trovato doppioni");
+						return elencoKnowledge[i];
+					}
+				}
+			}
+		}
+		return null;
+	}
 //quando nella form di knowledge si preme prev si abilitano/disabilitano alcuni pulsanti e si modifica il tipo di kyavi da inserire (es: hash,symmetric,asymmetric etc)	
 	
 	@FXML
 	private void prevKnowledge() {
+		if (compattaKnowledge()!=null) {
+			System.out.println("elemento duplicato " + compattaKnowledge());
+			final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+			Alert.AlertType type =  Alert.AlertType.ERROR;
+			Alert alert = new Alert(type, "");
+	    	alert.initModality(Modality.APPLICATION_MODAL);
+	    	alert.initOwner(stage);
+	    	alert.getDialogPane().setContentText("Modify or Delete the Duplicate Value");
+	    	alert.getDialogPane().setHeaderText("Duplicate Value Found : " + compattaKnowledge());
+	    	alert.showAndWait();
+			return;
+		}
+		
+		
 		piuKnowledge();
+
 		
 		if (knowPage.getText().equals("2")) {
 			typeKey.setText(publicKnow);
 			nextButton.setVisible(true);
-			finishButton.setVisible(false);
+			//finishButton.setVisible(false);
 			prevButton.setVisible(false);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("1");
 		}
 		if (knowPage.getText().equals("3")) {
 			typeKey.setText(privateKnow);
 			nextButton.setVisible(true);
-			finishButton.setVisible(false);
+			//finishButton.setVisible(false);
 			prevButton.setVisible(true);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("2");
 		}
 		if (knowPage.getText().equals("4")) {
 			typeKey.setText(symmetricKnow);
 			nextButton.setVisible(true);
-			finishButton.setVisible(false);
+			//finishButton.setVisible(false);
 			prevButton.setVisible(true);
-			piuButton.setVisible(true);
-			menoButton.setVisible(false);
+			//piuButton.setVisible(true);
 			knowPage.setText("3");
 		}
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
@@ -840,9 +985,9 @@ public class SelectAProVerController {
 			loadTable(bob, knowPage.getText());
 			loadTitledBob(bob);
 		}
-		if (comboBoxActor.getValue().toString().contains("Eye")) {
-			loadTable(eye, knowPage.getText());
-			loadTitledEye(eye);
+		if (comboBoxActor.getValue().toString().contains("Eve")) {
+			loadTable(eve, knowPage.getText());
+			loadTitledEve(eve);
 		}
 		if (comboBoxActor.getValue().toString().contains("Server")) {
 			loadTable(server, knowPage.getText());
@@ -855,259 +1000,80 @@ public class SelectAProVerController {
 	//le chiavi usate dall'actor. per inserire una nuova riga si preme il pulsante +
 	@FXML
 
-	private void piuKnowledge() {
+	private Boolean piuKnowledge() {
 		
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
-			addSecurityKey(alice, knowPage.getText(), newRow(alice));
+			addSecurityKey(alice, knowPage.getText());
 			loadTitledAlice(alice);
 		}
 		if (comboBoxActor.getValue().toString().contains("Bob")) {
-			addSecurityKey(bob, knowPage.getText(), newRow(bob));
+			addSecurityKey(bob, knowPage.getText());
 			loadTitledBob(bob);
 		}
-		if (comboBoxActor.getValue().toString().contains("Eye")) {
-			addSecurityKey(eye, knowPage.getText(), newRow(eye));
-			loadTitledEye(eye);
+		if (comboBoxActor.getValue().toString().contains("Eve")) {
+			addSecurityKey(eve, knowPage.getText());
+			loadTitledEve(eve);
 		}
 		if (comboBoxActor.getValue().toString().contains("Server")) {
-
-			addSecurityKey(server, knowPage.getText(), newRow(server));
+			addSecurityKey(server, knowPage.getText());
 			loadTitledServer(server);
 		}
-		return;
-	}
-
-	// quando si prene il tasto + nel sott-form della knowledge si verifica di non essere arrivato all'ultima riga
-	// (massimo 10) si memorizza l'informazione inserita nella riga precedente controllando che non sia duplicata e si abilita la nuova riga
-	private String newRow(SecurityKey oggetto) {
-		
-		
-		int rowCurrent = Integer.parseInt(rowEdit.getText());
-		if (rowCurrent > 10) {
-			return null;
-		}
-
-		int appRow, appColumn;
-		Node result = null;
-		Node resultAppo = null;
-		Node resultSblock0 = null;
-		Node resultSblock1 = null;
-		for (Node node : tabeKnowledge.getChildren()) {
-			appRow = 0;
-			appColumn = 0;
-			result = node;
-			if (tabeKnowledge.getRowIndex(node) != null) {
-				appRow = tabeKnowledge.getRowIndex(node);
-			}
-			if (tabeKnowledge.getColumnIndex(node) != null) {
-				appColumn = tabeKnowledge.getColumnIndex(node);
-			}
-			if (appRow == rowCurrent && rowCurrent < 10 && appColumn == 1) {
-				resultSblock1 = node;
-			}
-			if (appRow == rowCurrent && rowCurrent < 10 && appColumn == 0) {
-				resultSblock0 = node;
-
-			}
-			if (appRow == rowCurrent - 1 && appColumn == 1) {
-				if (result == null || ((TextField) result).getText().isEmpty()
-						|| ((TextField) result).getText().equals("")) {
-					return null;
-				} else {
-					resultAppo = node;
-					if (oggetto.checkDuplicate(((TextField) resultAppo).getText())) {
-						Stage stage = (Stage) piuButton.getScene().getWindow();
-				    	Alert.AlertType type =  Alert.AlertType.ERROR;
-				    	Alert alert = new Alert(type, "");
-				    	alert.initModality(Modality.APPLICATION_MODAL);
-				    	alert.initOwner(stage);
-				    	alert.getDialogPane().setContentText("duplicate data ("+((TextField) resultAppo).getText() +"), insertion not possible");
- 			    	    alert.showAndWait();
-						return null;
-					} else {
-						node.setVisible(true);
-						node.setDisable(true);
-						rowEdit.setText(Integer.toString(rowCurrent + 1));
-					}
-				}
-
-			}
-		}
-		if (resultSblock1 != null && resultSblock0 != null) {
-			resultSblock1.setVisible(true);
-			resultSblock1.setDisable(false);
-			resultSblock0.setVisible(true);
-			resultSblock1.requestFocus();
-			rowEdit.setText(Integer.toString(rowCurrent+1));
-		}
-// si abilitano o disabilitano i pulsanti "+" e"-"
-		if (rowCurrent < 11 && resultAppo != null) {
-			menoButton.setVisible(true);
-		}
-		if (rowCurrent > 9 && resultAppo != null) {
-			piuButton.setVisible(false);
-		}
-
-		if (appoOldKnowledge == null) {
-			return ((TextField) resultAppo).getText();
-		} else {
-			if (appoOldKnowledge.equals(((TextField) resultAppo).getText())) {
-				appoOldKnowledge = null;
-				return null;
-			} else {
-				
-				return ((TextField) resultAppo).getText();				
-			}
-		}
+		return true;
 	}
 
 	// si inseriscono le informazioni digitate 
-	private void addSecurityKey(SecurityKey oggetto, String tipo, String valore) {
+	private void addSecurityKey(SecurityKey oggetto, String tipo) {
+		
+		switch (tipo) {
+		case "1":
+			oggetto.remAllAsymmetricPublicKey();
+			break;
+		case "2":
+			oggetto.remAllAsymmetricPrivateKey();
+			break;
+		case "3":
+			oggetto.remAllSymmetricKey();
+			break;
+		case "4":
+			oggetto.remAllHashKey();
+			break;
+		}
+		for (Node node : tabeKnowledge.getChildren()) {
+				if (node instanceof TextField) {
+					if (((TextField) node).getText().toString() != null && !((TextField) node).getText().toString().isEmpty()) {
+						switch (tipo) {
+						case "1":
+							oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString());
+							break;
+						case "2":
+							oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString());
+							break;
+						case "3":
+							oggetto.addSymmetricKey(((TextField) node).getText().toString());
+							break;
+						case "4":
+							oggetto.addHashKey(((TextField) node).getText().toString());
+							break;
+						}
+					}
 
-		if (valore != null) {
-			switch (tipo) {
-			case "1":
-				oggetto.addAsymmetricPublicKey(valore);
-				break;
-			case "2":
-				oggetto.addAsymmetricPrivateKey(valore);
-				break;
-			case "3":
-				oggetto.addSymmetricKey(valore);
-				break;
-			case "4":
-				oggetto.addHashKey(valore);
-				break;
 			}
+
 		}
-		if (appoOldKnowledge != null) {
-			switch (tipo) {
-			case "1":
-				oggetto.remAsymmetricPublicKey(appoOldKnowledge);
-				break;
-			case "2":
-				oggetto.remAsymmetricPrivateKey(appoOldKnowledge);
-				break;
-			case "3":
-				oggetto.remSymmetricKey(appoOldKnowledge);
-				break;
-			case "4":
-				oggetto.remHashKey(appoOldKnowledge);
-				break;
-			}
-		}
-		appoOldKnowledge = null;
+
+	
 		
 	}
-	
-	//se si preme il pulsante "-" nella sott-form della knowledge 
-	// si deve  ripristinare la riga precedente
-	@FXML
-	private void menoKnowledge() {
 
-		if (comboBoxActor.getValue().toString().contains("Alice")) {
-			remSecurityKey(alice, knowPage.getText(), oldRow());
-			loadTitledAlice(alice);
-		}
-		if (comboBoxActor.getValue().toString().contains("Bob")) {
-
-			remSecurityKey(bob, knowPage.getText(), oldRow());
-			loadTitledBob(bob);
-		}
-		if (comboBoxActor.getValue().toString().contains("Eye")) {
-
-			remSecurityKey(eye, knowPage.getText(), oldRow());
-			loadTitledEye(eye);
-		}
-		if (comboBoxActor.getValue().toString().contains("Server")) {
-
-			remSecurityKey(server, knowPage.getText(), oldRow());
-			loadTitledServer(server);
-		}
-		return;
-	}
-// riprostino della riga precedente 
-	private String oldRow() {
-
-
-		int rowCurrent = Integer.parseInt(rowEdit.getText());
-	
-		int appRow, appColumn;
-		Node result = null;
-		Node resultAppo = null;
-		Node resultSblock0danascondere = null;
-		Node resultSblock1dacancellare = null;
-		Node resultSblock1daripristinare = null;
-		for (Node node : tabeKnowledge.getChildren()) {
-			appRow = 0;
-			appColumn = 0;
-			result = node;
-			if (tabeKnowledge.getRowIndex(node) != null) {appRow = tabeKnowledge.getRowIndex(node);}
-			if (tabeKnowledge.getColumnIndex(node) != null) {appColumn = tabeKnowledge.getColumnIndex(node);}
-			
-			
-			if (appRow == rowCurrent-1 && appColumn==1) {
-				resultSblock1dacancellare = node;
-				}
-			if (appRow == rowCurrent-1 && appColumn==0) {
-				resultSblock0danascondere = node;
-			}
-			
-			if (appRow == rowCurrent-2 && appColumn == 1 && rowCurrent > 1 ) {
-				resultSblock1daripristinare = node;
-			}
-		}
-		String resultReturn = appoOldKnowledge;
-		appoOldKnowledge = null;
-		if (resultSblock1daripristinare != null) {
-			//resultSblock1daripristinare.setVisible(true);
-			resultSblock1daripristinare.setDisable(false);
-			resultSblock1daripristinare.requestFocus();
-			appoOldKnowledge = ((TextField) resultSblock1daripristinare).getText();
-			rowEdit.setText(Integer.toString(rowCurrent-1));
-			resultSblock0danascondere.setVisible(false);
-			resultSblock1dacancellare.setVisible(false);
-			resultSblock1dacancellare.setDisable(true);
-		}
-		if (rowEdit.getText().equals("1") && resultSblock1daripristinare == null) {
-			menoButton.setVisible(false);
-		}
-		piuButton.setVisible(true);
-		//String resultReturn = ((TextField) resultSblock1dacancellare).getText();
-		((TextField) resultSblock1dacancellare).setText("");
-		return resultReturn; 
-	}
-
-	//si elimina la riga memorizzata quando viene premuto il tasto "-" nella sott-form knowledge
-	private void remSecurityKey(SecurityKey oggetto, String tipo, String valore) {
-		if (valore != null && !valore.isEmpty()) {
-			switch (tipo) {
-			case "1":
-				oggetto.remAsymmetricPublicKey(valore);
-				break;
-			case "2":
-				oggetto.remAsymmetricPrivateKey(valore);
-				break;
-			case "3":
-				oggetto.remSymmetricKey(valore);
-				break;
-			case "4":
-				oggetto.remHashKey(valore);
-				break;
-			}
-		}
-	}	
 
 	// quando si apre la sott-form knowledge si verifica se sono gia presenti informazioni memorizzate in precedenza
 	// e si caricano nella sott-form 
 	private void loadTable(SecurityKey oggetto, String tipo) {
 		
-		//tabeKnowledge.setGridLinesVisible(false);
-		
-		//tabeKnowledge.getColumnConstraints().clear();
+
 		appoOldKnowledge = null;
 		for (Node node : tabeKnowledge.getChildren()) {
-			node.setVisible(false);
+			node.setVisible(true);
 			if (node !=null && node instanceof TextField) {
 			((TextField) node).setText(""); }
 		}
@@ -1131,13 +1097,7 @@ public class SelectAProVerController {
 			break;
 		}
 		
-	/*	for (int i = 0; i < appoList.size(); i++) {
-			tabeKnowledge.add(new TextField(appoList.get(i)), 1, i);
-		}
-		for (int i = appoList.size(); i < 11; i++) {
-			tabeKnowledge.add(new TextField(""), 1, i);
-		}
-	*/
+
 		int appRow;
 		int appColumn;
 		tabeKnowledge.setGridLinesVisible(true);
@@ -1154,37 +1114,20 @@ public class SelectAProVerController {
 				appColumn = 0;
 			}
 			if (appRow < appoList.size()) {
-				node.setVisible(true);
-				node.setDisable(true);
 				if (node instanceof TextField) {
 					((TextField) node).setText(appoList.get(appRow));}
 			}
-			if (appRow > appoList.size()) {
-				node.setVisible(false);
-			}
+
 			
 			
 			if (appRow == appoList.size()) {
 				node.setVisible(true);
-				node.setDisable(false);
 				if (node instanceof TextField) {
 					((TextField) node).setText("");
 					node.requestFocus();}
 			}
 		}
-		//if (knowPage.getText().equals("3")) {
-		//	menoButton.setVisible(false);
-		//	piuButton.setVisible(false);
-		//	rowEdit.setText("1");
-		//	return;
-		//}
-		rowEdit.setText(Integer.toString(appoList.size()+1));
-		if (appoList.size() > 0) {
-			menoButton.setVisible(true);
-		}
-		if (appoList.size() > 9) {
-			piuButton.setVisible(false);
-		}
+
 	}
 	
 	private void loadTitledAlice(SecurityKey oggetto) {
@@ -1200,11 +1143,11 @@ public class SelectAProVerController {
 		bobSymmetricKey.setText(oggetto.getStringSymmetricKey());
 		bobHash.setText(oggetto.getStringHashKey());
 	}
-	private void loadTitledEye(SecurityKey oggetto) {
-		eyeAsymmetricPublicKey.setText(oggetto.getStringAsymmetricPublicKey());
-		eyeAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
-		eyeSymmetricKey.setText(oggetto.getStringSymmetricKey());
-		eyeHash.setText(oggetto.getStringHashKey());
+	private void loadTitledEve(SecurityKey oggetto) {
+		eveAsymmetricPublicKey.setText(oggetto.getStringAsymmetricPublicKey());
+		eveAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
+		eveSymmetricKey.setText(oggetto.getStringSymmetricKey());
+		eveHash.setText(oggetto.getStringHashKey());
 	}
 	private void loadTitledServer(SecurityKey oggetto) {
 		serverAsymmetricPublicKey.setText(oggetto.getStringAsymmetricPublicKey());
@@ -1220,7 +1163,7 @@ public class SelectAProVerController {
 	@FXML
 
 	private void toolSet() {
-		int faceEyeX, lineaEyeX, faceBobX, lineaBobX, eyeButtonX,bobButtonX;
+		int faceEveX, lineaEveX, faceBobX, lineaBobX, eveButtonX,bobButtonX;
 		System.out.println("entro sul metodo per selezonare il tool");
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
@@ -1233,16 +1176,17 @@ public class SelectAProVerController {
 			toolFlag= false;
 			
 			tool.setText("Enable Server");
+			serverButton.setText("Enable Server");
 			System.out.println("imposto a eneble il tool (ma in realt� � disabilitato");
-			titledServer.setVisible(false);
+			titledServer.setDisable(true);
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
 			serverButton01.setVisible(false);
-			faceEyeX= 452;
-			lineaEyeX=457;
+			faceEveX= 452;
+			lineaEveX=457;
 			faceBobX=863;
 			lineaBobX=858;
-			eyeButtonX=453;
+			eveButtonX=453;
 			bobButtonX=855;
 		} else {
 			comboBoxActor.setValue("Actor");
@@ -1250,7 +1194,8 @@ public class SelectAProVerController {
 			
 			comboBoxActor.getItems().add("Server");
 			tool.setText("Disable Server");
-			titledServer.setVisible(true);
+			serverButton.setText("Disable Server");
+			titledServer.setDisable(false);
 			faceServer.setVisible(true);
 			lineaServer.setVisible(true);
 			if (aliceButton01.isVisible()) {
@@ -1259,36 +1204,36 @@ public class SelectAProVerController {
 				} else {
 					serverButton01.setVisible(false);
 					bobButton01.setVisible(false);
-					eyeButton01.setVisible(false);
+					eveButton01.setVisible(false);
 					aliceButton01.setVisible(false);
 				}
 			}
-			faceEyeX= 313;
-			lineaEyeX=318;
+			faceEveX= 313;
+			lineaEveX=318;
 			faceBobX=585;
 			lineaBobX=580;
-			eyeButtonX=314;
+			eveButtonX=314;
 			bobButtonX=577;
 		}
-		faceEye.setLayoutX(faceEyeX);
-		lineaEye.setLayoutX(lineaEyeX);
+		faceEve.setLayoutX(faceEveX);
+		lineaEve.setLayoutX(lineaEveX);
 		faceBob.setLayoutX(faceBobX);
 		lineaBob.setLayoutX(lineaBobX);
-		eyeButton01.setLayoutX(eyeButtonX);
-		eyeButton02.setLayoutX(eyeButtonX);
-		eyeButton03.setLayoutX(eyeButtonX);
-		eyeButton04.setLayoutX(eyeButtonX);
-		eyeButton05.setLayoutX(eyeButtonX);
-		eyeButton06.setLayoutX(eyeButtonX);
-		eyeButton07.setLayoutX(eyeButtonX);
-		eyeButton08.setLayoutX(eyeButtonX);
-		eyeButton09.setLayoutX(eyeButtonX);
-		eyeButton10.setLayoutX(eyeButtonX);
-		eyeButton11.setLayoutX(eyeButtonX);
-		eyeButton12.setLayoutX(eyeButtonX);
-		eyeButton13.setLayoutX(eyeButtonX);
-		eyeButton14.setLayoutX(eyeButtonX);
-		eyeButton15.setLayoutX(eyeButtonX);
+		eveButton01.setLayoutX(eveButtonX);
+		eveButton02.setLayoutX(eveButtonX);
+		eveButton03.setLayoutX(eveButtonX);
+		eveButton04.setLayoutX(eveButtonX);
+		eveButton05.setLayoutX(eveButtonX);
+		eveButton06.setLayoutX(eveButtonX);
+		eveButton07.setLayoutX(eveButtonX);
+		eveButton08.setLayoutX(eveButtonX);
+		eveButton09.setLayoutX(eveButtonX);
+		eveButton10.setLayoutX(eveButtonX);
+		eveButton11.setLayoutX(eveButtonX);
+		eveButton12.setLayoutX(eveButtonX);
+		eveButton13.setLayoutX(eveButtonX);
+		eveButton14.setLayoutX(eveButtonX);
+		eveButton15.setLayoutX(eveButtonX);
 		bobButton01.setLayoutX(bobButtonX);
 		bobButton02.setLayoutX(bobButtonX);
 		bobButton03.setLayoutX(bobButtonX);
@@ -1306,8 +1251,8 @@ public class SelectAProVerController {
 		bobButton15.setLayoutX(bobButtonX);
 		if (faceAlice.getOpacity() == 1 &&
 				faceBob.getOpacity() == 1 &&
-				faceEye.getOpacity() == 1 && (
-				faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
+			//	faceEve.getOpacity() == 1 && 
+				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
 				viewLine("01");
 			}
 	}
@@ -1316,14 +1261,14 @@ public class SelectAProVerController {
 	// immagine della linea dei messaggi, elenco chiavi conosciute)
 	@FXML
 
-	private void toolSetEye() {
-		if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
-			eyeButton01.setVisible(false);
-			toolEye.setText("Eye Create Messages");
+	private void toolSetEve() {
+		if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
+			eveButton01.setVisible(false);
+			toolEve.setText("Eve Create Messages");
 		} else {
-			toolEye.setText("Eye Doesn't Create Messages");
+			toolEve.setText("Eve Doesn't Create Messages");
 			if(aliceButton01.isVisible()) {
-				eyeButton01.setVisible(true);
+				eveButton01.setVisible(true);
 			}
 		}
 		
@@ -1332,17 +1277,19 @@ public class SelectAProVerController {
 		if (toolStart.equals("Enable Server")){
 			System.out.println("imposto a Disable Server per poi invertire");
 			tool.setText("Disable Server");
+			serverButton.setText("Disable Server");
 		} else {
 			tool.setText("Enable Server");
+			serverButton.setText("Enable Server");
 			System.out.println("imposto a Enable Server per poi invertire");
 		}
 		toolInitialSet();
 	}
-	public void setToolEye (String toolStart) {
-		toolEye.setText(toolStart);
+	public void setToolEve (String toolStart) {
+		toolEve.setText(toolStart);
 	}
 	private void toolInitialSet() {
-		int faceEyeX, lineaEyeX, faceBobX, lineaBobX, eyeButtonX,bobButtonX;
+		int faceEveX, lineaEveX, faceBobX, lineaBobX, eveButtonX,bobButtonX;
 		System.out.println("entro sul metodo per selezonare il tool");
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
@@ -1355,16 +1302,17 @@ public class SelectAProVerController {
 			toolFlag= false;
 			
 			tool.setText("Enable Server");
+			serverButton.setText("Enable Server");
 			System.out.println("imposto a eneble il tool (ma in realt� � disabilitato");
-			titledServer.setVisible(false);
+			titledServer.setDisable(true);
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
 			serverButton01.setVisible(false);
-			faceEyeX= 452;
-			lineaEyeX=457;
+			faceEveX= 452;
+			lineaEveX=457;
 			faceBobX=863;
 			lineaBobX=858;
-			eyeButtonX=453;
+			eveButtonX=453;
 			bobButtonX=855;
 		} else {
 			comboBoxActor.setValue("Actor");
@@ -1372,7 +1320,8 @@ public class SelectAProVerController {
 			
 			//comboBoxActor.getItems().add("Server");
 			tool.setText("Disable Server");
-			titledServer.setVisible(true);
+			serverButton.setText("Disable Server");
+			titledServer.setDisable(false);
 			faceServer.setVisible(true);
 			lineaServer.setVisible(true);
 			if (aliceButton01.isVisible()) {
@@ -1381,36 +1330,36 @@ public class SelectAProVerController {
 				} else {
 					serverButton01.setVisible(false);
 					bobButton01.setVisible(false);
-					eyeButton01.setVisible(false);
+					eveButton01.setVisible(false);
 					aliceButton01.setVisible(false);
 				}
 			}
-			faceEyeX= 313;
-			lineaEyeX=318;
+			faceEveX= 313;
+			lineaEveX=318;
 			faceBobX=585;
 			lineaBobX=580;
-			eyeButtonX=314;
+			eveButtonX=314;
 			bobButtonX=577;
 		}
-		faceEye.setLayoutX(faceEyeX);
-		lineaEye.setLayoutX(lineaEyeX);
+		faceEve.setLayoutX(faceEveX);
+		lineaEve.setLayoutX(lineaEveX);
 		faceBob.setLayoutX(faceBobX);
 		lineaBob.setLayoutX(lineaBobX);
-		eyeButton01.setLayoutX(eyeButtonX);
-		eyeButton02.setLayoutX(eyeButtonX);
-		eyeButton03.setLayoutX(eyeButtonX);
-		eyeButton04.setLayoutX(eyeButtonX);
-		eyeButton05.setLayoutX(eyeButtonX);
-		eyeButton06.setLayoutX(eyeButtonX);
-		eyeButton07.setLayoutX(eyeButtonX);
-		eyeButton08.setLayoutX(eyeButtonX);
-		eyeButton09.setLayoutX(eyeButtonX);
-		eyeButton10.setLayoutX(eyeButtonX);
-		eyeButton11.setLayoutX(eyeButtonX);
-		eyeButton12.setLayoutX(eyeButtonX);
-		eyeButton13.setLayoutX(eyeButtonX);
-		eyeButton14.setLayoutX(eyeButtonX);
-		eyeButton15.setLayoutX(eyeButtonX);
+		eveButton01.setLayoutX(eveButtonX);
+		eveButton02.setLayoutX(eveButtonX);
+		eveButton03.setLayoutX(eveButtonX);
+		eveButton04.setLayoutX(eveButtonX);
+		eveButton05.setLayoutX(eveButtonX);
+		eveButton06.setLayoutX(eveButtonX);
+		eveButton07.setLayoutX(eveButtonX);
+		eveButton08.setLayoutX(eveButtonX);
+		eveButton09.setLayoutX(eveButtonX);
+		eveButton10.setLayoutX(eveButtonX);
+		eveButton11.setLayoutX(eveButtonX);
+		eveButton12.setLayoutX(eveButtonX);
+		eveButton13.setLayoutX(eveButtonX);
+		eveButton14.setLayoutX(eveButtonX);
+		eveButton15.setLayoutX(eveButtonX);
 		bobButton01.setLayoutX(bobButtonX);
 		bobButton02.setLayoutX(bobButtonX);
 		bobButton03.setLayoutX(bobButtonX);
@@ -1445,7 +1394,7 @@ public class SelectAProVerController {
 	
 		node1 =aliceButton01;
 		node2 =bobButton01;
-		node3 =eyeButton01;
+		node3 =eveButton01;
 		node4 =serverButton01; 
 		nodeNext1 =null;
 		nodeNext2 =null;
@@ -1453,6 +1402,8 @@ public class SelectAProVerController {
 		nodeNext4 =null;
 		line = line01;
 		liey = liey01;  
+		msg=msg01;
+		
 		int rigaSuccessiva = riga + 1;
 
 		for (Node nodeAppo : ancorPulsanti.getChildren()) {
@@ -1464,7 +1415,7 @@ public class SelectAProVerController {
 					if (((Button) nodeAppo).getId().contains("bob")) {
 						node2 = nodeAppo;
 					}
-					if (((Button) nodeAppo).getId().contains("eye")) {
+					if (((Button) nodeAppo).getId().contains("eve")) {
 						node3 = nodeAppo;
 					}
 					if (((Button) nodeAppo).getId().contains("server")) {
@@ -1486,6 +1437,13 @@ public class SelectAProVerController {
 						livy = nodeAppo;
 				}
 			}
+			if (nodeAppo != null && nodeAppo instanceof TextFlow) {
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
+						msg = nodeAppo;
+				}
+			}
+			
 			if (nodeAppo != null && nodeAppo instanceof Button) {
 				if (rigaSuccessiva == Integer
 							.valueOf(((Button) nodeAppo).getId().substring(((Button) nodeAppo).getId().length() - 2))) {
@@ -1495,7 +1453,7 @@ public class SelectAProVerController {
 						if (((Button) nodeAppo).getId().contains("bob")) {
 							nodeNext2 = nodeAppo;
 						}
-						if (((Button) nodeAppo).getId().contains("eye")) {
+						if (((Button) nodeAppo).getId().contains("eve")) {
 							nodeNext3 = nodeAppo;
 						}
 						if (((Button) nodeAppo).getId().contains("server")) {
@@ -1511,7 +1469,7 @@ public class SelectAProVerController {
 		if (((Button) node).getText().equals("-")) {
 			node1.setVisible(true);
 			node2.setVisible(true);
-			if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
+			if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
 				node3.setVisible(true);
 			} else {
 				node3.setVisible(false);
@@ -1522,17 +1480,18 @@ public class SelectAProVerController {
 			line.setVisible(false);
 			liey.setVisible(false);
 			livy.setVisible(false);
+			msg.setVisible(false);
 			((Button) node).setText("+");
 			resetLine();
 			return;
 		}
-		eseButton(data, riga, line, liey, livy);
+		eseButton(data, riga, line, liey, livy,msg);
 		
 	}
 	// Richiama la form per l'inserimento dei messaggi passandogli l'actor da cui parte il messaggio
 	// e ricevendo l'actor a cui arriva il messaggio(actorTo). se l'actorTo � impostato predispone i pulsanti 
 	// per l'inserimento di un nuovo messaggio 
-	private void eseButton(String data, int riga, Node line, Node liey, Node livy) throws Exception {
+	private void eseButton(String data, int riga, Node line, Node liey, Node livy, Node msg) throws Exception {
 		String actorFrom = "";
 		switch (data.substring(0, 5)) {
 		case "alice":
@@ -1541,8 +1500,8 @@ public class SelectAProVerController {
 		case "bobBu":
 			actorFrom = "Bob";
 			break;
-		case "eyeBu":
-			actorFrom = "Eye";
+		case "eveBu":
+			actorFrom = "Eve";
 			break;
 		case "serve":
 			actorFrom = "Server";
@@ -1552,13 +1511,14 @@ public class SelectAProVerController {
 		String actorTo = showCreateMessage(actorFrom, riga);
 		if (actorTo != null && !actorTo.isEmpty()) {
 			tool.setDisable(true);
-			toolEye.setDisable(true);
-			viewSpecificLinea(actorTo, actorFrom, line, liey, livy);
+			toolEve.setDisable(true);
+			serverButton.setDisable(true);
+			viewSpecificLinea(actorTo, actorFrom, line, liey, livy,msg,riga);
 		}
 
 	}
 
-	private void viewSpecificLinea(String actorTo, String actorFrom, Node oggetto, Node oggetey, Node oggetvy) {
+	private void viewSpecificLinea(String actorTo, String actorFrom, Node oggetto, Node oggetey, Node oggetvy, Node oggetmsg, int riga) {
 		node1.setVisible(false);
 		node2.setVisible(false);
 		node3.setVisible(false);
@@ -1571,7 +1531,7 @@ public class SelectAProVerController {
 					&& !nodeNext4.isVisible()) {
 				nodeNext1.setVisible(true);
 				nodeNext2.setVisible(true);
-				if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
+				if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
 					nodeNext3.setVisible(true);
 				} else {
 					nodeNext3.setVisible(false);
@@ -1583,7 +1543,7 @@ public class SelectAProVerController {
 					&& !nodeNext3.isVisible() 	) {
 				nodeNext1.setVisible(true);
 				nodeNext2.setVisible(true);
-				if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
+				if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
 					nodeNext3.setVisible(true);
 				} else {
 					nodeNext3.setVisible(false);
@@ -1592,17 +1552,19 @@ public class SelectAProVerController {
 			}
 		}
 		
+		double coordinateMsg = 90;
 		double coordinateXStart = 100;
 		double coordinateXEnd = 100;
-		double coordinateEyeXStart = 100;
-		double coordinateEyeXEnd = 100;
+		double coordinateEveXStart = 100;
+		double coordinateEveXEnd = 100;
+		((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
 		if (tool.getText().contains("Disable")) {
-			coordinateEyeXEnd = 165;
+			coordinateEveXEnd = 165;
 			switch (actorTo) {
 			case "Alice":
 				coordinateXEnd = -99;
 				break;
-			case "Eye":
+			case "Eve":
 				coordinateXEnd = 163;
 				break;
 			case "Bob":
@@ -1612,12 +1574,12 @@ public class SelectAProVerController {
 				coordinateXEnd = 715;
 				break;
 			}
-			coordinateEyeXStart = 165;
+			coordinateEveXStart = 165;
 			switch (actorFrom) {
 			case "Alice":
 				coordinateXStart = -99;
 				break;
-			case "Eye":
+			case "Eve":
 				coordinateXStart = 165;
 				break;
 			case "Bob":
@@ -1628,24 +1590,25 @@ public class SelectAProVerController {
 				break;
 			}
 		} else {
-			coordinateEyeXEnd = 303;
+			coordinateEveXEnd = 303;
 			switch (actorTo) {
 			case "Alice":
 				coordinateXEnd = -99;
 				break;
-			case "Eye":
+			case "Eve":
 				coordinateXEnd = 303;
 				break;
 			case "Bob":
 				coordinateXEnd = 703;
 				break;
 			}
-			coordinateEyeXStart = 303;
+			coordinateEveXStart = 303;
 			switch (actorFrom) {
 			case "Alice":
+				
 				coordinateXStart = -99;
 				break;
-			case "Eye":
+			case "Eve":
 				coordinateXStart = 308;
 				break;
 			case "Bob":
@@ -1653,26 +1616,67 @@ public class SelectAProVerController {
 				break;
 			}
 		}
-		System.out.println(" -------> ActorTo-" + actorTo + "-actorFrom-" + actorFrom + "-eyeIntercept-" + eyeIntercept); 
-		if (eyeIntercept && !actorTo.equals("Eye") && !actorFrom.equals("Eye")) {
-			System.out.println(" -------> ActorTo " + actorTo + " actorFrom " + actorFrom + " eyeIntercept " + eyeIntercept); 
-			((Line) oggetto).setEndX(coordinateEyeXEnd);
+		if (tool.getText().contains("Disable")) {
+			if (actorFrom == "Eve") {
+				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+				if (actorTo != "Alice") {
+					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsg = 335;
+				}
+			}
+			if (actorFrom == "Bob") {
+				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
+				coordinateMsg = 605;
+				if (actorTo != "Server" || eveIntercept) {
+					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsg = 335;
+				}
+			}
+			if (actorFrom == "Server") {
+				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+				coordinateMsg = 605;
+			}
+		}
+		
+		if (tool.getText().contains("Enable")) {
+			if (actorFrom == "Eve") {
+				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+				coordinateMsg = 205;
+				if (actorTo != "Alice") {
+					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsg = 485;
+				}
+			}
+			if (actorFrom == "Bob") {
+				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+				coordinateMsg = 605;
+			}
+		}
+		System.out.println(" -------> ActorTo-" + actorTo + "-actorFrom-" + actorFrom + "-eveIntercept-" + eveIntercept); 
+		if (eveIntercept && !actorTo.equals("Eve") && !actorFrom.equals("Eve")) {
+			System.out.println(" -------> ActorTo " + actorTo + " actorFrom " + actorFrom + " eveIntercept " + eveIntercept); 
+			((Line) oggetto).setEndX(coordinateEveXEnd);
 			((Line) oggetto).setStartX(coordinateXStart);
 			oggetto.setVisible(true);
 
 			((Line) oggetey).setEndX(coordinateXEnd);
-			((Line) oggetey).setStartX(coordinateEyeXStart);
+			((Line) oggetey).setStartX(coordinateEveXStart);
 			oggetey.setVisible(true);
 			
-			((Line) oggetvy).setEndX(coordinateEyeXStart);
-			((Line) oggetvy).setStartX(coordinateEyeXStart);
+			((Line) oggetvy).setEndX(coordinateEveXStart);
+			((Line) oggetvy).setStartX(coordinateEveXStart);
 			oggetvy.setVisible(true);
 		} else{
 			((Line) oggetto).setEndX(coordinateXEnd);
 			((Line) oggetto).setStartX(coordinateXStart);
 			oggetto.setVisible(true);
 		}
+		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsg);
 
+		System.out.println("ccordinate del messaggio " + coordinateMsg + " riga " + riga);
+		((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
+		((TextFlow) oggetmsg).setVisible(true);
+		
 	}
 	   /**
      * Apre la schermata per l'inserimento dei dati del messaggio i parametri sono:
@@ -1685,7 +1689,7 @@ public class SelectAProVerController {
 	 * @throws Exception 
      */
  
-    public String showCreateMessage(String actorFrom, int messageNumber) throws Exception {
+    private String showCreateMessage(String actorFrom, int messageNumber) throws Exception {
 
     	FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/CreateMessageAProVer.fxml"));
@@ -1706,24 +1710,56 @@ public class SelectAProVerController {
         if (actorFrom.equals("Bob")) {
         	controller.setInfo(bob, messagges.getMessage(messageNumber-1));
         }
-        if (actorFrom.equals("Eye")) {
-        	controller.setInfo(eye, messagges.getMessage(messageNumber-1));
+        if (actorFrom.equals("Eve")) {
+        	controller.setInfo(eve, messagges.getMessage(messageNumber-1));
         }
         if (actorFrom.equals("Server")) {
         	controller.setInfo(server, messagges.getMessage(messageNumber-1));
         }
-        controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEye.getText());
+        controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEve.getText());
         controller.setHelp(helpFlag);
         
 
         
         dialogStage.showAndWait();
-        eyeIntercept = controller.getEyesIntercept();
-        System.out.println("FLAG INSERITO PER EYES Intercept " + eyeIntercept);
+        eveIntercept = controller.getEvesIntercept();
+        System.out.println("FLAG INSERITO PER EYES Intercept " + eveIntercept);
         return controller.getActorTo();
 
     
     }
+    private void writeMsgLine(String compactMessageFinale, Node msgxx) {
+    	((TextFlow) msgxx).getChildren().clear();
+    	int endDash = compactMessageFinale.indexOf("-");
+    	int startDash = 0;
+    	boolean pedice = false;
+    	Text normal = new Text("sub");
+    	Text normal2 = new Text("sub");
+    	normal2.setStyle("-fx-font: 2 arial;");
+    	normal.setStyle("-fx-font: 2 arial;");
+    	while (endDash >0) {
+    		if (pedice) {
+
+		    	Text sub2 = new Text(compactMessageFinale.substring(startDash+1, endDash));
+		    	sub2.setTranslateY(normal.getFont().getSize() * 0.3);
+		    	((TextFlow) msgxx).getChildren().addAll(sub2);
+		    	startDash = endDash +1;
+		    	pedice = false;
+    		} else {
+    			normal2 = new Text(compactMessageFinale.substring(startDash, endDash));
+    			((TextFlow) msgxx).getChildren().addAll(normal2);
+    			pedice=true;
+    			startDash = endDash;
+    		}
+    		
+    		endDash = compactMessageFinale.indexOf("-", startDash+1);
+    	}
+    	if (startDash == 0 || !pedice) {
+			normal = new Text(compactMessageFinale.substring(startDash,compactMessageFinale.length()));
+			((TextFlow) msgxx).getChildren().addAll(normal);
+		}
+    }
+    
 	@FXML
 	private void selLine(MouseEvent e) throws Exception {
 
@@ -1733,11 +1769,27 @@ public class SelectAProVerController {
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
 		System.out.println("modificl la riga : "+riga);
 		showModifyMessage(messagges.getMessage(riga - 1).getActorfrom().toString(),riga);
+		
+		
+		for (Node nodeAppo : ancorPulsanti.getChildren()) {
+			if (nodeAppo != null && nodeAppo instanceof TextFlow) {
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
+						msg = nodeAppo;
+				}
+			}
+		}
+		
+		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),msg);
+		((TextFlow) msg).setVisible(true);
+		
 	}
+	//routine che visualizza il payload quando si passa il mouse sulla linea (La riutine è stata sospesa)
 	@FXML
 	private void moveLine(MouseEvent e) throws Exception {
-
-		node = (Node) e.getSource();
+		return;
+		
+/*		node = (Node) e.getSource();
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
@@ -1750,6 +1802,7 @@ public class SelectAProVerController {
 		
 		msgPayload.setVisible(true);
 		msgPayloadAncorPane.setVisible(true);
+*/
 	}
 	
     private void writeTxtPreview(String compactMessageFinale) {
@@ -1794,7 +1847,7 @@ public class SelectAProVerController {
 		msgPayloadAncorPane.setVisible(false);
 	}
 
-	public void showModifyMessage(String actorFrom, int messageNumber) throws Exception {
+	private void showModifyMessage(String actorFrom, int messageNumber) throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/CreateMessageAProVer.fxml"));
@@ -1816,8 +1869,8 @@ public class SelectAProVerController {
 		if (actorFrom.equals("Bob")) {
 			controller.setInfo(bob, messagges.getMessage(messageNumber - 1));
 		}
-		if (actorFrom.equals("Eye")) {
-			controller.setInfo(eye, messagges.getMessage(messageNumber - 1));
+		if (actorFrom.equals("Eve")) {
+			controller.setInfo(eve, messagges.getMessage(messageNumber - 1));
 		}
 		if (actorFrom.equals("Server")) {
 			controller.setInfo(server, messagges.getMessage(messageNumber - 1));
@@ -1827,8 +1880,8 @@ public class SelectAProVerController {
 		controller.setHelp(helpFlag);
 
 		dialogStage.showAndWait();
-        eyeIntercept = controller.getEyesIntercept();
-        System.out.println("FLAG INSERITO PER EYES Intercept " + eyeIntercept);
+        eveIntercept = controller.getEvesIntercept();
+        System.out.println("FLAG INSERITO PER EYES Intercept " + eveIntercept);
 
 		return;
 
@@ -1848,7 +1901,7 @@ public class SelectAProVerController {
 					if (((Button) node).getId().contains("server") && tool.getText().contains("Enable")) {
 						node.setVisible(false);
 					}
-					if (((Button) node).getId().contains("eye") && !toolEye.getText().contains("Eye Doesn't Create Messages")) {
+					if (((Button) node).getId().contains("eve") && !toolEve.getText().contains("Eve Doesn't Create Messages")) {
 						node.setVisible(false);
 					}
 				}
@@ -1880,7 +1933,7 @@ public class SelectAProVerController {
 				}
 			}
 		}
-		if (ultimoValido < 2) {tool.setDisable(false);toolEye.setDisable(false);}
+		if (ultimoValido < 2) {tool.setDisable(false);toolEve.setDisable(false);serverButton.setDisable(false);}
 	}
 
 	private void readFileConf() {
@@ -2132,7 +2185,7 @@ public class SelectAProVerController {
 			// con i dati degli oggetti si riempiono le informazioni dei Knowledge dei vari actor 
 			loadTitledAlice(alice);
 			loadTitledBob(bob);
-			loadTitledEye(eye);
+			loadTitledEve(eve);
 			loadTitledServer(server);
 		} catch (IOException r) {
 			r.printStackTrace();
@@ -2140,16 +2193,16 @@ public class SelectAProVerController {
 	}
 	private String verifyDati(String line) {
 		if (line.equals("tool value ") ||
-			line.equals("toolEye value ") ||
+			line.equals("toolEve value ") ||
 			line.equals("dati Alice AsymmetricPublicKey ") ||
 			line.equals("dati Alice AsymmetricPrivateKey ") ||
 			line.equals("dati Alice SymmetricKey ") ||
 			line.equals("dati Bob AsymmetricPublicKey ") ||
 			line.equals("dati Bob AsymmetricPrivateKey ") ||
 			line.equals("dati Bob SymmetricKey ") ||	
-			line.equals("dati Eye AsymmetricPublicKey ") ||
-			line.equals("dati Eye AsymmetricPrivateKey ") ||
-			line.equals("dati Eye SymmetricKey ") ||
+			line.equals("dati Eve AsymmetricPublicKey ") ||
+			line.equals("dati Eve AsymmetricPrivateKey ") ||
+			line.equals("dati Eve SymmetricKey ") ||
 			line.equals("dati Server AsymmetricPublicKey ") ||
 			line.equals("dati Server AsymmetricPrivateKey ") ||
 			line.equals("dati Server SymmetricKey ") ||
@@ -2168,8 +2221,8 @@ public class SelectAProVerController {
 		if (typeInfo.equals("tool value ")) {
 			setToolStart(line);
 		}
-		if (typeInfo.equals("toolEye value ")) {
-			setToolEye(line);
+		if (typeInfo.equals("toolEve value ")) {
+			setToolEve(line);
 		}
 		if (typeInfo.equals("dati Alice AsymmetricPublicKey ")) {
 			faceAlice.setOpacity(1);
@@ -2203,20 +2256,20 @@ public class SelectAProVerController {
 			bob.addSymmetricKey(line);
 		}
 
-		if (typeInfo.equals("dati Eye AsymmetricPublicKey ")) {
-			faceEye.setOpacity(1);
-			lineaEye.setOpacity(1);
-			eye.addAsymmetricPublicKey(line);
+		if (typeInfo.equals("dati Eve AsymmetricPublicKey ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addAsymmetricPublicKey(line);
 		}
-		if (typeInfo.equals("dati Eye AsymmetricPrivateKey ")) {
-			faceEye.setOpacity(1);
-			lineaEye.setOpacity(1);
-			eye.addAsymmetricPrivateKey(line);
+		if (typeInfo.equals("dati Eve AsymmetricPrivateKey ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addAsymmetricPrivateKey(line);
 		}
-		if (typeInfo.equals("dati Eye SymmetricKey ")) {
-			faceEye.setOpacity(1);
-			lineaEye.setOpacity(1);
-			eye.addSymmetricKey(line);
+		if (typeInfo.equals("dati Eve SymmetricKey ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addSymmetricKey(line);
 		}
 
 		if (typeInfo.equals("dati Server AsymmetricPublicKey ")) {
@@ -2239,8 +2292,8 @@ public class SelectAProVerController {
 			//se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
 			if (faceAlice.getOpacity() == 1 &&
 				faceBob.getOpacity() == 1 &&
-				faceEye.getOpacity() == 1 && (
-				faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
+			//	faceEve.getOpacity() == 1 && 
+				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
 				viewLine("01");
 			}
 		}
@@ -2251,8 +2304,8 @@ public class SelectAProVerController {
 				lineaAlice.setOpacity(1);
 				faceBob.setOpacity(1);
 				lineaBob.setOpacity(1);
-				faceEye.setOpacity(1);
-				lineaEye.setOpacity(1);
+				faceEve.setOpacity(1);
+				lineaEve.setOpacity(1);
 				faceServer.setOpacity(1);
 				lineaServer.setOpacity(1);
 				
@@ -2263,9 +2316,9 @@ public class SelectAProVerController {
 				if (line.contains("ActorTo ")){
 					messagges.getListMessages()[numMessage].setActorTo(line.substring(8, line.length()));
 				}
-				if (line.contains("Eye Intercept ")){
-					messagges.getListMessages()[numMessage].setEyesIntercept(Boolean.valueOf(line.substring(14, line.length())));
-					eyeIntercept = Boolean.valueOf(line.substring(14, line.length()));
+				if (line.contains("Eve Intercept ")){
+					messagges.getListMessages()[numMessage].setEvesIntercept(Boolean.valueOf(line.substring(14, line.length())));
+					eveIntercept = Boolean.valueOf(line.substring(14, line.length()));
 				}
 				if (line.contains("Messages ")){
 					messagges.getListMessages()[numMessage].setPayload(line.substring(9, line.length()));
@@ -2282,17 +2335,18 @@ public class SelectAProVerController {
 			messagges.getListMessages()[numMessage].addListPartMessage(line, k);		
 		}
 	}
-// si visualizzano i pulsanti e la linea del messaggio presnete sul file
+// si visualizzano i pulsanti e la linea del messaggio presente sul file
 	private void viewSetLine(String actorToMsg,String  actorFromMsg , int numLineMessage, int numMessagePrec) {
 		node1 =aliceButton01;
 		node2 =bobButton01;
-		node3 =eyeButton01;
+		node3 =eveButton01;
 		node4 =serverButton01; 
 		nodeNext1 =null;
 		nodeNext2 =null;
 		nodeNext3 =null;
 		nodeNext4 =null;
 		line = line01;
+		msg = msg01;
 		int riga = numLineMessage +1 ;
 		int rigaSuccessiva = numLineMessage + 2;
 		System.out.println("Riga successiva " + rigaSuccessiva + " riga " + riga + " prec " +numMessagePrec);
@@ -2306,7 +2360,7 @@ public class SelectAProVerController {
 					if (((Button) nodeAppo).getId().contains("bob")) {
 						node2 = nodeAppo;
 					}
-					if (((Button) nodeAppo).getId().contains("eye")) {
+					if (((Button) nodeAppo).getId().contains("eve")) {
 						node3 = nodeAppo;
 					}
 					if (((Button) nodeAppo).getId().contains("server")) {
@@ -2335,6 +2389,13 @@ public class SelectAProVerController {
 					livy = nodeAppo;
 				}
 			}
+			
+			if (nodeAppo != null && nodeAppo instanceof TextFlow) {
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
+						msg = nodeAppo;
+				}
+			}
 			if (nodeAppo != null && nodeAppo instanceof Button) {
 				if (rigaSuccessiva == Integer
 							.valueOf(((Button) nodeAppo).getId().substring(((Button) nodeAppo).getId().length() - 2))) {
@@ -2345,7 +2406,7 @@ public class SelectAProVerController {
 						if (((Button) nodeAppo).getId().contains("bob")) {
 							nodeNext2 = nodeAppo;
 						}
-						if (((Button) nodeAppo).getId().contains("eye")) {
+						if (((Button) nodeAppo).getId().contains("eve")) {
 							nodeNext3 = nodeAppo;
 						}
 						if (((Button) nodeAppo).getId().contains("server")) {
@@ -2362,22 +2423,23 @@ public class SelectAProVerController {
 		case "Bob":
 			node = node2;
 			break;
-		case "Eye":
+		case "Eve":
 			node = node3;
 			break;
 		case "Server":
 			node = node4;
 			break;
 		}
-		viewSpecificLinea(actorToMsg, actorFromMsg, line,liey,livy);
+		viewSpecificLinea(actorToMsg, actorFromMsg, line,liey,livy,msg,riga);
 		tool.setDisable(true);
-		toolEye.setDisable(true);
+		toolEve.setDisable(true);
+		serverButton.setDisable(true);
 		if (tool.getText().contains("Disable")) {
 			if (nodeNext1 != null && !nodeNext1.isVisible() && !nodeNext2.isVisible() && !nodeNext3.isVisible()
 					&& !nodeNext4.isVisible()) {
 				nodeNext1.setVisible(true);
 				nodeNext2.setVisible(true);
-				if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
+				if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
 					nodeNext3.setVisible(true);
 				} else {
 					nodeNext3.setVisible(false);
@@ -2389,7 +2451,7 @@ public class SelectAProVerController {
 					&& !nodeNext3.isVisible() 	) {
 				nodeNext1.setVisible(true);
 				nodeNext2.setVisible(true);
-				if (toolEye.getText().contains("Eye Doesn't Create Messages")) {
+				if (toolEve.getText().contains("Eve Doesn't Create Messages")) {
 					nodeNext3.setVisible(true);
 				} else {
 					nodeNext3.setVisible(false);
@@ -2426,8 +2488,8 @@ public class SelectAProVerController {
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write("tool value \n");
 			bw.write(tool.getText() + "\n");
-			bw.write("toolEye value \n");
-			bw.write(toolEye.getText() + "\n");			
+			bw.write("toolEve value \n");
+			bw.write(toolEve.getText() + "\n");			
 			
 			bw.write("dati Alice AsymmetricPublicKey \n");
 
@@ -2461,20 +2523,20 @@ public class SelectAProVerController {
 			for (int i = 0; i < bob.getSymmetricKey().size(); i++) {
 				bw.write(bob.getSymmetricKey().get(i) + "\n");
 			}
-			bw.write("dati Eye AsymmetricPublicKey \n");
+			bw.write("dati Eve AsymmetricPublicKey \n");
 
-			for (int i = 0; i < eye.getAsymmetricPublicKey().size(); i++) {
-				bw.write(eye.getAsymmetricPublicKey().get(i) + "\n");
+			for (int i = 0; i < eve.getAsymmetricPublicKey().size(); i++) {
+				bw.write(eve.getAsymmetricPublicKey().get(i) + "\n");
 			}
-			bw.write("dati Eye AsymmetricPrivateKey \n");
+			bw.write("dati Eve AsymmetricPrivateKey \n");
 
-			for (int i = 0; i < eye.getAsymmetricPrivateKey().size(); i++) {
-				bw.write(eye.getAsymmetricPrivateKey().get(i) + "\n");
+			for (int i = 0; i < eve.getAsymmetricPrivateKey().size(); i++) {
+				bw.write(eve.getAsymmetricPrivateKey().get(i) + "\n");
 			}
-			bw.write("dati Eye SymmetricKey \n");
+			bw.write("dati Eve SymmetricKey \n");
 
-			for (int i = 0; i < eye.getSymmetricKey().size(); i++) {
-				bw.write(eye.getSymmetricKey().get(i) + "\n");
+			for (int i = 0; i < eve.getSymmetricKey().size(); i++) {
+				bw.write(eve.getSymmetricKey().get(i) + "\n");
 			}
 			bw.write("dati Server AsymmetricPublicKey \n");
 
@@ -2499,7 +2561,7 @@ public class SelectAProVerController {
 					bw.write("dati Messaggio " + i + "\n");
 					bw.write("ActorFrom " + messagges.getListMessages()[i].getActorfrom() + "\n");
 					bw.write("ActorTo " + messagges.getListMessages()[i].getActorTo() + "\n");
-					bw.write("Eye Intercept " + messagges.getListMessages()[i].getEyesIntercept() + "\n");
+					bw.write("Eve Intercept " + messagges.getListMessages()[i].getEvesIntercept() + "\n");
 					bw.write("Messages " + messagges.getListMessages()[i].getPayload() + "\n");
 					bw.flush();
 					for (int j = 0; j < 15; j++) {
@@ -2529,7 +2591,7 @@ public class SelectAProVerController {
 	}
 	// se viene cliccato dal men� l'opzione about si visualizza il file PdF 
 	@FXML
-	public void about() throws IOException {
+	private void about() throws IOException {
 		File file = new File("src\\main\\resources\\ConfigurationFile\\Help.pdf");
 		Desktop.getDesktop().open(file);
 	}

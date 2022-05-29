@@ -14,7 +14,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
@@ -65,26 +64,8 @@
 								</LinearGradient>
 							</fill>
 						</Text>
-						<AnchorPane fx:id="AncorPaneMEssagePayloadGroup" layoutX="41.0" layoutY="83.0" prefHeight="74.0" prefWidth="663.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;">
-							<children>
-								<AnchorPane layoutX="-1.0" layoutY="39.0" prefHeight="41.0" prefWidth="663.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
-									<children>
-										<TextFlow fx:id="payloadField" layoutX="35.0" layoutY="13.0" prefHeight="19.0" prefWidth="231.0" />
-										<TextFlow fx:id="payloadField2" layoutX="293.0" layoutY="13.0" prefHeight="20.0" prefWidth="362.0" />
-										<CheckBox fx:id="ceckPayloadField2" layoutX="273.0" layoutY="11.0" mnemonicParsing="false" onAction="#ceckPayloadField2" visible="false" />
-										<CheckBox fx:id="ceckPayloadField" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#ceckPayloadField" visible="false" />
-									</children>
-								</AnchorPane>
-								<Line endX="596.0" layoutX="66.0" layoutY="38.0" startX="-66.0" />
-								<Text fontSmoothingType="LCD" layoutX="17.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Payload Group" wrappingWidth="241.13671875">
-									<font>
-										<Font name="System Italic" size="15.0" />
-									</font>
-								</Text>
-							</children>
-						</AnchorPane>
 						<Button fx:id="closeButton" layoutX="660.0" layoutY="415.0" mnemonicParsing="false" onAction="#closeWindows" onMouseEntered="#helpFinishMessage" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Finish" />
-                  <CheckBox fx:id="eyesIntercept" layoutX="200.0" layoutY="48.0" mnemonicParsing="false" selected="true" text="Eye intercepts the message">
+                  <CheckBox fx:id="evesIntercept" layoutX="200.0" layoutY="48.0" mnemonicParsing="false" selected="true" text="Eve intercepts the message">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -96,9 +77,9 @@
 						<Font size="31.0" />
 					</font>
 				</Text>
-				<AnchorPane layoutX="61.0" layoutY="210.0" prefHeight="114.0" prefWidth="663.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="209.0">
+				<AnchorPane layoutX="62.0" layoutY="149.0" prefHeight="176.0" prefWidth="664.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="148.0">
 					<children>
-						<ScrollPane layoutY="34.0" prefHeight="80.0" prefWidth="662.0">
+						<ScrollPane layoutY="63.0" prefHeight="105.0" prefWidth="662.0">
 							<content>
 								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="646.0">
 									<children>
@@ -150,123 +131,127 @@
 								<Font name="Bodoni MT Black Italic" size="12.0" />
 							</font>
 						</Button>
+										<CheckBox fx:id="ceckPayloadField" layoutX="26.0" layoutY="39.0" mnemonicParsing="false" onAction="#ceckPayloadField" />
+										<TextFlow fx:id="payloadField" layoutX="45.0" layoutY="38.0" prefHeight="19.0" prefWidth="231.0" />
+										<CheckBox fx:id="ceckPayloadField2" layoutX="276.0" layoutY="38.0" mnemonicParsing="false" onAction="#ceckPayloadField2" />
+										<TextFlow fx:id="payloadField2" layoutX="295.0" layoutY="37.0" prefHeight="20.0" prefWidth="362.0" />
 					</children>
 				</AnchorPane>
-				<AnchorPane layoutX="61.0" layoutY="331.0" prefHeight="121.0" prefWidth="662.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;">
+				<AnchorPane layoutX="61.0" layoutY="331.0" prefHeight="64.0" prefWidth="662.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;">
 					<children>
-						<ScrollPane hbarPolicy="NEVER" layoutY="28.0" prefHeight="86.0" prefWidth="662.0">
+						<ScrollPane disable="true" hbarPolicy="NEVER" layoutY="61.0" prefHeight="41.0" prefWidth="662.0" visible="false">
 							<content>
-								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="685.0">
-									<children>
-										<GridPane fx:id="tabeSecurityFunction" layoutX="-5.0" layoutY="4.0" prefHeight="369.0" prefWidth="668.0" style="-fx-grid-lines-visible: true;" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="4.0">
-											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-											</columnConstraints>
-											<rowConstraints>
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-											</rowConstraints>
-											<children>
-												<TextFlow prefHeight="200.0" prefWidth="200.0">
-													<opaqueInsets>
-														<Insets left="4.0" />
-													</opaqueInsets>
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-													<opaqueInsets>
-														<Insets left="2.0" />
-													</opaqueInsets>
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="102.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="125.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="217.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="10">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="240.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="263.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="12">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="13">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="309.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="14">
-													<GridPane.margin>
-														<Insets left="5.0" />
-													</GridPane.margin>
-												</TextFlow>
-												<TextFlow layoutX="10.0" layoutY="332.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="15" />
-											</children>
-										</GridPane>
-									</children>
-								</AnchorPane>
+      								<AnchorPane disable="true" minHeight="0.0" minWidth="0.0" prefHeight="323.0" prefWidth="685.0" visible="false">
+      									<children>
+      										<GridPane fx:id="tabeSecurityFunction" disable="true" layoutX="-5.0" layoutY="4.0" prefHeight="369.0" prefWidth="668.0" style="-fx-grid-lines-visible: true;" visible="false" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="4.0">
+      											<columnConstraints>
+      												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      											</columnConstraints>
+      											<rowConstraints>
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      												<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      											</rowConstraints>
+      											<children>
+      												<TextFlow prefHeight="1.0" prefWidth="663.0">
+      													<opaqueInsets>
+      														<Insets left="4.0" />
+      													</opaqueInsets>
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+      													<opaqueInsets>
+      														<Insets left="2.0" />
+      													</opaqueInsets>
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="102.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="125.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="217.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="10">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="240.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="263.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="12">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="13">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="309.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="14">
+      													<GridPane.margin>
+      														<Insets left="5.0" />
+      													</GridPane.margin>
+      												</TextFlow>
+      												<TextFlow layoutX="10.0" layoutY="332.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="15" />
+      											</children>
+      										</GridPane>
+      									</children>
+      								</AnchorPane>
 							</content>
 						</ScrollPane>
 						<Text fontSmoothingType="LCD" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Functions" wrappingWidth="241.13671875">
@@ -285,6 +270,7 @@
 							</font>
 						</Text>
 						<MenuButton fx:id="menuSecurityFunction" layoutX="157.0" layoutY="3.0" mnemonicParsing="false" text="Security Function" />
+                  <TextFlow fx:id="textFlowSecurity" layoutX="14.0" layoutY="39.0" prefHeight="35.0" prefWidth="635.0" />
 					</children>
 				</AnchorPane>
             <AnchorPane fx:id="msgPayloadAncorPane" layoutX="14.0" layoutY="400.0" prefHeight="95.0" prefWidth="384.0" style="-fx-background-color: #dcd445; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: black;" visible="false">

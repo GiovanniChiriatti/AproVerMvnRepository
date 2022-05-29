@@ -6,7 +6,7 @@ public class Message {
 	private String actorFrom;
 	private String actorTo;
 	private String payload;
-	private Boolean eyesIntercept;
+	private Boolean evesIntercept;
 	private int numRow1;
 	private int numRow2;
 	private String[][] listPartMessage = new String[16][16];
@@ -15,18 +15,18 @@ public class Message {
 	public Message() {
 		payload = "";
 		actorTo = "";
-		eyesIntercept = true;
+		evesIntercept = true;
 		actorFrom = "";
 		numRow1 =-1;
 		numRow2 =-1;
 	}
 
-	public Message(String actorFrom, String actorTo, String payload, Boolean  eyesIntercept) {
+	public Message(String actorFrom, String actorTo, String payload, Boolean  evesIntercept) {
 		super();
 		this.actorFrom = actorFrom;
 		this.actorTo = actorTo;
 		this.payload = payload;
-		this.eyesIntercept = eyesIntercept;
+		this.evesIntercept = evesIntercept;
 	}
 
 	public Message(String actorFrom) {
@@ -48,12 +48,12 @@ public class Message {
 	public void setActorFrom(String actorFrom) {
 		this.actorFrom = actorFrom;
 	}
-	public Boolean getEyesIntercept() {
-		return eyesIntercept;
+	public Boolean getEvesIntercept() {
+		return evesIntercept;
 	}
 
-	public void setEyesIntercept(Boolean eyesIntercept) {
-		this.eyesIntercept = eyesIntercept;
+	public void setEvesIntercept(Boolean evesIntercept) {
+		this.evesIntercept = evesIntercept;
 	}
 	public String getPayload() {
 		return payload;

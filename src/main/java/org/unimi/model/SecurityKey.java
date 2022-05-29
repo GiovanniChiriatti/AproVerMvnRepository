@@ -1,6 +1,7 @@
 package org.unimi.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SecurityKey {
 	ArrayList<String> AsymmetricPublicKey=new ArrayList<String>();
@@ -35,6 +36,12 @@ public class SecurityKey {
 	public void remAsymmetricPublicKey(String vecchioValore) {
 		AsymmetricPublicKey.remove(vecchioValore);
 	}
+	public void remAllAsymmetricPublicKey() {
+		for(Iterator<String> i = AsymmetricPublicKey.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+			}
+	}
 	public ArrayList<String> getAsymmetricPrivateKey() {
 		return AsymmetricPrivateKey;
 	}
@@ -58,6 +65,12 @@ public class SecurityKey {
 	}
 	public void remAsymmetricPrivateKey(String vecchioValore) {
 		AsymmetricPrivateKey.remove(vecchioValore);
+	}
+	public void remAllAsymmetricPrivateKey() {
+		for(Iterator<String> i = AsymmetricPrivateKey.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+			}
 	}
 	public ArrayList<String> getSymmetricKey() {
 		return SymmetricKey;
@@ -83,11 +96,23 @@ public class SecurityKey {
 	public void remSymmetricKey(String vecchioValore) {
 		SymmetricKey.remove(vecchioValore);
 	}
+	public void remAllSymmetricKey() {
+		for(Iterator<String> i = SymmetricKey.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+			}
+	}
 	public void addHashKey(String nuovoValore) {
 		hashKey.add(nuovoValore);
 	}
 	public void remHashKey(String vecchioValore) {
 		hashKey.remove(vecchioValore);
+	}
+	public void remAllHashKey() {
+		for(Iterator<String> i = hashKey.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+			}
 	}
 	public ArrayList<String> getHashKey() {
 		return hashKey;
@@ -107,31 +132,36 @@ public class SecurityKey {
 	public void setHashKey(ArrayList<String> hashKey) {
 		this.hashKey = hashKey;
 	}
-	public boolean checkDuplicate(String nuovoValore) {
-		for (int i=0; i<AsymmetricPublicKey.size();i++) {
-			if (AsymmetricPublicKey.get(i).equals(nuovoValore)) {
-				return true;
+	public boolean checkDuplicate(String nuovoValore, String tipo) {
+		if (tipo != "1") {
+			for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
+				if (AsymmetricPublicKey.get(i).equals(nuovoValore)) {
+					return true;
+				}
 			}
 		}
-		
-		for (int i=0; i<AsymmetricPrivateKey.size();i++) {
-			if (AsymmetricPrivateKey.get(i).equals(nuovoValore)) {
-				return true;
+		if (tipo != "2") {
+			for (int i = 0; i < AsymmetricPrivateKey.size(); i++) {
+				if (AsymmetricPrivateKey.get(i).equals(nuovoValore)) {
+					return true;
+				}
 			}
 		}
-		
-		for (int i=0; i<SymmetricKey.size();i++) {
-			if (SymmetricKey.get(i).equals(nuovoValore)) {
-				return true;
+		if (tipo != "3") {
+			for (int i = 0; i < SymmetricKey.size(); i++) {
+				if (SymmetricKey.get(i).equals(nuovoValore)) {
+					return true;
+				}
 			}
 		}
-		
-		for (int i=0; i<hashKey.size();i++) {
-			if (hashKey.get(i).equals(nuovoValore)) {
-				return true;
+		if (tipo != "4") {
+			for (int i = 0; i < hashKey.size(); i++) {
+				if (hashKey.get(i).equals(nuovoValore)) {
+					return true;
+				}
 			}
 		}
-		
+
 		return false;
 	}
 }
