@@ -81,7 +81,7 @@ public class CreateMessageAProVer {
     private Text rowNum1,rowNum2,rowNum3,rowNum4,rowNum5,rowNum6,rowNum7, rowNum8;
     
     @FXML
-    private Text textSecurityFunction;
+    private Text textSecurityFunction, ceckPayloadFieldTxt,ceckPayloadField2Txt;
 
   
     @FXML
@@ -167,8 +167,10 @@ public class CreateMessageAProVer {
 				txtPreview.getChildren().clear();
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(false);
+				ceckPayloadFieldTxt.setVisible(false);
 				ceckPayloadField2.setSelected(false);
 				ceckPayloadField2.setVisible(false);
+				ceckPayloadField2Txt.setVisible(false);
 				payloadField.getChildren().clear();
 				payloadField2.getChildren().clear();
 				payloadField.setVisible(false);
@@ -178,8 +180,10 @@ public class CreateMessageAProVer {
 				txtPreview.getChildren().clear();
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(true);
+				ceckPayloadFieldTxt.setVisible(true);
 				ceckPayloadField2.setSelected(false);
 				ceckPayloadField2.setVisible(true);
+				ceckPayloadField2Txt.setVisible(true);
 				payloadField.getChildren().clear();
 				payloadField2.getChildren().clear();
 				payloadField.setVisible(true);
@@ -373,8 +377,10 @@ public class CreateMessageAProVer {
 		textFlowSecurity.getChildren().clear();
 		ceckPayloadField.setSelected(false);
 		ceckPayloadField.setVisible(false);
+		ceckPayloadFieldTxt.setVisible(false);
 		ceckPayloadField2.setSelected(false);
 		ceckPayloadField2.setVisible(false);
+		ceckPayloadField2Txt.setVisible(false);
 		payloadField.getChildren().clear();
 		payloadField2.getChildren().clear();
 		payloadField.setVisible(false);
@@ -579,8 +585,10 @@ public class CreateMessageAProVer {
 	private void cleanTabeMessage() {
 		ceckPayloadField.setSelected(false);
 		ceckPayloadField.setVisible(false);
+		ceckPayloadFieldTxt.setVisible(false);
 		ceckPayloadField2.setSelected(false);
 		ceckPayloadField2.setVisible(false);
+		ceckPayloadField2Txt.setVisible(false);
 		payloadField.getChildren().clear();
 		payloadField2.getChildren().clear();
 		payloadField.setVisible(false);
@@ -606,8 +614,10 @@ public class CreateMessageAProVer {
 				payloadField.getChildren().add(str);
 				ceckPayloadField.setSelected(true);
 				ceckPayloadField.setVisible(true);
+				ceckPayloadFieldTxt.setVisible(true);
 				ceckPayloadField2.setSelected(false);
 				ceckPayloadField2.setVisible(true);
+				ceckPayloadField2Txt.setVisible(true);
 				oldMessagePayloadField[NumNodiSecurityFunctions][i]="";
 				numNodiMessagePayloadField++;
 				i=1;
@@ -617,8 +627,10 @@ public class CreateMessageAProVer {
 				payloadField2.getChildren().add(str);
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(true);
+				ceckPayloadFieldTxt.setVisible(true);
 				ceckPayloadField2.setSelected(true);
 				ceckPayloadField2.setVisible(true);
+				ceckPayloadField2Txt.setVisible(true);
 				oldMessagePayloadField[NumNodiSecurityFunctions][i]="";
 				numNodiMessagePayloadField++;
 				i=1;
@@ -643,6 +655,8 @@ public class CreateMessageAProVer {
 					
 					ceckPayloadField.setVisible(true);
 					ceckPayloadField2.setVisible(true);
+					ceckPayloadFieldTxt.setVisible(true);
+					ceckPayloadField2Txt.setVisible(true);
 					payloadField.getChildren().clear();
 					payloadField2.getChildren().clear();
 					payloadField.setVisible(true);
@@ -657,8 +671,10 @@ public class CreateMessageAProVer {
 					txtPreview.getChildren().clear();
 					ceckPayloadField.setSelected(false);
 					ceckPayloadField.setVisible(false);
+					ceckPayloadFieldTxt.setVisible(false);
 					ceckPayloadField2.setSelected(false);
 					ceckPayloadField2.setVisible(false);
+					ceckPayloadField2Txt.setVisible(false);
 					payloadField.getChildren().clear();
 					payloadField2.getChildren().clear();
 					payloadField.setVisible(false);
@@ -765,8 +781,11 @@ public class CreateMessageAProVer {
 			
 			ceckPayloadField.setVisible(true);
 			ceckPayloadField2.setVisible(true);
+			ceckPayloadFieldTxt.setVisible(true);
+			ceckPayloadField2Txt.setVisible(true);
 			payloadField.setVisible(true);
 			payloadField2.setVisible(true);
+
 			compactMessage = setComboBoxpayloadFieldList(nodeLastSecurytyFunction);
 			System.out.println("----------> compactMessage " +compactMessage);
 			message.addSecurityFunctionsPartMessage(compactMessage);

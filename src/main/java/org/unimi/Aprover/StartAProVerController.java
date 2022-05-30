@@ -144,6 +144,7 @@ public class StartAProVerController {
 		//listFiles.add("*.docx");
 		//listFiles.add("*.DOC");
 		//listFiles.add("*.DOCX");
+		toolSet();
 		System.out.println("a");
 		HBox titleBoxAlice = new HBox();
 //		ImageView immageAlice = new ImageView(new Image("../resources/styles/images/alicepiccola1.png", 0, 24, true, true));

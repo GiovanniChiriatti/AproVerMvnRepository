@@ -96,7 +96,7 @@ public class SelectAProVerController {
 	String fileName;
 	int numMessage, numMessagePrec;
 	
-	Node node,node1,node2,node3,node4, line,liey,msg,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
+	Node node,node1,node2,node3,node4, line,liey,msg,msf,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
 
 	@FXML
 	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane;
@@ -120,6 +120,9 @@ public class SelectAProVerController {
 	private TextFlow msgPayload,  msgPayload1;
 	@FXML
 	private TextFlow msg01, msg02, msg03, msg04, msg05, msg06, msg07, msg08, msg09, msg10, msg11, msg12, msg13, msg14, msg15;
+	@FXML
+	private TextFlow msf01, msf02, msf03, msf04, msf05, msf06, msf07, msf08, msf09, msf10, msf11, msf12, msf13, msf14, msf15;
+
 	@FXML
 	//private ComboBox<Label> comboBoxActor;
 	private ComboBox comboBoxActor;
@@ -680,8 +683,8 @@ public class SelectAProVerController {
 //inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
 		comboBoxActor.setDisable(true);
 		typeKey.setText("Asymmetric Public Keys");
-		prevButton.setVisible(false);
-		nextButton.setVisible(true);
+		prevButton.setDisable(true);
+		nextButton.setDisable(false);
 		//finishButton.setVisible(false);
 		//piuButton.setVisible(true);
 		
@@ -791,27 +794,27 @@ public class SelectAProVerController {
 		if (knowPage.getText().equals("3")) {
 			//piuKnowledge();
 			typeKey.setText(hashKnow);
-			nextButton.setVisible(false);
+			nextButton.setDisable(true);
 			
 			//finishButton.setVisible(true);
-			prevButton.setVisible(true);
+			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("4");
 		}
 		if (knowPage.getText().equals("2")) {
 			typeKey.setText(symmetricKnow);
-			nextButton.setVisible(true);
+			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
-			prevButton.setVisible(true);
+			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("3");
 		}
 
 		if (knowPage.getText().equals("1")) {
 			typeKey.setText(privateKnow);
-			nextButton.setVisible(true);
+			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
-			prevButton.setVisible(true);
+			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("2");
 		}
@@ -955,25 +958,25 @@ public class SelectAProVerController {
 		
 		if (knowPage.getText().equals("2")) {
 			typeKey.setText(publicKnow);
-			nextButton.setVisible(true);
+			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
-			prevButton.setVisible(false);
+			prevButton.setDisable(true);
 			//piuButton.setVisible(true);
 			knowPage.setText("1");
 		}
 		if (knowPage.getText().equals("3")) {
 			typeKey.setText(privateKnow);
-			nextButton.setVisible(true);
+			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
-			prevButton.setVisible(true);
+			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("2");
 		}
 		if (knowPage.getText().equals("4")) {
 			typeKey.setText(symmetricKnow);
-			nextButton.setVisible(true);
+			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
-			prevButton.setVisible(true);
+			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("3");
 		}
@@ -1403,6 +1406,7 @@ public class SelectAProVerController {
 		line = line01;
 		liey = liey01;  
 		msg=msg01;
+		msf=msf01;
 		
 		int rigaSuccessiva = riga + 1;
 
@@ -1441,6 +1445,10 @@ public class SelectAProVerController {
 				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
 						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
 						msg = nodeAppo;
+				}
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msf")  ) {
+						msf = nodeAppo;
 				}
 			}
 			
@@ -1481,17 +1489,18 @@ public class SelectAProVerController {
 			liey.setVisible(false);
 			livy.setVisible(false);
 			msg.setVisible(false);
+			msf.setVisible(false);
 			((Button) node).setText("+");
 			resetLine();
 			return;
 		}
-		eseButton(data, riga, line, liey, livy,msg);
+		eseButton(data, riga, line, liey, livy,msg, msf);
 		
 	}
 	// Richiama la form per l'inserimento dei messaggi passandogli l'actor da cui parte il messaggio
 	// e ricevendo l'actor a cui arriva il messaggio(actorTo). se l'actorTo � impostato predispone i pulsanti 
 	// per l'inserimento di un nuovo messaggio 
-	private void eseButton(String data, int riga, Node line, Node liey, Node livy, Node msg) throws Exception {
+	private void eseButton(String data, int riga, Node line, Node liey, Node livy, Node msg, Node msf) throws Exception {
 		String actorFrom = "";
 		switch (data.substring(0, 5)) {
 		case "alice":
@@ -1513,12 +1522,12 @@ public class SelectAProVerController {
 			tool.setDisable(true);
 			toolEve.setDisable(true);
 			serverButton.setDisable(true);
-			viewSpecificLinea(actorTo, actorFrom, line, liey, livy,msg,riga);
+			viewSpecificLinea(actorTo, actorFrom, line, liey, livy,msg,msf,riga);
 		}
 
 	}
 
-	private void viewSpecificLinea(String actorTo, String actorFrom, Node oggetto, Node oggetey, Node oggetvy, Node oggetmsg, int riga) {
+	private void viewSpecificLinea(String actorTo, String actorFrom, Node oggetto, Node oggetey, Node oggetvy, Node oggetmsg, Node oggetmsf,int riga) {
 		node1.setVisible(false);
 		node2.setVisible(false);
 		node3.setVisible(false);
@@ -1553,11 +1562,13 @@ public class SelectAProVerController {
 		}
 		
 		double coordinateMsg = 90;
+		double coordinateMsf = 0;
 		double coordinateXStart = 100;
 		double coordinateXEnd = 100;
 		double coordinateEveXStart = 100;
 		double coordinateEveXEnd = 100;
 		((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
+		((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 		if (tool.getText().contains("Disable")) {
 			coordinateEveXEnd = 165;
 			switch (actorTo) {
@@ -1637,6 +1648,66 @@ public class SelectAProVerController {
 				coordinateMsg = 605;
 			}
 		}
+		if (tool.getText().contains("Disable")) {
+			if (actorFrom == "Alice") {
+				if (actorTo == "Eve") {
+					coordinateMsf = 0;
+				}
+				if (actorTo == "Bob") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsf = 335;
+				}
+				if (actorTo == "Server") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsf = 605;
+				}
+			}
+			if (actorFrom == "Eve") {
+				if (actorTo == "Alice") {
+					coordinateMsf = 0;
+				}
+				if (actorTo == "Bob") {
+					coordinateMsf = 0;
+				}
+				if (actorTo == "Server") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsf = 605;
+				}
+			}
+			if (actorFrom == "Bob") {
+				if (actorTo == "Alice") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsf = 335;
+				}
+				if (actorTo == "Eve") {
+					coordinateMsf = 0;
+				}
+				if (actorTo == "Server") {
+					coordinateMsf = 0;
+					if (eveIntercept) {
+						((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+						coordinateMsf = 605;
+					}
+				}
+			}
+			if (actorFrom == "Server") {
+				if (actorTo == "Alice") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsf = 90;
+				}
+				if (actorTo == "Eve") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsf = 335;
+				}
+				if (actorTo == "Bob") {
+					coordinateMsf = 0;
+					if (eveIntercept) {
+						((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+						coordinateMsf = 335;
+					}
+				}
+			}
+		}
 		
 		if (tool.getText().contains("Enable")) {
 			if (actorFrom == "Eve") {
@@ -1652,6 +1723,31 @@ public class SelectAProVerController {
 				coordinateMsg = 605;
 			}
 		}
+		
+		if (tool.getText().contains("Enable")) {
+			if (actorFrom == "Alice") {
+				if (actorTo == "Eve") {
+					coordinateMsf = 0;
+				}
+				if (actorTo == "Bob") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsf = 605;
+				}
+			}
+			if (actorFrom == "Eye") {
+					coordinateMsf = 0;
+			}
+			if (actorFrom == "Bob") {
+				if (actorTo == "Alice") {
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsf = 90;
+				}
+				if (actorTo == "Eye") {
+					coordinateMsf = 0;
+				}
+			}
+		}
+		
 		System.out.println(" -------> ActorTo-" + actorTo + "-actorFrom-" + actorFrom + "-eveIntercept-" + eveIntercept); 
 		if (eveIntercept && !actorTo.equals("Eve") && !actorFrom.equals("Eve")) {
 			System.out.println(" -------> ActorTo " + actorTo + " actorFrom " + actorFrom + " eveIntercept " + eveIntercept); 
@@ -1672,10 +1768,16 @@ public class SelectAProVerController {
 			oggetto.setVisible(true);
 		}
 		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsg);
+		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsf);
 
 		System.out.println("ccordinate del messaggio " + coordinateMsg + " riga " + riga);
 		((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
 		((TextFlow) oggetmsg).setVisible(true);
+		((TextFlow) oggetmsf).setVisible(false);
+		if (coordinateMsf !=0) {
+			((TextFlow) oggetmsf).setLayoutX(coordinateMsf);
+			((TextFlow) oggetmsf).setVisible(true);
+		}
 		
 	}
 	   /**
@@ -1777,11 +1879,17 @@ public class SelectAProVerController {
 						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
 						msg = nodeAppo;
 				}
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msf")  ) {
+						msf = nodeAppo;
+				}
 			}
 		}
 		
 		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),msg);
 		((TextFlow) msg).setVisible(true);
+		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),msf);
+		//((TextFlow) msf).setVisible(true);
 		
 	}
 	//routine che visualizza il payload quando si passa il mouse sulla linea (La riutine è stata sospesa)
@@ -2347,6 +2455,7 @@ public class SelectAProVerController {
 		nodeNext4 =null;
 		line = line01;
 		msg = msg01;
+		msf = msf01;
 		int riga = numLineMessage +1 ;
 		int rigaSuccessiva = numLineMessage + 2;
 		System.out.println("Riga successiva " + rigaSuccessiva + " riga " + riga + " prec " +numMessagePrec);
@@ -2395,6 +2504,10 @@ public class SelectAProVerController {
 						&& ((TextFlow) nodeAppo).getId().contains("msg")  ) {
 						msg = nodeAppo;
 				}
+				if (riga == Integer.valueOf(((TextFlow) nodeAppo).getId().substring(((TextFlow) nodeAppo).getId().length() - 2))
+						&& ((TextFlow) nodeAppo).getId().contains("msf")  ) {
+						msf = nodeAppo;
+				}
 			}
 			if (nodeAppo != null && nodeAppo instanceof Button) {
 				if (rigaSuccessiva == Integer
@@ -2430,7 +2543,7 @@ public class SelectAProVerController {
 			node = node4;
 			break;
 		}
-		viewSpecificLinea(actorToMsg, actorFromMsg, line,liey,livy,msg,riga);
+		viewSpecificLinea(actorToMsg, actorFromMsg, line,liey,livy,msg,msf,riga);
 		tool.setDisable(true);
 		toolEve.setDisable(true);
 		serverButton.setDisable(true);

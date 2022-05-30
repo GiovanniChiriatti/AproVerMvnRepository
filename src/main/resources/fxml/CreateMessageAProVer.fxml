@@ -42,7 +42,7 @@
 								<Font size="14.0" />
 							</font>
 						</Text>
-						<Button fx:id="doneButton" layoutX="533.0" layoutY="415.0" mnemonicParsing="false" onAction="#doneButton" onMouseEntered="#helpUpdateMessage" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="113.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Update Message" />
+						<Button fx:id="doneButton" layoutX="466.0" layoutY="415.0" mnemonicParsing="false" onAction="#doneButton" onMouseEntered="#helpUpdateMessage" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="180.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Save Message &amp; Continue" />
 						<Text fontSmoothingType="LCD" layoutX="332.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="{}" visible="false" wrappingWidth="383.599609375">
 							<font>
 								<Font size="14.0" />
@@ -77,9 +77,9 @@
 						<Font size="31.0" />
 					</font>
 				</Text>
-				<AnchorPane layoutX="62.0" layoutY="149.0" prefHeight="176.0" prefWidth="664.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="148.0">
+				<AnchorPane layoutX="63.0" layoutY="135.0" prefHeight="191.0" prefWidth="664.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="134.0">
 					<children>
-						<ScrollPane layoutY="63.0" prefHeight="105.0" prefWidth="662.0">
+						<ScrollPane layoutY="82.0" prefHeight="110.0" prefWidth="662.0">
 							<content>
 								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="646.0">
 									<children>
@@ -126,15 +126,25 @@
 								<Font name="System Italic" size="15.0" />
 							</font>
 						</Text>
-						<Button fx:id="piuTabeMessage" layoutX="613.0" layoutY="3.0" mnemonicParsing="false" onAction="#piuTabeMessage" onMouseEntered="#helpPiuPayloadField" onMouseExited="#relasedHelp" prefHeight="19.0" prefWidth="14.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" wrapText="true">
+						<Button fx:id="piuTabeMessage" layoutX="507.0" layoutY="3.0" mnemonicParsing="false" onAction="#piuTabeMessage" onMouseEntered="#helpPiuPayloadField" onMouseExited="#relasedHelp" prefHeight="22.0" prefWidth="135.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="Apply Security" wrapText="true">
 							<font>
 								<Font name="Bodoni MT Black Italic" size="12.0" />
 							</font>
 						</Button>
-										<CheckBox fx:id="ceckPayloadField" layoutX="26.0" layoutY="39.0" mnemonicParsing="false" onAction="#ceckPayloadField" />
-										<TextFlow fx:id="payloadField" layoutX="45.0" layoutY="38.0" prefHeight="19.0" prefWidth="231.0" />
-										<CheckBox fx:id="ceckPayloadField2" layoutX="276.0" layoutY="38.0" mnemonicParsing="false" onAction="#ceckPayloadField2" />
-										<TextFlow fx:id="payloadField2" layoutX="295.0" layoutY="37.0" prefHeight="20.0" prefWidth="362.0" />
+										<CheckBox fx:id="ceckPayloadField" layoutX="26.0" layoutY="57.0" mnemonicParsing="false" onAction="#ceckPayloadField" />
+										<TextFlow fx:id="payloadField" layoutX="45.0" layoutY="56.0" prefHeight="19.0" prefWidth="231.0" />
+										<CheckBox fx:id="ceckPayloadField2" layoutX="276.0" layoutY="56.0" mnemonicParsing="false" onAction="#ceckPayloadField2" />
+										<TextFlow fx:id="payloadField2" layoutX="295.0" layoutY="55.0" prefHeight="20.0" prefWidth="362.0" />
+                  <Text fx:id="ceckPayloadFieldTxt" fontSmoothingType="LCD" layoutX="40.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last part Payload saved" wrappingWidth="241.13671875">
+                     <font>
+                        <Font name="System Italic" size="9.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="ceckPayloadField2Txt" fontSmoothingType="LCD" layoutX="306.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Payload saved" wrappingWidth="241.13671875">
+                     <font>
+                        <Font name="System Italic" size="9.0" />
+                     </font>
+                  </Text>
 					</children>
 				</AnchorPane>
 				<AnchorPane layoutX="61.0" layoutY="331.0" prefHeight="64.0" prefWidth="662.0" style="-fx-background-color: #D9D9D9; -fx-background-radius: 15; -fx-border-radius: 15;">
@@ -259,7 +269,7 @@
 								<Font name="System Italic" size="15.0" />
 							</font>
 						</Text>
-						<Button fx:id="menoSecurityFunction" layoutX="612.0" layoutY="4.0" mnemonicParsing="false" onAction="#menoSecurityFunction" onMouseEntered="#helpMenoSecurityFunctions" onMouseExited="#relasedHelp" prefHeight="19.0" prefWidth="14.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="-" wrapText="true">
+						<Button fx:id="menoSecurityFunction" layoutX="588.0" layoutY="4.0" mnemonicParsing="false" onAction="#menoSecurityFunction" onMouseEntered="#helpMenoSecurityFunctions" onMouseExited="#relasedHelp" prefHeight="22.0" prefWidth="53.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="Undo" wrapText="true">
 							<font>
 								<Font name="Bodoni MT Black Italic" size="12.0" />
 							</font>

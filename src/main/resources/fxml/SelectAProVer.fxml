@@ -248,6 +248,14 @@
 										<Insets top="7.0" />
 									</VBox.margin>
 								</TitledPane>
+                        <Button fx:id="serverButton" mnemonicParsing="false" onMouseClicked="#toolSet" prefHeight="28.0" prefWidth="258.0" text="Disable Server">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Button>
 								<TitledPane fx:id="titledServer" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="17.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Server" textFill="#c75752">
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
@@ -306,7 +314,7 @@
 										</AnchorPane>
 									</content>
 									<VBox.margin>
-										<Insets top="7.0" />
+										<Insets top="2.0" />
 									</VBox.margin>
 								</TitledPane>
 							</children>
@@ -317,11 +325,6 @@
 							</image>
 						</ImageView>
 						<Text layoutX="49.0" layoutY="143.0" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" strokeType="OUTSIDE" strokeWidth="0.0" text="KNOWLEDGE" textAlignment="CENTER" wrappingWidth="85.62890625" />
-                  <Button fx:id="serverButton" layoutX="63.0" layoutY="633.0" mnemonicParsing="false" onMouseClicked="#toolSet" prefHeight="0.0" prefWidth="109.0" text="Disable Server" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="190.0">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Button>
 					</children>
 				</AnchorPane>
 			</left>
@@ -700,6 +703,7 @@
 													</font>
 												</Button>
                                     <TextFlow fx:id="msg01" layoutX="83.0" layoutY="10.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf01" layoutX="83.0" layoutY="10.0" prefHeight="21.0" prefWidth="221.0" />
 												<AnchorPane fx:id="msgPayloadAncorPane" layoutX="228.0" layoutY="70.0" prefHeight="74.0" prefWidth="418.0" style="-fx-background-color: #dcd445; -fx-background-radius: 15; -fx-border-color: green; -fx-border-radius: 15;" visible="false">
 													<children>
 														<TextFlow fx:id="msgPayload" layoutY="39.0" lineSpacing="12.0" prefHeight="43.0" prefWidth="532.0" style="-fx-background-color: #dcd445;" textAlignment="CENTER" visible="false" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="38.0">
@@ -710,19 +714,33 @@
 													</children>
 												</AnchorPane>
                                     <TextFlow fx:id="msg02" layoutX="83.0" layoutY="50.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf02" layoutX="83.0" layoutY="50.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg03" layoutX="83.0" layoutY="90.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf03" layoutX="83.0" layoutY="90.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg04" layoutX="83.0" layoutY="130.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf04" layoutX="83.0" layoutY="130.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg05" layoutX="83.0" layoutY="170.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf05" layoutX="83.0" layoutY="170.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg06" layoutX="83.0" layoutY="210.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf06" layoutX="83.0" layoutY="210.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg07" layoutX="83.0" layoutY="250.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf07" layoutX="83.0" layoutY="250.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg08" layoutX="83.0" layoutY="290.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf08" layoutX="83.0" layoutY="290.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg09" layoutX="83.0" layoutY="330.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf09" layoutX="83.0" layoutY="330.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg10" layoutX="83.0" layoutY="370.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf10" layoutX="83.0" layoutY="370.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg11" layoutX="83.0" layoutY="410.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf11" layoutX="83.0" layoutY="410.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg12" layoutX="83.0" layoutY="450.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf12" layoutX="83.0" layoutY="450.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg13" layoutX="83.0" layoutY="490.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf13" layoutX="83.0" layoutY="490.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg14" layoutX="83.0" layoutY="530.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf14" layoutX="83.0" layoutY="530.0" prefHeight="21.0" prefWidth="221.0" />
                                     <TextFlow fx:id="msg15" layoutX="83.0" layoutY="570.0" prefHeight="21.0" prefWidth="221.0" />
+                                    <TextFlow fx:id="msf15" layoutX="83.0" layoutY="570.0" prefHeight="21.0" prefWidth="221.0" />
 											</children>
 										</AnchorPane>
 									</content>
