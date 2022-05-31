@@ -144,6 +144,14 @@ public class SelectAProVerController {
 	private Text rowNum1, rowNum2, rowNum3, rowNum4, rowNum5, rowNum6, rowNum7, rowNum8, rowNum9, rowNum10, rowNum11;
 
 	@FXML
+	private Button Alice1, Alice2, Alice3, Alice4;
+	@FXML
+	private Button Bob1, Bob2, Bob3, Bob4;
+	@FXML
+	private Button Eve1, Eve2, Eve3, Eve4;
+	@FXML
+	private Button Server1, Server2, Server3, Server4;
+	@FXML
 	private Button nextButton, prevButton, finishButton;
 	
 	@FXML
@@ -463,17 +471,14 @@ public class SelectAProVerController {
 	// Imposta il cursore per la visualizzazione degli help dei singoli oggetti della form	
 		@FXML
 
-		private void selectHelp() {
+		private void selectLink() {
 			Scene sc1 = aliceButton01.getScene();
 			if (helpFlag) {
 				sc1.setCursor(Cursor.DEFAULT);
 				helpFlag = false;
 			} else {
 			 //	sc1.setCursor(Cursor.OPEN_HAND);
-			 	Image image = new Image("/styles/images/questionmarcTrasparente.png");
-			 	sc1.setCursor(new ImageCursor (image,
-			 									image.getWidth()/2,
-			 									image.getHeight() /2));
+				sc1.setCursor(Cursor.OPEN_HAND);
 				helpFlag = true;
 			}
 		}
@@ -682,6 +687,7 @@ public class SelectAProVerController {
 //Disabilita la combobox per la selezione degli actor
 //inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
 		comboBoxActor.setDisable(true);
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		typeKey.setText("Asymmetric Public Keys");
 		prevButton.setDisable(true);
 		nextButton.setDisable(false);
@@ -732,6 +738,132 @@ public class SelectAProVerController {
 			viewLine("01");
 		}
 	}
+	
+	//Routin che si attiva ogni qual volta viene selezionata una riga sulle tabelle della conoscenza	
+		@FXML
+
+		private void selectKnowledgeDetails(ActionEvent e) throws Exception   {
+			if (toolFlag) {
+				toolFlag= false;
+				return;
+			}
+
+			node = (Node) e.getSource();
+
+			String data = (String) node.getId();
+
+			String riga = data.substring(data.length() - 1);
+			String act = data.substring(0,data.length() - 1);
+			
+			System.out.println(" - " + riga + " -- " + act);
+			boolean viewLineOK = false;
+			if (faceAlice.getOpacity() == 1 &&
+					faceBob.getOpacity() == 1 &&
+				//	faceEve.getOpacity() == 1 && 
+					(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))) {
+					viewLineOK = true;
+				}
+	//rende visibile le icone e le righe delle immagini dei vari attori
+			faceAlice.setVisible(true);
+			lineaAlice.setVisible(true);
+			faceBob.setVisible(true);
+			lineaBob.setVisible(true);
+			faceEve.setVisible(true);
+			lineaEve.setVisible(true);
+			if (tool.getText().contains("Enable")) {
+				faceServer.setVisible(false);
+				lineaServer.setVisible(false);
+				titledServer.setDisable(true);
+			} else {
+				faceServer.setVisible(true);
+				lineaServer.setVisible(true);
+				titledServer.setDisable(false);
+			}
+
+
+	//rende visibile le icone e le righe delle immagini dei vari actor
+	//Disabilita la combobox per la selezione degli actor
+	//inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
+			comboBoxActor.setDisable(true);
+			if (riga.equals("1")) { 
+				typeKey.setText(publicKnow);
+				prevButton.setDisable(true);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("2")) { 
+				typeKey.setText(privateKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("3")) { 
+				typeKey.setText(symmetricKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("4")) { 
+				typeKey.setText(hashKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(true);
+			}
+			
+			//finishButton.setVisible(false);
+			//piuButton.setVisible(true);
+			
+			knowPage.setText(riga);
+			
+	//verifica quale Actor � stato selezionato e abilita la visibilit� della form di knowledge (initialKnowledge.setVisible(true);)
+			if (act.contains("Alice")) {
+				toolFlag= true;
+				comboBoxActor.setValue("Alice");
+				System.out.println(" Alice's" );
+				nomeActor.setText("Alice's");
+				initialKnowledge.setVisible(true);
+				faceAlice.setOpacity(1);
+				lineaAlice.setOpacity(1);
+				loadTable(alice, riga);
+				loadTitledAlice(alice);
+			}
+			if (act.contains("Bob")) {
+				toolFlag= true;
+				comboBoxActor.setValue("Bob");
+				nomeActor.setText("Bob's");
+				initialKnowledge.setVisible(true);
+				faceBob.setOpacity(1);
+				lineaBob.setOpacity(1);
+				loadTable(bob, riga);
+				loadTitledBob(bob);
+			}
+			if (act.contains("Eve")) {
+				toolFlag= true;
+				comboBoxActor.setValue("Eye");
+				nomeActor.setText("Eve's");
+				initialKnowledge.setVisible(true);
+				faceEve.setOpacity(1);
+				lineaEve.setOpacity(1);
+				loadTable(eve, riga);
+				loadTitledEve(eve);
+			}
+			if (act.contains("Server")) {
+				toolFlag= true;
+				comboBoxActor.setValue("Server");
+				nomeActor.setText("Server's");
+				initialKnowledge.setVisible(true);
+				faceServer.setOpacity(1);
+				lineaServer.setOpacity(1);
+				loadTable(server, riga);
+				loadTitledServer(server);
+			}
+	//se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
+			if (faceAlice.getOpacity() == 1 &&
+				faceBob.getOpacity() == 1 &&
+			//	faceEve.getOpacity() == 1 && 
+				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))&&
+				!viewLineOK) {
+				viewLine("01");
+			}
+		}
+
+	
 
 //ogni volta che si termina di inserire le chiavi per un sigolo actor viene resettata la combobox
 	@FXML
@@ -1073,7 +1205,6 @@ public class SelectAProVerController {
 	// e si caricano nella sott-form 
 	private void loadTable(SecurityKey oggetto, String tipo) {
 		
-
 		appoOldKnowledge = null;
 		for (Node node : tabeKnowledge.getChildren()) {
 			node.setVisible(true);
