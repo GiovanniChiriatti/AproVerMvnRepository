@@ -65,15 +65,15 @@
 						</ComboBox>
 						<VBox layoutY="149.0" prefHeight="493.0" prefWidth="264.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 							<children>
-								<TitledPane fx:id="titledAlice" alignment="CENTER" contentDisplay="TOP" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Alice" textFill="#c75752">
+								<TitledPane fx:id="titledAlice" alignment="CENTER" contentDisplay="TOP" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" prefWidth="264.0" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Alice" textFill="#c75752">
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
 											<children>
-												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="263.0">
 													<content>
 														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="82.0" prefWidth="759.0">
+																<GridPane prefHeight="65.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -134,11 +134,11 @@
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
 											<children>
-												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="263.0">
 													<content>
 														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="728.0">
 															<children>
-																<GridPane prefHeight="82.0" prefWidth="758.0">
+																<GridPane prefHeight="66.0" prefWidth="758.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -192,18 +192,18 @@
 										</AnchorPane>
 									</content>
 									<VBox.margin>
-										<Insets top="7.0" />
+										<Insets top="3.0" />
 									</VBox.margin>
 								</TitledPane>
 								<TitledPane fx:id="titledEve" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="243.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Eve" textFill="#c75752">
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="208.0">
 											<children>
-												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="263.0">
 													<content>
 														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="784.0">
 															<children>
-																<GridPane prefHeight="82.0" prefWidth="758.0">
+																<GridPane prefHeight="63.0" prefWidth="758.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -257,7 +257,7 @@
 										</AnchorPane>
 									</content>
 									<VBox.margin>
-										<Insets top="7.0" />
+										<Insets top="3.0" />
 									</VBox.margin>
 								</TitledPane>
                         <Button fx:id="serverButton" mnemonicParsing="false" onMouseClicked="#toolSet" prefHeight="25.0" prefWidth="263.0" text="Disable Server">
@@ -265,18 +265,18 @@
                               <Font size="10.0" />
                            </font>
                            <VBox.margin>
-                              <Insets top="7.0" />
+                              <Insets top="3.0" />
                            </VBox.margin>
                         </Button>
 								<TitledPane fx:id="titledServer" alignment="CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="17.0" nodeOrientation="RIGHT_TO_LEFT" onMouseExited="#relasedHelp" onMouseMoved="#helpKnowledge" style="-fx-background-color: #adb3b2; -fx-border-radius: 10;" text="Server" textFill="#c75752">
 									<content>
 										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="87.0" prefWidth="201.0">
 											<children>
-												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="88.0" prefWidth="263.0">
+												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="263.0">
 													<content>
 														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="769.0">
 															<children>
-																<GridPane prefHeight="82.0" prefWidth="769.0">
+																<GridPane prefHeight="64.0" prefWidth="769.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>

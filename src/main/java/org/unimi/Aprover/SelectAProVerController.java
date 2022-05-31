@@ -229,7 +229,7 @@ public class SelectAProVerController {
 	@FXML
 	private void initialize() {
 // legge il file di configurazione delle propriet� da testare		
-		System.out.println("entro in select");
+		
 		readFileConf();
 		HBox titleBoxAlice = new HBox();
 		ImageView immageAlice = new ImageView(new Image(getClass().getResource("/styles/images/alicepiccola1.png").toExternalForm(),0, 24, true, true));
@@ -408,8 +408,7 @@ public class SelectAProVerController {
 	}
 
 	private static ImageView getImageView(String imageName) {
-		System.out.println("immageview");
-		
+				
 		SelectAProVerController cell = new SelectAProVerController();
 		ImageView imageView = null;
 		
@@ -418,7 +417,7 @@ public class SelectAProVerController {
 				//pictures.put(imageName,new Image(getClass().getResource("/styles/images/alicepiccola1.png").toExternalForm());
 			}
 			imageView = new ImageView(pictures.get(imageName));
-		System.out.println("immageview exit");
+		
 		return imageView;
 	}
 	
@@ -687,7 +686,6 @@ public class SelectAProVerController {
 //Disabilita la combobox per la selezione degli actor
 //inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
 		comboBoxActor.setDisable(true);
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		typeKey.setText("Asymmetric Public Keys");
 		prevButton.setDisable(true);
 		nextButton.setDisable(false);
@@ -755,7 +753,6 @@ public class SelectAProVerController {
 			String riga = data.substring(data.length() - 1);
 			String act = data.substring(0,data.length() - 1);
 			
-			System.out.println(" - " + riga + " -- " + act);
 			boolean viewLineOK = false;
 			if (faceAlice.getOpacity() == 1 &&
 					faceBob.getOpacity() == 1 &&
@@ -815,7 +812,6 @@ public class SelectAProVerController {
 			if (act.contains("Alice")) {
 				toolFlag= true;
 				comboBoxActor.setValue("Alice");
-				System.out.println(" Alice's" );
 				nomeActor.setText("Alice's");
 				initialKnowledge.setVisible(true);
 				faceAlice.setOpacity(1);
@@ -884,7 +880,6 @@ public class SelectAProVerController {
 
 		private void finishKnowledge() {
 			if (compattaKnowledge()!=null) {
-				System.out.println("elemento duplicato " + compattaKnowledge());
 				final Stage stage = (Stage) aliceButton01.getScene().getWindow();
 				Alert.AlertType type =  Alert.AlertType.ERROR;
 				Alert alert = new Alert(type, "");
@@ -907,7 +902,6 @@ public class SelectAProVerController {
 	private void nextKnowledge() {
 		
 		if (compattaKnowledge()!=null) {
-			System.out.println("elemento duplicato " + compattaKnowledge());
 			final Stage stage = (Stage) aliceButton01.getScene().getWindow();
 			Alert.AlertType type =  Alert.AlertType.ERROR;
 			Alert alert = new Alert(type, "");
@@ -1017,7 +1011,6 @@ public class SelectAProVerController {
 		for (int i=0; i<15; i++) {
 			for (int j=i+1 ; j<15; j++) {
 				if (!(elencoKnowledge[i] == null) && elencoKnowledge[i].equals(elencoKnowledge[j]) && !elencoKnowledge[i].isEmpty()) {
-					System.out.println("trovato doppioni");
 					return elencoKnowledge[i]; 
 				}
 			}
@@ -1029,7 +1022,6 @@ public class SelectAProVerController {
 			for (int i = 0; i < 15; i++) {
 				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
 					if (alice.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
-						System.out.println("trovato doppioni");
 						return elencoKnowledge[i];
 					}
 				}
@@ -1039,7 +1031,6 @@ public class SelectAProVerController {
 			for (int i = 0; i < 15; i++) {
 				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
 					if (bob.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
-						System.out.println("trovato doppioni");
 						return elencoKnowledge[i];
 					}
 				}
@@ -1049,7 +1040,6 @@ public class SelectAProVerController {
 			for (int i = 0; i < 15; i++) {
 				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
 					if (eve.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
-						System.out.println("trovato doppioni");
 						return elencoKnowledge[i];
 					}
 				}
@@ -1059,7 +1049,6 @@ public class SelectAProVerController {
 			for (int i = 0; i < 15; i++) {
 				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
 					if (server.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
-						System.out.println("trovato doppioni");
 						return elencoKnowledge[i];
 					}
 				}
@@ -1072,7 +1061,6 @@ public class SelectAProVerController {
 	@FXML
 	private void prevKnowledge() {
 		if (compattaKnowledge()!=null) {
-			System.out.println("elemento duplicato " + compattaKnowledge());
 			final Stage stage = (Stage) aliceButton01.getScene().getWindow();
 			Alert.AlertType type =  Alert.AlertType.ERROR;
 			Alert alert = new Alert(type, "");
@@ -1298,20 +1286,17 @@ public class SelectAProVerController {
 
 	private void toolSet() {
 		int faceEveX, lineaEveX, faceBobX, lineaBobX, eveButtonX,bobButtonX;
-		System.out.println("entro sul metodo per selezonare il tool");
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
 			toolFlag = true;
 			
 			comboBoxActor.getItems().remove(3,4);
-			System.out.println("Rimuovo il server");
 			toolFlag= true;
 			comboBoxActor.setValue("Actor");
 			toolFlag= false;
 			
 			tool.setText("Enable Server");
 			serverButton.setText("Enable Server");
-			System.out.println("imposto a eneble il tool (ma in realt� � disabilitato");
 			titledServer.setDisable(true);
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
@@ -1409,13 +1394,11 @@ public class SelectAProVerController {
 	}
 	public void setToolStart (String toolStart) {
 		if (toolStart.equals("Enable Server")){
-			System.out.println("imposto a Disable Server per poi invertire");
 			tool.setText("Disable Server");
 			serverButton.setText("Disable Server");
 		} else {
 			tool.setText("Enable Server");
 			serverButton.setText("Enable Server");
-			System.out.println("imposto a Enable Server per poi invertire");
 		}
 		toolInitialSet();
 	}
@@ -1424,20 +1407,17 @@ public class SelectAProVerController {
 	}
 	private void toolInitialSet() {
 		int faceEveX, lineaEveX, faceBobX, lineaBobX, eveButtonX,bobButtonX;
-		System.out.println("entro sul metodo per selezonare il tool");
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
 			toolFlag = true;
 			
 			comboBoxActor.getItems().remove(3,4);
-			System.out.println("Rimuovo il server");
 			toolFlag= true;
 			comboBoxActor.setValue("Actor");
 			toolFlag= false;
 			
 			tool.setText("Enable Server");
 			serverButton.setText("Enable Server");
-			System.out.println("imposto a eneble il tool (ma in realt� � disabilitato");
 			titledServer.setDisable(true);
 			faceServer.setVisible(false);
 			lineaServer.setVisible(false);
@@ -1879,9 +1859,7 @@ public class SelectAProVerController {
 			}
 		}
 		
-		System.out.println(" -------> ActorTo-" + actorTo + "-actorFrom-" + actorFrom + "-eveIntercept-" + eveIntercept); 
 		if (eveIntercept && !actorTo.equals("Eve") && !actorFrom.equals("Eve")) {
-			System.out.println(" -------> ActorTo " + actorTo + " actorFrom " + actorFrom + " eveIntercept " + eveIntercept); 
 			((Line) oggetto).setEndX(coordinateEveXEnd);
 			((Line) oggetto).setStartX(coordinateXStart);
 			oggetto.setVisible(true);
@@ -1901,7 +1879,6 @@ public class SelectAProVerController {
 		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsg);
 		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsf);
 
-		System.out.println("ccordinate del messaggio " + coordinateMsg + " riga " + riga);
 		((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
 		((TextFlow) oggetmsg).setVisible(true);
 		((TextFlow) oggetmsf).setVisible(false);
@@ -1956,7 +1933,6 @@ public class SelectAProVerController {
         
         dialogStage.showAndWait();
         eveIntercept = controller.getEvesIntercept();
-        System.out.println("FLAG INSERITO PER EYES Intercept " + eveIntercept);
         return controller.getActorTo();
 
     
@@ -2000,7 +1976,6 @@ public class SelectAProVerController {
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
-		System.out.println("modificl la riga : "+riga);
 		showModifyMessage(messagges.getMessage(riga - 1).getActorfrom().toString(),riga);
 		
 		
@@ -2120,7 +2095,6 @@ public class SelectAProVerController {
 
 		dialogStage.showAndWait();
         eveIntercept = controller.getEvesIntercept();
-        System.out.println("FLAG INSERITO PER EYES Intercept " + eveIntercept);
 
 		return;
 
@@ -2527,7 +2501,6 @@ public class SelectAProVerController {
 			server.addSymmetricKey(line);
 		}
 		if (typeInfo.equals("dati Messaggi ")) {
-			System.out.println("--------->"+ typeInfo);
 			//se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
 			if (faceAlice.getOpacity() == 1 &&
 				faceBob.getOpacity() == 1 &&
@@ -2589,7 +2562,6 @@ public class SelectAProVerController {
 		msf = msf01;
 		int riga = numLineMessage +1 ;
 		int rigaSuccessiva = numLineMessage + 2;
-		System.out.println("Riga successiva " + rigaSuccessiva + " riga " + riga + " prec " +numMessagePrec);
 
 		for (Node nodeAppo : ancorPulsanti.getChildren()) {
 			if (nodeAppo != null && nodeAppo instanceof Button) {
@@ -2643,7 +2615,6 @@ public class SelectAProVerController {
 			if (nodeAppo != null && nodeAppo instanceof Button) {
 				if (rigaSuccessiva == Integer
 							.valueOf(((Button) nodeAppo).getId().substring(((Button) nodeAppo).getId().length() - 2))) {
-					System.out.println("trovata riga successiva ");	
 					if (((Button) nodeAppo).getId().contains("alice")) {
 							nodeNext1 = nodeAppo;
 						}
@@ -2719,7 +2690,6 @@ public class SelectAProVerController {
 			File file = new File(fileName);
 			writeFile();
 		} else {
-			System.out.println("Il file eistente");
 			writeFile();
 		}
 		
