@@ -44,6 +44,7 @@
 							<items>
 								<MenuItem fx:id="tool" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
                         <MenuItem fx:id="toolEve" mnemonicParsing="false" onAction="#toolSetEve" text="Eve Create Messages" />
+                        <MenuItem fx:id="toolCheck" mnemonicParsing="false" onAction="#toolSetChek" text="Don't check Words" />
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="Help">
@@ -899,7 +900,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties00" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties00" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -907,15 +908,26 @@
 																						<Insets bottom="1.0" right="10.0" top="1.0" />
 																					</GridPane.margin>
 																				</CheckComboBox>
+                                                            <Button fx:id="addProp00" mnemonicParsing="false" onAction="#selButtonAddProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" textAlignment="CENTER" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <GridPane.margin>
+                                                                  <Insets right="5.0" />
+                                                               </GridPane.margin>
+                                                               <font>
+                                                                  <Font name="Bodoni MT Black" size="9.0" />
+                                                               </font>
+                                                            </Button>
 																			</children>
 																		</GridPane>
 																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
 																			<content>
-																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="569.0">
 																					<children>
-																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																						<AnchorPane layoutY="-2.0" prefHeight="397.0" prefWidth="573.0">
 																							<children>
-																								<GridPane fx:id="listProprieties00" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																								<GridPane fx:id="listProprieties00" alignment="CENTER" layoutX="4.0" layoutY="2.0" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
 																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
 																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
@@ -927,20 +939,173 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+                                                                              <TextField editable="false" style="-fx-background-color: transparent;">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="3">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" style="-fx-background-color: transparent;" GridPane.rowIndex="4">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" style="-fx-background-color: transparent;" GridPane.rowIndex="5">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="6">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="159.0" style="-fx-background-color: transparent;" GridPane.rowIndex="7">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="184.0" style="-fx-background-color: transparent;" GridPane.rowIndex="8">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="209.0" style="-fx-background-color: transparent;" GridPane.rowIndex="9">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="modProp00" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp01" layoutX="16.0" layoutY="15.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="1">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp02" layoutX="16.0" layoutY="40.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="2">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp03" layoutX="16.0" layoutY="65.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="3">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp04" layoutX="16.0" layoutY="90.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="4">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp05" layoutX="16.0" layoutY="115.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="5">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp06" layoutX="16.0" layoutY="209.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="6">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp07" layoutX="16.0" layoutY="246.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="7">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp08" layoutX="16.0" layoutY="283.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="8">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp09" layoutX="16.0" layoutY="320.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="9">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
 																									</children>
 																								</GridPane>
 																							</children>
@@ -994,7 +1159,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties01" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties01" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -1002,15 +1167,26 @@
 																						<Insets bottom="1.0" right="10.0" top="1.0" />
 																					</GridPane.margin>
 																				</CheckComboBox>
+                                                            <Button fx:id="addProp01" mnemonicParsing="false" onAction="#selButtonAddProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" textAlignment="CENTER" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <font>
+                                                                  <Font name="Bodoni MT Black" size="9.0" />
+                                                               </font>
+                                                               <GridPane.margin>
+                                                                  <Insets right="5.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
 																			</children>
 																		</GridPane>
 																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
 																			<content>
-																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="360.0" prefWidth="569.0">
 																					<children>
-																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																						<AnchorPane prefHeight="362.0" prefWidth="573.0">
 																							<children>
-																								<GridPane fx:id="listProprieties01" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																								<GridPane fx:id="listProprieties01" alignment="CENTER" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
 																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
 																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
@@ -1022,20 +1198,172 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<TextField editable="false" style="-fx-background-color: transparent;">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="3">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" style="-fx-background-color: transparent;" GridPane.rowIndex="4">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" style="-fx-background-color: transparent;" GridPane.rowIndex="5">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="210.0" style="-fx-background-color: transparent;" GridPane.rowIndex="6">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="248.0" style="-fx-background-color: transparent;" GridPane.rowIndex="7">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="286.0" style="-fx-background-color: transparent;" GridPane.rowIndex="8">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="324.0" style="-fx-background-color: transparent;" GridPane.rowIndex="9">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="modProp10" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp11" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="1">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp12" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="2">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp13" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="3">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp14" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="4">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp15" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="5">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp16" layoutX="16.0" layoutY="213.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="6">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp17" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="7">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp18" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="8">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp19" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="9">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
 																									</children>
 																								</GridPane>
 																							</children>
@@ -1089,7 +1417,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties02" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties02" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -1097,15 +1425,26 @@
 																						<Insets bottom="1.0" right="10.0" top="1.0" />
 																					</GridPane.margin>
 																				</CheckComboBox>
+                                                            <Button fx:id="addProp02" mnemonicParsing="false" onAction="#selButtonAddProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="+" textAlignment="CENTER" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <font>
+                                                                  <Font name="Bodoni MT Black" size="9.0" />
+                                                               </font>
+                                                               <GridPane.margin>
+                                                                  <Insets right="5.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
 																			</children>
 																		</GridPane>
 																		<ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
 																			<content>
-																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+																				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="569.0">
 																					<children>
-																						<AnchorPane prefHeight="200.0" prefWidth="573.0">
+																						<AnchorPane prefHeight="360.0" prefWidth="573.0">
 																							<children>
-																								<GridPane fx:id="listProprieties02" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+																								<GridPane fx:id="listProprieties02" alignment="CENTER" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
 																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
 																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
@@ -1117,20 +1456,172 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<TextField editable="false" style="-fx-background-color: transparent;">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" style="-fx-background-color: transparent;" GridPane.rowIndex="3">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" style="-fx-background-color: transparent;" GridPane.rowIndex="4">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" style="-fx-background-color: transparent;" GridPane.rowIndex="5">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin></TextField>
+                                                                              <TextField editable="false" layoutX="41.0" layoutY="213.0" style="-fx-background-color: transparent;" GridPane.rowIndex="6">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="18.0" style="-fx-background-color: transparent;" GridPane.rowIndex="7">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="18.0" style="-fx-background-color: transparent;" GridPane.rowIndex="8">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="18.0" style="-fx-background-color: transparent;" GridPane.rowIndex="9">
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="30.0" />
+                                                                                 </GridPane.margin>
+                                                                              </TextField>
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="modProp20" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp21" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="1">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp22" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="2">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp23" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="3">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp24" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="4">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp25" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="5">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp26" layoutX="16.0" layoutY="217.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="6">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp27" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="7">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp28" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="8">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
+                                                                              <Button fx:id="modProp29" layoutX="11.0" layoutY="22.0" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false" GridPane.rowIndex="9">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <font>
+                                                                                    <Font name="Bodoni MT Black" size="9.0" />
+                                                                                 </font>
+                                                                                 <GridPane.margin>
+                                                                                    <Insets left="5.0" />
+                                                                                 </GridPane.margin>
+                                                                              </Button>
 																									</children>
 																								</GridPane>
 																							</children>
@@ -1184,7 +1675,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties03" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties03" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -1214,12 +1705,12 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<TextField editable="false" />
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -1254,6 +1745,13 @@
 													</children>
 												</AnchorPane>
 											</content>
+                                 <graphic>
+                                    <Button fx:id="buttonProperties03" graphicTextGap="3.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#selButtonProperties" prefHeight="16.0" prefWidth="9.0" style="-fx-background-color: transparent;" text="x" textFill="RED">
+                                       <padding>
+                                          <Insets top="-2.0" />
+                                       </padding>
+                                    </Button>
+                                 </graphic>
 										</Tab>
 										<Tab fx:id="tab04" text="Tab05">
 											<content>
@@ -1279,7 +1777,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties04" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties04" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -1309,12 +1807,12 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<TextField editable="false" />
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -1349,6 +1847,12 @@
 													</children>
 												</AnchorPane>
 											</content>
+                                 <graphic>
+                                    <Button fx:id="buttonProperties04" graphicTextGap="3.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#selButtonProperties" prefHeight="16.0" prefWidth="9.0" style="-fx-background-color: transparent;" text="x" textFill="RED">
+                                       <padding>
+                                          <Insets top="-2.0" />
+                                       </padding></Button>
+                                 </graphic>
 										</Tab>
 										<Tab fx:id="tab05" text="Tab06">
 											<content>
@@ -1374,7 +1878,7 @@
 																			<children>
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
 																				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																				<CheckComboBox fx:id="ListProprieties05" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+																				<CheckComboBox fx:id="ListProprieties05" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
 																					<opaqueInsets>
 																						<Insets />
 																					</opaqueInsets>
@@ -1404,12 +1908,12 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField />
-																										<TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
-																										<TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
-																										<TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
-																										<TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
-																										<TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+																										<TextField editable="false" />
+																										<TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+																										<TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+																										<TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+																										<TextField editable="false" layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+																										<TextField editable="false" layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -1444,7 +1948,313 @@
 													</children>
 												</AnchorPane>
 											</content>
+                                 <graphic>
+                                    <Button fx:id="buttonProperties05" graphicTextGap="3.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#selButtonProperties" prefHeight="16.0" prefWidth="9.0" style="-fx-background-color: transparent;" text="x" textFill="RED">
+                                       <padding>
+                                          <Insets top="-2.0" />
+                                       </padding>
+                                    </Button>
+                                 </graphic>
 										</Tab>
+                              <Tab fx:id="tab06" text="Tab07">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+                                       <children>
+                                          <HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <VBox prefHeight="175.0" prefWidth="555.0">
+                                                   <children>
+                                                      <GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints />
+                                                            <RowConstraints />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <VBox.margin>
+                                                            <Insets left="5.0" right="15.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <CheckComboBox fx:id="ListProprieties06" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="1.0" right="10.0" top="1.0" />
+                                                               </GridPane.margin>
+                                                            </CheckComboBox>
+                                                         </children>
+                                                      </GridPane>
+                                                      <ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+                                                               <children>
+                                                                  <AnchorPane prefHeight="200.0" prefWidth="573.0">
+                                                                     <children>
+                                                                        <GridPane fx:id="listProprieties06" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                           <children>
+                                                                              <TextField editable="false" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+                                                                              <TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+                                                                              <Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Rectangle>
+                                                <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="130.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                                 <graphic>
+                                    <Button fx:id="buttonProperties06" graphicTextGap="3.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#selButtonProperties" prefHeight="16.0" prefWidth="9.0" style="-fx-background-color: transparent;" text="x" textFill="RED">
+                                       <padding>
+                                          <Insets top="-2.0" />
+                                       </padding>
+                                    </Button>
+                                 </graphic>
+                              </Tab>
+                              <Tab fx:id="tab07" text="Tab08">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0">
+                                       <children>
+                                          <HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <VBox prefHeight="175.0" prefWidth="555.0">
+                                                   <children>
+                                                      <GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints />
+                                                            <RowConstraints />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <VBox.margin>
+                                                            <Insets left="5.0" right="15.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <CheckComboBox fx:id="ListProprieties07" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" visible="false" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="1.0" right="10.0" top="1.0" />
+                                                               </GridPane.margin>
+                                                            </CheckComboBox>
+                                                         </children>
+                                                      </GridPane>
+                                                      <ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+                                                               <children>
+                                                                  <AnchorPane prefHeight="200.0" prefWidth="573.0">
+                                                                     <children>
+                                                                        <GridPane fx:id="listProprieties07" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                           <children>
+                                                                              <TextField editable="false" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+                                                                              <TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+                                                                              <TextField editable="false" layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+                                                                              <Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Rectangle>
+                                                <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="130.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                                 <graphic>
+                                    <Button fx:id="buttonProperties07" graphicTextGap="3.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#selButtonProperties" prefHeight="16.0" prefWidth="9.0" style="-fx-background-color: transparent;" text="x" textFill="RED">
+                                       <padding>
+                                          <Insets top="-2.0" />
+                                       </padding>
+                                    </Button>
+                                 </graphic>
+                              </Tab>
+                              <Tab fx:id="tab08" text="Tab09">
+                                 <content>
+                                    <AnchorPane fx:id="ancorTabe08" minHeight="0.0" minWidth="0.0" prefHeight="169.0" prefWidth="535.0" visible="false">
+                                       <children>
+                                          <HBox layoutX="47.0" layoutY="35.0" prefHeight="169.0" prefWidth="1057.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <VBox prefHeight="175.0" prefWidth="555.0">
+                                                   <children>
+                                                      <GridPane alignment="CENTER" prefHeight="37.0" prefWidth="528.0" style="-fx-border-color: black; -fx-border-radius: 5; -fx-grid-lines-visible: true;">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="118.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints />
+                                                            <RowConstraints />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <VBox.margin>
+                                                            <Insets left="5.0" right="15.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Proprieties" wrappingWidth="401.533203125" GridPane.rowIndex="2" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <CheckComboBox fx:id="ListProprieties08" prefHeight="25.0" prefWidth="139.0" style="-fx-border-radius: 5;" title="Select Proprieties" GridPane.rowIndex="2">
+                                                               <opaqueInsets>
+                                                                  <Insets />
+                                                               </opaqueInsets>
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="1.0" right="10.0" top="1.0" />
+                                                               </GridPane.margin>
+                                                            </CheckComboBox>
+                                                         </children>
+                                                      </GridPane>
+                                                      <ScrollPane hbarPolicy="NEVER" opacity="0.99" prefHeight="148.0" prefWidth="555.0">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="569.0">
+                                                               <children>
+                                                                  <AnchorPane prefHeight="200.0" prefWidth="573.0">
+                                                                     <children>
+                                                                        <GridPane fx:id="listProprieties05111" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
+                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                           <children>
+                                                                              <TextField />
+                                                                              <TextField layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
+                                                                              <TextField layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
+                                                                              <TextField layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
+                                                                              <TextField layoutX="11.0" layoutY="86.0" GridPane.rowIndex="4" />
+                                                                              <TextField layoutX="11.0" layoutY="112.0" GridPane.rowIndex="5" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+                                                                              <Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                           </children>
+                                                                        </GridPane>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Rectangle>
+                                                <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="130.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
 									</tabs>
 								</TabPane>
 							</children>

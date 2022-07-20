@@ -82,24 +82,24 @@ public class StartAProVerController {
 		FXMLLoader loader = new FXMLLoader();
 		
 		System.out.println(getClass().getResource("/fxml/SelectAProVer.fxml").toExternalForm());
-		System.out.println("1");
+
 		loader.setLocation(getClass().getResource("/fxml/SelectAProVer.fxml"));
-		System.out.println("2");
+
         AnchorPane page = (AnchorPane) loader.load();
-        System.out.println("3");
+
         Stage dialogStage = new Stage();
-        System.out.println("4");
+
         dialogStage.initModality(Modality.WINDOW_MODAL);
-        System.out.println("5");
+
         Scene scene = new Scene(page);
-        System.out.println("6");
+
         dialogStage.setScene(scene);
-        System.out.println("7");
+
         
         SelectAProVerController controller = loader.getController();
-        System.out.println("8");
+
          controller.setToolStart(tool.getText());
-        System.out.println("9");
+
          controller.setFileStart(singleFile.getText());
         dialogStage.setMaximized(true);
         //dialogStage.showAndWait();
@@ -161,7 +161,7 @@ public class StartAProVerController {
 		titleBoxBob.getChildren().add(immageBob);
 		titledBob.setGraphic(titleBoxBob);
 		titledBob.setContentDisplay(ContentDisplay.RIGHT);
-		System.out.println("c");
+
 		HBox titleBoxEve = new HBox();
  		ImageView immageEve = new ImageView(new Image(getClass().getResource("/styles/images/evepiccola1.png").toExternalForm(),0, 24, true, true));
  		titleBoxEve.getChildren().add(immageEve);

@@ -25,8 +25,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -60,6 +62,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -88,6 +91,7 @@ public class SelectAProVerController {
 	SecurityKey eve = new SecurityKey();
 	SecurityKey server = new SecurityKey();
 	Messages messagges = new Messages();
+	//Properties proprieties = new Properties();
 	ConfigurationDataProprieties confProp = new ConfigurationDataProprieties();
 	private String appoOldKnowledge= null;
 	boolean toolFlag = false;
@@ -99,7 +103,7 @@ public class SelectAProVerController {
 	Node node,node1,node2,node3,node4, line,liey,msg,msf,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
 
 	@FXML
-	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane;
+	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane,ancorTabe08;
 
 	@FXML
 	private TitledPane titledAlice;
@@ -108,7 +112,7 @@ public class SelectAProVerController {
 	private TitledPane titledBob;
 
 	@FXML
-	private CheckComboBox ListProprieties00, ListProprieties01, ListProprieties02,ListProprieties03,ListProprieties04,ListProprieties05;
+	private CheckComboBox ListProprieties00, ListProprieties01, ListProprieties02,ListProprieties03,ListProprieties04,ListProprieties05,ListProprieties06,ListProprieties07,ListProprieties08;
 
 	@FXML
 	private TitledPane titledEve;
@@ -190,16 +194,31 @@ public class SelectAProVerController {
 	@FXML
 	private Button aliceButton15, bobButton15, eveButton15, serverButton15;
 	@FXML
+	private Button propriertiesButton;
+	
+	@FXML
 	private Button insertSelect00,insertSelect01,insertSelect02,insertSelect03,insertSelect04,insertSelect05;
 	
 	@FXML
 	private Button serverButton;
 	
 	@FXML
+	private Button addProp00,addProp01,addProp02;
+	
+	@FXML
+	private Button modProp00, modProp01,modProp02,modProp03,modProp04,modProp05,modProp06, modProp07,modProp08,modProp09;
+	
+	@FXML
+	private Button modProp10, modProp11,modProp12,modProp13,modProp14,modProp15,modProp16, modProp17,modProp18,modProp19;
+	
+	@FXML
+	private Button modProp20, modProp21,modProp22,modProp23,modProp24,modProp25,modProp26, modProp27,modProp28,modProp29;
+		
+	@FXML
 	private AnchorPane ancorPulsanti;
 	
 	@FXML
-	private GridPane tabeKnowledge, listProprieties00, listProprieties01,listProprieties02, listProprieties03, listProprieties04, listProprieties05;
+	private GridPane tabeKnowledge, listProprieties00, listProprieties01,listProprieties02, listProprieties03, listProprieties04, listProprieties05,listProprieties06, listProprieties07, listProprieties08;
 	
 	@FXML
 	private Label aliceAsymmetricPublicKey, aliceAsymmetricPrivateKey, aliceSymmetricKey, aliceHash;
@@ -211,7 +230,7 @@ public class SelectAProVerController {
 	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash;
 
 	@FXML
-	private Tab tab00,tab01,tab02,tab03,tab04,tab05;
+	private Tab tab00,tab01,tab02,tab03,tab04,tab05,tab06,tab07,tab08;
 	
 	@FXML
 	private TabPane tabProprieities;
@@ -220,14 +239,38 @@ public class SelectAProVerController {
 	private MenuButton choices;
 	
 	@FXML
-	private MenuItem tool,toolEve;
-
+	private MenuItem tool,toolEve,toolCheck;
+	
+	private GridPane[] proprlistProprietiesTb  = new GridPane[10];
+	private Tab[] tabTb  = new Tab[10];
+	
 //
 // Routin di inizializzazione del Controller
 // 
 
 	@FXML
 	private void initialize() {
+// memorizzo in una tabella i link ai gridPane e ai tab delle tab properties	
+		proprlistProprietiesTb[0] = listProprieties00;
+		proprlistProprietiesTb[1] = listProprieties01;
+		proprlistProprietiesTb[2] = listProprieties02;
+		proprlistProprietiesTb[3] = listProprieties03;
+		proprlistProprietiesTb[4] = listProprieties04;
+		proprlistProprietiesTb[5] = listProprieties05;
+		proprlistProprietiesTb[6] = listProprieties06;
+		proprlistProprietiesTb[7] = listProprieties07;
+		proprlistProprietiesTb[8] = listProprieties08;
+		tabTb[0]= tab00;
+		tabTb[1]= tab01;
+		tabTb[2]= tab02;
+		tabTb[3]= tab03;
+		tabTb[4]= tab04;
+		tabTb[5]= tab05;
+		tabTb[6]= tab06;
+		tabTb[7]= tab07;
+		tabTb[8]= tab08;
+
+		
 // legge il file di configurazione delle propriet� da testare		
 		
 		readFileConf();
@@ -268,7 +311,6 @@ public class SelectAProVerController {
 	
 
 // si abilitano le visibilit� della combobox per la selezione degli actor
-		
 		if (tool.getText().contains("Enable")) {
 			comboBoxActor.getItems().addAll("Alice", "Eve" , "Bob");
 			
@@ -990,13 +1032,13 @@ public class SelectAProVerController {
 		tabeKnowledge.setGridLinesVisible(true);
 		for (Node node : tabeKnowledge.getChildren()) {
 			
-			if (tabeKnowledge.getRowIndex(node) != null) {
-				appRow = tabeKnowledge.getRowIndex(node);
+			if (GridPane.getRowIndex(node) != null) {
+				appRow = GridPane.getRowIndex(node);
 			} else {
 				appRow = 0;
 			}
-			if (tabeKnowledge.getColumnIndex(node) != null) {
-				appColumn = tabeKnowledge.getColumnIndex(node);
+			if (GridPane.getColumnIndex(node) != null) {
+				appColumn = GridPane.getColumnIndex(node);
 			} else {
 				appColumn = 0;
 			}
@@ -1225,13 +1267,13 @@ public class SelectAProVerController {
 		tabeKnowledge.setGridLinesVisible(true);
 		for (Node node : tabeKnowledge.getChildren()) {
 			
-			if (tabeKnowledge.getRowIndex(node) != null) {
-				appRow = tabeKnowledge.getRowIndex(node);
+			if (GridPane.getRowIndex(node) != null) {
+				appRow = GridPane.getRowIndex(node);
 			} else {
 				appRow = 0;
 			}
-			if (tabeKnowledge.getColumnIndex(node) != null) {
-				appColumn = tabeKnowledge.getColumnIndex(node);
+			if (GridPane.getColumnIndex(node) != null) {
+				appColumn = GridPane.getColumnIndex(node);
 			} else {
 				appColumn = 0;
 			}
@@ -1392,6 +1434,17 @@ public class SelectAProVerController {
 		}
 		
 	}
+	  // Tool per abilitata o disabilitata il controllo delle parole per verificare le properties
+		@FXML
+
+		private void toolSetChek() {
+			if (toolCheck.getText().equals("Don't check Words")) {
+				toolCheck.setText("Check Words");
+			} else {
+				toolCheck.setText("Don't check Words");
+			}
+			
+		}
 	public void setToolStart (String toolStart) {
 		if (toolStart.equals("Enable Server")){
 			tool.setText("Disable Server");
@@ -1410,12 +1463,10 @@ public class SelectAProVerController {
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
 			toolFlag = true;
-			
-			comboBoxActor.getItems().remove(3,4);
+ 			comboBoxActor.getItems().removeAll("Server");
 			toolFlag= true;
 			comboBoxActor.setValue("Actor");
 			toolFlag= false;
-			
 			tool.setText("Enable Server");
 			serverButton.setText("Enable Server");
 			titledServer.setDisable(true);
@@ -1431,7 +1482,6 @@ public class SelectAProVerController {
 		} else {
 			comboBoxActor.setValue("Actor");
 			comboBoxActor.setDisable(false);
-			
 			//comboBoxActor.getItems().add("Server");
 			tool.setText("Disable Server");
 			serverButton.setText("Disable Server");
@@ -2167,7 +2217,7 @@ public class SelectAProVerController {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
 						for (int i = 0; i < ListProprieties02.getCheckModel().getCheckedItems().size(); i++) {
 
-							insertListProprities(listProprieties02, ListProprieties02);
+							insertListProperties(listProprieties02, ListProprieties02);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 						}
 					}
@@ -2176,14 +2226,14 @@ public class SelectAProVerController {
 			if (numberRow > -1) {
 				ListProprieties00.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties00, ListProprieties00);
+							insertListProperties(listProprieties00, ListProprieties00);
 					}
 				});
 			}
 			if (numberRow > 0) {
 				ListProprieties01.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties01, ListProprieties01);
+							insertListProperties(listProprieties01, ListProprieties01);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 					}
 				});
@@ -2191,7 +2241,7 @@ public class SelectAProVerController {
 			if (numberRow > 1) {
 				ListProprieties02.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties02, ListProprieties02);
+							insertListProperties(listProprieties02, ListProprieties02);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 					}
 				});
@@ -2199,7 +2249,7 @@ public class SelectAProVerController {
 			if (numberRow > 2) {
 				ListProprieties03.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties03, ListProprieties03);
+							insertListProperties(listProprieties03, ListProprieties03);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 					}
 				});
@@ -2207,7 +2257,7 @@ public class SelectAProVerController {
 			if (numberRow > 3) {
 				ListProprieties04.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties04, ListProprieties04);
+							insertListProperties(listProprieties04, ListProprieties04);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 					}
 				});
@@ -2215,7 +2265,32 @@ public class SelectAProVerController {
 			if (numberRow > 4) {
 				ListProprieties05.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 					public void onChanged(ListChangeListener.Change<? extends String> c) {
-							insertListProprities(listProprieties05, ListProprieties05);
+							insertListProperties(listProprieties05, ListProprieties05);
+							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
+					}
+				});
+			}
+			if (numberRow > 5) {
+				ListProprieties06.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+					public void onChanged(ListChangeListener.Change<? extends String> c) {
+							insertListProperties(listProprieties06, ListProprieties06);
+							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
+					}
+				});
+			}
+			
+			if (numberRow > 6) {
+				ListProprieties07.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+					public void onChanged(ListChangeListener.Change<? extends String> c) {
+							insertListProperties(listProprieties07, ListProprieties07);
+							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
+					}
+				});
+			}
+			if (numberRow > 7) {
+				ListProprieties08.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+					public void onChanged(ListChangeListener.Change<? extends String> c) {
+							insertListProperties(listProprieties08, ListProprieties08);
 							// System.out.println(ListProprieties00.getCheckModel().getCheckedItems().get(i));
 					}
 				});
@@ -2236,11 +2311,12 @@ public class SelectAProVerController {
 		int count = 0;
 		boolean done = false;
 		while (in.hasNextLine()) {
+			count=0;
 			String line1 = in.nextLine();
 			Scanner t = new Scanner(line1);
 			while (t.hasNext()) {
 				if (count == 0) {
-					confProp.setListNameTab(t.next());
+					confProp.setListNameTab(t.next(),"");
 				} else {
 					confProp.setProprietiesValue(t.next());
 				}
@@ -2264,13 +2340,23 @@ public class SelectAProVerController {
 			tab04.setText(confProp.getListNameTab(numberRow));
 		case 5:
 			tab05.setText(confProp.getListNameTab(numberRow));
+		case 6:
+			tab06.setText(confProp.getListNameTab(numberRow));
+		case 7:
+			tab07.setText(confProp.getListNameTab(numberRow));
+		case 8:
+			tab08.setText(confProp.getListNameTab(numberRow));
 		default:
 			break;
 		}
 	}
 
 	private void deleteTab(int numberRow) {
-		for (int i = numberRow; i < 6; i++) {
+		
+		if (numberRow > 8)
+			return;
+
+		for (int i = numberRow; i < 9; i++) {
 			switch (i) {
 			case 0:
 				tabProprieities.getTabs().remove(tab00);
@@ -2290,10 +2376,70 @@ public class SelectAProVerController {
 			case 5:
 				tabProprieities.getTabs().remove(tab05);
 				break;
+			case 6:
+				tabProprieities.getTabs().remove(tab06);
+				break;
+			case 7:
+				tabProprieities.getTabs().remove(tab07);
+				break;
+			case 8:
+				tabProprieities.getTabs().remove(tab08);
+				break;
 			default:
 				break;
 			}
+
 		}
+		tabProprieities.getTabs().add(tab08);
+		tab08.setText("+");
+		// tab08.setGraphic(new Circle(0, 0, 10));
+		// Image image = new
+		// Image(getClass().getResourceAsStream("/styles/images/alicepiccola.png"));
+		// tab08.setGraphic(new ImageView(image));
+
+		tab08.setOnSelectionChanged(e -> {
+			try {
+				if (showProperties(8)) {
+					System.out.println(" sono uscito dall'inserimento " + (tabProprieities.getTabs().size() - 1) + " -- " + confProp.getListNameTab((tabProprieities.getTabs().size() - 1)));
+					if (tabProprieities.getTabs().size() - 1 == 3) {
+						tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab03);
+						tab03.setText(confProp.getListNameTab(3));
+					} else {
+						if (tabProprieities.getTabs().size() - 1 == 4) {
+							tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab04);
+							tab04.setText(confProp.getListNameTab(4));
+						} else {
+							if (tabProprieities.getTabs().size() - 1 == 5) {
+								tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab05);
+								tab05.setText(confProp.getListNameTab(5));
+							} else {
+								if (tabProprieities.getTabs().size() - 1 == 6) {
+									tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab06);
+									tab06.setText(confProp.getListNameTab(6));
+								} else {
+									if (tabProprieities.getTabs().size() - 1 == 7) {
+										tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab07);
+										tab07.setText(confProp.getListNameTab(7));
+									}
+								}
+							}
+						}
+					}
+					if (tabProprieities.getTabs().size() - 1 < 8) {
+						tabProprieities.getSelectionModel().select(tabProprieities.getTabs().size() - 2);
+					} else {
+						tabProprieities.getSelectionModel().select(tabProprieities.getTabs().size() - 2);
+						tabProprieities.getTabs().remove(tab08);
+					}
+				} else {
+					tabProprieities.getSelectionModel().select(tabProprieities.getTabs().size() - 2);
+				}
+
+			} catch (Exception e1) {
+
+				e1.printStackTrace();
+			}
+		});
 	}
 
 	private void insePropriertiesIntoTab(int numProprierties) {
@@ -2335,8 +2481,7 @@ public class SelectAProVerController {
 
 
 
-
-	private void insertListProprities(GridPane listProprieties0x, CheckComboBox ListProprieties0x) {
+	private void insertListProperties(GridPane listProprieties0x, CheckComboBox ListProprieties0x) {
 		ObservableList list = ListProprieties0x.getCheckModel().getCheckedItems();
 		int riga = 0;
 		int appRow, appColumn;
@@ -2352,13 +2497,13 @@ public class SelectAProVerController {
 
 			for (Node node : listProprieties0x.getChildren()) {
 
-				if (listProprieties0x.getRowIndex(node) != null) {
-					appRow = listProprieties0x.getRowIndex(node);
+				if (GridPane.getRowIndex(node) != null) {
+					appRow = GridPane.getRowIndex(node);
 				} else {
 					appRow = 0;
 				}
-				if (listProprieties0x.getColumnIndex(node) != null) {
-					appColumn = listProprieties0x.getColumnIndex(node);
+				if (GridPane.getColumnIndex(node) != null) {
+					appColumn = GridPane.getColumnIndex(node);
 				} else {
 					appColumn = 0;
 				}
@@ -2369,8 +2514,374 @@ public class SelectAProVerController {
 			}
 			riga++;
 		}
-			
+
 	}
+	private void rewriteEleProperties (GridPane listProprieties0x,int tab) {
+		int appRow = 0;
+		for (Node node : listProprieties0x.getChildren()) {
+			if (GridPane.getRowIndex(node) != null) {
+				appRow = GridPane.getRowIndex(node);
+			} else {
+				appRow = 0;
+			}
+			if (node != null && node instanceof TextField) {
+				((TextField) node).setText(confProp.getProprietiesValue(tab, appRow));
+			}
+			if (node != null && node instanceof Button && tab < 3) {
+				if (confProp.getProprietiesValue(tab, appRow) == null
+						|| confProp.getProprietiesValue(tab, appRow).isEmpty()) {
+					((Button) node).setVisible(false);
+				} else {
+					((Button) node).setVisible(true);
+				}
+			}
+
+		}
+	}
+	
+	
+	private void insertEleProperties(GridPane listProprieties0x, String properties, int row, int tab) {
+		int appRow = 0;
+		System.out.println ("Sto inserendo nelle righe" + properties);
+		for (Node node : listProprieties0x.getChildren()) {
+			System.out.println("leggo il nodo " + node);
+			if (GridPane.getRowIndex(node) != null) {
+				appRow = GridPane.getRowIndex(node);
+			} else {
+				appRow = 0;
+			}
+			System.out.println("riga " + appRow);
+			if (node != null && node instanceof TextField) {
+				if (appRow == row) {
+					System.out.println("inserisco " + properties);
+					((TextField) node).setText(properties);
+				}
+			}
+			if (node != null && node instanceof Button && tab < 3) {
+				if (appRow == row) {
+					((Button) node).setVisible(true);
+				}
+			}
+
+		}
+
+	}
+
+	private Node selecttEleProperties(GridPane listProprieties0x,  int row) {
+
+		int appRow = 0;
+		for (Node node : listProprieties0x.getChildren()) {
+			if (GridPane.getRowIndex(node) != null) {
+				appRow = GridPane.getRowIndex(node);
+			} else {
+				appRow = 0;
+			}
+			if (node != null && node instanceof TextField) {
+				if (appRow == row) {
+					return node;
+				}
+			}
+		}
+		return null;
+	}
+	
+	//@FXML
+    private boolean showProperties(int numTab) throws Exception {
+
+    	FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/CreateProperties.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+     
+        Stage dialogStage = new Stage();
+                
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        
+        CreateProperties controller = loader.getController();
+        controller.setDialogStage(dialogStage,alice,bob,eve,server,toolCheck.getText());
+        System.out.println("Apro l'inserimento "+ numTab);
+        if (numTab != 8){
+        	controller.setTxtProperties(confProp.getListNameTab(numTab), confProp.getProprietiesValue(numTab,0));
+        }
+        
+        
+        dialogStage.showAndWait();
+        System.out.println("torno  " + numTab + " "+ controller.getOperation() + " " + numTab + "  "+  controller.getProperyName());
+        if(controller.getOperation().equals("Delete")){
+        	confProp.delListTab(numTab);
+        	for (int numberRow=0; numberRow < (confProp.getNumListNameTab()+1); numberRow++){
+        		insertTab(numberRow);
+        	}
+        	deleteTab(confProp.getNumListNameTab()+1);
+        	return false;
+        }
+        
+		if (!controller.getProperyName().isEmpty()) {
+			if (numTab == 8) {
+				confProp.setListNameTab(controller.getProperyName(), controller.getExpressionValue());
+				  System.out.println("inserisco  in "+ confProp.getNumListNameTab() + " l'espressione "+ controller.getExpressionValue());
+				switch (confProp.getNumListNameTab()) {
+				case 0:
+					insertEleProperties(listProprieties00, controller.getExpressionValue(), 0,0);
+					break;
+				case 1:
+					insertEleProperties(listProprieties01, controller.getExpressionValue(), 0,1);
+					break;
+				case 2:
+					insertEleProperties(listProprieties02, controller.getExpressionValue(), 0,2);
+					break;
+				case 3:
+					insertEleProperties(listProprieties03, controller.getExpressionValue(), 0,3);
+					break;
+				case 4:
+					insertEleProperties(listProprieties04, controller.getExpressionValue(), 0,4);
+					break;
+				case 5:
+					insertEleProperties(listProprieties05, controller.getExpressionValue(), 0,5);
+					break;
+				case 6:
+					insertEleProperties(listProprieties06, controller.getExpressionValue(), 0,6);
+					break;
+				case 7:
+					insertEleProperties(listProprieties07, controller.getExpressionValue(), 0,7);
+					break;
+				case 8:
+					insertEleProperties(listProprieties08, controller.getExpressionValue(), 0,8);
+					break;
+				}
+				return true;
+			} else {
+				confProp.updListNameTab(numTab, controller.getProperyName(), controller.getExpressionValue());
+				switch (numTab) {
+				case 0:
+					insertEleProperties(listProprieties00, controller.getExpressionValue(), 0,1);
+					break;
+				case 1:
+					insertEleProperties(listProprieties01, controller.getExpressionValue(), 0,2);
+					break;
+				case 2:
+					insertEleProperties(listProprieties02, controller.getExpressionValue(), 0,3);
+					break;
+				case 3:
+					insertEleProperties(listProprieties03, controller.getExpressionValue(), 0,4);
+					break;
+				case 4:
+					insertEleProperties(listProprieties04, controller.getExpressionValue(), 0,5);
+					break;
+				case 5:
+					insertEleProperties(listProprieties05, controller.getExpressionValue(), 0,6);
+					break;
+				case 6:
+					insertEleProperties(listProprieties06, controller.getExpressionValue(), 0,7);
+					break;
+				case 7:
+					insertEleProperties(listProprieties07, controller.getExpressionValue(), 0,8);
+					break;
+				case 8:
+					insertEleProperties(listProprieties08, controller.getExpressionValue(), 0,9);
+					break;
+				}
+
+
+
+				tabProprieities.getSelectionModel().select(numTab);
+				return true;
+			}
+		}
+        
+        
+        return false;
+
+    
+    }
+	
+	@FXML
+	private void selButtonProperties(ActionEvent e) throws Exception {
+		
+		node = (Node) e.getSource();
+		
+		String data = (String) node.getId();
+		int riga = Integer.parseInt(data.substring(data.length() - 2));
+		if (showProperties(riga)) {
+			//((Tab) node).setText(confProp.getListNameTab(riga));
+			switch (riga) {
+			case 3:
+				tab03.setText(confProp.getListNameTab(riga));
+				break;
+			case 4:
+				tab04.setText(confProp.getListNameTab(riga));
+				break;
+			case 5:
+				tab05.setText(confProp.getListNameTab(riga));
+				break;
+			case 6:
+				tab06.setText(confProp.getListNameTab(riga));
+				break;
+			case 7:
+				tab07.setText(confProp.getListNameTab(riga));
+				break;
+			}
+		}
+		
+	}
+	
+	@FXML
+	private void selButtonAddProperties(ActionEvent e) throws Exception {
+
+		node = (Node) e.getSource();
+		
+		String data = (String) node.getId();
+		int tab = Integer.parseInt(data.substring(data.length() - 2));
+		showAddProperties(tab,"ADD",0);
+		
+	}
+	
+    private void showAddProperties(int tab,String operation,int row) throws Exception {
+
+		FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/AddProperties.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+     
+        Stage dialogStage = new Stage();
+                
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        
+        AddProperties controller = loader.getController();
+        controller.setDialogStage(dialogStage,alice,bob,eve,server);
+        
+		switch (tab) {
+		case 0:
+			controller.setPropertyTypes(tab00.getText());
+			break;
+		case 1:
+			controller.setPropertyTypes(tab01.getText());
+			break;
+		case 2:
+			controller.setPropertyTypes(tab02.getText());
+			break;
+		}
+        
+		if (tool.getText().contains("Disable")) {
+			controller.setActorList(true);
+		} else {
+			controller.setActorList(false);
+		}
+		if (operation.contains("UPD")) {
+			Node node = null;
+			switch (tab) {
+			case 0:
+				node = selecttEleProperties(listProprieties00, row);
+				break;
+			case 1:
+				node = selecttEleProperties(listProprieties01, row);
+				break;
+			case 2:
+				node = selecttEleProperties(listProprieties02, row);
+				break;
+			case 3:
+				node = selecttEleProperties(listProprieties03, row);
+				break;
+			case 4:
+				node = selecttEleProperties(listProprieties04, row);
+				break;
+			case 5:
+				node = selecttEleProperties(listProprieties05, row);
+				break;
+			case 6:
+				node = selecttEleProperties(listProprieties06, row);
+				break;
+			case 7:
+				node = selecttEleProperties(listProprieties07, row);
+				break;
+			case 8:
+				node = selecttEleProperties(listProprieties08, row);
+				break;
+			}
+			if (node != null) {
+				controller.setpropertyAddValue(((TextField) node).getText());
+			}
+		}
+
+        dialogStage.showAndWait();
+        
+        if (controller.getOperation().equals("Saving")) {
+        	int column;
+        	if (operation.contains("UPD")) {
+        		column = row;
+        		confProp.setElePropertisValue(controller.getpropertyAddValue(),tab,column);
+        	} else {
+        		column = confProp.setNextPropertisValue(controller.getpropertyAddValue(),tab);
+        	}
+           	switch (tab) {
+			case 0:
+				insertEleProperties(listProprieties00, controller.getpropertyAddValue(), column,0);
+				break;
+			case 1:
+				insertEleProperties(listProprieties01, controller.getpropertyAddValue(), column,1);
+				break;
+			case 2:
+				insertEleProperties(listProprieties02, controller.getpropertyAddValue(), column,2);
+				break;
+			case 3:
+				insertEleProperties(listProprieties03, controller.getpropertyAddValue(), column,3);
+				break;
+			case 4:
+				insertEleProperties(listProprieties04, controller.getpropertyAddValue(), column,4);
+				break;
+			case 5:
+				insertEleProperties(listProprieties05, controller.getpropertyAddValue(), column,5);
+				break;
+			case 6:
+				insertEleProperties(listProprieties06, controller.getpropertyAddValue(), column,6);
+				break;
+			case 7:
+				insertEleProperties(listProprieties07, controller.getpropertyAddValue(), column,7);
+				break;
+			case 8:
+				insertEleProperties(listProprieties08, controller.getpropertyAddValue(), column,8);
+				break;
+			}
+        }
+        
+        if (controller.getOperation().equals("RemSaving")) {
+        	confProp.delPropertiesTab(tab,row);    
+           	switch (tab) {
+			case 0:
+				rewriteEleProperties(listProprieties00,0);
+				break;
+			case 1:
+				rewriteEleProperties(listProprieties01,1);
+				break;
+			case 2:
+				rewriteEleProperties(listProprieties02,2);
+				break;
+			case 3:
+				rewriteEleProperties(listProprieties03,3);
+				break;
+			case 4:
+				rewriteEleProperties(listProprieties04,4);
+				break;
+			case 5:
+				rewriteEleProperties(listProprieties05,5);
+				break;
+			case 6:
+				rewriteEleProperties(listProprieties06,6);
+				break;
+			case 7:
+				rewriteEleProperties(listProprieties07,7);
+				break;
+			case 8:
+				rewriteEleProperties(listProprieties08,8);
+				break;
+			}
+        }
+
+    }
 // se si � deciso di aprire un vecchio file si leggono le info dentro il file e si caricano i dati negli oggetti
 	public void setFileStart(String oldFileName) {
 		try {
@@ -2422,6 +2933,7 @@ public class SelectAProVerController {
 			line.equals("dati Messaggi ") ||
 			line.contains("dati Messaggio") ||
 			line.contains("dati listPartMessage j=") ||
+			line.contains("dati Properties") ||
 			line.contains("dati SecurityFunctionsPartMessage j=")){
 				return line;
 			}
@@ -2545,6 +3057,24 @@ public class SelectAProVerController {
 			int j = Integer.parseInt(typeInfo.substring(23, 25).replace(" ", ""));
 			int k= Integer.parseInt(typeInfo.substring(26, typeInfo.length()).replace("k=", "").replace("=", "").replace(" ",""));
 			messagges.getListMessages()[numMessage].addListPartMessage(line, k);		
+		}
+		if (typeInfo.equals("dati Properties ")) {
+			if (line.contains("TAB =")) {
+				int tab=Integer.valueOf(line.substring(5, 6));
+				confProp.updListNameTab(tab,line.substring(7, line.length()), "");
+			 	if (tab >2) {
+			 		tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tabTb[tab]);	
+			 		tabTb[tab].setText(line.substring(7, line.length()));
+			 	}
+			 	if (tab >6) {tabProprieities.getTabs().remove(8);};
+			}
+			if (line.contains("COL =")) {
+				int tab=Integer.valueOf(line.substring(5, 6));
+				int col=Integer.valueOf(line.substring(6, 7));
+				confProp.setElePropertisValue(line.substring(8, line.length()), tab,col);
+				insertEleProperties(proprlistProprietiesTb[tab], line.substring(8, line.length()), col,tab);
+
+			}
 		}
 	}
 // si visualizzano i pulsanti e la linea del messaggio presente sul file
@@ -2796,18 +3326,43 @@ public class SelectAProVerController {
 
 					}
 				}
+				
 			}
+			bw.flush();
+			bw.write("dati Properties \n");
+			for (int i = 0; i < 10; i++) {
+				if (!(confProp.getListNameTab(i)== null || confProp.getListNameTab(i).isEmpty())) {
+					bw.write("TAB =" + i + " " + confProp.getListNameTab(i)+ "\n");			
+					for (int j = 0; j < 10; j++) {
+						if (!(confProp.getProprietiesValue(i, j)== null || confProp.getProprietiesValue(i, j).isEmpty())) {
+							bw.write("COL =" +i+ j + " " + confProp.getProprietiesValue(i, j)+ "\n");
+						}
+					}
+				}
+			}
+
 			bw.flush();
 			bw.close();
 		} catch (IOException r) {
 			r.printStackTrace();
 		}
 	}
-	// se viene cliccato dal men� l'opzione about si visualizza il file PdF 
+	// se viene cliccato dal menu l'opzione about si visualizza il file PdF 
 	@FXML
 	private void about() throws IOException {
 		File file = new File("src\\main\\resources\\ConfigurationFile\\Help.pdf");
 		Desktop.getDesktop().open(file);
+	}
+	@FXML
+	private void selButtonModProperties(ActionEvent e) throws Exception {
+
+		node = (Node) e.getSource();
+		
+		String data = (String) node.getId();
+		int col= Integer.parseInt(data.substring(data.length() - 1));
+		int tab= Integer.parseInt(data.substring(data.length() - 2,data.length()-1));
+		showAddProperties(tab,"UPD",col);
+		
 	}
 
 }
