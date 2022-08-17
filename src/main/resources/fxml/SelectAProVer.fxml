@@ -72,9 +72,9 @@
 											<children>
 												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="263.0">
 													<content>
-														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="761.0">
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="229.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="65.0" prefWidth="759.0">
+																<GridPane prefHeight="204.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -83,6 +83,13 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																	</rowConstraints>
 																	<children>
 																		<Label fx:id="aliceAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
@@ -111,10 +118,52 @@
 																				<Insets left="5.0" right="5.0" />
 																			</GridPane.margin>
 																		</Label>
-                                                      <Button fx:id="Alice1" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
-                                                      <Button fx:id="Alice2" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
-                                                      <Button fx:id="Alice3" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
-                                                      <Button fx:id="Alice4" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Label fx:id="aliceBitstring" layoutX="15.0" layoutY="78.0" text="Bitstring = {}" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceIdCertificate" layoutX="15.0" layoutY="86.0" text="IdCertificate = {}" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceNonce" layoutX="15.0" layoutY="104.0" text="Nonce = {}" GridPane.rowIndex="6">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceSignature" layoutX="15.0" layoutY="122.0" text="Signature = {}" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceTag" layoutX="15.0" layoutY="140.0" text="Tag = {}" GridPane.rowIndex="8">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceTimestamp" layoutX="15.0" layoutY="158.0" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceDigest" layoutX="15.0" layoutY="177.0" text="Digest = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Button fx:id="Alice01" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
+                                                      <Button fx:id="Alice02" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
+                                                      <Button fx:id="Alice03" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
+                                                      <Button fx:id="Alice04" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Button fx:id="Alice05" layoutX="10.0" layoutY="73.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="4" />
+                                                      <Button fx:id="Alice06" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="5" />
+                                                      <Button fx:id="Alice07" layoutX="10.0" layoutY="99.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="6" />
+                                                      <Button fx:id="Alice08" layoutX="10.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="7" />
+                                                      <Button fx:id="Alice09" layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
+                                                      <Button fx:id="Alice10" layoutX="10.0" layoutY="153.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
+                                                      <Button fx:id="Alice11" layoutX="10.0" layoutY="172.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -137,9 +186,9 @@
 											<children>
 												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="263.0">
 													<content>
-														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="728.0">
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="229.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="66.0" prefWidth="758.0">
+																<GridPane prefHeight="204.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -148,6 +197,13 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																	</rowConstraints>
 																	<children>
 																		<Label fx:id="bobAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
@@ -176,10 +232,49 @@
 																				<Insets left="5.0" right="5.0" />
 																			</GridPane.margin>
 																		</Label>
-                                                      <Button fx:id="Bob1" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
-                                                      <Button fx:id="Bob2" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
-                                                      <Button fx:id="Bob3" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
-                                                      <Button fx:id="Bob4" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Label fx:id="bobBitstring" text="Bitstring = {}" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="bobIdCertificate" text="IdCertificate = {}" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="bobNonce" text="Nonce = {}" GridPane.rowIndex="6">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="bobSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="bobTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="bobTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="bobDigest" text="Digest = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Button fx:id="Bob01" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
+                                                      <Button fx:id="Bob02" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
+                                                      <Button fx:id="Bob03" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
+                                                      <Button fx:id="Bob04" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Button fx:id="Bob05" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="4" />
+                                                      <Button fx:id="Bob06" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="5" />
+                                                      <Button fx:id="Bob07" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="6" />
+                                                      <Button fx:id="Bob08" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="7" />
+                                                      <Button fx:id="Bob09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
+                                                      <Button fx:id="Bob10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
+                                                      <Button fx:id="Bob11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -202,9 +297,9 @@
 											<children>
 												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="263.0">
 													<content>
-														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="784.0">
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="229.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="63.0" prefWidth="758.0">
+																<GridPane prefHeight="204.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -213,6 +308,13 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																	</rowConstraints>
 																	<children>
 																		<Label fx:id="eveAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
@@ -241,10 +343,52 @@
 																				<Insets left="5.0" right="5.0" />
 																			</GridPane.margin>
 																		</Label>
-                                                      <Button fx:id="Eve1" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
-                                                      <Button fx:id="Eve2" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
-                                                      <Button fx:id="Eve3" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
-                                                      <Button fx:id="Eve4" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Label fx:id="eveBitstring" text="Bitstring = {}" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveIdCertificate" text="IdCertificate = {}" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveNonce" text="Nonce = {}" GridPane.rowIndex="6">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveDigest" text="Digest = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Button fx:id="Eve01" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
+                                                      <Button fx:id="Eve02" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
+                                                      <Button fx:id="Eve03" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
+                                                      <Button fx:id="Eve04" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Button fx:id="Eve05" layoutX="10.0" layoutY="45.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="4" />
+                                                      <Button fx:id="Eve06" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="5" />
+                                                      <Button fx:id="Eve07" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="6" />
+                                                      <Button fx:id="Eve08" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="7" />
+                                                      <Button fx:id="Eve09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
+                                                      <Button fx:id="Eve10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
+                                                      <Button fx:id="Eve11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -275,9 +419,9 @@
 											<children>
 												<ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="82.0" prefWidth="263.0">
 													<content>
-														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="144.0" prefWidth="769.0">
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="229.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="64.0" prefWidth="769.0">
+																<GridPane prefHeight="204.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -286,6 +430,13 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																	</rowConstraints>
 																	<children>
 																		<Label fx:id="serverAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
@@ -314,10 +465,48 @@
 																				<Insets left="5.0" right="5.0" />
 																			</GridPane.margin>
 																		</Label>
-                                                      <Button fx:id="Server1" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
-                                                      <Button fx:id="Server2" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
-                                                      <Button fx:id="Server3" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
-                                                      <Button fx:id="Server4" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Label fx:id="serverBitstring" text="Bitstring = {}" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverIdCertificate" text="IdCertificate = {}" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverNonce" text="Nonce = {}" GridPane.rowIndex="6">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="serverDigest" text="Digest = {}" GridPane.rowIndex="10">
+                                                         <padding>
+                                                            <Insets left="5.0" />
+                                                         </padding>
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Button fx:id="Server01" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" />
+                                                      <Button fx:id="Server02" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="1" />
+                                                      <Button fx:id="Server03" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="2" />
+                                                      <Button fx:id="Server04" layoutX="10.0" layoutY="8.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="3" />
+                                                      <Button fx:id="Server05" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="4" />
+                                                      <Button fx:id="Server06" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="5" />
+                                                      <Button fx:id="Server07" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="6" />
+                                                      <Button fx:id="Server08" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="7" />
+                                                      <Button fx:id="Server09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
+                                                      <Button fx:id="Server10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
+                                                      <Button fx:id="Server11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />

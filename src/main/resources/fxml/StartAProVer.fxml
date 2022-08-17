@@ -34,7 +34,7 @@
 						</Menu>
 						<Menu mnemonicParsing="false" text="Tool">
 							<items>
-								<MenuItem fx:id="tool" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
+								<MenuItem fx:id="tool" disable="true" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="Help">

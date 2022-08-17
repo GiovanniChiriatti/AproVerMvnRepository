@@ -729,7 +729,6 @@ public class CreateMessageAProVer {
     	boolean riempito = false;
     	for (Node node : tabeMessage.getChildren()) {
     		if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty()) {
-    			System.out.println("campo riempito" + ((TextField) node).getText().toString());
     			riempito = true;
     			break;
     		}
@@ -787,7 +786,6 @@ public class CreateMessageAProVer {
 			payloadField2.setVisible(true);
 
 			compactMessage = setComboBoxpayloadFieldList(nodeLastSecurytyFunction);
-			System.out.println("----------> compactMessage " +compactMessage);
 			message.addSecurityFunctionsPartMessage(compactMessage);
 			setTabMessageListPartMessage();
 

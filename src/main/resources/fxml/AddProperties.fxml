@@ -41,8 +41,8 @@
                      </font>
                   </Text>
                   <Button fx:id="closeButton" layoutX="654.0" layoutY="407.0" mnemonicParsing="false" onAction="#finishSaving" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Finish" />
-                  <Button fx:id="addButton" layoutX="41.0" layoutY="252.0" mnemonicParsing="false" onMouseClicked="#addButtonIntoField" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Add" />
-                  <Button layoutX="134.0" layoutY="252.0" mnemonicParsing="false" onMouseClicked="#remButtonIntoField" prefHeight="25.0" prefWidth="175.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Remove Last Input" />
+                  <Button fx:id="addButton" layoutX="41.0" layoutY="252.0" mnemonicParsing="false" onMouseClicked="#addButtonIntoField" prefHeight="25.0" prefWidth="175.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Add" />
+                  <Button fx:id="clearButton" layoutX="41.0" layoutY="252.0" mnemonicParsing="false" onMouseClicked="#remButtonIntoField" prefHeight="25.0" prefWidth="175.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Remove Last Input" />
                   <Button fx:id="remButton" layoutX="236.0" layoutY="408.0" mnemonicParsing="false" onAction="#finishRemSaving" prefHeight="25.0" prefWidth="210.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Remove Proprieties and Finish" visible="false" />
                   <Button layoutX="460.0" layoutY="408.0" mnemonicParsing="false" onAction="#finishWithoutSaving" prefHeight="25.0" prefWidth="180.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Finish Without Saving" />
                   <Text fx:id="propertyAdd" layoutX="14.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="374.169921875" />

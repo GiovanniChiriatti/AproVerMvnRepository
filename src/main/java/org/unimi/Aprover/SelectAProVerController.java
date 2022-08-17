@@ -86,6 +86,14 @@ public class SelectAProVerController {
 	final String privateKnow = "Asymmetric Private Keys";
 	final String symmetricKnow = "Symmetric Key";
 	final String hashKnow = "Hash";
+	final String bitstringKnow = "Bitstring";
+	final String idCertificateKnow = "Id Certificate";
+	final String nonceKnow = "Nonce";
+	final String signatureKnow = "Signature";
+	final String tagKnow = "Tag";
+	final String timestampKnow = "Timestamp";
+	final String digestKnow = "Digest (restult of Hash Function)";
+
 	SecurityKey alice = new SecurityKey();
 	SecurityKey bob = new SecurityKey();
 	SecurityKey eve = new SecurityKey();
@@ -98,7 +106,8 @@ public class SelectAProVerController {
 	boolean helpFlag = false;
 	boolean eveIntercept=false;
 	String fileName;
-	int numMessage, numMessagePrec;
+	int numMessage, numMessagePrec, numCtlEle;
+	private String[] ctlEle = new String[16];
 	
 	Node node,node1,node2,node3,node4, line,liey,msg,msf,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
 
@@ -148,13 +157,13 @@ public class SelectAProVerController {
 	private Text rowNum1, rowNum2, rowNum3, rowNum4, rowNum5, rowNum6, rowNum7, rowNum8, rowNum9, rowNum10, rowNum11;
 
 	@FXML
-	private Button Alice1, Alice2, Alice3, Alice4;
+	private Button Alice01, Alice02, Alice03, Alice04,Alice05,Alice06,Alice07,Alice08,Alice09,Alice10,Alice11;
 	@FXML
-	private Button Bob1, Bob2, Bob3, Bob4;
+	private Button Bob01, Bob02, Bob03, Bob04, Bob05, Bob06, Bob07, Bob08, Bob09, Bob10, Bob11;
 	@FXML
-	private Button Eve1, Eve2, Eve3, Eve4;
+	private Button Eve01, Eve02, Eve03, Eve04, Eve, Eve06, Eve07, Eve08, Eve09, Eve10, Eve11;
 	@FXML
-	private Button Server1, Server2, Server3, Server4;
+	private Button Server01, Server02, Server03, Server04, Server05, Server06, Server07, Server08, Server09, Server10 , Server11;
 	@FXML
 	private Button nextButton, prevButton, finishButton;
 	
@@ -221,13 +230,13 @@ public class SelectAProVerController {
 	private GridPane tabeKnowledge, listProprieties00, listProprieties01,listProprieties02, listProprieties03, listProprieties04, listProprieties05,listProprieties06, listProprieties07, listProprieties08;
 	
 	@FXML
-	private Label aliceAsymmetricPublicKey, aliceAsymmetricPrivateKey, aliceSymmetricKey, aliceHash;
+	private Label aliceAsymmetricPublicKey, aliceAsymmetricPrivateKey, aliceSymmetricKey, aliceHash, aliceBitstring,aliceIdCertificate,aliceNonce, aliceSignature, aliceTag, aliceTimestamp, aliceDigest ;
 	@FXML
-	private Label bobAsymmetricPublicKey, bobAsymmetricPrivateKey, bobSymmetricKey, bobHash;
+	private Label bobAsymmetricPublicKey, bobAsymmetricPrivateKey, bobSymmetricKey, bobHash, bobBitstring,bobIdCertificate,bobNonce, bobSignature, bobTag, bobTimestamp, bobDigest;
 	@FXML
-	private Label eveAsymmetricPublicKey, eveAsymmetricPrivateKey, eveSymmetricKey, eveHash;
+	private Label eveAsymmetricPublicKey, eveAsymmetricPrivateKey, eveSymmetricKey, eveHash, eveBitstring,eveIdCertificate,eveNonce, eveSignature, eveTag, eveTimestamp, eveDigest;
 	@FXML
-	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash;
+	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash, serverBitstring,serverIdCertificate,serverNonce, serverSignature, serverTag, serverTimestamp, serverDigest;
 
 	@FXML
 	private Tab tab00,tab01,tab02,tab03,tab04,tab05,tab06,tab07,tab08;
@@ -347,7 +356,7 @@ public class SelectAProVerController {
 
 // si inizializzano le variabili che indicano la riga del knowlege da digitare e il tipo di knowledge attivo
 		rowEdit.setText("1");
-		knowPage.setText("1");
+		knowPage.setText("01");
 		
 		aliceButton01.setVisible(false);
 		bobButton01.setVisible(false);
@@ -734,7 +743,7 @@ public class SelectAProVerController {
 		//finishButton.setVisible(false);
 		//piuButton.setVisible(true);
 		
-		knowPage.setText("1");
+		knowPage.setText("01");
 
 //verifica quale Actor � stato selezionato e abilita la visibilit� della form di knowledge (initialKnowledge.setVisible(true);)
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
@@ -742,7 +751,7 @@ public class SelectAProVerController {
 			initialKnowledge.setVisible(true);
 			faceAlice.setOpacity(1);
 			lineaAlice.setOpacity(1);
-			loadTable(alice, "1");
+			loadTable(alice, "01");
 			loadTitledAlice(alice);
 		}
 		if (comboBoxActor.getValue().toString().contains("Bob")) {
@@ -750,7 +759,7 @@ public class SelectAProVerController {
 			initialKnowledge.setVisible(true);
 			faceBob.setOpacity(1);
 			lineaBob.setOpacity(1);
-			loadTable(bob, "1");
+			loadTable(bob, "01");
 			loadTitledBob(bob);
 		}
 		if (comboBoxActor.getValue().toString().contains("Eve")) {
@@ -758,7 +767,7 @@ public class SelectAProVerController {
 			initialKnowledge.setVisible(true);
 			faceEve.setOpacity(1);
 			lineaEve.setOpacity(1);
-			loadTable(eve, "1");
+			loadTable(eve, "01");
 			loadTitledEve(eve);
 		}
 		if (comboBoxActor.getValue().toString().contains("Server")) {
@@ -766,7 +775,7 @@ public class SelectAProVerController {
 			initialKnowledge.setVisible(true);
 			faceServer.setOpacity(1);
 			lineaServer.setOpacity(1);
-			loadTable(server, "1");
+			loadTable(server, "01");
 			loadTitledServer(server);
 		}
 //se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
@@ -792,8 +801,8 @@ public class SelectAProVerController {
 
 			String data = (String) node.getId();
 
-			String riga = data.substring(data.length() - 1);
-			String act = data.substring(0,data.length() - 1);
+			String riga = data.substring(data.length() - 2);
+			String act = data.substring(0,data.length() - 2);
 			
 			boolean viewLineOK = false;
 			if (faceAlice.getOpacity() == 1 &&
@@ -824,23 +833,58 @@ public class SelectAProVerController {
 	//Disabilita la combobox per la selezione degli actor
 	//inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
 			comboBoxActor.setDisable(true);
-			if (riga.equals("1")) { 
+			if (riga.equals("01")) { 
 				typeKey.setText(publicKnow);
 				prevButton.setDisable(true);
 				nextButton.setDisable(false);
 			}
-			if (riga.equals("2")) { 
+			if (riga.equals("02")) { 
 				typeKey.setText(privateKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
-			if (riga.equals("3")) { 
+			if (riga.equals("03")) { 
 				typeKey.setText(symmetricKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
-			if (riga.equals("4")) { 
+			if (riga.equals("04")) { 
 				typeKey.setText(hashKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("05")) { 
+				typeKey.setText(bitstringKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("06")) { 
+				typeKey.setText(idCertificateKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("07")) { 
+				typeKey.setText(nonceKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("08")) { 
+				typeKey.setText(signatureKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("09")) { 
+				typeKey.setText(tagKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("10")) { 
+				typeKey.setText(timestampKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("11")) { 
+				typeKey.setText(digestKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(true);
 			}
@@ -957,34 +1001,111 @@ public class SelectAProVerController {
 		
 		
 		piuKnowledge();
-
- 		
-		if (knowPage.getText().equals("3")) {
+		
+		if (knowPage.getText().equals("10")) {
 			//piuKnowledge();
-			typeKey.setText(hashKnow);
+			typeKey.setText(digestKnow);
 			nextButton.setDisable(true);
 			
 			//finishButton.setVisible(true);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("4");
+			knowPage.setText("11");
+		} 	
+		
+		if (knowPage.getText().equals("09")) {
+			//piuKnowledge();
+			typeKey.setText(timestampKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("10");
+		} 	
+		
+		if (knowPage.getText().equals("08")) {
+			//piuKnowledge();
+			typeKey.setText(tagKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("09");
+		} 	
+		
+		if (knowPage.getText().equals("07")) {
+			//piuKnowledge();
+			typeKey.setText(signatureKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("08");
+		} 	
+		
+		if (knowPage.getText().equals("06")) {
+			//piuKnowledge();
+			typeKey.setText(nonceKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("07");
+		} 	
+		
+		if (knowPage.getText().equals("05")) {
+			//piuKnowledge();
+			typeKey.setText(idCertificateKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("06");
+		} 	
+		
+		
+		if (knowPage.getText().equals("04")) {
+			//piuKnowledge();
+			typeKey.setText(bitstringKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("05");
+		} 	
+		
+		if (knowPage.getText().equals("03")) {
+			//piuKnowledge();
+			typeKey.setText(hashKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("04");
 		}
-		if (knowPage.getText().equals("2")) {
+		if (knowPage.getText().equals("02")) {
 			typeKey.setText(symmetricKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("3");
+			knowPage.setText("03");
 		}
 
-		if (knowPage.getText().equals("1")) {
+		if (knowPage.getText().equals("01")) {
 			typeKey.setText(privateKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("2");
+			knowPage.setText("02");
 		}
 
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
@@ -1118,30 +1239,87 @@ public class SelectAProVerController {
 		piuKnowledge();
 
 		
-		if (knowPage.getText().equals("2")) {
+		if (knowPage.getText().equals("02")) {
 			typeKey.setText(publicKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(true);
 			//piuButton.setVisible(true);
-			knowPage.setText("1");
+			knowPage.setText("01");
 		}
-		if (knowPage.getText().equals("3")) {
+		if (knowPage.getText().equals("03")) {
 			typeKey.setText(privateKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("2");
+			knowPage.setText("02");
 		}
-		if (knowPage.getText().equals("4")) {
+		if (knowPage.getText().equals("04")) {
 			typeKey.setText(symmetricKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("3");
+			knowPage.setText("03");
 		}
+		if (knowPage.getText().equals("05")) {
+			typeKey.setText(hashKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("04");
+		}
+		if (knowPage.getText().equals("06")) {
+			typeKey.setText(bitstringKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("05");
+		}
+		if (knowPage.getText().equals("07")) {
+			typeKey.setText(idCertificateKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("06");
+		}
+		if (knowPage.getText().equals("08")) {
+			typeKey.setText(nonceKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("07");
+		}
+		if (knowPage.getText().equals("09")) {
+			typeKey.setText(signatureKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("08");
+		}
+		if (knowPage.getText().equals("10")) {
+			typeKey.setText(tagKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("09");
+		}
+		if (knowPage.getText().equals("11")) {
+			typeKey.setText(timestampKnow);
+			nextButton.setDisable(false);
+			//finishButton.setVisible(false);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("10");
+		}
+
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
 			loadTable(alice, knowPage.getText());
 			loadTitledAlice(alice);
@@ -1190,35 +1368,79 @@ public class SelectAProVerController {
 	private void addSecurityKey(SecurityKey oggetto, String tipo) {
 		
 		switch (tipo) {
-		case "1":
+		case "01":
 			oggetto.remAllAsymmetricPublicKey();
 			break;
-		case "2":
+		case "02":
 			oggetto.remAllAsymmetricPrivateKey();
 			break;
-		case "3":
+		case "03":
 			oggetto.remAllSymmetricKey();
 			break;
-		case "4":
+		case "04":
 			oggetto.remAllHashKey();
 			break;
+		case "05":
+			oggetto.remAllBitstring();
+			break;
+		case "06":
+			oggetto.remAllIdCertificate();
+			break;
+		case "07":
+			oggetto.remAllNonce();
+			break;
+		case "08":
+			oggetto.remAllSignature();
+			break;
+		case "09":
+			oggetto.remAllTag();
+			break;
+		case "10":
+			oggetto.remAllTimestamp();
+			break;
+		case "11":
+			oggetto.remAllDigest();
+			break;
+			
 		}
 		for (Node node : tabeKnowledge.getChildren()) {
 				if (node instanceof TextField) {
 					if (((TextField) node).getText().toString() != null && !((TextField) node).getText().toString().isEmpty()) {
 						switch (tipo) {
-						case "1":
+						case "01":
 							oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString());
 							break;
-						case "2":
+						case "02":
 							oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString());
 							break;
-						case "3":
+						case "03":
 							oggetto.addSymmetricKey(((TextField) node).getText().toString());
 							break;
-						case "4":
+						case "04":
 							oggetto.addHashKey(((TextField) node).getText().toString());
 							break;
+						case "05":
+							oggetto.addBitstring(((TextField) node).getText().toString());
+							break;
+						case "06":
+							oggetto.addIdCertificate(((TextField) node).getText().toString());
+							break;
+						case "07":
+							oggetto.addNonce(((TextField) node).getText().toString());
+							break;
+						case "08":
+							oggetto.addSignature(((TextField) node).getText().toString());
+							break;
+						case "09":
+							oggetto.addTag(((TextField) node).getText().toString());
+							break;
+						case "10":
+							oggetto.addTimestamp(((TextField) node).getText().toString());
+							break;
+						case "11":
+							oggetto.addDigest(((TextField) node).getText().toString());
+							break;
+							
 						}
 					}
 
@@ -1245,19 +1467,39 @@ public class SelectAProVerController {
 		
 		ArrayList<String> appoList = new ArrayList<String>();
 		switch (tipo) {
-		case "1":
+		case "01":
 			appoList = oggetto.getAsymmetricPublicKey();
 			break;
-		case "2":
+		case "02":
 			appoList = oggetto.getAsymmetricPrivateKey();
 			break;
 		
-		case "3":
+		case "03":
 			appoList = oggetto.getSymmetricKey();
 			break;
-		case "4":
-			//oggetto.getHash();
+		case "04":
 			appoList = oggetto.getHashKey();
+			break;
+		case "05":
+			appoList = oggetto.getBitstring();
+			break;
+		case "06":
+			appoList = oggetto.getIdCertificate();
+			break;
+		case "07":
+			appoList = oggetto.getNonce();
+			break;
+		case "08":
+			appoList = oggetto.getSignature();
+			break;
+		case "09":
+			appoList = oggetto.getTag();
+			break;
+		case "10":
+			appoList = oggetto.getTimestamp();
+			break;
+		case "11":
+			appoList = oggetto.getDigest();
 			break;
 		}
 		
@@ -1299,6 +1541,13 @@ public class SelectAProVerController {
 		aliceAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
 		aliceSymmetricKey.setText(oggetto.getStringSymmetricKey());
 		aliceHash.setText(oggetto.getStringHashKey());
+		aliceBitstring.setText(oggetto.getStringBitstring());
+		aliceIdCertificate.setText(oggetto.getStringIdCertificate());
+		aliceNonce.setText(oggetto.getStringNonce());
+		aliceSignature.setText(oggetto.getStringSignature());
+		aliceTag.setText(oggetto.getStringTag());
+		aliceTimestamp.setText(oggetto.getStringTimestamp());
+		aliceDigest.setText(oggetto.getStringDigest());
 
 	}
 	private void loadTitledBob(SecurityKey oggetto) {
@@ -1306,18 +1555,40 @@ public class SelectAProVerController {
 		bobAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
 		bobSymmetricKey.setText(oggetto.getStringSymmetricKey());
 		bobHash.setText(oggetto.getStringHashKey());
+		bobBitstring.setText(oggetto.getStringBitstring());
+		bobIdCertificate.setText(oggetto.getStringIdCertificate());
+		bobNonce.setText(oggetto.getStringNonce());
+		bobSignature.setText(oggetto.getStringSignature());
+		bobTag.setText(oggetto.getStringTag());
+		bobTimestamp.setText(oggetto.getStringTimestamp());
+		bobDigest.setText(oggetto.getStringDigest());
+		
 	}
 	private void loadTitledEve(SecurityKey oggetto) {
 		eveAsymmetricPublicKey.setText(oggetto.getStringAsymmetricPublicKey());
 		eveAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
 		eveSymmetricKey.setText(oggetto.getStringSymmetricKey());
 		eveHash.setText(oggetto.getStringHashKey());
+		eveBitstring.setText(oggetto.getStringBitstring());
+		eveIdCertificate.setText(oggetto.getStringIdCertificate());
+		eveNonce.setText(oggetto.getStringNonce());
+		eveSignature.setText(oggetto.getStringSignature());
+		eveTag.setText(oggetto.getStringTag());
+		eveTimestamp.setText(oggetto.getStringTimestamp());
+		eveDigest.setText(oggetto.getStringDigest());
 	}
 	private void loadTitledServer(SecurityKey oggetto) {
 		serverAsymmetricPublicKey.setText(oggetto.getStringAsymmetricPublicKey());
 		serverAsymmetricPrivateKey.setText(oggetto.getStringAsymmetricPrivateKey());
 		serverSymmetricKey.setText(oggetto.getStringSymmetricKey());
 		serverHash.setText(oggetto.getStringHashKey());
+		serverBitstring.setText(oggetto.getStringBitstring());
+		serverIdCertificate.setText(oggetto.getStringIdCertificate());
+		serverNonce.setText(oggetto.getStringNonce());
+		serverSignature.setText(oggetto.getStringSignature());
+		serverTag.setText(oggetto.getStringTag());
+		serverTimestamp.setText(oggetto.getStringTimestamp());
+		serverDigest.setText(oggetto.getStringDigest());
 	}
 	
 	
@@ -1328,11 +1599,12 @@ public class SelectAProVerController {
 
 	private void toolSet() {
 		int faceEveX, lineaEveX, faceBobX, lineaBobX, eveButtonX,bobButtonX;
+		
 		if (tool.getText().contains("Disable")) {
 			comboBoxActor.setDisable(false);
 			toolFlag = true;
 			
-			comboBoxActor.getItems().remove(3,4);
+			comboBoxActor.getItems().removeAll("Server");
 			toolFlag= true;
 			comboBoxActor.setValue("Actor");
 			toolFlag= false;
@@ -1482,7 +1754,8 @@ public class SelectAProVerController {
 		} else {
 			comboBoxActor.setValue("Actor");
 			comboBoxActor.setDisable(false);
-			//comboBoxActor.getItems().add("Server");
+		
+			comboBoxActor.getItems().add("Server");
 			tool.setText("Disable Server");
 			serverButton.setText("Disable Server");
 			titledServer.setDisable(false);
@@ -2205,10 +2478,18 @@ public class SelectAProVerController {
 		 	BufferedReader reader = new BufferedReader(new FileReader("src\\main\\resources\\ConfigurationFile\\ConfProp.txt"));
 	 
 			String line = reader.readLine();
-			while (line != null) {
+			while (line != null && !line.contains("Altre")) {
 				numberRow++;
 				insertProprieties(line);
 				insertTab(numberRow);
+				line = reader.readLine();
+			}
+			numCtlEle = 0;
+			while (line != null) {
+				if (!line.contains("Altre")){
+					ctlEle[numCtlEle] = line;
+					numCtlEle ++;
+				}
 				line = reader.readLine();
 			}
 			deleteTab(numberRow + 1);
@@ -2400,7 +2681,6 @@ public class SelectAProVerController {
 		tab08.setOnSelectionChanged(e -> {
 			try {
 				if (showProperties(8)) {
-					System.out.println(" sono uscito dall'inserimento " + (tabProprieities.getTabs().size() - 1) + " -- " + confProp.getListNameTab((tabProprieities.getTabs().size() - 1)));
 					if (tabProprieities.getTabs().size() - 1 == 3) {
 						tabProprieities.getTabs().add(tabProprieities.getTabs().size() - 1, tab03);
 						tab03.setText(confProp.getListNameTab(3));
@@ -2542,18 +2822,14 @@ public class SelectAProVerController {
 	
 	private void insertEleProperties(GridPane listProprieties0x, String properties, int row, int tab) {
 		int appRow = 0;
-		System.out.println ("Sto inserendo nelle righe" + properties);
 		for (Node node : listProprieties0x.getChildren()) {
-			System.out.println("leggo il nodo " + node);
 			if (GridPane.getRowIndex(node) != null) {
 				appRow = GridPane.getRowIndex(node);
 			} else {
 				appRow = 0;
 			}
-			System.out.println("riga " + appRow);
 			if (node != null && node instanceof TextField) {
 				if (appRow == row) {
-					System.out.println("inserisco " + properties);
 					((TextField) node).setText(properties);
 				}
 			}
@@ -2601,14 +2877,12 @@ public class SelectAProVerController {
         
         CreateProperties controller = loader.getController();
         controller.setDialogStage(dialogStage,alice,bob,eve,server,toolCheck.getText());
-        System.out.println("Apro l'inserimento "+ numTab);
         if (numTab != 8){
         	controller.setTxtProperties(confProp.getListNameTab(numTab), confProp.getProprietiesValue(numTab,0));
         }
         
         
         dialogStage.showAndWait();
-        System.out.println("torno  " + numTab + " "+ controller.getOperation() + " " + numTab + "  "+  controller.getProperyName());
         if(controller.getOperation().equals("Delete")){
         	confProp.delListTab(numTab);
         	for (int numberRow=0; numberRow < (confProp.getNumListNameTab()+1); numberRow++){
@@ -2621,7 +2895,6 @@ public class SelectAProVerController {
 		if (!controller.getProperyName().isEmpty()) {
 			if (numTab == 8) {
 				confProp.setListNameTab(controller.getProperyName(), controller.getExpressionValue());
-				  System.out.println("inserisco  in "+ confProp.getNumListNameTab() + " l'espressione "+ controller.getExpressionValue());
 				switch (confProp.getNumListNameTab()) {
 				case 0:
 					insertEleProperties(listProprieties00, controller.getExpressionValue(), 0,0);
@@ -2884,8 +3157,7 @@ public class SelectAProVerController {
     }
 // se si � deciso di aprire un vecchio file si leggono le info dentro il file e si caricano i dati negli oggetti
 	public void setFileStart(String oldFileName) {
-		try {
-			
+		try {			
 			if (oldFileName == null || oldFileName.isEmpty()) {
 				fileName = "";
 				return;
@@ -2921,15 +3193,47 @@ public class SelectAProVerController {
 			line.equals("dati Alice AsymmetricPublicKey ") ||
 			line.equals("dati Alice AsymmetricPrivateKey ") ||
 			line.equals("dati Alice SymmetricKey ") ||
+			line.equals("dati Alice Hash ") ||
+			line.equals("dati Alice Bitstring ") ||
+			line.equals("dati Alice IdCertificate ") ||
+			line.equals("dati Alice Nonce ") ||
+			line.equals("dati Alice Signature ") ||
+			line.equals("dati Alice Tag ")||
+			line.equals("dati Alice Timestamp ")||
+			line.equals("dati Alice Digest ")||
 			line.equals("dati Bob AsymmetricPublicKey ") ||
 			line.equals("dati Bob AsymmetricPrivateKey ") ||
 			line.equals("dati Bob SymmetricKey ") ||	
+			line.equals("dati Bob Hash ") ||
+			line.equals("dati Bob Bitstring ") ||
+			line.equals("dati Bob IdCertificate ") ||
+			line.equals("dati Bob Nonce ") ||
+			line.equals("dati Bob Signature ") ||
+			line.equals("dati Bob Tag ")||
+			line.equals("dati Bob Timestamp ")||
+			line.equals("dati Bob Digest ")||
 			line.equals("dati Eve AsymmetricPublicKey ") ||
 			line.equals("dati Eve AsymmetricPrivateKey ") ||
 			line.equals("dati Eve SymmetricKey ") ||
+			line.equals("dati Eve Hash ") ||
+			line.equals("dati Eve Bitstring ") ||
+			line.equals("dati Eve IdCertificate ") ||
+			line.equals("dati Eve Nonce ") ||
+			line.equals("dati Eve Signature ") ||
+			line.equals("dati Eve Tag ")||
+			line.equals("dati Eve Timestamp ")||
+			line.equals("dati Eve Digest ")||
 			line.equals("dati Server AsymmetricPublicKey ") ||
 			line.equals("dati Server AsymmetricPrivateKey ") ||
 			line.equals("dati Server SymmetricKey ") ||
+			line.equals("dati Server Hash ") ||
+			line.equals("dati Server Bitstring ") ||
+			line.equals("dati Server IdCertificate ") ||
+			line.equals("dati Server Nonce ") ||
+			line.equals("dati Server Signature ") ||
+			line.equals("dati Server Tag ")||
+			line.equals("dati Server Timestamp ")||
+			line.equals("dati Server Digest ")||
 			line.equals("dati Messaggi ") ||
 			line.contains("dati Messaggio") ||
 			line.contains("dati listPartMessage j=") ||
@@ -2964,6 +3268,46 @@ public class SelectAProVerController {
 			lineaAlice.setOpacity(1);
 			alice.addSymmetricKey(line);
 		}
+		if (typeInfo.equals("dati Alice Hash ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addHashKey(line);
+		}
+		if (typeInfo.equals("dati Alice Bitstring ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addBitstring(line);
+		}
+		if (typeInfo.equals("dati Alice IdCertificate ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Alice Nonce ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addNonce(line);
+		}
+		if (typeInfo.equals("dati Alice Signature ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addSignature(line);
+		}
+		if (typeInfo.equals("dati Alice Tag ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addTag(line);
+		}
+		if (typeInfo.equals("dati Alice Timestamp ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addTimestamp(line);
+		}
+		if (typeInfo.equals("dati Alice Digest ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addDigest(line);
+		}
 		
 		if (typeInfo.equals("dati Bob AsymmetricPublicKey ")) {
 			faceBob.setOpacity(1);
@@ -2979,6 +3323,47 @@ public class SelectAProVerController {
 			faceBob.setOpacity(1);
 			lineaBob.setOpacity(1);
 			bob.addSymmetricKey(line);
+		}
+		
+		if (typeInfo.equals("dati Bob Hash ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addHashKey(line);
+		}
+		if (typeInfo.equals("dati Bob Bitstring ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addBitstring(line);
+		}
+		if (typeInfo.equals("dati Bob IdCertificate ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Bob Nonce ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addNonce(line);
+		}
+		if (typeInfo.equals("dati Bob Signature ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addSignature(line);
+		}
+		if (typeInfo.equals("dati Bob Tag ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addTag(line);
+		}
+		if (typeInfo.equals("dati Bob Timestamp ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addTimestamp(line);
+		}
+		if (typeInfo.equals("dati Bob Digest ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addDigest(line);
 		}
 
 		if (typeInfo.equals("dati Eve AsymmetricPublicKey ")) {
@@ -2997,6 +3382,46 @@ public class SelectAProVerController {
 			eve.addSymmetricKey(line);
 		}
 
+		if (typeInfo.equals("dati Eve Hash ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addHashKey(line);
+		}
+		if (typeInfo.equals("dati Eve Bitstring ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addBitstring(line);
+		}
+		if (typeInfo.equals("dati Eve IdCertificate ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Eve Nonce ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addNonce(line);
+		}
+		if (typeInfo.equals("dati Eve Signature ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addSignature(line);
+		}
+		if (typeInfo.equals("dati Eve Tag ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addTag(line);
+		}
+		if (typeInfo.equals("dati Eve Timestamp ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addTimestamp(line);
+		}
+		if (typeInfo.equals("dati Eve Digest ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addDigest(line);
+		}
 		if (typeInfo.equals("dati Server AsymmetricPublicKey ")) {
 			faceServer.setOpacity(1);
 			lineaServer.setOpacity(1);
@@ -3012,14 +3437,55 @@ public class SelectAProVerController {
 			lineaServer.setOpacity(1);
 			server.addSymmetricKey(line);
 		}
+		if (typeInfo.equals("dati Server Hash ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addHashKey(line);
+		}
+		if (typeInfo.equals("dati Server Bitstring ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addBitstring(line);
+		}
+		if (typeInfo.equals("dati Server IdCertificate ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Server Nonce ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addNonce(line);
+		}
+		if (typeInfo.equals("dati Server Signature ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addSignature(line);
+		}
+		if (typeInfo.equals("dati Server Tag ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addTag(line);
+		}
+		if (typeInfo.equals("dati Server Timestamp ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addTimestamp(line);
+		}
+		if (typeInfo.equals("dati Server Digest ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addDigest(line);
+		}
+		
 		if (typeInfo.equals("dati Messaggi ")) {
 			//se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
-			if (faceAlice.getOpacity() == 1 &&
-				faceBob.getOpacity() == 1 &&
-			//	faceEve.getOpacity() == 1 && 
-				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
+//			if (faceAlice.getOpacity() == 1 &&
+//				faceBob.getOpacity() == 1 &&
+//			//	faceEve.getOpacity() == 1 && 
+//				(faceServer.getOpacity() == 1 || tool.getText().contains("Enable"))){
 				viewLine("01");
-			}
+//			}
 		}
 		if (typeInfo.contains("dati Messaggio")) {
 				// se esiste almeno un messaggio si cambia il colore (opacit�) dei disegni degli attori e si 
@@ -3250,6 +3716,49 @@ public class SelectAProVerController {
 			for (int i = 0; i < alice.getSymmetricKey().size(); i++) {
 				bw.write(alice.getSymmetricKey().get(i) + "\n");
 			}
+			bw.write("dati Alice Hash \n");
+
+			for (int i = 0; i < alice.getHashKey().size(); i++) {
+				bw.write(alice.getHashKey().get(i) + "\n");
+			}
+			bw.write("dati Alice Bitstring \n");
+
+			for (int i = 0; i < alice.getBitstring().size(); i++) {
+				bw.write(alice.getBitstring().get(i) + "\n");
+			}
+
+			bw.write("dati Alice IdCertificate \n");
+
+			for (int i = 0; i < alice.getIdCertificate().size(); i++) {
+				bw.write(alice.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Alice Nonce \n");
+
+			for (int i = 0; i < alice.getNonce().size(); i++) {
+				bw.write(alice.getNonce().get(i) + "\n");
+			}
+			bw.write("dati Alice Signature \n");
+
+			for (int i = 0; i < alice.getSignature().size(); i++) {
+				bw.write(alice.getSignature().get(i) + "\n");
+			}
+			bw.write("dati Alice Tag \n");
+
+			for (int i = 0; i < alice.getTag().size(); i++) {
+				bw.write(alice.getTag().get(i) + "\n");
+			}
+			bw.write("dati Alice Timestamp \n");
+
+			for (int i = 0; i < alice.getTimestamp().size(); i++) {
+				bw.write(alice.getTimestamp().get(i) + "\n");
+			}
+			bw.write("dati Alice Digest \n");
+
+			for (int i = 0; i < alice.getDigest().size(); i++) {
+				bw.write(alice.getDigest().get(i) + "\n");
+			}
+
+
 
 			
 			bw.write("dati Bob AsymmetricPublicKey \n");
@@ -3267,6 +3776,49 @@ public class SelectAProVerController {
 			for (int i = 0; i < bob.getSymmetricKey().size(); i++) {
 				bw.write(bob.getSymmetricKey().get(i) + "\n");
 			}
+			bw.write("dati Bob Hash \n");
+
+			for (int i = 0; i < bob.getHashKey().size(); i++) {
+				bw.write(bob.getHashKey().get(i) + "\n");
+			}
+			bw.write("dati Bob Bitstring \n");
+
+			for (int i = 0; i < bob.getBitstring().size(); i++) {
+				bw.write(bob.getBitstring().get(i) + "\n");
+			}
+
+			bw.write("dati Bob IdCertificate \n");
+
+			for (int i = 0; i < bob.getIdCertificate().size(); i++) {
+				bw.write(bob.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Bob Nonce \n");
+
+			for (int i = 0; i < bob.getNonce().size(); i++) {
+				bw.write(bob.getNonce().get(i) + "\n");
+			}
+			bw.write("dati Bob Signature \n");
+
+			for (int i = 0; i < bob.getSignature().size(); i++) {
+				bw.write(bob.getSignature().get(i) + "\n");
+			}
+			bw.write("dati Bob Tag \n");
+
+			for (int i = 0; i < bob.getTag().size(); i++) {
+				bw.write(bob.getTag().get(i) + "\n");
+			}
+			bw.write("dati Bob Timestamp \n");
+
+			for (int i = 0; i < bob.getTimestamp().size(); i++) {
+				bw.write(bob.getTimestamp().get(i) + "\n");
+			}
+			bw.write("dati Bob Digest \n");
+
+			for (int i = 0; i < bob.getDigest().size(); i++) {
+				bw.write(bob.getDigest().get(i) + "\n");
+			}
+			
+			
 			bw.write("dati Eve AsymmetricPublicKey \n");
 
 			for (int i = 0; i < eve.getAsymmetricPublicKey().size(); i++) {
@@ -3282,6 +3834,48 @@ public class SelectAProVerController {
 			for (int i = 0; i < eve.getSymmetricKey().size(); i++) {
 				bw.write(eve.getSymmetricKey().get(i) + "\n");
 			}
+			bw.write("dati Eve Hash \n");
+
+			for (int i = 0; i < eve.getHashKey().size(); i++) {
+				bw.write(eve.getHashKey().get(i) + "\n");
+			}
+			bw.write("dati Eve Bitstring \n");
+
+			for (int i = 0; i < eve.getBitstring().size(); i++) {
+				bw.write(eve.getBitstring().get(i) + "\n");
+			}
+
+			bw.write("dati Eve IdCertificate \n");
+
+			for (int i = 0; i < eve.getIdCertificate().size(); i++) {
+				bw.write(eve.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Eve Nonce \n");
+
+			for (int i = 0; i < eve.getNonce().size(); i++) {
+				bw.write(eve.getNonce().get(i) + "\n");
+			}
+			bw.write("dati Eve Signature \n");
+
+			for (int i = 0; i < eve.getSignature().size(); i++) {
+				bw.write(eve.getSignature().get(i) + "\n");
+			}
+			bw.write("dati Eve Tag \n");
+
+			for (int i = 0; i < eve.getTag().size(); i++) {
+				bw.write(eve.getTag().get(i) + "\n");
+			}
+			bw.write("dati Eve Timestamp \n");
+
+			for (int i = 0; i < eve.getTimestamp().size(); i++) {
+				bw.write(eve.getTimestamp().get(i) + "\n");
+			}
+			bw.write("dati Eve Digest \n");
+
+			for (int i = 0; i < eve.getDigest().size(); i++) {
+				bw.write(eve.getDigest().get(i) + "\n");
+			}
+			
 			bw.write("dati Server AsymmetricPublicKey \n");
 
 			for (int i = 0; i < server.getAsymmetricPublicKey().size(); i++) {
@@ -3297,8 +3891,53 @@ public class SelectAProVerController {
 			for (int i = 0; i < server.getSymmetricKey().size(); i++) {
 				bw.write(server.getSymmetricKey().get(i) + "\n");
 			}
+			bw.write("dati Server Hash \n");
+
+			for (int i = 0; i < server.getHashKey().size(); i++) {
+				bw.write(server.getHashKey().get(i) + "\n");
+			}
+			bw.write("dati Server Bitstring \n");
+
+			for (int i = 0; i < server.getBitstring().size(); i++) {
+				bw.write(server.getBitstring().get(i) + "\n");
+			}
+
+			bw.write("dati Server IdCertificate \n");
+
+			for (int i = 0; i < server.getIdCertificate().size(); i++) {
+				bw.write(server.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Server Nonce \n");
+
+			for (int i = 0; i < server.getNonce().size(); i++) {
+				bw.write(server.getNonce().get(i) + "\n");
+			}
+			bw.write("dati Server Signature \n");
+
+			for (int i = 0; i < server.getSignature().size(); i++) {
+				bw.write(server.getSignature().get(i) + "\n");
+			}
+			bw.write("dati Server Tag \n");
+
+			for (int i = 0; i < server.getTag().size(); i++) {
+				bw.write(server.getTag().get(i) + "\n");
+			}
+			bw.write("dati Server Timestamp \n");
+
+			for (int i = 0; i < server.getTimestamp().size(); i++) {
+				bw.write(server.getTimestamp().get(i) + "\n");
+			}
+			bw.write("dati Server Digest \n");
+
+			for (int i = 0; i < server.getDigest().size(); i++) {
+				bw.write(server.getDigest().get(i) + "\n");
+			}
 			bw.flush();
 			bw.write("dati Messaggi \n");
+			if (aliceButton01.isVisible() && aliceButton01.getText().equals("+")) {
+				bw.write("+ \n");
+			}
+				
 
 			for (int i = 0; i < 15; i++) {
 				if (!messagges.getListMessages()[i].getActorfrom().isEmpty()) {

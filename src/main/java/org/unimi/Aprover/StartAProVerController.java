@@ -81,8 +81,6 @@ public class StartAProVerController {
 
 		FXMLLoader loader = new FXMLLoader();
 		
-		System.out.println(getClass().getResource("/fxml/SelectAProVer.fxml").toExternalForm());
-
 		loader.setLocation(getClass().getResource("/fxml/SelectAProVer.fxml"));
 
         AnchorPane page = (AnchorPane) loader.load();
@@ -98,9 +96,9 @@ public class StartAProVerController {
         
         SelectAProVerController controller = loader.getController();
 
-         controller.setToolStart(tool.getText());
+        controller.setToolStart(tool.getText());
 
-         controller.setFileStart(singleFile.getText());
+        controller.setFileStart(singleFile.getText());
         dialogStage.setMaximized(true);
         //dialogStage.showAndWait();
         dialogStage.show();
@@ -145,7 +143,6 @@ public class StartAProVerController {
 		//listFiles.add("*.DOC");
 		//listFiles.add("*.DOCX");
 		toolSet();
-		System.out.println("a");
 		HBox titleBoxAlice = new HBox();
 //		ImageView immageAlice = new ImageView(new Image("../resources/styles/images/alicepiccola1.png", 0, 24, true, true));
 		
@@ -154,7 +151,7 @@ public class StartAProVerController {
 		titleBoxAlice.getChildren().add(immageAlice);
 		titledAlice.setGraphic(titleBoxAlice);
 		titledAlice.setContentDisplay(ContentDisplay.RIGHT);
-		System.out.println("b");
+
 		HBox titleBoxBob = new HBox();
 		//ImageView immageBob = new ImageView(new Image("/styles/images/bobpiccola1.png", 0, 24, true, true));
 		ImageView immageBob = new ImageView(new Image(getClass().getResource("/styles/images/bobpiccola1.png").toExternalForm(),0, 24, true, true));

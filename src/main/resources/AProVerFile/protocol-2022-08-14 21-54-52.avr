@@ -1,0 +1,109 @@
+tool value 
+Disable Server
+toolEve value 
+Eve Create Messages
+dati Alice AsymmetricPublicKey 
+a
+dati Alice AsymmetricPrivateKey 
+b
+dati Alice SymmetricKey 
+c
+dati Alice Hash 
+d
+dati Alice Bitstring 
+e
+dati Alice IdCertificate 
+f
+dati Alice Nonce 
+g
+dati Alice Signature 
+h
+dati Alice Tag 
+i
+dati Alice Timestamp 
+l
+dati Alice Digest 
+m
+dati Bob AsymmetricPublicKey 
+a2
+dati Bob AsymmetricPrivateKey 
+b2
+dati Bob SymmetricKey 
+c2
+dati Bob Hash 
+d2
+dati Bob Bitstring 
+e2
+dati Bob IdCertificate 
+f2
+dati Bob Nonce 
+g2
+dati Bob Signature 
+h2
+dati Bob Tag 
+i2
+dati Bob Timestamp 
+l2
+dati Bob Digest 
+m2
+dati Eve AsymmetricPublicKey 
+a1
+dati Eve AsymmetricPrivateKey 
+b1
+dati Eve SymmetricKey 
+c1
+dati Eve Hash 
+d1
+dati Eve Bitstring 
+e1
+dati Eve IdCertificate 
+f1
+dati Eve Nonce 
+g1
+dati Eve Signature 
+h1
+dati Eve Tag 
+i1
+dati Eve Timestamp 
+l1
+dati Eve Digest 
+m1
+dati Server AsymmetricPublicKey 
+a3
+dati Server AsymmetricPrivateKey 
+b3
+dati Server SymmetricKey 
+c3
+dati Server Hash 
+d3
+dati Server Bitstring 
+e3
+dati Server IdCertificate 
+f3
+dati Server Nonce 
+h3
+dati Server Signature 
+i3
+dati Server Tag 
+l3
+dati Server Timestamp 
+m3
+dati Server Digest 
+n3
+dati Messaggi 
+dati Messaggio 0
+ActorFrom Alice
+ActorTo Bob
+Eve Intercept true
+Messages {xxxxxx}-a-
+dati SecurityFunctionsPartMessage j=0
+{xxxxxx}  - a - 
+dati listPartMessage j=0 k=0
+xxxxxx
+dati Properties 
+TAB =0 Confidentiality
+COL =00 ¬EF (knows(Alice,a2)=true)
+COL =01 ¬EF (knows(Server,f3)=true)
+TAB =1 Integrity
+COL =10 ¬EF (knows(Server,d3)=true)
+TAB =2 Autentication

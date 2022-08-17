@@ -8,10 +8,17 @@ public class SecurityKey {
 	ArrayList<String> AsymmetricPrivateKey=new ArrayList<String>();
 	ArrayList<String> SymmetricKey=new ArrayList<String>();
 	ArrayList<String> hashKey=new ArrayList<String>();
+	ArrayList<String> bitstring=new ArrayList<String>();
+	ArrayList<String> idCertificate=new ArrayList<String>();
+	ArrayList<String> nonce=new ArrayList<String>();
+	ArrayList<String> signature=new ArrayList<String>();
+	ArrayList<String> tag=new ArrayList<String>();
+	ArrayList<String> timestamp=new ArrayList<String>();
+	ArrayList<String> digest=new ArrayList<String>();
 	
 	public SecurityKey() {
 	}
-
+// ---------------- Asymmetric Public Key
 	public ArrayList<String> getAsymmetricPublicKey() {
 		return AsymmetricPublicKey;
 	}
@@ -42,6 +49,8 @@ public class SecurityKey {
 			i.remove();
 			}
 	}
+	
+// ---------------- Asymmetric Private Key
 	public ArrayList<String> getAsymmetricPrivateKey() {
 		return AsymmetricPrivateKey;
 	}
@@ -72,6 +81,8 @@ public class SecurityKey {
 			i.remove();
 			}
 	}
+	
+// ---------------- Symmetric Key
 	public ArrayList<String> getSymmetricKey() {
 		return SymmetricKey;
 	}
@@ -102,6 +113,7 @@ public class SecurityKey {
 			i.remove();
 			}
 	}
+// ---------------- Hash Key
 	public void addHashKey(String nuovoValore) {
 		hashKey.add(nuovoValore);
 	}
@@ -132,36 +144,426 @@ public class SecurityKey {
 	public void setHashKey(ArrayList<String> hashKey) {
 		this.hashKey = hashKey;
 	}
+
+// ---------------- Bitstrim	
+	public void addBitstring(String nuovoValore) {
+		bitstring.add(nuovoValore);
+	}
+	public void remBitstring(String vecchioValore) {
+		bitstring.remove(vecchioValore);
+	}
+	public void remAllBitstring() {
+		for(Iterator<String> i = bitstring.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+			}
+	}
+	public ArrayList<String> getBitstring() {
+		return bitstring;
+	}
+	public String getStringBitstring() {
+		String stringBitstring = "Bitstrim = {";
+		for (int i=0; i<bitstring.size();i++) {
+			if (i<bitstring.size()-1) {
+				stringBitstring += bitstring.get(i) +",";
+			}else {
+				stringBitstring += bitstring.get(i);
+			}
+		}
+		stringBitstring += "}";
+		return stringBitstring;
+	}
+	public void setBitstring(ArrayList<String> bitstring) {
+		this.bitstring = bitstring;
+	}
+
+// ---------------- idCertificate	
+	public void addIdCertificate(String nuovoValore) {
+		idCertificate.add(nuovoValore);
+	}
+
+	public void remIdCertificate(String vecchioValore) {
+		idCertificate.remove(vecchioValore);
+	}
+
+	public void remAllIdCertificate() {
+		for (Iterator<String> i = idCertificate.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getIdCertificate() {
+		return idCertificate;
+	}
+
+	public String getStringIdCertificate() {
+		String stringIdCertificate = "IdCertificate = {";
+		for (int i = 0; i < idCertificate.size(); i++) {
+			if (i < idCertificate.size() - 1) {
+				stringIdCertificate += idCertificate.get(i) + ",";
+			} else {
+				stringIdCertificate += idCertificate.get(i);
+			}
+		}
+		stringIdCertificate += "}";
+		return stringIdCertificate;
+	}
+
+	public void setIdCertificate(ArrayList<String> idCertificate) {
+		this.idCertificate = idCertificate;
+	}
+
+// ---------------- nonce
+	public void addNonce(String nuovoValore) {
+		nonce.add(nuovoValore);
+	}
+
+	public void remNonce(String vecchioValore) {
+		nonce.remove(vecchioValore);
+	}
+
+	public void remAllNonce() {
+		for (Iterator<String> i = nonce.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getNonce() {
+		return nonce;
+	}
+
+	public String getStringNonce() {
+		String stringNonce = "Nonce = {";
+		for (int i = 0; i < nonce.size(); i++) {
+			if (i < nonce.size() - 1) {
+				stringNonce += nonce.get(i) + ",";
+			} else {
+				stringNonce += nonce.get(i);
+			}
+		}
+		stringNonce += "}";
+		return stringNonce;
+	}
+
+	public void setNonce(ArrayList<String> nonce) {
+		this.nonce = nonce;
+	}
+
+// ---------------- signature
+	public void addSignature(String nuovoValore) {
+		signature.add(nuovoValore);
+	}
+
+	public void remSignature(String vecchioValore) {
+		signature.remove(vecchioValore);
+	}
+
+	public void remAllSignature() {
+		for (Iterator<String> i = signature.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getSignature() {
+		return signature;
+	}
+
+	public String getStringSignature() {
+		String stringSignature = "Signature = {";
+		for (int i = 0; i < signature.size(); i++) {
+			if (i < signature.size() - 1) {
+				stringSignature += signature.get(i) + ",";
+			} else {
+				stringSignature += signature.get(i);
+			}
+		}
+		stringSignature += "}";
+		return stringSignature;
+	}
+
+	public void setSignature(ArrayList<String> signature) {
+		this.signature = signature;
+	}	
+
+
+// ---------------- Tag
+	public void addTag(String nuovoValore) {
+		tag.add(nuovoValore);
+	}
+
+	public void remTag(String vecchioValore) {
+		tag.remove(vecchioValore);
+	}
+
+	public void remAllTag() {
+		for (Iterator<String> i = tag.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getTag() {
+		return tag;
+	}
+
+	public String getStringTag() {
+		String stringTag = "Tag = {";
+		for (int i = 0; i < tag.size(); i++) {
+			if (i < tag.size() - 1) {
+				stringTag += tag.get(i) + ",";
+			} else {
+				stringTag += tag.get(i);
+			}
+		}
+		stringTag += "}";
+		return stringTag;
+	}
+
+	public void setTag(ArrayList<String> tag) {
+		this.tag = tag;
+	}
+
+// ---------------- Timestamp
+	public void addTimestamp(String nuovoValore) {
+		timestamp.add(nuovoValore);
+	}
+
+	public void remTimestamp(String vecchioValore) {
+		timestamp.remove(vecchioValore);
+	}
+
+	public void remAllTimestamp() {
+		for (Iterator<String> i = timestamp.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getTimestamp() {
+		return timestamp;
+	}
+
+	public String getStringTimestamp() {
+		String stringTimestamp = "Timestamp = {";
+		for (int i = 0; i < timestamp.size(); i++) {
+			if (i < timestamp.size() - 1) {
+				stringTimestamp += timestamp.get(i) + ",";
+			} else {
+				stringTimestamp += timestamp.get(i);
+			}
+		}
+		stringTimestamp += "}";
+		return stringTimestamp;
+	}
+
+	public void setTimestamp(ArrayList<String> timestamp) {
+		this.timestamp = timestamp;
+	}
+
+// ---------------- Digest
+	public void addDigest(String nuovoValore) {
+		digest.add(nuovoValore);
+	}
+
+	public void remDigest(String vecchioValore) {
+		digest.remove(vecchioValore);
+	}
+
+	public void remAllDigest() {
+		for (Iterator<String> i = digest.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+	}
+
+	public ArrayList<String> getDigest() {
+		return digest;
+	}
+
+	public String getStringDigest() {
+		String stringDigest = "Digest = {";
+		for (int i = 0; i < digest.size(); i++) {
+			if (i < digest.size() - 1) {
+				stringDigest += digest.get(i) + ",";
+			} else {
+				stringDigest += digest.get(i);
+			}
+		}
+		stringDigest += "}";
+		return stringDigest;
+	}
+
+	public void setDigest(ArrayList<String> digest) {
+		this.digest = digest;
+	}
+
+// ---------------- Verifica duplicati
 	public boolean checkDuplicate(String nuovoValore, String tipo) {
-		if (tipo != "1") {
+		if (!tipo.equals("01")) {
 			for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
 				if (AsymmetricPublicKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (tipo != "2") {
+		if (!tipo.equals("02")) {
 			for (int i = 0; i < AsymmetricPrivateKey.size(); i++) {
 				if (AsymmetricPrivateKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (tipo != "3") {
+		if (!tipo.equals("03")) {
 			for (int i = 0; i < SymmetricKey.size(); i++) {
 				if (SymmetricKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (tipo != "4") {
+		if (!tipo.equals("04")) {
 			for (int i = 0; i < hashKey.size(); i++) {
 				if (hashKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
+		if (!tipo.equals("05")) {
+			for (int i = 0; i < bitstring.size(); i++) {
+				if (bitstring.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+		if (!tipo.equals("06")) {
+			for (int i = 0; i < idCertificate.size(); i++) {
+				if (idCertificate.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+		
+		if (!tipo.equals("07")) {
+			for (int i = 0; i < nonce.size(); i++) {
+				if (nonce.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+		
+		if (!tipo.equals("08")) {
+			for (int i = 0; i < signature.size(); i++) {
+				if (signature.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+		
+		if (!tipo.equals("09")) {
+			for (int i = 0; i < tag.size(); i++) {
+				if (tag.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+		
+		
+		if (!tipo.equals("10")) {
+			for (int i = 0; i < timestamp.size(); i++) {
+				if (timestamp.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
 
+		
+		if (!tipo.equals("11")) {
+			for (int i = 0; i < digest.size(); i++) {
+				if (digest.get(i).equals(nuovoValore)) {
+					System.out.println("trovato in 11 " + digest.get(i));					
+
+					return true;
+				}
+			}
+		}
+		
+				
 		return false;
+	}
+// ---------------- trova un elemento in tutte le tabelle
+	public String  searchEle(String Valore) {
+
+		for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
+			if (AsymmetricPublicKey.get(i).equals(Valore)) {
+				return "Asymmetric Public Key";
+			}
+		}
+
+		for (int i = 0; i < AsymmetricPrivateKey.size(); i++) {
+			if (AsymmetricPrivateKey.get(i).equals(Valore)) {
+				return "Asymmetric Private Key";
+			}
+		}
+
+		for (int i = 0; i < SymmetricKey.size(); i++) {
+			if (SymmetricKey.get(i).equals(Valore)) {
+				return "Symmetric Key";
+			}
+		}
+
+		for (int i = 0; i < hashKey.size(); i++) {
+			if (hashKey.get(i).equals(Valore)) {
+				return "Hash";
+			}
+
+		}
+		
+		for (int i = 0; i < bitstring.size(); i++) {
+			if (bitstring.get(i).equals(Valore)) {
+				return "Bitstring";
+			}
+		}
+
+			for (int i = 0; i < idCertificate.size(); i++) {
+				if (idCertificate.get(i).equals(Valore)) {
+					return "Identity Certificate";
+				}
+			}
+
+
+			for (int i = 0; i < nonce.size(); i++) {
+				if (nonce.get(i).equals(Valore)) {
+					return "Nonce";
+				}
+			}
+
+
+			for (int i = 0; i < signature.size(); i++) {
+				if (signature.get(i).equals(Valore)) {
+					return "Signature";
+				}
+			}
+		
+			for (int i = 0; i < tag.size(); i++) {
+				if (tag.get(i).equals(Valore)) {
+					return "Tag";
+				}
+			}
+
+			for (int i = 0; i < timestamp.size(); i++) {
+				if (timestamp.get(i).equals(Valore)) {
+					return "Timestamp";
+				}
+			}
+
+			for (int i = 0; i < digest.size(); i++) {
+				if (digest.get(i).equals(Valore)) {
+					return "Digest";
+				}
+			}
+	
+		return null;
 	}
 }

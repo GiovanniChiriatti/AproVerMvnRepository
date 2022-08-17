@@ -1,3 +1,10 @@
 Confidentiality
 Integrity
 Autentication
+Altre
+AF all future
+AG all global
+AX all next
+EF exists future
+EG exists global
+EX exists next

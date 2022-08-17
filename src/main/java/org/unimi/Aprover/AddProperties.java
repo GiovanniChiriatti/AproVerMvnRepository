@@ -35,6 +35,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,6 +59,7 @@ import org.unimi.model.*;
 
 public class AddProperties { 
 	String operazione;
+	int defaultSelRadioButton = 99;
 	ObservableList<String> comboBoxListKnowledge; 
 	ObservableList<String> comboBoxListActor; 
 	public static final ObservableList names =
@@ -73,7 +75,7 @@ public class AddProperties {
     private Text propertyTypes, propertyAdd;
     
     @FXML
-    private Button closeButton,addButton,remButton;
+    private Button closeButton,addButton,remButton,clearButton;
     
     @FXML
     private ComboBox actorKnow, typeKnowledge;
@@ -82,14 +84,15 @@ public class AddProperties {
 	public void initialize() {
 		
 		comboBoxListKnowledge = FXCollections.observableArrayList(	
-				"Bitstring", 
-				"Digest",
-				"Identity Certificate",
 				"Asymmetric Private Key",
 				"Asymmetric Public Key",
-				"Symmetric Key",
+				"Bitstring", 
+				"Digest",
+				"Hash",
+				"Identity Certificate",
 				"Nonce",
 				"Signature",
+				"Symmetric Key",
 				"Tag",
 				"Timestamp");
 		typeKnowledge.setItems(comboBoxListKnowledge);
@@ -103,15 +106,22 @@ public class AddProperties {
 //        );
 		
 		listview.getItems().removeAll(names);
+		
         //names.addAll();
         //listview.setItems(names);
         listview.setCellFactory(param -> new RadioListCell());
-		
+        
+		remButton.setVisible(false);
+		clearButton.setVisible(false);
+		addButton.setVisible(true);
+
+
 	}
 	
 	private class RadioListCell extends ListCell<String> {
         @Override
         public void updateItem(String obj, boolean empty) {
+
             super.updateItem(obj, empty);
             if (empty) {
                 setText(null);
@@ -119,16 +129,18 @@ public class AddProperties {
             } else {
                 RadioButton radioButton = new RadioButton(obj);
                 radioButton.setToggleGroup(group);
-                
                 // Add Listeners if any
                 setGraphic(radioButton);
+                if (defaultSelRadioButton<99) {
+                	radioButton.setSelected(true);
+                }
             }
         }
     }
 	
 	public void setPropertyTypes (String propertyTypesSelected) {
 		propertyTypes.setText(propertyTypesSelected); 
-		
+
 	}
 	// se il server è uno degli attori utilizzabili lo inserisce nella combo altrimenti
 	// inserisce nella combo solo Alice Bob e Eve
@@ -142,7 +154,8 @@ public class AddProperties {
 	}
 	
 	   public void setDialogStage(Stage dialogStage,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server) {
-	        this.dialogStage = dialogStage;
+	        
+		   this.dialogStage = dialogStage;
 	        this.alice=alice;
 	        this.bob=bob;
 	        this.eve=eve;
@@ -162,36 +175,154 @@ public class AddProperties {
 			return operazione;
 		}
 		public void setpropertyAddValue(String propertyMod) {
-			System.out.println("la proprietà da inserire è " + propertyMod);
 			propertyAdd.setText(propertyMod);
+			clearButton.setVisible(true);
+			addButton.setVisible(false);
 			remButton.setVisible(true);
+			String knowSelect = "";
+			String eleSelect = "";
+			if (propertyMod.contains("Alice")) {
+				actorKnow.getSelectionModel().select(0);
+			    eleSelect = propertyMod.substring(propertyMod.indexOf("Alice,")+6 , propertyMod.indexOf(")=true"));
+			}
+			if (propertyMod.contains("Bob")) {
+				actorKnow.getSelectionModel().select(1);
+				eleSelect = propertyMod.substring(propertyMod.indexOf("Bob,")+4 , propertyMod.indexOf(")=true"));
+			}
+			if (propertyMod.contains("Eve")) {
+				actorKnow.getSelectionModel().select(2);
+			    eleSelect = propertyMod.substring(propertyMod.indexOf("Eve,")+4 , propertyMod.indexOf(")=true"));
+			}
+			if (propertyMod.contains("Server")) {
+				actorKnow.getSelectionModel().select(3);
+			    knowSelect = server.searchEle(propertyMod.substring(propertyMod.indexOf("Server,")+7 , propertyMod.indexOf(")=true")));
+			    eleSelect = propertyMod.substring(propertyMod.indexOf("Server,")+7 , propertyMod.indexOf(")=true"));
+			}
+		    if (knowSelect == null || knowSelect.isEmpty()) {
+				knowSelect = alice.searchEle(eleSelect);
+		    }
+		    if (knowSelect == null || knowSelect.isEmpty()) {
+				knowSelect = bob.searchEle(eleSelect);
+		    }
+		    if (knowSelect == null || knowSelect.isEmpty()) {
+				knowSelect = eve.searchEle(eleSelect);
+		    }
+		    if (knowSelect == null || knowSelect.isEmpty()) {
+				knowSelect = server.searchEle(eleSelect);
+		    }
+			
+			if (!(knowSelect ==null || knowSelect.isEmpty())) {
+				setKnowledgeSelected(knowSelect, eleSelect);
+			}
+			if (propertyMod == null||propertyMod.isEmpty() ) {
+				clearButton.setVisible(false);
+				addButton.setVisible(true);
+			} 
 		}
 	@FXML
 	public void typeKnowledgeSelected() {
+		defaultSelRadioButton = 99;
 		if (group.getSelectedToggle() != null) {
 			group.getSelectedToggle().setSelected(false);
 		}
 		listview.getItems().removeAll(names);
-		if (typeKnowledge.getValue().toString().contains("Nonce")) {
-	        names.addAll("Na", "Nb");
-	                listview.setItems(names);
-		}
-		if (typeKnowledge.getValue().toString().contains("Bitstring")) {
-	        names.addAll("Bitstring");
-	                listview.setItems(names);
-		}
+		setKnowledgeSelected(typeKnowledge.getValue().toString(),null);
 		
-		if (typeKnowledge.getValue().toString().contains("Digest")) {
-	        names.addAll("Digest");
-	                listview.setItems(names);
+	}
+	public void setKnowledgeSelected(String listSel,String eleSelezionato) {
+		defaultSelRadioButton = 99;
+		listview.getItems().removeAll(names);
+		names.clear();
+		
+		if (listSel.toString().contains("Nonce")) {
+			typeKnowledge.getSelectionModel().select(6);
+		       for(int i = 0; i <alice.getNonce().size(); i++) {
+		    	   names.add(alice.getNonce().get(i));
+		       }
+		       for(int i = 0; i <bob.getNonce().size(); i++) {
+		    	   names.add(bob.getNonce().get(i));
+		       }
+		       for(int i = 0; i <eve.getNonce().size(); i++) {
+		    	   names.add(eve.getNonce().get(i));
+		       }
+		       for(int i = 0; i <server.getAsymmetricPrivateKey().size(); i++) {
+		    	   names.add(server.getNonce().get(i));
+		       }
+		       listview.setItems(names);
+
+		}
+		if (listSel.toString().contains("Bitstring")) {
+			typeKnowledge.getSelectionModel().select(2);
+			for(int i = 0; i <alice.getBitstring().size(); i++) {
+		    	   names.add(alice.getBitstring().get(i));
+		       }
+		       for(int i = 0; i <bob.getBitstring().size(); i++) {
+		    	   names.add(bob.getBitstring().get(i));
+		       }
+		       for(int i = 0; i <eve.getBitstring().size(); i++) {
+		    	   names.add(eve.getBitstring().get(i));
+		       }
+		       for(int i = 0; i <server.getBitstring().size(); i++) {
+		    	   names.add(server.getBitstring().get(i));
+		       }
+		       listview.setItems(names);
+
+		}
+		if (listSel.toString().contains("Hash")) {
+			typeKnowledge.getSelectionModel().select(4);
+			for(int i = 0; i <alice.getHashKey().size(); i++) {
+		    	   names.add(alice.getHashKey().get(i));
+		       }
+		       for(int i = 0; i <bob.getHashKey().size(); i++) {
+		    	   names.add(bob.getHashKey().get(i));
+		       }
+		       for(int i = 0; i <eve.getHashKey().size(); i++) {
+		    	   names.add(eve.getHashKey().get(i));
+		       }
+		       for(int i = 0; i <server.getHashKey().size(); i++) {
+		    	   names.add(server.getHashKey().get(i));
+		       }
+		       listview.setItems(names);
+
+		}
+	
+		if (listSel.toString().contains("Digest")) {
+			typeKnowledge.getSelectionModel().select(3);
+			for(int i = 0; i <alice.getDigest().size(); i++) {
+		    	   names.add(alice.getDigest().get(i));
+		       }
+		       for(int i = 0; i <bob.getDigest().size(); i++) {
+		    	   names.add(bob.getDigest().get(i));
+		       }
+		       for(int i = 0; i <eve.getDigest().size(); i++) {
+		    	   names.add(eve.getDigest().get(i));
+		       }
+		       for(int i = 0; i <server.getDigest().size(); i++) {
+		    	   names.add(server.getDigest().get(i));
+		       }
+		       listview.setItems(names);
 		}	
 		
-		if (typeKnowledge.getValue().toString().contains("Identity Certificate")) {
-	        names.addAll("ID");
-	                listview.setItems(names);
+		if (listSel.toString().contains("Identity Certificate")) {
+			typeKnowledge.getSelectionModel().select(5);
+			for(int i = 0; i <alice.getIdCertificate().size(); i++) {
+		    	   names.add(alice.getIdCertificate().get(i));
+		       }
+		       for(int i = 0; i <bob.getIdCertificate().size(); i++) {
+		    	   names.add(bob.getIdCertificate().get(i));
+		       }
+		       for(int i = 0; i <eve.getIdCertificate().size(); i++) {
+		    	   names.add(eve.getIdCertificate().get(i));
+		       }
+		       for(int i = 0; i <server.getIdCertificate().size(); i++) {
+		    	   names.add(server.getIdCertificate().get(i));
+		       }
+		       listview.setItems(names);
+	
 		}	
 
-		if (typeKnowledge.getValue().toString().contains("Asymmetric Private Key")) {
+		if (listSel.toString().contains("Asymmetric Private Key")) {
+			typeKnowledge.getSelectionModel().select(0);
 		       for(int i = 0; i <alice.getAsymmetricPrivateKey().size(); i++) {
 		    	   names.add(alice.getAsymmetricPrivateKey().get(i));
 		       }
@@ -206,7 +337,8 @@ public class AddProperties {
 		       }
 		       listview.setItems(names);
 		}	
-		if (typeKnowledge.getValue().toString().contains("Asymmetric Public Key")) {
+		if (listSel.toString().contains("Asymmetric Public Key")) {
+			typeKnowledge.getSelectionModel().select(1);
 		       for(int i = 0; i <alice.getAsymmetricPublicKey().size(); i++) {
 		    	   names.add(alice.getAsymmetricPublicKey().get(i));
 		       }
@@ -221,7 +353,8 @@ public class AddProperties {
 		       }
 		       listview.setItems(names);
 		}			
-		if (typeKnowledge.getValue().toString().contains("Symmetric Key")) {
+		if (listSel.toString().contains("Symmetric Key")) {
+			typeKnowledge.getSelectionModel().select(8);
 		       for(int i = 0; i <alice.getSymmetricKey().size(); i++) {
 		    	   names.add(alice.getSymmetricKey().get(i));
 		       }
@@ -237,25 +370,78 @@ public class AddProperties {
 		       listview.setItems(names);
 		}	
 
-		if (typeKnowledge.getValue().toString().contains("Signature")) {
-	        names.addAll("Signature");
-	                listview.setItems(names);
+		if (listSel.toString().contains("Signature")) {
+			typeKnowledge.getSelectionModel().select(7);
+			for(int i = 0; i <alice.getSignature().size(); i++) {
+		    	   names.add(alice.getSignature().get(i));
+		       }
+		       for(int i = 0; i <bob.getSignature().size(); i++) {
+		    	   names.add(bob.getSignature().get(i));
+		       }
+		       for(int i = 0; i <eve.getSignature().size(); i++) {
+		    	   names.add(eve.getSignature().get(i));
+		       }
+		       for(int i = 0; i <server.getSignature().size(); i++) {
+		    	   names.add(server.getSignature().get(i));
+		       }
+		       listview.setItems(names);
 		}	
-		if (typeKnowledge.getValue().toString().contains("Tag")) {
-			listview.getItems().removeAll(names);
-	        names.addAll("Tag");
-	                listview.setItems(names);
+		if (listSel.toString().contains("Tag")) {
+			typeKnowledge.getSelectionModel().select(9);
+//			listview.getItems().removeAll(names);
+			for(int i = 0; i <alice.getTag().size(); i++) {
+		    	   names.add(alice.getTag().get(i));
+		       }
+		       for(int i = 0; i <bob.getTag().size(); i++) {
+		    	   names.add(bob.getTag().get(i));
+		       }
+		       for(int i = 0; i <eve.getTag().size(); i++) {
+		    	   names.add(eve.getTag().get(i));
+		       }
+		       for(int i = 0; i <server.getTag().size(); i++) {
+		    	   names.add(server.getTag().get(i));
+		       }
+		       listview.setItems(names);
 		}	
-		if (typeKnowledge.getValue().toString().contains("Timestamp")) {
-	        names.addAll("Timestamp");
-	                listview.setItems(names);
-		}		
+		if (listSel.toString().contains("Timestamp")) {
+			typeKnowledge.getSelectionModel().select(10);
+			for(int i = 0; i <alice.getTimestamp().size(); i++) {
+		    	   names.add(alice.getTimestamp().get(i));
+		       }
+		       for(int i = 0; i <bob.getTimestamp().size(); i++) {
+		    	   names.add(bob.getTimestamp().get(i));
+		       }
+		       for(int i = 0; i <eve.getTimestamp().size(); i++) {
+		    	   names.add(eve.getTimestamp().get(i));
+		       }
+		       for(int i = 0; i <server.getTimestamp().size(); i++) {
+		    	   names.add(server.getTimestamp().get(i));
+		       }
+		       listview.setItems(names);
+		}	
+		if (eleSelezionato != null) {
+			for (int i = 0; i < names.size(); i++) {
+				if (names.get(i).equals(eleSelezionato)) {
+					listview.getSelectionModel().select(i);
+					// group.getSelectedToggle().setSelected(true);
+					// RadioButton selectedRadioButton = (RadioButton) group.getToggles().get(i);
+					defaultSelRadioButton = i+1;
+					for (Toggle t : group.getToggles()) {
+						if (((RadioButton) t).getText().equals(eleSelezionato))
+							t.setSelected(true);
+					}
+				}
+			}
+		}
 		
 		
-	}
-	 
+		
+	} 
 	 @FXML 
 		public void addButtonIntoField() {
+			
+			
+			
 			Stage stage = (Stage) dialogStage.getScene().getWindow();
 			Alert.AlertType type = Alert.AlertType.CONFIRMATION;
 			Alert alert = new Alert(type, "");
@@ -269,7 +455,8 @@ public class AddProperties {
 				Optional<ButtonType> result = alert.showAndWait();
 				return;
 			}
-
+			
+			
 			if (group.getSelectedToggle() == null) {
 				alert.getDialogPane().setHeaderText(
 						"*- Attenction!! Type not Selected -* \n *- Attenction!! Properties not inserted -*");
@@ -281,6 +468,8 @@ public class AddProperties {
 			String toogleGroupValue = selectedRadioButton.getText();
 			if (propertyAdd.getText().isEmpty()) {
 				propertyAdd.setText("¬EF (knows("+ actorKnow.getValue() + ","+ toogleGroupValue + ")=true)");
+				clearButton.setVisible(true);
+				addButton.setVisible(false);
 			} else {
 				String substring = propertyAdd.getText().substring(0, propertyAdd.getText().length()-1);
 				propertyAdd.setText(substring + " and knows("+ actorKnow.getValue() + ","+ toogleGroupValue + ")=true)");
@@ -290,11 +479,14 @@ public class AddProperties {
 		}
 	@FXML 
 	public void remButtonIntoField() {
-		System.out.println("----------" + propertyAdd.getText().toString());
 			if (propertyAdd.getText().toString().lastIndexOf(" and") > 0) {
 				propertyAdd.setText(
 						propertyAdd.getText().substring(0, propertyAdd.getText().toString().lastIndexOf(" and")) + ")");
+				clearButton.setVisible(false);
+				addButton.setVisible(true);
 			} else {
+				clearButton.setVisible(false);
+				addButton.setVisible(true);
 				propertyAdd.setText("");
 			}
 		}
