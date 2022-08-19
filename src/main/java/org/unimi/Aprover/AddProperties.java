@@ -78,7 +78,7 @@ public class AddProperties {
     private Button closeButton,addButton,remButton,clearButton;
     
     @FXML
-    private ComboBox actorKnow, typeKnowledge;
+    private ComboBox actorKnow, typeKnowledge, ctlSel;
     
 	@FXML
 	public void initialize() {
@@ -137,10 +137,17 @@ public class AddProperties {
             }
         }
     }
-	
-	public void setPropertyTypes (String propertyTypesSelected) {
+// inizializzazione CLT List e propriety	
+	public void setPropertyTypes (String propertyTypesSelected , String[] ctlEle) {
 		propertyTypes.setText(propertyTypesSelected); 
-
+		ObservableList<String>  data = FXCollections.observableArrayList();
+		for (int i=0; i< ctlEle.length  ; i++) {
+			if (!(ctlEle[i] == null)) {
+				data.add(ctlEle[i]);
+			}
+		}
+		ctlSel.setItems(data);
+		ctlSel.getSelectionModel().select(0);
 	}
 	// se il server è uno degli attori utilizzabili lo inserisce nella combo altrimenti
 	// inserisce nella combo solo Alice Bob e Eve
@@ -181,6 +188,9 @@ public class AddProperties {
 			remButton.setVisible(true);
 			String knowSelect = "";
 			String eleSelect = "";
+			String ctlSelect = propertyMod.substring(0 , propertyMod.indexOf(" ("));
+			
+			ctlSel.getSelectionModel().select(ctlSelect);
 			if (propertyMod.contains("Alice")) {
 				actorKnow.getSelectionModel().select(0);
 			    eleSelect = propertyMod.substring(propertyMod.indexOf("Alice,")+6 , propertyMod.indexOf(")=true"));
@@ -467,7 +477,7 @@ public class AddProperties {
 			RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
 			String toogleGroupValue = selectedRadioButton.getText();
 			if (propertyAdd.getText().isEmpty()) {
-				propertyAdd.setText("¬EF (knows("+ actorKnow.getValue() + ","+ toogleGroupValue + ")=true)");
+				propertyAdd.setText(ctlSel.getValue() +" (knows("+ actorKnow.getValue() + ","+ toogleGroupValue + ")=true)");
 				clearButton.setVisible(true);
 				addButton.setVisible(false);
 			} else {

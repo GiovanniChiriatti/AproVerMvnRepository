@@ -3,12 +3,14 @@ package org.unimi.model;
 public class ConfigurationDataProprieties {
 	private String[][] proprietiesValue  = new String[16][16];
 	private String[] listNameTab = new String[16];
+	private String[][] ctlValue  = new String[16][16];
 
-	private int row, column;
+	private int row, column, columnCtl;
 
 	public ConfigurationDataProprieties() {
 		row=-1;
 		column=-1;
+		columnCtl=-1;
 		for (int i = 0 ; i< 10; i++) {
 			listNameTab[i]="";
 			for (int j = 0 ; j< 10; j++) {
@@ -29,6 +31,7 @@ public class ConfigurationDataProprieties {
 		}
 		if (row < 10) {
 			column=-1;
+			columnCtl=-1;
 			this.listNameTab[row] = stringListNameTab;
 			this.proprietiesValue[row][0] = stringListPropTab;
 		}
@@ -75,6 +78,21 @@ public class ConfigurationDataProprieties {
 			column++;
 			this.proprietiesValue[row][column] = stringproprietiesValue;
 		}
+	}
+	public void setCtlValue(String stringproprietiesValue) {
+		if (columnCtl < 10) {
+			columnCtl++;
+			this.ctlValue[row][columnCtl] = stringproprietiesValue;
+		}
+	}
+	public String[] getCtlTab(int rowAppo) {
+		String[] ctlEle  = new String[16];
+		if (rowAppo < 10) {
+			for (int i=0; i<ctlValue[rowAppo].length; i++ ) {
+				ctlEle[i] = ctlValue[rowAppo][i];
+			}
+		}
+		return ctlEle;
 	}
 	public int setNextPropertisValue(String stringproprietiesValue, int rowAppo) {
 		if (rowAppo < 10) {

@@ -34,8 +34,8 @@
                         <Font size="17.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="actorKnow" layoutX="562.0" layoutY="43.0" prefHeight="25.0" prefWidth="122.0" promptText="Actor" visibleRowCount="4" />
-                  <Text layoutX="489.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Principal" wrappingWidth="70.791015625">
+                  <ComboBox fx:id="actorKnow" layoutX="457.0" layoutY="43.0" prefHeight="25.0" prefWidth="80.0" promptText="Actor" visibleRowCount="4" />
+                  <Text layoutX="382.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Principal" wrappingWidth="80.0">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -46,6 +46,12 @@
                   <Button fx:id="remButton" layoutX="236.0" layoutY="408.0" mnemonicParsing="false" onAction="#finishRemSaving" prefHeight="25.0" prefWidth="210.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Remove Proprieties and Finish" visible="false" />
                   <Button layoutX="460.0" layoutY="408.0" mnemonicParsing="false" onAction="#finishWithoutSaving" prefHeight="25.0" prefWidth="180.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: white;" text="Finish Without Saving" />
                   <Text fx:id="propertyAdd" layoutX="14.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="374.169921875" />
+                  <ComboBox fx:id="ctlSel" layoutX="579.0" layoutY="43.0" prefHeight="25.0" prefWidth="151.0" promptText="C.T.L." visibleRowCount="4" />
+                  <Text layoutX="548.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CTL" wrappingWidth="30.791015625">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Text>
 					</children>
 				</AnchorPane>
 				<Text fill="#f8f5f5" layoutX="26.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Properties" wrappingWidth="241.13671875">

@@ -2599,7 +2599,7 @@ public class SelectAProVerController {
 				if (count == 0) {
 					confProp.setListNameTab(t.next(),"");
 				} else {
-					confProp.setProprietiesValue(t.next());
+					confProp.setCtlValue(t.next());
 				}
 				count++;
 			}
@@ -2880,8 +2880,12 @@ public class SelectAProVerController {
         if (numTab != 8){
         	controller.setTxtProperties(confProp.getListNameTab(numTab), confProp.getProprietiesValue(numTab,0));
         }
-        
-        
+		if (tool.getText().contains("Disable")) {
+			controller.setActorList(true);
+		} else {
+			controller.setActorList(false);
+		}
+		controller.setCtlList(ctlEle);
         dialogStage.showAndWait();
         if(controller.getOperation().equals("Delete")){
         	confProp.delListTab(numTab);
@@ -3029,13 +3033,13 @@ public class SelectAProVerController {
         
 		switch (tab) {
 		case 0:
-			controller.setPropertyTypes(tab00.getText());
+			controller.setPropertyTypes(tab00.getText(),confProp.getCtlTab(0));
 			break;
 		case 1:
-			controller.setPropertyTypes(tab01.getText());
+			controller.setPropertyTypes(tab01.getText(),confProp.getCtlTab(1));
 			break;
 		case 2:
-			controller.setPropertyTypes(tab02.getText());
+			controller.setPropertyTypes(tab02.getText(),confProp.getCtlTab(2));
 			break;
 		}
         
