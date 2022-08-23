@@ -44,7 +44,7 @@
 							<items>
 								<MenuItem fx:id="tool" mnemonicParsing="false" onAction="#toolSet" text="Disable Server" />
                         <MenuItem fx:id="toolEve" mnemonicParsing="false" onAction="#toolSetEve" text="Eve Create Messages" />
-                        <MenuItem fx:id="toolCheck" mnemonicParsing="false" onAction="#toolSetChek" text="Don't check Words" />
+                        <MenuItem fx:id="toolCheck" disable="true" mnemonicParsing="false" onAction="#toolSetChek" text="Don't check Words" visible="false" />
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="Help">
