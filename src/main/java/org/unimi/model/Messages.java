@@ -7,7 +7,7 @@ public class Messages {
 
 	public Messages() {
 		for (int i = 0; i < 15; i++) {
-			listMessages[i] = new Message();;
+			listMessages[i] = new Message();
 		}
 	}
 	public Message[] getListMessages() {

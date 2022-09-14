@@ -98,7 +98,7 @@ public class SelectAProVerController {
 	SecurityKey bob = new SecurityKey();
 	SecurityKey eve = new SecurityKey();
 	SecurityKey server = new SecurityKey();
-	Messages messagges = new Messages();
+	Messages messages = new Messages();
 	//Properties proprieties = new Properties();
 	ConfigurationDataProprieties confProp = new ConfigurationDataProprieties();
 	private String appoOldKnowledge= null;
@@ -1907,7 +1907,7 @@ public class SelectAProVerController {
 		}
 		
 		
-		messagges.remMessages(riga - 1);
+		messages.remMessages(riga - 1);
 		if (((Button) node).getText().equals("-")) {
 			node1.setVisible(true);
 			node2.setVisible(true);
@@ -2199,8 +2199,8 @@ public class SelectAProVerController {
 			((Line) oggetto).setStartX(coordinateXStart);
 			oggetto.setVisible(true);
 		}
-		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsg);
-		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),oggetmsf);
+		writeMsgLine(messages.getMessage(riga - 1).getPayload(),oggetmsg);
+		writeMsgLine(messages.getMessage(riga - 1).getPayload(),oggetmsf);
 
 		((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
 		((TextFlow) oggetmsg).setVisible(true);
@@ -2238,16 +2238,16 @@ public class SelectAProVerController {
         CreateMessageAProVer controller = loader.getController();
         controller.setDialogStage(dialogStage);
         if (actorFrom.equals("Alice")) {
-        	controller.setInfo(alice, messagges.getMessage(messageNumber-1));
+        	controller.setInfo(alice, messages.getMessage(messageNumber-1));
         }
         if (actorFrom.equals("Bob")) {
-        	controller.setInfo(bob, messagges.getMessage(messageNumber-1));
+        	controller.setInfo(bob, messages.getMessage(messageNumber-1));
         }
         if (actorFrom.equals("Eve")) {
-        	controller.setInfo(eve, messagges.getMessage(messageNumber-1));
+        	controller.setInfo(eve, messages.getMessage(messageNumber-1));
         }
         if (actorFrom.equals("Server")) {
-        	controller.setInfo(server, messagges.getMessage(messageNumber-1));
+        	controller.setInfo(server, messages.getMessage(messageNumber-1));
         }
         controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEve.getText());
         controller.setHelp(helpFlag);
@@ -2299,7 +2299,7 @@ public class SelectAProVerController {
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
-		showModifyMessage(messagges.getMessage(riga - 1).getActorfrom().toString(),riga);
+		showModifyMessage(messages.getMessage(riga - 1).getActorfrom().toString(),riga);
 		
 		
 		for (Node nodeAppo : ancorPulsanti.getChildren()) {
@@ -2315,9 +2315,9 @@ public class SelectAProVerController {
 			}
 		}
 		
-		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),msg);
+		writeMsgLine(messages.getMessage(riga - 1).getPayload(),msg);
 		((TextFlow) msg).setVisible(true);
-		writeMsgLine(messagges.getMessage(riga - 1).getPayload(),msf);
+		writeMsgLine(messages.getMessage(riga - 1).getPayload(),msf);
 		//((TextFlow) msf).setVisible(true);
 		
 	}
@@ -2335,7 +2335,7 @@ public class SelectAProVerController {
 		msgPayload.getChildren().clear();
 		msgPayloadAncorPane.setLayoutX(124);
 		msgPayloadAncorPane.setLayoutY((42*riga)+30);
-		writeTxtPreview("Message: " + messagges.getMessage(riga - 1).getPayload()+ "\n Select for modify message");
+		writeTxtPreview("Message: " + messages.getMessage(riga - 1).getPayload()+ "\n Select for modify message");
 		
 		msgPayload.setVisible(true);
 		msgPayloadAncorPane.setVisible(true);
@@ -2401,16 +2401,16 @@ public class SelectAProVerController {
 		controller.setDialogStage(dialogStage);
 
 		if (actorFrom.equals("Alice")) {
-			controller.setInfo(alice, messagges.getMessage(messageNumber - 1));
+			controller.setInfo(alice, messages.getMessage(messageNumber - 1));
 		}
 		if (actorFrom.equals("Bob")) {
-			controller.setInfo(bob, messagges.getMessage(messageNumber - 1));
+			controller.setInfo(bob, messages.getMessage(messageNumber - 1));
 		}
 		if (actorFrom.equals("Eve")) {
-			controller.setInfo(eve, messagges.getMessage(messageNumber - 1));
+			controller.setInfo(eve, messages.getMessage(messageNumber - 1));
 		}
 		if (actorFrom.equals("Server")) {
-			controller.setInfo(server, messagges.getMessage(messageNumber - 1));
+			controller.setInfo(server, messages.getMessage(messageNumber - 1));
 		}
 
 		controller.setMessage(messageNumber);
@@ -3505,28 +3505,28 @@ public class SelectAProVerController {
 				
 				numMessage = Integer.parseInt(typeInfo.substring(15, typeInfo.length()));
 				if (line.contains("ActorFrom ")){
-					messagges.getListMessages()[numMessage].setActorFrom(line.substring(10, line.length()));
+					messages.getListMessages()[numMessage].setActorFrom(line.substring(10, line.length()));
 				}
 				if (line.contains("ActorTo ")){
-					messagges.getListMessages()[numMessage].setActorTo(line.substring(8, line.length()));
+					messages.getListMessages()[numMessage].setActorTo(line.substring(8, line.length()));
 				}
 				if (line.contains("Eve Intercept ")){
-					messagges.getListMessages()[numMessage].setEvesIntercept(Boolean.valueOf(line.substring(14, line.length())));
+					messages.getListMessages()[numMessage].setEvesIntercept(Boolean.valueOf(line.substring(14, line.length())));
 					eveIntercept = Boolean.valueOf(line.substring(14, line.length()));
 				}
 				if (line.contains("Messages ")){
-					messagges.getListMessages()[numMessage].setPayload(line.substring(9, line.length()));
-					viewSetLine(messagges.getListMessages()[numMessage].getActorTo(),messagges.getListMessages()[numMessage].getActorfrom(),numMessage,numMessagePrec);
+					messages.getListMessages()[numMessage].setPayload(line.substring(9, line.length()));
+					viewSetLine(messages.getListMessages()[numMessage].getActorTo(),messages.getListMessages()[numMessage].getActorfrom(),numMessage,numMessagePrec);
 					numMessagePrec = numMessage;
 				}
 		}
 		if (typeInfo.contains("dati SecurityFunctionsPartMessage j=")) {
-			messagges.getListMessages()[numMessage].addSecurityFunctionsPartMessage(line);		
+			messages.getListMessages()[numMessage].addSecurityFunctionsPartMessage(line);		
 		}
 		if (typeInfo.contains("dati listPartMessage j=")) {
 			int j = Integer.parseInt(typeInfo.substring(23, 25).replace(" ", ""));
 			int k= Integer.parseInt(typeInfo.substring(26, typeInfo.length()).replace("k=", "").replace("=", "").replace(" ",""));
-			messagges.getListMessages()[numMessage].addListPartMessage(line, k);		
+			messages.getListMessages()[numMessage].addListPartMessage(line, k);		
 		}
 		if (typeInfo.equals("dati Properties ")) {
 			if (line.contains("TAB =")) {
@@ -3944,24 +3944,24 @@ public class SelectAProVerController {
 				
 
 			for (int i = 0; i < 15; i++) {
-				if (!messagges.getListMessages()[i].getActorfrom().isEmpty()) {
+				if (!messages.getListMessages()[i].getActorfrom().isEmpty()) {
 					bw.write("dati Messaggio " + i + "\n");
-					bw.write("ActorFrom " + messagges.getListMessages()[i].getActorfrom() + "\n");
-					bw.write("ActorTo " + messagges.getListMessages()[i].getActorTo() + "\n");
-					bw.write("Eve Intercept " + messagges.getListMessages()[i].getEvesIntercept() + "\n");
-					bw.write("Messages " + messagges.getListMessages()[i].getPayload() + "\n");
+					bw.write("ActorFrom " + messages.getListMessages()[i].getActorfrom() + "\n");
+					bw.write("ActorTo " + messages.getListMessages()[i].getActorTo() + "\n");
+					bw.write("Eve Intercept " + messages.getListMessages()[i].getEvesIntercept() + "\n");
+					bw.write("Messages " + messages.getListMessages()[i].getPayload() + "\n");
 					bw.flush();
 					for (int j = 0; j < 15; j++) {
 						//� importante prima inserire i dati dall'array SecurityFunctionsPartMessage prima delle parti del messsaggio
-						if (messagges.getListMessages()[i].getSecurityFunctionsPartMessage(j) != null) {
+						if (messages.getListMessages()[i].getSecurityFunctionsPartMessage(j) != null) {
 							bw.write("dati SecurityFunctionsPartMessage j=" + j + "\n");
-							bw.write(messagges.getListMessages()[i].getSecurityFunctionsPartMessage(j) + "\n");
+							bw.write(messages.getListMessages()[i].getSecurityFunctionsPartMessage(j) + "\n");
 						}						
 						for (int k = 0; k < 15; k++) {
-							if (messagges.getListMessages()[i].getListPartMessage()[j][k] != null) {
-								if (!messagges.getListMessages()[i].getListPartMessage()[j][k].isEmpty()) {
+							if (messages.getListMessages()[i].getListPartMessage()[j][k] != null) {
+								if (!messages.getListMessages()[i].getListPartMessage()[j][k].isEmpty()) {
 									bw.write("dati listPartMessage j=" + j + " k=" + k + "\n");
-									bw.write(messagges.getListMessages()[i].getListPartMessage()[j][k] + "\n");
+									bw.write(messages.getListMessages()[i].getListPartMessage()[j][k] + "\n");
 									bw.flush();
 								}
 							}
@@ -3990,6 +3990,18 @@ public class SelectAProVerController {
 			r.printStackTrace();
 		}
 	}
+	
+	// richiama la scrittura del file aSM	
+	@FXML
+	private void writeFileAsm() throws IOException {
+		if (tool.getText().contains("Enable")) {
+			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText());
+		} else {
+			WriteASM writeASM = new WriteASM(true,messages,alice,bob,eve,server,toolEve.getText());
+		}
+
+	}
+
 	// se viene cliccato dal menu l'opzione about si visualizza il file PdF 
 	@FXML
 	private void about() throws IOException {

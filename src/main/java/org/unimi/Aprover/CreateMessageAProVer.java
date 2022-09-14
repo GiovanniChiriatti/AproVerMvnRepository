@@ -500,10 +500,12 @@ public class CreateMessageAProVer {
     		textFlowSecurity.setVisible(true);
     		
     	}
+    	/*
     	System.out.println("----------elenco valori tabella----------" + NumNodiSecurityFunctions);
     	for (int i=0; i<oldMessagePayloadField[NumNodiSecurityFunctions].length; i++) {
     		System.out.println(oldMessagePayloadField[NumNodiSecurityFunctions] [i]);
     	}
+    	*/
     }
     
     private Node cercaNodoVuotoSecurityFuncion() {
