@@ -402,42 +402,43 @@ public class SecurityKey {
 
 // ---------------- Verifica duplicati
 	public boolean checkDuplicate(String nuovoValore, String tipo) {
-		if (!tipo.equals("01")) {
+		if (!tipo.equals("01" )) {
 			for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
 				if (AsymmetricPublicKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (!tipo.equals("02")) {
+		if (!tipo.equals("01" )) {
 			for (int i = 0; i < AsymmetricPrivateKey.size(); i++) {
 				if (AsymmetricPrivateKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (!tipo.equals("03")) {
+
+		if (!tipo.equals("02")) {
 			for (int i = 0; i < SymmetricKey.size(); i++) {
 				if (SymmetricKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (!tipo.equals("04")) {
+		if (!tipo.equals("03")) {
 			for (int i = 0; i < hashKey.size(); i++) {
 				if (hashKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (!tipo.equals("05")) {
+		if (!tipo.equals("04")) {
 			for (int i = 0; i < bitstring.size(); i++) {
 				if (bitstring.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		if (!tipo.equals("06")) {
+		if (!tipo.equals("05")) {
 			for (int i = 0; i < idCertificate.size(); i++) {
 				if (idCertificate.get(i).equals(nuovoValore)) {
 					return true;
@@ -445,7 +446,7 @@ public class SecurityKey {
 			}
 		}
 		
-		if (!tipo.equals("07")) {
+		if (!tipo.equals("06")) {
 			for (int i = 0; i < nonce.size(); i++) {
 				if (nonce.get(i).equals(nuovoValore)) {
 					return true;
@@ -453,7 +454,7 @@ public class SecurityKey {
 			}
 		}
 		
-		if (!tipo.equals("08")) {
+		if (!tipo.equals("07")) {
 			for (int i = 0; i < signature.size(); i++) {
 				if (signature.get(i).equals(nuovoValore)) {
 					return true;
@@ -461,7 +462,7 @@ public class SecurityKey {
 			}
 		}
 		
-		if (!tipo.equals("09")) {
+		if (!tipo.equals("08")) {
 			for (int i = 0; i < tag.size(); i++) {
 				if (tag.get(i).equals(nuovoValore)) {
 					return true;
@@ -470,7 +471,7 @@ public class SecurityKey {
 		}
 		
 		
-		if (!tipo.equals("10")) {
+		if (!tipo.equals("09")) {
 			for (int i = 0; i < timestamp.size(); i++) {
 				if (timestamp.get(i).equals(nuovoValore)) {
 					return true;
@@ -479,7 +480,7 @@ public class SecurityKey {
 		}
 
 		
-		if (!tipo.equals("11")) {
+		if (!tipo.equals("10")) {
 			for (int i = 0; i < digest.size(); i++) {
 				if (digest.get(i).equals(nuovoValore)) {
 					System.out.println("trovato in 11 " + digest.get(i));					

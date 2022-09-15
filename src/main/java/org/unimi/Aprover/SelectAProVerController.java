@@ -82,7 +82,7 @@ public class SelectAProVerController {
 
 	private List<String> listFiles;
 
-	final String publicKnow = "Asymmetric Public Keys";
+	final String publicKnow = "Asymmetric Public Keys                                                         Asymmetric Private Keys";
 	final String privateKnow = "Asymmetric Private Keys";
 	final String symmetricKnow = "Symmetric Key";
 	final String hashKnow = "Hash";
@@ -110,7 +110,9 @@ public class SelectAProVerController {
 	private String[] ctlEle = new String[16];
 	
 	Node node,node1,node2,node3,node4, line,liey,msg,msf,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
-
+	String[] elencoKnowledge = new String[15];
+	String[] elencoKnowledge2 = new String[15];
+	
 	@FXML
 	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane,ancorTabe08;
 
@@ -357,6 +359,7 @@ public class SelectAProVerController {
 // si inizializzano le variabili che indicano la riga del knowlege da digitare e il tipo di knowledge attivo
 		rowEdit.setText("1");
 		knowPage.setText("01");
+		typeKey.setText(publicKnow);
 		
 		aliceButton01.setVisible(false);
 		bobButton01.setVisible(false);
@@ -744,6 +747,7 @@ public class SelectAProVerController {
 		//piuButton.setVisible(true);
 		
 		knowPage.setText("01");
+		typeKey.setText(publicKnow);
 
 //verifica quale Actor � stato selezionato e abilita la visibilit� della form di knowledge (initialKnowledge.setVisible(true);)
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
@@ -999,24 +1003,26 @@ public class SelectAProVerController {
 			return;
 		}
 		
+		if (knowPage.getText() == "01") {
+		    if (verifyPubPriv()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Insert key Private and Public in the same row");
+		    	alert.getDialogPane().setHeaderText("There must be a public key pair and a private key : " +verifyPubPriv());
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
 		
 		piuKnowledge();
 		
-		if (knowPage.getText().equals("10")) {
+		if (knowPage.getText().equals("09")) {
 			//piuKnowledge();
 			typeKey.setText(digestKnow);
 			nextButton.setDisable(true);
-			
-			//finishButton.setVisible(true);
-			prevButton.setDisable(false);
-			//piuButton.setVisible(true);
-			knowPage.setText("11");
-		} 	
-		
-		if (knowPage.getText().equals("09")) {
-			//piuKnowledge();
-			typeKey.setText(timestampKnow);
-			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
 			prevButton.setDisable(false);
@@ -1026,7 +1032,7 @@ public class SelectAProVerController {
 		
 		if (knowPage.getText().equals("08")) {
 			//piuKnowledge();
-			typeKey.setText(tagKnow);
+			typeKey.setText(timestampKnow);
 			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
@@ -1037,7 +1043,7 @@ public class SelectAProVerController {
 		
 		if (knowPage.getText().equals("07")) {
 			//piuKnowledge();
-			typeKey.setText(signatureKnow);
+			typeKey.setText(tagKnow);
 			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
@@ -1048,7 +1054,7 @@ public class SelectAProVerController {
 		
 		if (knowPage.getText().equals("06")) {
 			//piuKnowledge();
-			typeKey.setText(nonceKnow);
+			typeKey.setText(signatureKnow);
 			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
@@ -1059,7 +1065,7 @@ public class SelectAProVerController {
 		
 		if (knowPage.getText().equals("05")) {
 			//piuKnowledge();
-			typeKey.setText(idCertificateKnow);
+			typeKey.setText(nonceKnow);
 			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
@@ -1068,10 +1074,9 @@ public class SelectAProVerController {
 			knowPage.setText("06");
 		} 	
 		
-		
 		if (knowPage.getText().equals("04")) {
 			//piuKnowledge();
-			typeKey.setText(bitstringKnow);
+			typeKey.setText(idCertificateKnow);
 			nextButton.setDisable(false);
 			
 			//finishButton.setVisible(true);
@@ -1080,7 +1085,19 @@ public class SelectAProVerController {
 			knowPage.setText("05");
 		} 	
 		
+		
 		if (knowPage.getText().equals("03")) {
+			//piuKnowledge();
+			typeKey.setText(bitstringKnow);
+			nextButton.setDisable(false);
+			
+			//finishButton.setVisible(true);
+			prevButton.setDisable(false);
+			//piuButton.setVisible(true);
+			knowPage.setText("04");
+		} 	
+		
+		if (knowPage.getText().equals("02")) {
 			//piuKnowledge();
 			typeKey.setText(hashKnow);
 			nextButton.setDisable(false);
@@ -1088,25 +1105,17 @@ public class SelectAProVerController {
 			//finishButton.setVisible(true);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("04");
-		}
-		if (knowPage.getText().equals("02")) {
-			typeKey.setText(symmetricKnow);
-			nextButton.setDisable(false);
-			//finishButton.setVisible(false);
-			prevButton.setDisable(false);
-			//piuButton.setVisible(true);
 			knowPage.setText("03");
 		}
-
 		if (knowPage.getText().equals("01")) {
-			typeKey.setText(privateKnow);
+			typeKey.setText(symmetricKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
 			knowPage.setText("02");
 		}
+
 
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
 			loadTable(alice, knowPage.getText());
@@ -1131,9 +1140,19 @@ public class SelectAProVerController {
 // dopo aver compattato verifica se ci sono duplicati sia all'interno che in altre kiavi 	
 	private String compattaKnowledge(){
 		int indice=0;
-		String[] elencoKnowledge = new String[15];
+		int appRow;
+		int appColumn;
+		for (int i=0; i<15; i++) {
+				elencoKnowledge[i] ="";
+				elencoKnowledge2[i] ="";
+		}
 		for (Node node : tabeKnowledge.getChildren()) {
-			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty()) {
+			if (GridPane.getColumnIndex(node) != null) {
+				appColumn = GridPane.getColumnIndex(node);
+			} else {
+				appColumn = 0;
+			}
+			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty() && appColumn==1) {
 				elencoKnowledge[indice] = ((TextField) node).getText().trim(); 
 				if (!elencoKnowledge[indice].isEmpty()) {
 					indice ++;
@@ -1146,10 +1165,28 @@ public class SelectAProVerController {
 				elencoKnowledge[i] ="";
 			}
 		}
+		indice=0;
+
+		for (Node node : tabeKnowledge.getChildren()) {
+			if (GridPane.getColumnIndex(node) != null) {
+				appColumn = GridPane.getColumnIndex(node);
+			} else {
+				appColumn = 0;
+			}
+			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty() && appColumn==2) {
+				elencoKnowledge2[indice] = ((TextField) node).getText().trim(); 
+				if (!elencoKnowledge2[indice].isEmpty()) {
+					indice ++;
+				}
+			}
+		}
 		
-		
-		int appRow;
-		int appColumn;
+		for (int i=0; i<15; i++) {
+			if (elencoKnowledge2[i]== null) {
+				elencoKnowledge2[i] ="";
+			}
+		}
+
 		tabeKnowledge.setGridLinesVisible(true);
 		for (Node node : tabeKnowledge.getChildren()) {
 			
@@ -1163,18 +1200,33 @@ public class SelectAProVerController {
 			} else {
 				appColumn = 0;
 			}
-				if (node instanceof TextField) {
+				if (node instanceof TextField && appColumn==1) {
 					((TextField) node).setText(elencoKnowledge[appRow]);
+			}
+				if (node instanceof TextField && appColumn==2) {
+					((TextField) node).setText(elencoKnowledge2[appRow]);
 			}
 
 		}
-		
+
 // verifica duplicati all'interno dell'elenco
 		Boolean doppioni = false;
 		for (int i=0; i<15; i++) {
+			if (!(elencoKnowledge[i] == null) && !elencoKnowledge[i].isEmpty() && !(elencoKnowledge2[i] == null)&& elencoKnowledge[i].equals(elencoKnowledge2[i]) && !elencoKnowledge2[i].isEmpty()) {
+				return elencoKnowledge[i]; 
+			}
 			for (int j=i+1 ; j<15; j++) {
 				if (!(elencoKnowledge[i] == null) && elencoKnowledge[i].equals(elencoKnowledge[j]) && !elencoKnowledge[i].isEmpty()) {
 					return elencoKnowledge[i]; 
+				}
+				if (!(elencoKnowledge[i] == null) && !elencoKnowledge[i].isEmpty() && elencoKnowledge[i].equals(elencoKnowledge2[j]) && !elencoKnowledge2[i].isEmpty()) {
+					return elencoKnowledge[i]; 
+				}
+				if (!(elencoKnowledge2[i] == null) && elencoKnowledge2[i].equals(elencoKnowledge2[j]) && !elencoKnowledge2[i].isEmpty()) {
+					return elencoKnowledge2[i]; 
+				}
+				if (!(elencoKnowledge2[i] == null)&& !elencoKnowledge2[i].isEmpty() && elencoKnowledge2[i].equals(elencoKnowledge[j]) && !elencoKnowledge[i].isEmpty()) {
+					return elencoKnowledge2[i]; 
 				}
 			}
 		}
@@ -1197,12 +1249,22 @@ public class SelectAProVerController {
 						return elencoKnowledge[i];
 					}
 				}
+				if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()) {
+					if (bob.checkDuplicate(elencoKnowledge2[i], knowPage.getText())) {
+						return elencoKnowledge2[i];
+					}
+				}
 			}
 		}
 		if (comboBoxActor.getValue().toString().contains("Eve")) {
 			for (int i = 0; i < 15; i++) {
 				if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()) {
 					if (eve.checkDuplicate(elencoKnowledge[i], knowPage.getText())) {
+						return elencoKnowledge[i];
+					}
+				}
+				if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()) {
+					if (eve.checkDuplicate(elencoKnowledge2[i], knowPage.getText())) {
 						return elencoKnowledge[i];
 					}
 				}
@@ -1215,6 +1277,27 @@ public class SelectAProVerController {
 						return elencoKnowledge[i];
 					}
 				}
+				if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()) {
+					if (server.checkDuplicate(elencoKnowledge2[i], knowPage.getText())) {
+						return elencoKnowledge2[i];
+					}
+				}
+			}
+		}
+		return null;
+	}
+// La routin verifica che siano state inserite coppie chiave pubblica e chiave privata 	
+	private String verifyPubPriv(){
+		for (int i = 0; i < 15; i++) {
+			if (elencoKnowledge[i] != null && !elencoKnowledge[i].isEmpty()){
+				if (elencoKnowledge2[i].isEmpty()){
+					return elencoKnowledge[i];
+				}		
+			}
+			if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()){
+				if (elencoKnowledge[i].isEmpty()){
+					return elencoKnowledge2[i];
+				}		
 			}
 		}
 		return null;
@@ -1247,8 +1330,9 @@ public class SelectAProVerController {
 			//piuButton.setVisible(true);
 			knowPage.setText("01");
 		}
+
 		if (knowPage.getText().equals("03")) {
-			typeKey.setText(privateKnow);
+			typeKey.setText(symmetricKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1256,7 +1340,7 @@ public class SelectAProVerController {
 			knowPage.setText("02");
 		}
 		if (knowPage.getText().equals("04")) {
-			typeKey.setText(symmetricKnow);
+			typeKey.setText(hashKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1264,7 +1348,7 @@ public class SelectAProVerController {
 			knowPage.setText("03");
 		}
 		if (knowPage.getText().equals("05")) {
-			typeKey.setText(hashKnow);
+			typeKey.setText(bitstringKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1272,7 +1356,7 @@ public class SelectAProVerController {
 			knowPage.setText("04");
 		}
 		if (knowPage.getText().equals("06")) {
-			typeKey.setText(bitstringKnow);
+			typeKey.setText(idCertificateKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1280,7 +1364,7 @@ public class SelectAProVerController {
 			knowPage.setText("05");
 		}
 		if (knowPage.getText().equals("07")) {
-			typeKey.setText(idCertificateKnow);
+			typeKey.setText(nonceKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1288,7 +1372,7 @@ public class SelectAProVerController {
 			knowPage.setText("06");
 		}
 		if (knowPage.getText().equals("08")) {
-			typeKey.setText(nonceKnow);
+			typeKey.setText(signatureKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1296,7 +1380,7 @@ public class SelectAProVerController {
 			knowPage.setText("07");
 		}
 		if (knowPage.getText().equals("09")) {
-			typeKey.setText(signatureKnow);
+			typeKey.setText(tagKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
@@ -1304,20 +1388,12 @@ public class SelectAProVerController {
 			knowPage.setText("08");
 		}
 		if (knowPage.getText().equals("10")) {
-			typeKey.setText(tagKnow);
-			nextButton.setDisable(false);
-			//finishButton.setVisible(false);
-			prevButton.setDisable(false);
-			//piuButton.setVisible(true);
-			knowPage.setText("09");
-		}
-		if (knowPage.getText().equals("11")) {
 			typeKey.setText(timestampKnow);
 			nextButton.setDisable(false);
 			//finishButton.setVisible(false);
 			prevButton.setDisable(false);
 			//piuButton.setVisible(true);
-			knowPage.setText("10");
+			knowPage.setText("09");
 		}
 
 		if (comboBoxActor.getValue().toString().contains("Alice")) {
@@ -1370,74 +1446,79 @@ public class SelectAProVerController {
 		switch (tipo) {
 		case "01":
 			oggetto.remAllAsymmetricPublicKey();
-			break;
-		case "02":
 			oggetto.remAllAsymmetricPrivateKey();
 			break;
-		case "03":
+		case "02":
 			oggetto.remAllSymmetricKey();
 			break;
-		case "04":
+		case "03":
 			oggetto.remAllHashKey();
 			break;
-		case "05":
+		case "04":
 			oggetto.remAllBitstring();
 			break;
-		case "06":
+		case "05":
 			oggetto.remAllIdCertificate();
 			break;
-		case "07":
+		case "06":
 			oggetto.remAllNonce();
 			break;
-		case "08":
+		case "07":
 			oggetto.remAllSignature();
 			break;
-		case "09":
+		case "08":
 			oggetto.remAllTag();
 			break;
-		case "10":
+		case "09":
 			oggetto.remAllTimestamp();
 			break;
-		case "11":
+		case "10":
 			oggetto.remAllDigest();
 			break;
 			
 		}
+		int appColumn;
 		for (Node node : tabeKnowledge.getChildren()) {
 				if (node instanceof TextField) {
+					if (GridPane.getColumnIndex(node) != null) {
+						appColumn = GridPane.getColumnIndex(node);
+					} else {
+						appColumn = 0;
+					}
 					if (((TextField) node).getText().toString() != null && !((TextField) node).getText().toString().isEmpty()) {
 						switch (tipo) {
 						case "01":
-							oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString());
+							if (appColumn == 1) {
+								oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString());
+							} else {
+								oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString());
+							}
 							break;
 						case "02":
-							oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString());
-							break;
-						case "03":
 							oggetto.addSymmetricKey(((TextField) node).getText().toString());
 							break;
-						case "04":
+						case "03":
 							oggetto.addHashKey(((TextField) node).getText().toString());
 							break;
-						case "05":
+						case "04":
 							oggetto.addBitstring(((TextField) node).getText().toString());
 							break;
-						case "06":
+						case "05":
 							oggetto.addIdCertificate(((TextField) node).getText().toString());
 							break;
-						case "07":
+						case "06":
 							oggetto.addNonce(((TextField) node).getText().toString());
 							break;
-						case "08":
+						case "07":
 							oggetto.addSignature(((TextField) node).getText().toString());
 							break;
-						case "09":
+						case "08":
 							oggetto.addTag(((TextField) node).getText().toString());
 							break;
-						case "10":
+						case "09":
 							oggetto.addTimestamp(((TextField) node).getText().toString());
 							break;
-						case "11":
+						case "10":
 							oggetto.addDigest(((TextField) node).getText().toString());
 							break;
 							
@@ -1452,60 +1533,67 @@ public class SelectAProVerController {
 		
 	}
 
-
 	// quando si apre la sott-form knowledge si verifica se sono gia presenti informazioni memorizzate in precedenza
 	// e si caricano nella sott-form 
 	private void loadTable(SecurityKey oggetto, String tipo) {
 		
 		appoOldKnowledge = null;
+		int appColumn;
 		for (Node node : tabeKnowledge.getChildren()) {
 			node.setVisible(true);
+			if (GridPane.getColumnIndex(node) != null) {
+				appColumn = GridPane.getColumnIndex(node);
+			} else {
+				appColumn = 0;
+			}
+			if (node !=null && node instanceof TextField && tipo != "01" && appColumn==2) {
+				node.setVisible(false);
+			}
 			if (node !=null && node instanceof TextField) {
 			((TextField) node).setText(""); }
 		}
 
 		
 		ArrayList<String> appoList = new ArrayList<String>();
+		ArrayList<String> appoList2 = new ArrayList<String>();
 		switch (tipo) {
 		case "01":
 			appoList = oggetto.getAsymmetricPublicKey();
-			break;
-		case "02":
-			appoList = oggetto.getAsymmetricPrivateKey();
+			appoList2 = oggetto.getAsymmetricPrivateKey();
 			break;
 		
-		case "03":
+		case "02":
 			appoList = oggetto.getSymmetricKey();
 			break;
-		case "04":
+		case "03":
 			appoList = oggetto.getHashKey();
 			break;
-		case "05":
+		case "04":
 			appoList = oggetto.getBitstring();
 			break;
-		case "06":
+		case "05":
 			appoList = oggetto.getIdCertificate();
 			break;
-		case "07":
+		case "06":
 			appoList = oggetto.getNonce();
 			break;
-		case "08":
+		case "07":
 			appoList = oggetto.getSignature();
 			break;
-		case "09":
+		case "08":
 			appoList = oggetto.getTag();
 			break;
-		case "10":
+		case "09":
 			appoList = oggetto.getTimestamp();
 			break;
-		case "11":
+		case "10":
 			appoList = oggetto.getDigest();
 			break;
 		}
 		
 
 		int appRow;
-		int appColumn;
+
 		tabeKnowledge.setGridLinesVisible(true);
 		for (Node node : tabeKnowledge.getChildren()) {
 			
@@ -1521,12 +1609,19 @@ public class SelectAProVerController {
 			}
 			if (appRow < appoList.size()) {
 				if (node instanceof TextField) {
-					((TextField) node).setText(appoList.get(appRow));}
+					if (appColumn==1) {
+						((TextField) node).setText(appoList.get(appRow));
+					} else {
+						if (appRow < appoList2.size()) {
+							((TextField) node).setText(appoList2.get(appRow));
+						}
+					}
+				}
 			}
 
 			
 			
-			if (appRow == appoList.size()) {
+			if (appRow == appoList.size() && appColumn == 1) {
 				node.setVisible(true);
 				if (node instanceof TextField) {
 					((TextField) node).setText("");
