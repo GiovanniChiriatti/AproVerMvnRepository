@@ -279,7 +279,7 @@
 								<Font size="14.0" />
 							</font>
 						</Text>
-						<MenuButton fx:id="menuSecurityFunction" layoutX="157.0" layoutY="3.0" mnemonicParsing="false" text="Security Function" />
+						<MenuButton fx:id="menuSecurityFunction" graphicTextGap="99.0" layoutX="157.0" layoutY="3.0" mnemonicParsing="false" text="Security Function" />
                   <TextFlow fx:id="textFlowSecurity" layoutX="14.0" layoutY="39.0" prefHeight="35.0" prefWidth="635.0" />
 					</children>
 				</AnchorPane>

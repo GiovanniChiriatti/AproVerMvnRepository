@@ -98,6 +98,9 @@ public class SelectAProVerController {
 	SecurityKey bob = new SecurityKey();
 	SecurityKey eve = new SecurityKey();
 	SecurityKey server = new SecurityKey();
+	SecurityKey appoFrom;
+	SecurityKey appoTo;
+	
 	Messages messages = new Messages();
 	//Properties proprieties = new Properties();
 	ConfigurationDataProprieties confProp = new ConfigurationDataProprieties();
@@ -2332,21 +2335,27 @@ public class SelectAProVerController {
         
         CreateMessageAProVer controller = loader.getController();
         controller.setDialogStage(dialogStage);
+        appoFrom=null;
+
         if (actorFrom.equals("Alice")) {
-        	controller.setInfo(alice, messages.getMessage(messageNumber-1));
+        	appoFrom=alice;
         }
         if (actorFrom.equals("Bob")) {
-        	controller.setInfo(bob, messages.getMessage(messageNumber-1));
+        	appoFrom=bob;
         }
         if (actorFrom.equals("Eve")) {
-        	controller.setInfo(eve, messages.getMessage(messageNumber-1));
+        	appoFrom=eve;
         }
         if (actorFrom.equals("Server")) {
-        	controller.setInfo(server, messages.getMessage(messageNumber-1));
+        	appoFrom=server;
         }
+        
+        
+        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),null);
+       
         controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEve.getText());
         controller.setHelp(helpFlag);
-        
+        controller.setSecurity(alice,bob,eve,server);
 
         
         dialogStage.showAndWait();
@@ -2394,7 +2403,7 @@ public class SelectAProVerController {
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
-		showModifyMessage(messages.getMessage(riga - 1).getActorfrom().toString(),riga);
+		showModifyMessage(messages.getMessage(riga - 1).getActorfrom().toString(),riga,messages.getMessage(riga - 1).getActorTo().toString());
 		
 		
 		for (Node nodeAppo : ancorPulsanti.getChildren()) {
@@ -2479,7 +2488,7 @@ public class SelectAProVerController {
 		msgPayloadAncorPane.setVisible(false);
 	}
 
-	private void showModifyMessage(String actorFrom, int messageNumber) throws Exception {
+	private void showModifyMessage(String actorFrom, int messageNumber,String actorTo) throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/CreateMessageAProVer.fxml"));
@@ -2494,19 +2503,37 @@ public class SelectAProVerController {
 
 		CreateMessageAProVer controller = loader.getController();
 		controller.setDialogStage(dialogStage);
+        appoFrom=null;
 
-		if (actorFrom.equals("Alice")) {
-			controller.setInfo(alice, messages.getMessage(messageNumber - 1));
-		}
-		if (actorFrom.equals("Bob")) {
-			controller.setInfo(bob, messages.getMessage(messageNumber - 1));
-		}
-		if (actorFrom.equals("Eve")) {
-			controller.setInfo(eve, messages.getMessage(messageNumber - 1));
-		}
-		if (actorFrom.equals("Server")) {
-			controller.setInfo(server, messages.getMessage(messageNumber - 1));
-		}
+        if (actorFrom.equals("Alice")) {
+        	appoFrom=alice;
+        }
+        if (actorFrom.equals("Bob")) {
+        	appoFrom=bob;
+        }
+        if (actorFrom.equals("Eve")) {
+        	appoFrom=eve;
+        }
+        if (actorFrom.equals("Server")) {
+        	appoFrom=server;
+        }
+        appoTo=null;
+
+        if (actorTo.equals("Alice")) {
+        	appoTo=alice;
+        }
+        if (actorTo.equals("Bob")) {
+        	appoTo=bob;
+        }
+        if (actorTo.equals("Eve")) {
+        	appoTo=eve;
+        }
+        if (actorTo.equals("Server")) {
+        	appoTo=server;
+        }      
+        
+        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),appoTo);
+       
 
 		controller.setMessage(messageNumber);
 		controller.setHelp(helpFlag);

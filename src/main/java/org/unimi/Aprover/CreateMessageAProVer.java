@@ -62,6 +62,10 @@ public class CreateMessageAProVer {
 	private String[] oldSecurityFunction = new String[16];
 	
 	SecurityKey securityKey;
+	SecurityKey alice;
+	SecurityKey bob;
+	SecurityKey eve;
+	SecurityKey server;
 	Message  message;
 	int numMessage,appRow,appColumn,numNodiMessagePayloadField, NumNodiSecurityFunctions;
 	Node nodeTabeSecurityFunctionCurrent;
@@ -295,22 +299,63 @@ public class CreateMessageAProVer {
 			}
     	 
      }
+     // prima di essere creata la Scene il controller precedente inizializza le informazioni di Knowledge
+     public void setSecurity(SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server) {
+    	 this.alice = alice;
+    	 this.bob = bob;
+    	 this.eve = eve;
+    	 this.server = server;
+     }
 
 
 // prima di essere creata la Scene il controller precedente inizializza le informazioni di questo controller
 // il controller chiamante passa i dati della classe SecurityKey che contiene le informazioni delle chiavi di sicurezza possedute 
 // dall'actor che invia il messaggio e l'elenco di tutti i  messaggi    
 // in questo metodo si costruisce il men� per la visualizzazione delle security function
-    public void setInfo(SecurityKey securityKey, Message message) {
+    public void setInfo(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
+    	textFlowSecurity.getChildren().clear();
+    	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo);
+       	
+		txtPreview.getChildren().clear();
+		textFlowSecurity.getChildren().clear();
+		ceckPayloadField.setSelected(false);
+		ceckPayloadField.setVisible(false);
+		ceckPayloadFieldTxt.setVisible(false);
+		ceckPayloadField2.setSelected(false);
+		ceckPayloadField2.setVisible(false);
+		ceckPayloadField2Txt.setVisible(false);
+		payloadField.getChildren().clear();
+		payloadField2.getChildren().clear();
+		payloadField.setVisible(false);
+		payloadField2.setVisible(false);
+
+    }
+    public void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
 
     	this.securityKey = securityKey;
     	this.message = message;
     	
-    	textFlowSecurity.getChildren().clear();
     	
-    	if (securityKey.getAsymmetricPublicKey() !=null && !securityKey.getAsymmetricPublicKey().isEmpty() ) {
+    	
+    	if (securityKey.getAsymmetricPrivateKey() !=null && !securityKey.getAsymmetricPrivateKey().isEmpty() ) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Asymmetric Encryption", menuSecurityFunction);
+            MenuItem subMenuItem;
+            for (int i=0; i< securityKey.getAsymmetricPublicKey().size(); i++) {
+            	subMenuItem = new MenuItem(securityKey.getAsymmetricPrivateKey().get(i));
+            	String a = securityKey.getAsymmetricPrivateKey().get(i);
+            	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent t) {
+                    	AddPartSecurityMessage(a);
+                    }
+                });
+            	menu.getItems().add(subMenuItem);
+            }
+            menuSecurityFunction.getItems().addAll(menu);
+    	}
+    	if (securityKey.getAsymmetricPublicKey() !=null && !securityKey.getAsymmetricPublicKey().isEmpty() ) {
+    		Menu menu = new Menu();
+            prepareMenuItem(menu, "Asymmetric Decryption", menuSecurityFunction);
             MenuItem subMenuItem;
             for (int i=0; i< securityKey.getAsymmetricPublicKey().size(); i++) {
             	subMenuItem = new MenuItem(securityKey.getAsymmetricPublicKey().get(i));
@@ -321,6 +366,18 @@ public class CreateMessageAProVer {
                     }
                 });
             	menu.getItems().add(subMenuItem);
+            }
+            if (securityKeyActorTo != null) {
+                for (int i=0; i< securityKeyActorTo.getAsymmetricPublicKey().size(); i++) {
+                	subMenuItem = new MenuItem(securityKeyActorTo.getAsymmetricPublicKey().get(i));
+                	String a = securityKeyActorTo.getAsymmetricPublicKey().get(i);
+                	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent t) {
+                        	AddPartSecurityMessage(a);
+                        }
+                    });
+                	menu.getItems().add(subMenuItem);
+                }
             }
             menuSecurityFunction.getItems().addAll(menu);
     	}
@@ -372,22 +429,7 @@ public class CreateMessageAProVer {
             }
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	
-		txtPreview.getChildren().clear();
-		textFlowSecurity.getChildren().clear();
-		ceckPayloadField.setSelected(false);
-		ceckPayloadField.setVisible(false);
-		ceckPayloadFieldTxt.setVisible(false);
-		ceckPayloadField2.setSelected(false);
-		ceckPayloadField2.setVisible(false);
-		ceckPayloadField2Txt.setVisible(false);
-		payloadField.getChildren().clear();
-		payloadField2.getChildren().clear();
-		payloadField.setVisible(false);
-		payloadField2.setVisible(false);
-
     }
-
 	private void AddPartSecurityMessage(String messaggioSecurity) {
 		
 		Node nodeLastSecurytyFunction = searchLastMsgSecurityFuncion();
@@ -450,6 +492,23 @@ public class CreateMessageAProVer {
     	message.setActorTo(actorTo.getValue().toString());
     	message.setActorFrom(actorFrom.getText());
     	message.setEvesIntercept(evesIntercept.isSelected());
+        SecurityKey appoFrom=null;
+
+        if (actorTo.getValue().toString().equals("Alice")) {
+        	appoFrom=alice;
+        }
+        if (actorTo.getValue().toString().equals("Bob")) {
+        	appoFrom=bob;
+        }
+        if (actorTo.getValue().toString().equals("Eve")) {
+        	appoFrom=eve;
+        }
+        if (actorTo.getValue().toString().equals("Server")) {
+        	appoFrom=server;
+        }
+        
+    	menuSecurityFunction.getItems().remove(0, 5);
+    	LoadMenuSecurityFunction(securityKey,  message,appoFrom);
     }
     
 // metodo attivato quando si preme il button "+" presente nel "message Payload Filed
