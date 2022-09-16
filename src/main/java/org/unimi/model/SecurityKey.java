@@ -11,7 +11,8 @@ public class SecurityKey {
 	ArrayList<String> bitstring=new ArrayList<String>();
 	ArrayList<String> idCertificate=new ArrayList<String>();
 	ArrayList<String> nonce=new ArrayList<String>();
-	ArrayList<String> signature=new ArrayList<String>();
+	ArrayList<String> signaturePubKey=new ArrayList<String>();
+	ArrayList<String> signaturePrivKey=new ArrayList<String>();
 	ArrayList<String> tag=new ArrayList<String>();
 	ArrayList<String> timestamp=new ArrayList<String>();
 	ArrayList<String> digest=new ArrayList<String>();
@@ -251,42 +252,79 @@ public class SecurityKey {
 		this.nonce = nonce;
 	}
 
-// ---------------- signature
-	public void addSignature(String nuovoValore) {
-		signature.add(nuovoValore);
+// ---------------- signature Pub Key
+	public void addSignaturePubKey(String nuovoValore) {
+		signaturePubKey.add(nuovoValore);
 	}
 
-	public void remSignature(String vecchioValore) {
-		signature.remove(vecchioValore);
+	public void remSignaturePubKey(String vecchioValore) {
+		signaturePubKey.remove(vecchioValore);
 	}
 
-	public void remAllSignature() {
-		for (Iterator<String> i = signature.iterator(); i.hasNext();) {
+	public void remAllSignaturePubKey() {
+		for (Iterator<String> i = signaturePubKey.iterator(); i.hasNext();) {
 			String str = i.next();
 			i.remove();
 		}
 	}
 
-	public ArrayList<String> getSignature() {
-		return signature;
+	public ArrayList<String> getSignaturePubKey() {
+		return signaturePubKey;
 	}
 
-	public String getStringSignature() {
-		String stringSignature = "Signature = {";
-		for (int i = 0; i < signature.size(); i++) {
-			if (i < signature.size() - 1) {
-				stringSignature += signature.get(i) + ",";
+	public String getStringSignaturePubKey() {
+		String stringSignature = "Signature Pub Key = {";
+		for (int i = 0; i < signaturePubKey.size(); i++) {
+			if (i < signaturePubKey.size() - 1) {
+				stringSignature += signaturePubKey.get(i) + ",";
 			} else {
-				stringSignature += signature.get(i);
+				stringSignature += signaturePubKey.get(i);
 			}
 		}
 		stringSignature += "}";
 		return stringSignature;
 	}
 
-	public void setSignature(ArrayList<String> signature) {
-		this.signature = signature;
+	public void setSignaturePubKey(ArrayList<String> signature) {
+		this.signaturePubKey = signature;
 	}	
+
+	// ---------------- signature Priv Key
+		public void addSignaturePrivKey(String nuovoValore) {
+			signaturePrivKey.add(nuovoValore);
+		}
+
+		public void remSignaturePrivKey(String vecchioValore) {
+			signaturePrivKey.remove(vecchioValore);
+		}
+
+		public void remAllSignaturePrivKey() {
+			for (Iterator<String> i = signaturePrivKey.iterator(); i.hasNext();) {
+				String str = i.next();
+				i.remove();
+			}
+		}
+
+		public ArrayList<String> getSignaturePrivKey() {
+			return signaturePrivKey;
+		}
+
+		public String getStringSignaturePrivKey() {
+			String stringSignature = "Signature Priv Key = {";
+			for (int i = 0; i < signaturePrivKey.size(); i++) {
+				if (i < signaturePrivKey.size() - 1) {
+					stringSignature += signaturePrivKey.get(i) + ",";
+				} else {
+					stringSignature += signaturePrivKey.get(i);
+				}
+			}
+			stringSignature += "}";
+			return stringSignature;
+		}
+
+		public void setSignaturePrivKey(ArrayList<String> signature) {
+			this.signaturePrivKey = signature;
+		}	
 
 
 // ---------------- Tag
@@ -455,13 +493,20 @@ public class SecurityKey {
 		}
 		
 		if (!tipo.equals("07")) {
-			for (int i = 0; i < signature.size(); i++) {
-				if (signature.get(i).equals(nuovoValore)) {
+			for (int i = 0; i < signaturePubKey.size(); i++) {
+				if (signaturePubKey.get(i).equals(nuovoValore)) {
 					return true;
 				}
 			}
 		}
-		
+		if (!tipo.equals("07")) {
+			for (int i = 0; i < signaturePrivKey.size(); i++) {
+				if (signaturePrivKey.get(i).equals(nuovoValore)) {
+					return true;
+				}
+			}
+		}
+	
 		if (!tipo.equals("08")) {
 			for (int i = 0; i < tag.size(); i++) {
 				if (tag.get(i).equals(nuovoValore)) {
@@ -541,12 +586,17 @@ public class SecurityKey {
 			}
 
 
-			for (int i = 0; i < signature.size(); i++) {
-				if (signature.get(i).equals(Valore)) {
-					return "Signature";
+			for (int i = 0; i < signaturePubKey.size(); i++) {
+				if (signaturePubKey.get(i).equals(Valore)) {
+					return "Signature Pub Key";
 				}
 			}
-		
+			
+			for (int i = 0; i < signaturePrivKey.size(); i++) {
+				if (signaturePrivKey.get(i).equals(Valore)) {
+					return "Signature Priv Key";
+				}
+			}		
 			for (int i = 0; i < tag.size(); i++) {
 				if (tag.get(i).equals(Valore)) {
 					return "Tag";

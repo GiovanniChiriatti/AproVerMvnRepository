@@ -70,6 +70,8 @@ public class CreateMessageAProVer {
 	int numMessage,appRow,appColumn,numNodiMessagePayloadField, NumNodiSecurityFunctions;
 	Node nodeTabeSecurityFunctionCurrent;
 	Boolean helpFlag = true;
+    String unicAtorToSelected = null;
+	int numEleMenuButton=0;
 	
 	
     @FXML
@@ -209,6 +211,7 @@ public class CreateMessageAProVer {
         this.numMessage = numMessage;
         this.actorFrom.setText(actorFrom);
         boolean unicAcrotTo = false;
+        unicAtorToSelected = null;
                
 		if (tool.contains("Disable")) {
 			if (toolEve.contains("Eve Create Messages")) {
@@ -264,19 +267,24 @@ public class CreateMessageAProVer {
 		if (tool.contains("Enable")) {
 			if (toolEve.contains("Eve Create Messages")) {
 				unicAcrotTo = true;
+				
 				switch (actorFrom) {
 				case "Alice":
 					comboBoxList = FXCollections.observableArrayList("Bob");
+					unicAtorToSelected="Bob";
 					break;
 				case "Bob":
 					comboBoxList = FXCollections.observableArrayList("Alice");
+					unicAtorToSelected="Alice";
 					break;
 				case "Eve":
 					comboBoxList = FXCollections.observableArrayList("Alice");
+					unicAtorToSelected="Alice";
 					break;
 				}
 			}
 		}
+
         actorTo.setItems(comboBoxList);
         if (unicAcrotTo) {
         	actorTo.getSelectionModel().selectFirst();
@@ -314,6 +322,23 @@ public class CreateMessageAProVer {
 // in questo metodo si costruisce il men� per la visualizzazione delle security function
     public void setInfo(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
     	textFlowSecurity.getChildren().clear();
+    	
+    	if (securityKeyActorTo==null && unicAtorToSelected!=null) {
+            if (unicAtorToSelected.equals("Alice")) {
+            	securityKeyActorTo=alice;
+            }
+            if (unicAtorToSelected.equals("Bob")) {
+            	securityKeyActorTo=bob;
+            }
+            if (unicAtorToSelected.equals("Eve")) {
+            	securityKeyActorTo=eve;
+            }
+            if (unicAtorToSelected.equals("Server")) {
+            	securityKeyActorTo=server;
+            }
+    	}
+
+
     	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo);
        	
 		txtPreview.getChildren().clear();
@@ -334,9 +359,8 @@ public class CreateMessageAProVer {
 
     	this.securityKey = securityKey;
     	this.message = message;
-    	
-    	
-    	
+     	
+    	numEleMenuButton = 0;
     	if (securityKey.getAsymmetricPrivateKey() !=null && !securityKey.getAsymmetricPrivateKey().isEmpty() ) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Asymmetric Encryption", menuSecurityFunction);
@@ -351,36 +375,42 @@ public class CreateMessageAProVer {
                 });
             	menu.getItems().add(subMenuItem);
             }
+            numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
-    	if (securityKey.getAsymmetricPublicKey() !=null && !securityKey.getAsymmetricPublicKey().isEmpty() ) {
-    		Menu menu = new Menu();
-            prepareMenuItem(menu, "Asymmetric Decryption", menuSecurityFunction);
-            MenuItem subMenuItem;
-            for (int i=0; i< securityKey.getAsymmetricPublicKey().size(); i++) {
-            	subMenuItem = new MenuItem(securityKey.getAsymmetricPublicKey().get(i));
-            	String a = securityKey.getAsymmetricPublicKey().get(i);
-            	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent t) {
-                    	AddPartSecurityMessage(a);
-                    }
-                });
-            	menu.getItems().add(subMenuItem);
-            }
-            if (securityKeyActorTo != null) {
-                for (int i=0; i< securityKeyActorTo.getAsymmetricPublicKey().size(); i++) {
-                	subMenuItem = new MenuItem(securityKeyActorTo.getAsymmetricPublicKey().get(i));
-                	String a = securityKeyActorTo.getAsymmetricPublicKey().get(i);
-                	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                        public void handle(ActionEvent t) {
-                        	AddPartSecurityMessage(a);
-                        }
-                    });
-                	menu.getItems().add(subMenuItem);
-                }
-            }
-            menuSecurityFunction.getItems().addAll(menu);
-    	}
+    	
+		if (securityKey.getAsymmetricPublicKey() != null && !securityKey.getAsymmetricPublicKey().isEmpty()|| 
+					(securityKeyActorTo != null && securityKeyActorTo.getAsymmetricPublicKey() != null && !securityKeyActorTo.getAsymmetricPublicKey().isEmpty())) {
+			Menu menu = new Menu();
+			MenuItem subMenuItem;
+			prepareMenuItem(menu, "Asymmetric Decryption", menuSecurityFunction);
+			if (securityKey.getAsymmetricPublicKey() != null && !securityKey.getAsymmetricPublicKey().isEmpty()) {			
+				for (int i = 0; i < securityKey.getAsymmetricPublicKey().size(); i++) {
+					subMenuItem = new MenuItem(securityKey.getAsymmetricPublicKey().get(i));
+					String a = securityKey.getAsymmetricPublicKey().get(i);
+					subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+						public void handle(ActionEvent t) {
+							AddPartSecurityMessage(a);
+						}
+					});
+					menu.getItems().add(subMenuItem);
+				}
+			}
+			if (securityKeyActorTo != null && !securityKeyActorTo.getAsymmetricPublicKey().isEmpty()) {
+					for (int i = 0; i < securityKeyActorTo.getAsymmetricPublicKey().size(); i++) {
+						subMenuItem = new MenuItem(securityKeyActorTo.getAsymmetricPublicKey().get(i));
+						String a = securityKeyActorTo.getAsymmetricPublicKey().get(i);
+						subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+							public void handle(ActionEvent t) {
+								AddPartSecurityMessage(a);
+							}
+						});
+						menu.getItems().add(subMenuItem);
+					}
+				}
+			numEleMenuButton++;
+			menuSecurityFunction.getItems().addAll(menu);		
+		}
        	if (securityKey.getSymmetricKey() !=null && !securityKey.getSymmetricKey().isEmpty()) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Symmetric Encryption", menuSecurityFunction);
@@ -395,15 +425,16 @@ public class CreateMessageAProVer {
                 });
             	menu.getItems().add(subMenuItem); 	
             }
+            numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	if (securityKey.getAsymmetricPrivateKey() !=null && !securityKey.getAsymmetricPrivateKey().isEmpty()) {
+       	if (securityKey.getSignaturePrivKey() !=null && !securityKey.getSignaturePrivKey().isEmpty()) {
        		Menu menu = new Menu();
-            prepareMenuItem(menu, "Signature", menuSecurityFunction);
+            prepareMenuItem(menu, "Signature Priv Key", menuSecurityFunction);
             MenuItem subMenuItem;
-            for (int i=0; i< securityKey.getAsymmetricPrivateKey().size(); i++) {
-            	subMenuItem = new MenuItem(securityKey.getAsymmetricPrivateKey().get(i));
-            	String a = securityKey.getAsymmetricPrivateKey().get(i);
+            for (int i=0; i< securityKey.getSignaturePrivKey().size(); i++) {
+            	subMenuItem = new MenuItem(securityKey.getSignaturePrivKey().get(i));
+            	String a = securityKey.getSignaturePrivKey().get(i);
             	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             		public void handle(ActionEvent t) {
             			AddPartSecurityMessage(a);
@@ -411,6 +442,41 @@ public class CreateMessageAProVer {
                 });
             	menu.getItems().add(subMenuItem);       	
             }
+            numEleMenuButton++;
+            menuSecurityFunction.getItems().addAll(menu);
+    	}
+
+       	if (securityKey.getSignaturePubKey() !=null && !securityKey.getSignaturePubKey().isEmpty() ||
+			(securityKeyActorTo != null && securityKeyActorTo.getSignaturePubKey() != null && !securityKeyActorTo.getSignaturePubKey().isEmpty())) {
+       		Menu menu = new Menu();
+            prepareMenuItem(menu, "Signature Pub Key", menuSecurityFunction);
+            MenuItem subMenuItem;
+			if (securityKey.getSignaturePubKey() != null && !securityKey.getSignaturePubKey().isEmpty()) {
+
+				for (int i = 0; i < securityKey.getSignaturePubKey().size(); i++) {
+					subMenuItem = new MenuItem(securityKey.getSignaturePubKey().get(i));
+					String a = securityKey.getSignaturePubKey().get(i);
+					subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+						public void handle(ActionEvent t) {
+							AddPartSecurityMessage(a);
+						}
+					});
+					menu.getItems().add(subMenuItem);
+				}
+			}
+            if (securityKeyActorTo != null) {
+                for (int i=0; i< securityKeyActorTo.getSignaturePubKey().size(); i++) {
+                	subMenuItem = new MenuItem(securityKeyActorTo.getSignaturePubKey().get(i));
+                	String a = securityKeyActorTo.getSignaturePubKey().get(i);
+                	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent t) {
+                        	AddPartSecurityMessage(a);
+                        }
+                    });
+                	menu.getItems().add(subMenuItem);
+                }
+            }
+            numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
        	if (securityKey.getHashKey() !=null && !securityKey.getHashKey().isEmpty()) {
@@ -427,8 +493,10 @@ public class CreateMessageAProVer {
                 });
             	menu.getItems().add(subMenuItem);       	
             }
+            numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
+       	System.out.println(" numEleMenuButton xx " +numEleMenuButton);
     }
 	private void AddPartSecurityMessage(String messaggioSecurity) {
 		
@@ -507,7 +575,10 @@ public class CreateMessageAProVer {
         	appoFrom=server;
         }
         
-    	menuSecurityFunction.getItems().remove(0, 5);
+        System.out.println("numero elementi " + numEleMenuButton + " ActorTo" + actorTo.getValue().toString() + " appoFrom " + appoFrom  );
+        if (numEleMenuButton>0) {
+        	menuSecurityFunction.getItems().remove(0,numEleMenuButton);
+        }
     	LoadMenuSecurityFunction(securityKey,  message,appoFrom);
     }
     

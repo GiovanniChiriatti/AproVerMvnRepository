@@ -89,7 +89,7 @@ public class SelectAProVerController {
 	final String bitstringKnow = "Bitstring";
 	final String idCertificateKnow = "Id Certificate";
 	final String nonceKnow = "Nonce";
-	final String signatureKnow = "Signature";
+	final String signatureKnow = "Signature Public Key                                                        Signature Private Key";
 	final String tagKnow = "Tag";
 	final String timestampKnow = "Timestamp";
 	final String digestKnow = "Digest (restult of Hash Function)";
@@ -162,13 +162,13 @@ public class SelectAProVerController {
 	private Text rowNum1, rowNum2, rowNum3, rowNum4, rowNum5, rowNum6, rowNum7, rowNum8, rowNum9, rowNum10, rowNum11;
 
 	@FXML
-	private Button Alice01, Alice02, Alice03, Alice04,Alice05,Alice06,Alice07,Alice08,Alice09,Alice10,Alice11;
+	private Button Alice01, Alice02, Alice03, Alice04,Alice05,Alice06,Alice07,Alice08,Alice09,Alice10,Alice11,Alice12;
 	@FXML
-	private Button Bob01, Bob02, Bob03, Bob04, Bob05, Bob06, Bob07, Bob08, Bob09, Bob10, Bob11;
+	private Button Bob01, Bob02, Bob03, Bob04, Bob05, Bob06, Bob07, Bob08, Bob09, Bob10, Bob11, Bob12;
 	@FXML
-	private Button Eve01, Eve02, Eve03, Eve04, Eve, Eve06, Eve07, Eve08, Eve09, Eve10, Eve11;
+	private Button Eve01, Eve02, Eve03, Eve04, Eve, Eve06, Eve07, Eve08, Eve09, Eve10, Eve11, Eve12;
 	@FXML
-	private Button Server01, Server02, Server03, Server04, Server05, Server06, Server07, Server08, Server09, Server10 , Server11;
+	private Button Server01, Server02, Server03, Server04, Server05, Server06, Server07, Server08, Server09, Server10 , Server11, Server12;
 	@FXML
 	private Button nextButton, prevButton, finishButton;
 	
@@ -235,13 +235,13 @@ public class SelectAProVerController {
 	private GridPane tabeKnowledge, listProprieties00, listProprieties01,listProprieties02, listProprieties03, listProprieties04, listProprieties05,listProprieties06, listProprieties07, listProprieties08;
 	
 	@FXML
-	private Label aliceAsymmetricPublicKey, aliceAsymmetricPrivateKey, aliceSymmetricKey, aliceHash, aliceBitstring,aliceIdCertificate,aliceNonce, aliceSignature, aliceTag, aliceTimestamp, aliceDigest ;
+	private Label aliceAsymmetricPublicKey, aliceAsymmetricPrivateKey, aliceSymmetricKey, aliceHash, aliceBitstring,aliceIdCertificate,aliceNonce, aliceSignaturePubKey,aliceSignaturePrivKey, aliceTag, aliceTimestamp, aliceDigest ;
 	@FXML
-	private Label bobAsymmetricPublicKey, bobAsymmetricPrivateKey, bobSymmetricKey, bobHash, bobBitstring,bobIdCertificate,bobNonce, bobSignature, bobTag, bobTimestamp, bobDigest;
+	private Label bobAsymmetricPublicKey, bobAsymmetricPrivateKey, bobSymmetricKey, bobHash, bobBitstring,bobIdCertificate,bobNonce, bobSignaturePubKey,bobSignaturePrivKey, bobTag, bobTimestamp, bobDigest;
 	@FXML
-	private Label eveAsymmetricPublicKey, eveAsymmetricPrivateKey, eveSymmetricKey, eveHash, eveBitstring,eveIdCertificate,eveNonce, eveSignature, eveTag, eveTimestamp, eveDigest;
+	private Label eveAsymmetricPublicKey, eveAsymmetricPrivateKey, eveSymmetricKey, eveHash, eveBitstring,eveIdCertificate,eveNonce, eveSignaturePubKey,eveSignaturePrivKey, eveTag, eveTimestamp, eveDigest;
 	@FXML
-	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash, serverBitstring,serverIdCertificate,serverNonce, serverSignature, serverTag, serverTimestamp, serverDigest;
+	private Label serverAsymmetricPublicKey, serverAsymmetricPrivateKey, serverSymmetricKey, serverHash, serverBitstring,serverIdCertificate,serverNonce, serverSignaturePubKey,serverSignaturePrivKey, serverTag, serverTimestamp, serverDigest;
 
 	@FXML
 	private Tab tab00,tab01,tab02,tab03,tab04,tab05,tab06,tab07,tab08;
@@ -841,56 +841,73 @@ public class SelectAProVerController {
 	//inizializza la visibilit� e i dati della form che permetto l'isnerimento dei vari tipi di chiavi
 			comboBoxActor.setDisable(true);
 			if (riga.equals("01")) { 
+				riga="01";
 				typeKey.setText(publicKnow);
 				prevButton.setDisable(true);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("02")) { 
-				typeKey.setText(privateKnow);
-				prevButton.setDisable(false);
+				riga="01";
+				typeKey.setText(publicKnow);
+				prevButton.setDisable(true);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("03")) { 
+				riga="02";
 				typeKey.setText(symmetricKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("04")) { 
+				riga="03";
 				typeKey.setText(hashKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("05")) { 
+				riga="04";
 				typeKey.setText(bitstringKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
-			if (riga.equals("06")) { 
+			if (riga.equals("06")) {
+				riga="05";
 				typeKey.setText(idCertificateKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("07")) { 
+				riga="06";
 				typeKey.setText(nonceKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("08")) { 
+				riga="07";
 				typeKey.setText(signatureKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("09")) { 
-				typeKey.setText(tagKnow);
+				riga="07";
+				typeKey.setText(signatureKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("10")) { 
-				typeKey.setText(timestampKnow);
+				riga="08";
+				typeKey.setText(tagKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(false);
 			}
 			if (riga.equals("11")) { 
+				riga="09";
+				typeKey.setText(timestampKnow);
+				prevButton.setDisable(false);
+				nextButton.setDisable(false);
+			}
+			if (riga.equals("12")) { 
+				riga="10";
 				typeKey.setText(digestKnow);
 				prevButton.setDisable(false);
 				nextButton.setDisable(true);
@@ -1006,7 +1023,7 @@ public class SelectAProVerController {
 			return;
 		}
 		
-		if (knowPage.getText() == "01") {
+		if (knowPage.getText() == "01" || knowPage.getText() == "07" ) {
 		    if (verifyPubPriv()!=null) {
 		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
 		    	Alert.AlertType type =  Alert.AlertType.ERROR;
@@ -1243,7 +1260,13 @@ public class SelectAProVerController {
 						return elencoKnowledge[i];
 					}
 				}
+				if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()) {
+					if (alice.checkDuplicate(elencoKnowledge2[i], knowPage.getText())) {
+						return elencoKnowledge2[i];
+					}
+				}
 			}
+			
 		}
 		if (comboBoxActor.getValue().toString().contains("Bob")) {
 			for (int i = 0; i < 15; i++) {
@@ -1467,7 +1490,8 @@ public class SelectAProVerController {
 			oggetto.remAllNonce();
 			break;
 		case "07":
-			oggetto.remAllSignature();
+			oggetto.remAllSignaturePubKey();
+			oggetto.remAllSignaturePrivKey();
 			break;
 		case "08":
 			oggetto.remAllTag();
@@ -1513,8 +1537,13 @@ public class SelectAProVerController {
 							oggetto.addNonce(((TextField) node).getText().toString());
 							break;
 						case "07":
-							oggetto.addSignature(((TextField) node).getText().toString());
+							if (appColumn == 1) {
+								oggetto.addSignaturePubKey(((TextField) node).getText().toString());
+							} else {
+								oggetto.addSignaturePrivKey(((TextField) node).getText().toString());
+							}
 							break;
+
 						case "08":
 							oggetto.addTag(((TextField) node).getText().toString());
 							break;
@@ -1549,7 +1578,7 @@ public class SelectAProVerController {
 			} else {
 				appColumn = 0;
 			}
-			if (node !=null && node instanceof TextField && tipo != "01" && appColumn==2) {
+			if (node !=null && node instanceof TextField && tipo != "01" && tipo != "07" && appColumn==2) {
 				node.setVisible(false);
 			}
 			if (node !=null && node instanceof TextField) {
@@ -1581,7 +1610,8 @@ public class SelectAProVerController {
 			appoList = oggetto.getNonce();
 			break;
 		case "07":
-			appoList = oggetto.getSignature();
+			appoList = oggetto.getSignaturePubKey();
+			appoList2 = oggetto.getSignaturePrivKey();
 			break;
 		case "08":
 			appoList = oggetto.getTag();
@@ -1642,7 +1672,8 @@ public class SelectAProVerController {
 		aliceBitstring.setText(oggetto.getStringBitstring());
 		aliceIdCertificate.setText(oggetto.getStringIdCertificate());
 		aliceNonce.setText(oggetto.getStringNonce());
-		aliceSignature.setText(oggetto.getStringSignature());
+		aliceSignaturePubKey.setText(oggetto.getStringSignaturePubKey());
+		aliceSignaturePrivKey.setText(oggetto.getStringSignaturePrivKey());
 		aliceTag.setText(oggetto.getStringTag());
 		aliceTimestamp.setText(oggetto.getStringTimestamp());
 		aliceDigest.setText(oggetto.getStringDigest());
@@ -1656,7 +1687,8 @@ public class SelectAProVerController {
 		bobBitstring.setText(oggetto.getStringBitstring());
 		bobIdCertificate.setText(oggetto.getStringIdCertificate());
 		bobNonce.setText(oggetto.getStringNonce());
-		bobSignature.setText(oggetto.getStringSignature());
+		bobSignaturePubKey.setText(oggetto.getStringSignaturePubKey());
+		bobSignaturePrivKey.setText(oggetto.getStringSignaturePrivKey());
 		bobTag.setText(oggetto.getStringTag());
 		bobTimestamp.setText(oggetto.getStringTimestamp());
 		bobDigest.setText(oggetto.getStringDigest());
@@ -1670,7 +1702,8 @@ public class SelectAProVerController {
 		eveBitstring.setText(oggetto.getStringBitstring());
 		eveIdCertificate.setText(oggetto.getStringIdCertificate());
 		eveNonce.setText(oggetto.getStringNonce());
-		eveSignature.setText(oggetto.getStringSignature());
+		eveSignaturePubKey.setText(oggetto.getStringSignaturePubKey());
+		eveSignaturePrivKey.setText(oggetto.getStringSignaturePrivKey());
 		eveTag.setText(oggetto.getStringTag());
 		eveTimestamp.setText(oggetto.getStringTimestamp());
 		eveDigest.setText(oggetto.getStringDigest());
@@ -1683,7 +1716,8 @@ public class SelectAProVerController {
 		serverBitstring.setText(oggetto.getStringBitstring());
 		serverIdCertificate.setText(oggetto.getStringIdCertificate());
 		serverNonce.setText(oggetto.getStringNonce());
-		serverSignature.setText(oggetto.getStringSignature());
+		serverSignaturePubKey.setText(oggetto.getStringSignaturePubKey());
+		serverSignaturePrivKey.setText(oggetto.getStringSignaturePrivKey());
 		serverTag.setText(oggetto.getStringTag());
 		serverTimestamp.setText(oggetto.getStringTimestamp());
 		serverDigest.setText(oggetto.getStringDigest());
@@ -2351,11 +2385,11 @@ public class SelectAProVerController {
         }
         
         
-        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),null);
-       
+        //controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),null);
+        controller.setSecurity(alice,bob,eve,server);
         controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEve.getText());
         controller.setHelp(helpFlag);
-        controller.setSecurity(alice,bob,eve,server);
+        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),null);
 
         
         dialogStage.showAndWait();
@@ -3323,7 +3357,8 @@ public class SelectAProVerController {
 			line.equals("dati Alice Bitstring ") ||
 			line.equals("dati Alice IdCertificate ") ||
 			line.equals("dati Alice Nonce ") ||
-			line.equals("dati Alice Signature ") ||
+			line.equals("dati Alice Signature Priv Key ") ||
+			line.equals("dati Alice Signature Pub Key ") ||
 			line.equals("dati Alice Tag ")||
 			line.equals("dati Alice Timestamp ")||
 			line.equals("dati Alice Digest ")||
@@ -3334,7 +3369,8 @@ public class SelectAProVerController {
 			line.equals("dati Bob Bitstring ") ||
 			line.equals("dati Bob IdCertificate ") ||
 			line.equals("dati Bob Nonce ") ||
-			line.equals("dati Bob Signature ") ||
+			line.equals("dati Bob Signature Pub Key ") ||
+			line.equals("dati Bob Signature Priv Key ") ||
 			line.equals("dati Bob Tag ")||
 			line.equals("dati Bob Timestamp ")||
 			line.equals("dati Bob Digest ")||
@@ -3345,7 +3381,8 @@ public class SelectAProVerController {
 			line.equals("dati Eve Bitstring ") ||
 			line.equals("dati Eve IdCertificate ") ||
 			line.equals("dati Eve Nonce ") ||
-			line.equals("dati Eve Signature ") ||
+			line.equals("dati Eve Signature Pub Key ") ||
+			line.equals("dati Eve Signature Priv Key ") ||
 			line.equals("dati Eve Tag ")||
 			line.equals("dati Eve Timestamp ")||
 			line.equals("dati Eve Digest ")||
@@ -3356,7 +3393,8 @@ public class SelectAProVerController {
 			line.equals("dati Server Bitstring ") ||
 			line.equals("dati Server IdCertificate ") ||
 			line.equals("dati Server Nonce ") ||
-			line.equals("dati Server Signature ") ||
+			line.equals("dati Server Signature Pub Key ") ||
+			line.equals("dati Server Signature Priv Key ") ||
 			line.equals("dati Server Tag ")||
 			line.equals("dati Server Timestamp ")||
 			line.equals("dati Server Digest ")||
@@ -3414,10 +3452,15 @@ public class SelectAProVerController {
 			lineaAlice.setOpacity(1);
 			alice.addNonce(line);
 		}
-		if (typeInfo.equals("dati Alice Signature ")) {
+		if (typeInfo.equals("dati Alice Signature Pub Key ")) {
 			faceAlice.setOpacity(1);
 			lineaAlice.setOpacity(1);
-			alice.addSignature(line);
+			alice.addSignaturePubKey(line);
+		}
+		if (typeInfo.equals("dati Alice Signature Priv Key ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addSignaturePrivKey(line);
 		}
 		if (typeInfo.equals("dati Alice Tag ")) {
 			faceAlice.setOpacity(1);
@@ -3471,10 +3514,15 @@ public class SelectAProVerController {
 			lineaBob.setOpacity(1);
 			bob.addNonce(line);
 		}
-		if (typeInfo.equals("dati Bob Signature ")) {
+		if (typeInfo.equals("dati Bob Signature Pub Key ")) {
 			faceBob.setOpacity(1);
 			lineaBob.setOpacity(1);
-			bob.addSignature(line);
+			bob.addSignaturePubKey(line);
+		}
+		if (typeInfo.equals("dati Bob Signature Priv Key ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addSignaturePrivKey(line);
 		}
 		if (typeInfo.equals("dati Bob Tag ")) {
 			faceBob.setOpacity(1);
@@ -3528,10 +3576,15 @@ public class SelectAProVerController {
 			lineaEve.setOpacity(1);
 			eve.addNonce(line);
 		}
-		if (typeInfo.equals("dati Eve Signature ")) {
+		if (typeInfo.equals("dati Eve Signature Pub Key ")) {
 			faceEve.setOpacity(1);
 			lineaEve.setOpacity(1);
-			eve.addSignature(line);
+			eve.addSignaturePubKey(line);
+		}
+		if (typeInfo.equals("dati Eve Signature Priv Key ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addSignaturePrivKey(line);
 		}
 		if (typeInfo.equals("dati Eve Tag ")) {
 			faceEve.setOpacity(1);
@@ -3583,10 +3636,15 @@ public class SelectAProVerController {
 			lineaServer.setOpacity(1);
 			server.addNonce(line);
 		}
-		if (typeInfo.equals("dati Server Signature ")) {
+		if (typeInfo.equals("dati Server Signature Pub Key ")) {
 			faceServer.setOpacity(1);
 			lineaServer.setOpacity(1);
-			server.addSignature(line);
+			server.addSignaturePubKey(line);
+		}
+		if (typeInfo.equals("dati Server Signature Priv Key ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addSignaturePrivKey(line);
 		}
 		if (typeInfo.equals("dati Server Tag ")) {
 			faceServer.setOpacity(1);
@@ -3863,10 +3921,15 @@ public class SelectAProVerController {
 			for (int i = 0; i < alice.getNonce().size(); i++) {
 				bw.write(alice.getNonce().get(i) + "\n");
 			}
-			bw.write("dati Alice Signature \n");
+			bw.write("dati Alice Signature Pub Key \n");
 
-			for (int i = 0; i < alice.getSignature().size(); i++) {
-				bw.write(alice.getSignature().get(i) + "\n");
+			for (int i = 0; i < alice.getSignaturePubKey().size(); i++) {
+				bw.write(alice.getSignaturePubKey().get(i) + "\n");
+			}
+			bw.write("dati Alice Signature Priv Key \n");
+
+			for (int i = 0; i < alice.getSignaturePrivKey().size(); i++) {
+				bw.write(alice.getSignaturePrivKey().get(i) + "\n");
 			}
 			bw.write("dati Alice Tag \n");
 
@@ -3923,10 +3986,15 @@ public class SelectAProVerController {
 			for (int i = 0; i < bob.getNonce().size(); i++) {
 				bw.write(bob.getNonce().get(i) + "\n");
 			}
-			bw.write("dati Bob Signature \n");
+			bw.write("dati Bob Signature Pub Key \n");
 
-			for (int i = 0; i < bob.getSignature().size(); i++) {
-				bw.write(bob.getSignature().get(i) + "\n");
+			for (int i = 0; i < bob.getSignaturePubKey().size(); i++) {
+				bw.write(bob.getSignaturePubKey().get(i) + "\n");
+			}
+			bw.write("dati Bob Signature Priv Key \n");
+
+			for (int i = 0; i < bob.getSignaturePrivKey().size(); i++) {
+				bw.write(bob.getSignaturePrivKey().get(i) + "\n");
 			}
 			bw.write("dati Bob Tag \n");
 
@@ -3981,10 +4049,15 @@ public class SelectAProVerController {
 			for (int i = 0; i < eve.getNonce().size(); i++) {
 				bw.write(eve.getNonce().get(i) + "\n");
 			}
-			bw.write("dati Eve Signature \n");
+			bw.write("dati Eve Signature Pub Key \n");
 
-			for (int i = 0; i < eve.getSignature().size(); i++) {
-				bw.write(eve.getSignature().get(i) + "\n");
+			for (int i = 0; i < eve.getSignaturePubKey().size(); i++) {
+				bw.write(eve.getSignaturePubKey().get(i) + "\n");
+			}
+			bw.write("dati Eve Signature Priv Key \n");
+
+			for (int i = 0; i < eve.getSignaturePrivKey().size(); i++) {
+				bw.write(eve.getSignaturePrivKey().get(i) + "\n");
 			}
 			bw.write("dati Eve Tag \n");
 
@@ -4038,10 +4111,15 @@ public class SelectAProVerController {
 			for (int i = 0; i < server.getNonce().size(); i++) {
 				bw.write(server.getNonce().get(i) + "\n");
 			}
-			bw.write("dati Server Signature \n");
+			bw.write("dati Server Signature Pub Key \n");
 
-			for (int i = 0; i < server.getSignature().size(); i++) {
-				bw.write(server.getSignature().get(i) + "\n");
+			for (int i = 0; i < server.getSignaturePubKey().size(); i++) {
+				bw.write(server.getSignaturePubKey().get(i) + "\n");
+			}
+			bw.write("dati Server Signature Priv Key \n");
+
+			for (int i = 0; i < server.getSignaturePrivKey().size(); i++) {
+				bw.write(server.getSignaturePrivKey().get(i) + "\n");
 			}
 			bw.write("dati Server Tag \n");
 

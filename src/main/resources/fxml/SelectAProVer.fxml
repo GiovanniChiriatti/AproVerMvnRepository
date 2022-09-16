@@ -74,7 +74,7 @@
 													<content>
 														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="229.0" prefWidth="761.0">
 															<children>
-																<GridPane prefHeight="204.0" prefWidth="759.0">
+																<GridPane prefHeight="214.0" prefWidth="759.0">
 																	<columnConstraints>
 																		<ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 																	</columnConstraints>
@@ -83,6 +83,7 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -133,22 +134,27 @@
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="aliceSignature" layoutX="15.0" layoutY="122.0" text="Signature = {}" GridPane.rowIndex="7">
+                                                      <Label fx:id="aliceSignaturePubKey" layoutX="15.0" layoutY="122.0" text="Signature Public Keys = {}" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="aliceTag" layoutX="15.0" layoutY="140.0" text="Tag = {}" GridPane.rowIndex="8">
+                                                      <Label fx:id="aliceSignaturePrivKey" layoutX="15.0" layoutY="129.0" text="Signature Private Keys = {}" GridPane.rowIndex="8">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="aliceTimestamp" layoutX="15.0" layoutY="158.0" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                      <Label fx:id="aliceTag" layoutX="15.0" layoutY="140.0" text="Tag = {}" GridPane.rowIndex="9">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="aliceDigest" layoutX="15.0" layoutY="177.0" text="Digest = {}" GridPane.rowIndex="10">
+                                                      <Label fx:id="aliceTimestamp" layoutX="15.0" layoutY="158.0" text="Timestamp = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="aliceDigest" layoutX="15.0" layoutY="177.0" text="Digest = {}" GridPane.rowIndex="11">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
@@ -164,6 +170,7 @@
                                                       <Button fx:id="Alice09" layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
                                                       <Button fx:id="Alice10" layoutX="10.0" layoutY="153.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
                                                       <Button fx:id="Alice11" layoutX="10.0" layoutY="172.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="54.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
+                                                      <Button fx:id="Alice12" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="36.0" prefWidth="759.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="11" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -197,6 +204,7 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -247,20 +255,24 @@
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="bobSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                      <Label fx:id="bobSignaturePubKey" text="Signature Publc Keys = {}" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="bobTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                      <Label fx:id="bobSignaturePrivKey" layoutX="15.0" layoutY="129.0" text="Signature Private Keys = {}" GridPane.rowIndex="8">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="bobTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                      <Label fx:id="bobTag" text="Tag = {}" GridPane.rowIndex="9">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="bobDigest" text="Digest = {}" GridPane.rowIndex="10">
+                                                      <Label fx:id="bobTimestamp" text="Timestamp = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin></Label>
+                                                      <Label fx:id="bobDigest" text="Digest = {}" GridPane.rowIndex="11">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
@@ -275,6 +287,7 @@
                                                       <Button fx:id="Bob09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
                                                       <Button fx:id="Bob10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
                                                       <Button fx:id="Bob11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
+                                                      <Button fx:id="Bob12" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="11" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -308,6 +321,7 @@
 																		<RowConstraints maxHeight="23.0" minHeight="7.0" prefHeight="34.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																		<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
@@ -358,22 +372,27 @@
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="eveSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                      <Label fx:id="eveSignaturePubKey" text="Signature Public Key = {}" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="eveTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                      <Label fx:id="eveSignaturePrivKey" layoutX="15.0" layoutY="129.0" text="Signature Private Key = {}" GridPane.rowIndex="8">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="eveTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                      <Label fx:id="eveTag" text="Tag = {}" GridPane.rowIndex="9">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="eveDigest" text="Digest = {}" GridPane.rowIndex="10">
+                                                      <Label fx:id="eveTimestamp" text="Timestamp = {}" GridPane.rowIndex="10">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="eveDigest" text="Digest = {}" GridPane.rowIndex="11">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin>
@@ -389,6 +408,7 @@
                                                       <Button fx:id="Eve09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
                                                       <Button fx:id="Eve10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
                                                       <Button fx:id="Eve11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
+                                                      <Button fx:id="Eve12" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="11" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />
@@ -437,6 +457,7 @@
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                                                       <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 																	</rowConstraints>
 																	<children>
 																		<Label fx:id="serverAsymmetricPublicKey" text="Asymmetric Public Keys = {}" GridPane.halignment="LEFT">
@@ -477,22 +498,24 @@
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="serverSignature" text="Signature = {}" GridPane.rowIndex="7">
+                                                      <Label fx:id="serverSignaturePubKey" text="Signature Public Keys = {}" GridPane.rowIndex="7">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="serverTag" text="Tag = {}" GridPane.rowIndex="8">
+                                                      <Label fx:id="serverSignaturePrivKey" layoutX="15.0" layoutY="129.0" text="Signature Private Keys = {}" GridPane.rowIndex="8">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="serverTag" text="Tag = {}" GridPane.rowIndex="9">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="serverTimestamp" text="Timestamp = {}" GridPane.rowIndex="9">
+                                                      <Label fx:id="serverTimestamp" text="Timestamp = {}" GridPane.rowIndex="10">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
-                                                      <Label fx:id="serverDigest" text="Digest = {}" GridPane.rowIndex="10">
-                                                         <padding>
-                                                            <Insets left="5.0" />
-                                                         </padding>
+                                                      <Label fx:id="serverDigest" text="Digest = {}" GridPane.rowIndex="11">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" />
                                                          </GridPane.margin></Label>
@@ -507,6 +530,7 @@
                                                       <Button fx:id="Server09" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="8" />
                                                       <Button fx:id="Server10" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="9" />
                                                       <Button fx:id="Server11" layoutX="10.0" layoutY="7.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="10" />
+                                                      <Button fx:id="Server12" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#selectKnowledgeDetails" prefHeight="27.0" prefWidth="788.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" GridPane.rowIndex="11" />
 																	</children>
 																	<padding>
 																		<Insets top="3.0" />

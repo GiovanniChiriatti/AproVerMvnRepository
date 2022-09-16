@@ -144,11 +144,11 @@ public class WriteASM {
 			for(int i = 0; i <actor.getSymmetricKey().size(); i++) {
 				map.put(actor.getSymmetricKey().get(i).toUpperCase(), actor.getSymmetricKey().get(i));
 		       }
-			for(int i = 0; i <actor.getSignature().size(); i++) {
-				map.put(actor.getSignature().get(i).toUpperCase(), actor.getSignature().get(i));
+			for(int i = 0; i <actor.getSignaturePubKey().size(); i++) {
+				map.put(actor.getSignaturePubKey().get(i).toUpperCase(), actor.getSignaturePubKey().get(i));
 		       }
-			for(int i = 0; i <actor.getSignature().size(); i++) {
-				map.put(actor.getSignature().get(i).toUpperCase(), actor.getSignature().get(i));
+			for(int i = 0; i <actor.getSignaturePrivKey().size(); i++) {
+				map.put(actor.getSignaturePrivKey().get(i).toUpperCase(), actor.getSignaturePrivKey().get(i));
 		       }
 			for(int i = 0; i <actor.getTag().size(); i++) {
 				map.put(actor.getTag().get(i).toUpperCase(), actor.getTag().get(i));

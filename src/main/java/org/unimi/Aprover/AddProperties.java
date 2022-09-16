@@ -382,18 +382,30 @@ public class AddProperties {
 
 		if (listSel.toString().contains("Signature")) {
 			typeKnowledge.getSelectionModel().select(7);
-			for(int i = 0; i <alice.getSignature().size(); i++) {
-		    	   names.add(alice.getSignature().get(i));
+			for(int i = 0; i <alice.getSignaturePubKey().size(); i++) {
+		    	   names.add(alice.getSignaturePubKey().get(i));
 		       }
-		       for(int i = 0; i <bob.getSignature().size(); i++) {
-		    	   names.add(bob.getSignature().get(i));
+		       for(int i = 0; i <bob.getSignaturePubKey().size(); i++) {
+		    	   names.add(bob.getSignaturePubKey().get(i));
 		       }
-		       for(int i = 0; i <eve.getSignature().size(); i++) {
-		    	   names.add(eve.getSignature().get(i));
+		       for(int i = 0; i <eve.getSignaturePubKey().size(); i++) {
+		    	   names.add(eve.getSignaturePubKey().get(i));
 		       }
-		       for(int i = 0; i <server.getSignature().size(); i++) {
-		    	   names.add(server.getSignature().get(i));
+		       for(int i = 0; i <server.getSignaturePubKey().size(); i++) {
+		    	   names.add(server.getSignaturePubKey().get(i));
 		       }
+				for(int i = 0; i <alice.getSignaturePrivKey().size(); i++) {
+			    	   names.add(alice.getSignaturePrivKey().get(i));
+			       }
+			       for(int i = 0; i <bob.getSignaturePrivKey().size(); i++) {
+			    	   names.add(bob.getSignaturePrivKey().get(i));
+			       }
+			       for(int i = 0; i <eve.getSignaturePrivKey().size(); i++) {
+			    	   names.add(eve.getSignaturePrivKey().get(i));
+			       }
+			       for(int i = 0; i <server.getSignaturePrivKey().size(); i++) {
+			    	   names.add(server.getSignaturePrivKey().get(i));
+			       }
 		       listview.setItems(names);
 		}	
 		if (listSel.toString().contains("Tag")) {

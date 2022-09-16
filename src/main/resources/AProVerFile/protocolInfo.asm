@@ -8,17 +8,18 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
+	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {WAITING_M0 | END_A}
-	enum domain StateBob = {IDLE_M0 | END_B}
+	enum domain StateAlice = {IDLE_M0 | END_A}
+	enum domain StateBob = {WAITING_M0 | END_B}
 
 	enum domain Message = {M0} 
 
-	enum domain Knowledge ={A|A1|A2|B|B1|B2|C|C1|C2|D|D1|D2|E|E1|E2|F|F1|F2|G|G1|G2|H|H1|H2|I|I1|I2|L|L1|L2|M|M1|M2}
+	enum domain Knowledge ={A|A1|A2|A3|B|B1|B2|B3|C|C1|C2|C3|D|D1|D2|D3|E|E1|E2|E3|F|F1|F2|F3|G|G1|G2|H|H1|H11|H2|H21|H3|I|I1|I2|I3|I31|L|L1|L2|L3|M|M1|M2|M3|N3}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_A|AG_E}
+	enum domain Receiver={AG_B|AG_E|AG_S}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -48,6 +49,7 @@ signature:
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
+	controlled internalStateS: Server -> StateServer
 
 	//name of the message
 	controlled protocolMessage: Prod(Agent,Agent)-> Message
@@ -121,12 +123,15 @@ signature:
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
+	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
 			switch( $a )
+				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
+				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=

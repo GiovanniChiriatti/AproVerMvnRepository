@@ -16,8 +16,10 @@ dati Alice IdCertificate
 f
 dati Alice Nonce 
 g
-dati Alice Signature 
+dati Alice Signature Pub Key 
 h
+dati Alice Signature Priv Key 
+h1
 dati Alice Tag 
 i
 dati Alice Timestamp 
@@ -38,8 +40,10 @@ dati Bob IdCertificate
 f2
 dati Bob Nonce 
 g2
-dati Bob Signature 
+dati Bob Signature Pub Key 
 h2
+dati Bob Signature Priv Key 
+h21
 dati Bob Tag 
 i2
 dati Bob Timestamp 
@@ -60,8 +64,10 @@ dati Eve IdCertificate
 f1
 dati Eve Nonce 
 g1
-dati Eve Signature 
+dati Eve Signature Pub Key 
 h1
+dati Eve Signature Priv Key 
+h11
 dati Eve Tag 
 i1
 dati Eve Timestamp 
@@ -82,8 +88,10 @@ dati Server IdCertificate
 f3
 dati Server Nonce 
 h3
-dati Server Signature 
+dati Server Signature Pub Key 
 i3
+dati Server Signature Priv Key 
+i31
 dati Server Tag 
 l3
 dati Server Timestamp 
