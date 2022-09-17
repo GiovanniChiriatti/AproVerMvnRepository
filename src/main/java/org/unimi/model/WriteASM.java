@@ -1,5 +1,6 @@
 package org.unimi.model;
 import java.io.*;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -9,12 +10,13 @@ public class WriteASM {
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
 	private int indSignature;
-	Messages messages;
-	SecurityKey alice;
-	SecurityKey bob;
-	SecurityKey eve;
-	SecurityKey server;
-	Map<String, String> map = new TreeMap<String, String>();
+
+	private Messages messages;
+	private SecurityKey alice;
+	private SecurityKey bob;
+	private SecurityKey eve;
+	private SecurityKey server;
+	private Map<String, String> map = new TreeMap<String, String>();
 	private String toolEve;
 	public WriteASM(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve) 
 			  throws IOException {
@@ -32,445 +34,546 @@ public class WriteASM {
 			    BufferedWriter b;
 			    b=new BufferedWriter (w);
 			    // scrittura info iniziali del file asm
-			    System.out.println("writeOpen");
 			    writeOpen(b);
-			    
-			    // scrittura info domain Agent_x
-			    System.out.println("writeAgent");
-			    writeAgent(actorServer, b);
-			    
-			    //vengono memorizzate in una tabella l'elenco knows sia dalle SecurityKey che dai messaggi per ogni singolo attore
-			    storeKnows(alice);
-			    storeKnows(bob);
-			    storeKnows(eve);
-			    if (server != null || actorServer) {
-			    	storeKnows(server);
-			    }
-		    
-			    
-			    System.out.println("writeMessaget");
-			    writeMessage(b);
- 		    
-			    String payloadXXX = "";
-			    
-			    int numeMap = 0;
 
-			    for(String s : map.keySet()) {
-			    	if (numeMap ==0 ) {
-			    		payloadXXX = "	enum domain Knowledge ={" + s;
-			    		numeMap++;
-			    	}else {
-			    		payloadXXX = payloadXXX + "|" + s;
-			    		numeMap++;
-			    	}
-			    }
-			    if (!payloadXXX.isEmpty()) {
-			    	payloadXXX = payloadXXX + "}\n";
-			    	b.write(payloadXXX);
-			    }
-			    b.write("\n");
-			    writeEndSignature(b);
-			    writeDefinitions(b);				
-/*
-			    for (String s : signature) {
-			    	if (s!=null)   	b.write(s);
-			    }
-			    
-			    
-			    b.write("	controlled knownAsimPubKey: Agent −> Powerset(AsimPubKeyType)\n");
-			    b.write("	controlled knownAsimPrivKey: Agent −> Powerset(AsimPrivKeyType)\n");
-			    b.write("	controlled knownSimmKey: Agent −> Powerset(SimmKeyType)\n");
-			    b.write("	controlled knownPayload: Agent −> Powerset(PayloadType)\n");
-			    b.write("	domain State subsetof Any\n");
-			    b.write("	controlled internalState: Agent −> State\n");
-*/			    
+			    // scrittura delle Knowledge
+			    writeKnowledge(b);
 			    b.flush();
 			    
 			  }
 	//Scrittura prime info file asm
 	private void writeOpen(BufferedWriter b) throws IOException {
-		b.write("module CryptoLibraryXXX\n");
+		b.write("asm XXX\n");
 		b.write("\n");
-		b.write("import ../StandardLibrary\n");
-		b.write("export *\n");
+		b.write("import CryptoLibraryXXX\n");
+		b.write("\n");
 		b.write("\n");
 		b.write("signature:\n");
-	}
-	//Scrittura Signature Domini Agent
-	private void writeAgent(Boolean actorServer, BufferedWriter b) throws IOException {
-		b.write("\n");
-		b.write("	domain Alice subsetof Agent\n");
-	    
-	    
-	    signature[indSignature]="	static agentA: Agent_A\n";
-	    indSignature++;
-	    b.write("	domain Bob subsetof Agent\n");
-	    signature[indSignature]="	static agentB: Agent_B\n";
-	    indSignature++;
-	   	
-	    b.write("	domain Eve subsetof Agent\n");
-	   	signature[indSignature]="	static agentE: Agent_E\n";
-	    indSignature++;
-
-	    if (actorServer) {
-	    	b.write("	domain Server subsetof Agent\n");
-		    signature[indSignature]="	static agentS: Agent_S\n";
-		    indSignature++;
-	    }
-	}
-	//memorizza elenco knows sia dalle SecurityKey che dai messaggi 
-		private void storeKnows(SecurityKey actor){
-			for(int i = 0; i <actor.getNonce().size(); i++) {
-				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
-		       }
-			for(int i = 0; i <actor.getBitstring().size(); i++) {
-				map.put(actor.getBitstring().get(i).toUpperCase(), actor.getBitstring().get(i));
-		       }
-			for(int i = 0; i <actor.getHashKey().size(); i++) {
-				map.put(actor.getHashKey().get(i).toUpperCase(), actor.getHashKey().get(i));
-		       }
-			for(int i = 0; i <actor.getHashKey().size(); i++) {
-				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
-		       }
-			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
-				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
-		       }
-			for(int i = 0; i <actor.getAsymmetricPrivateKey().size(); i++) {
-				map.put(actor.getAsymmetricPrivateKey().get(i).toUpperCase(), actor.getAsymmetricPrivateKey().get(i));
-		       }
-			for(int i = 0; i <actor.getAsymmetricPublicKey().size(); i++) {
-				map.put(actor.getAsymmetricPublicKey().get(i).toUpperCase(), actor.getAsymmetricPublicKey().get(i));
-		       }
-			for(int i = 0; i <actor.getSymmetricKey().size(); i++) {
-				map.put(actor.getSymmetricKey().get(i).toUpperCase(), actor.getSymmetricKey().get(i));
-		       }
-			for(int i = 0; i <actor.getSignaturePubKey().size(); i++) {
-				map.put(actor.getSignaturePubKey().get(i).toUpperCase(), actor.getSignaturePubKey().get(i));
-		       }
-			for(int i = 0; i <actor.getSignaturePrivKey().size(); i++) {
-				map.put(actor.getSignaturePrivKey().get(i).toUpperCase(), actor.getSignaturePrivKey().get(i));
-		       }
-			for(int i = 0; i <actor.getTag().size(); i++) {
-				map.put(actor.getTag().get(i).toUpperCase(), actor.getTag().get(i));
-		       }
-			for(int i = 0; i <actor.getTimestamp().size(); i++) {
-				map.put(actor.getTimestamp().get(i).toUpperCase(), actor.getTimestamp().get(i));
-		       }
-		}
-		//Scrittura Signature Domini and state Agent 
-		private void writeMessage(BufferedWriter b) throws IOException {
-			b.write("\n");
-			String messageXXX = "";		
-			int numPayloadSection = 0;
-			for (int i = 0; i < 15; i++) {
-				Message message = messages.getMessage(i);
-				if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
-					if (i > 0) {
-						messageXXX = messageXXX + "} \n";
-						break;
-					}
-				}
-				// si inseriscono nella tabella di appoggio le informazioni sugli stati degli attori
-				System.out.println("loadStateActor");
-				loadStateActor(i,message.getActorfrom(),message.getActorTo());
-				System.out.println("loadStateActor end");
-				// signature[indSignature]="	protocolMessage(" + defAgent(message.getActorfrom()) + ","+ defAgent (message.getActorTo())  + "):=M"+ i+"\n";
-			   // indSignature++;
-				if (i==0) {
-		    		messageXXX= messageXXX + "	enum domain Message = {M"+ i;
-		    	} else {
-		    		messageXXX= messageXXX + " | M"+ i;
-		    	}
-		    }
-			
-			if (messageXXX.isEmpty()) {
-		    	return;}
-			b.write("\n");
-			System.out.println("loadStateActor -0- " + stateActor[0] );
-			if (stateActor[0] !=null) {
-				b.write("	enum domain StateAlice = {"+stateActor[0]+" | END_A}\n");
-			}
-			System.out.println("loadStateActor -1- " + stateActor[0] );
-			if (stateActor[1] !=null) {
-				b.write("	enum domain StateBob = {"+stateActor[1]+" | END_B}\n");
-			}
-			System.out.println("loadStateActor -2- " + stateActor[2] );
-			if (stateActor[2] !=null) {
-				b.write("	enum domain StateEve = {"+stateActor[2]+" | END_E}\n");
-			}
-			System.out.println("loadStateActor -3- " + stateActor[3] );
-			if (stateActor[3] !=null) {
-				b.write("	enum domain StateServer = {"+stateActor[3]+" | END_S}\n");
-			}
-			
-		    b.write("\n");
-		    b.write(messageXXX);
-		    b.write("\n");
-		    
-	}
-	private void writeEndSignature(BufferedWriter b) throws IOException {
-		b.write("	//DOMAIN OF POSSIBLE RECEIVER\n"); 
-		if (stateActor[0] !=null && stateActor[0].contains("IDLE")){
-			if (server != null || actorServer) {
-				b.write("	enum domain Receiver={AG_B|AG_E|AG_S}\n");
-			} else {
-				b.write("	enum domain Receiver={AG_B|AG_E}\n");
-			}
-		}
-		if (stateActor[1] !=null && stateActor[1].contains("IDLE")){
-			if (server != null || actorServer) {
-				b.write("	enum domain Receiver={AG_A|AG_E|AG_S}\n");
-			} else {
-				b.write("	enum domain Receiver={AG_A|AG_E}\n");
-			}
-		}
-		if (stateActor[2] !=null && stateActor[2].contains("IDLE")){
-			if (server != null || actorServer) {
-				b.write("	enum domain Receiver={AG_A|AG_B|AG_S}\n");
-			} else {
-				b.write("	enum domain Receiver={AG_A|AG_B}\n");
-			}
-		}
-		if (stateActor[3] !=null && stateActor[3].contains("IDLE")){
-				b.write("	enum domain Receiver={AG_A|AG_B|AG_E}\n");
-		}
-		
-	    b.write("	///DOMAIN OF THE ATTACKER MODE\n"); 
-	    b.write("	enum domain Modality = {ACTIVE | PASSIVE}\n");
-	    b.write("\n");
-	    
-	    b.write("	domain KnowledgeNonce subsetof Any\n");
-	    b.write("	domain KnowledgeIdentityCertificate subsetof Any\n");
-	    b.write("	domain KnowledgeBitString subsetof Any\n");
-	    b.write("	domain KnowledgeSymKey subsetof Any\n");
-	    b.write("	domain KnowledgeAsymPrivKey subsetof Any\n");
-	    b.write("	domain KnowledgeAsymPubKey subsetof Any\n");
-	    // Queste non trovate
-	    b.write("	domain KnowledgeSignPrivKey subsetof Any\n");
-	    b.write("	domain KnowledgeSignPubKey subsetof Any\n");
-	    //
-	    b.write("	domain KnowledgeTag subsetof Any\n");
-	    
-	    //Queste aggiunte io 
-	    b.write("	domain KnowledgeDigest subsetof Any\n");
-	    b.write("	domain KnowledgeHash subsetof Any\n");
-	    b.write("	domain KnowledgeTimestamp subsetof Any\n");
-	    b.write("\n");
-	    
-	    b.write("	//range on which apply the cryptographic function\n");
-	    b.write("	domain  FieldPosition subsetof Integer\n");
-	    b.write("	domain  Level subsetof Integer\n");
-	    b.write("	domain  EncField1 subsetof Integer\n");
-	    b.write("	domain  EncField2 subsetof Integer\n");
-	    b.write("	domain  SignField1 subsetof Integer\n");
-	    b.write("	domain  SignField2 subsetof Integer\n");
-	    b.write("	domain  HashField1 subsetof Integer\n");
-	    b.write("	domain  HashField2 subsetof Integer\n");
-	    
-	    b.write("\n");
-	    b.write("	//state of the actor\n");
-	    b.write("	controlled internalStateA: Alice -> StateAlice\n");
-	    b.write("	controlled internalStateB: Bob -> StateBob\n");
-	    if (toolEve.contains("Eve Doesn't Create Messages")){
-	    	b.write("	controlled internalStateE: Eve -> StateEve\n");
-	    }
-	    if (server != null || actorServer) {
-	    	b.write("	controlled internalStateS: Server -> StateServer\n");
-	    }
-	    
-	    b.write("\n");
-	    b.write("	//name of the message\n");
-	    b.write("	controlled protocolMessage: Prod(Agent,Agent)-> Message\n");
-	    b.write("	// content of the message and in which field it goes\n");
-	    b.write("	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge\n");
-	    b.write("\n");
-	    b.write("	//attaker mode\n");
-	    b.write("	monitored chosenMode: Modality\n");
-		b.write("	//controlled for saving the attacker modality choice\n");
-		b.write("	controlled mode: Modality\n");
-		b.write("\n");
-		b.write("	// FUNCTIONS SELECT THE RECEIVER\n");
-		b.write("	static name:Receiver -> Agent\n");
-		b.write("	//Receiver chosen\n");
-		b.write("	controlled receiver:Receiver\n");
-		b.write("	//Receiver chosen by user\n");
-		b.write("	monitored chosenReceiver:Receiver\n");	
-		
-		b.write("\n");
-		b.write("	/*------------------------------------------------------------------- */\n");
-		b.write("	//            Knowledge  management of the principals \n");
-		b.write("	/*------------------------------------------------------------------- */\n");
-		b.write("	controlled knowsNonce:Prod(Agent,KnowledgeNonce)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsIdentityCertificate:Prod(Agent,KnowledgeIdentityCertificate)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsBitString:Prod(Agent,KnowledgeBitString)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsSymKey:Prod(Agent,KnowledgeSymKey)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsAsymPubKey:Prod(Agent,KnowledgeAsymPubKey)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsAsymPrivKey:Prod(Agent,KnowledgeAsymPrivKey)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsSignPubKey:Prod(Agent,KnowledgeSignPubKey)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsSignPrivKey:Prod(Agent,KnowledgeSignPrivKey)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeTag)->Boolean\n");
-		//Queste aggiunte io 
-		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeDigest)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeHash)->Boolean\n");
-		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeTimestamp)->Boolean\n");
-
-		b.write("\n");
-		b.write("	/*------------------------------------------------------------------- */\n");
-		b.write("	//                  Cryptographic functions\n");
-		b.write("	/*------------------------------------------------------------------- */\n");
-		b.write("	//hash function applied from the field HashField1 to HashField2, the nesting level is Level\n");
-		b.write("	static hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeTag\n");
-		b.write("	static verifyHash: Prod(Message,Level,HashField1,HashField2,KnowledgeTag)-> Boolean\n");
-		b.write("\n");
-		b.write("	//sign function applied from the field SignField1 to SignField2, the nesting level is Level\n");
-		b.write("	controlled sign: Prod(Message,Level,SignField1,SignField2)-> KnowledgeSignPrivKey\n");
-		b.write("	static verifySign: Prod(Message,Level,SignField1,SignField2,Agent)-> Boolean\n");
-		b.write("	static sign_keyAssociation: KnowledgeSignPrivKey -> KnowledgeSignPubKey\n");
-		b.write("\n");
-		b.write("	//asymmetric encryption function applied from the field EncField1 to EncField2\n");
-		b.write("	//the nesting level is Level\n");
-		b.write("	controlled asymEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeAsymPubKey\n");
-		b.write("	static asymDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean\n");
-		b.write("	static asim_keyAssociation: KnowledgeAsymPubKey -> KnowledgeAsymPrivKey\n");
-		b.write("\n");
-		b.write("	//symmetric encryption function applied from the field EncField1 to EncField2\n");
-		b.write("	//the nesting level is Level\n");
-		b.write("	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeSymKey\n");
-		b.write("	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean\n");
-		b.write("\n");
-		b.write("	static diffieHellman:Prod(KnowledgeAsymPubKey,KnowledgeAsymPrivKey)->KnowledgeSymKey\n");
-		b.write("\n");
-		b.write("	static agentA: Alice\n");
-		b.write("	static agentB: Bob\n");
-		b.write("	static agentE: Eve\n");
-		if (server != null || actorServer) {
-			b.write("	static agentS: Server\n");
-		}
-	}
-	
-	private void writeDefinitions(BufferedWriter b) throws IOException {
 		b.write("\n");
 		b.write("definitions:\n");
-		b.write("	function name($a in Receiver)=\n");
-		b.write("			switch( $a )\n");
-		b.write("				case AG_A:agentA\n");
-		b.write("				case AG_E:agentE\n");
-		b.write("				case AG_B:agentB\n");
-		if (server != null || actorServer) {
-			b.write("				case AG_S:agentS\n");		
-		}
-		b.write("			endswitch\n");
-		b.write("\n");	
-		b.write("		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=\n");
-		b.write("			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then\n");
-		b.write("				true\n");
-		b.write("			else\n");
-		b.write("				false\n");
-		b.write("			endif\n");
-		b.write("\n");	
-		b.write("		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=\n");
-		b.write("			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then\n");
-		b.write("				true\n");
-		b.write("			else\n");
-		b.write("				false\n");
-		b.write("			endif\n");
-		b.write("\n");		
-		b.write("		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=\n");
-		b.write("			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then\n");
-		b.write("				true\n");
-		b.write("			else\n");
-		b.write("				false\n");
-		b.write("			endif\n");
-		b.write("\n");	
-
+		b.write("	domain Level = {1}\n");
+		b.write("	domain FieldPosition = {1:2}\n");
+		b.write("	domain EncField1={1}\n");
+		b.write("	domain EncField2={2}\n");
 	}
-	
-	private void loadStateActor(int i, String actorFrom, String actorTo) {
-		int indActorFrom, indActorTo;
-		indActorFrom=0;
-		indActorTo=0;
-		System.out.println(actorFrom + " - " + actorTo);
-		switch(actorFrom) {
-		  case "Alice":
-			  indActorFrom=0;
-			  break;
-		  case "Bob":
-			  indActorFrom=1;
-			  break;
-		  case "Eve":
-			  indActorFrom=2;
-			  break;
-		  case "Server":
-			  indActorFrom=3;
-			  break;
+	//Scrittura prime info file asm
+	private void writeKnowledge(BufferedWriter b) throws IOException {
+		String[] elencoAsymPrivPub = new String[60];
+		String[] elencoSignPrivPub = new String[60];
+		b.write("\n");
+		writeKnowledgeNonce(b);
+		writeKnowledgeIdentityCertificate(b);
+		writeKnowledgeBitString(b);
+		writeKnowledgeSymKey(b);
+		elencoAsymPrivPub = writeKnowledgeAsymPrivEPubKey(b);
+		elencoSignPrivPub = writeKnowledgeSignPrivePubKey(b);
+		writeKnowledgeTag(b);
+		writeKnowledgeDigest(b);
+		writeKnowledgeHash(b);
+		writeKnowledgeTimestamp(b);
+		b.write("\n");
+		if (!elencoAsymPrivPub[0].isEmpty()) {
+			b.write("	function asim_keyAssociation($a in KnowledgeAsymPubKey)=\n");
+			b.write("	       switch( $a )\n");
+			for (String s : elencoAsymPrivPub) {
+				if (s.isEmpty()) break;
+				b.write("	              case " + s + "\n");
+			}
+			b.write("	       endswitch\n");
 		}
 		
-		switch(actorTo) {
-		  case "Alice":
-			  indActorTo=0;
-			  break;
-		  case "Bob":
-			  indActorTo=1;
-			  break;
-		  case "Eve":
-			  indActorTo=2;
-			  break;
-		  case "Server":
-			  indActorTo=3;
-			  break;
+		if (!elencoSignPrivPub[0].isEmpty()) {
+			b.write("	function sign_keyAssociation($b in KnowledgeSignPrivKey)=\n");
+			b.write("	       switch( $b )\n");
+			for (String s : elencoSignPrivPub) {
+				if (s.isEmpty()) break;
+				b.write("	              case " + s + "\n");
+			}
+			b.write("	       endswitch\n");
 		}
+	}
+	//Scrittura delle informazioni legate alla Knowledge Nonce
+	private void writeKnowledgeNonce(BufferedWriter b) throws IOException {
 		
-		System.out.println(indActorFrom + " - " + indActorTo);
-		if (i==0) {
-			stateActor[indActorFrom]="IDLE_M"+i;
-		} else {
-			if (stateActor[indActorFrom] == null) {
-				stateActor[indActorFrom]="SEND_M"+i;
-			} else {
-				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_M"+i;
+		if (alice != null) {
+			for (int i = 0; i < alice.getNonce().size(); i++) {
+				map.put(alice.getNonce().get(i).toUpperCase(), alice.getNonce().get(i));
 			}
 		}
-		if (stateActor[indActorTo] == null) {
-			stateActor[indActorTo]="WAITING_M"+i;
-		} else {
-			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_M"+i;
-		}
-		
-	}
-	
-	private void storeMessage(Message message, int numMsg) {
-		for (int j = 0; j < 15; j++) {
-			if (message.getListPartMessage(numMsg, j) != null && !message.getListPartMessage(numMsg, j).isEmpty()) {
-				if (!message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOAD")) {
-//							System.out.println(" <---- PArte del Messaggio numero " + j + " -------->"+message.getListPartMessage(i, j));
-					map.put(message.getListPartMessage(numMsg, j).toUpperCase(), message.getListPartMessage(numMsg, j));
-				}
+		if (bob != null) {
+			for (int i = 0; i < bob.getNonce().size(); i++) {
+				map.put(bob.getNonce().get(i).toUpperCase(), bob.getNonce().get(i));
 			}
 		}
-	}
-	private String defAgent(String agent) {
-		switch(agent) {
-		  case "Alice":
-			  return "agentA";
-		  case "Bob":
-			  return "agentB";
-		  case "Eve":
-			  return "agentE";
-		  case "Server":
-			  return "agentS";
+		if (eve != null) {
+			for (int i = 0; i < eve.getNonce().size(); i++) {
+				map.put(eve.getNonce().get(i).toUpperCase(), eve.getNonce().get(i));
+			}
 		}
-		return "Errore";
-	}
+		
+		if (server != null) {			
+			for (int i = 0; i < server.getNonce().size(); i++) {
+				map.put(server.getNonce().get(i).toUpperCase(), server.getNonce().get(i));
+			}
+		}
+	    int numeMap = 0;
 
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeNonce = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    	//map.remove(s);
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {        
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
+	//Scrittura delle informazioni legate alla Knowledge Certificato ID
+	private void writeKnowledgeIdentityCertificate(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getIdCertificate().size(); i++) {
+				map.put(alice.getIdCertificate().get(i).toUpperCase(), alice.getIdCertificate().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getIdCertificate().size(); i++) {
+				map.put(bob.getIdCertificate().get(i).toUpperCase(), bob.getIdCertificate().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getIdCertificate().size(); i++) {
+				map.put(eve.getIdCertificate().get(i).toUpperCase(), eve.getIdCertificate().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getIdCertificate().size(); i++) {
+				map.put(server.getIdCertificate().get(i).toUpperCase(), server.getIdCertificate().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeIdentityCertificate = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
+	//Scrittura delle informazioni legate alla Knowledge Bit String
+	private void writeKnowledgeBitString(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getBitstring().size(); i++) {
+				map.put(alice.getBitstring().get(i).toUpperCase(), alice.getBitstring().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getBitstring().size(); i++) {
+				map.put(bob.getBitstring().get(i).toUpperCase(), bob.getBitstring().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getBitstring().size(); i++) {
+				map.put(eve.getBitstring().get(i).toUpperCase(), eve.getBitstring().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getBitstring().size(); i++) {
+				map.put(server.getBitstring().get(i).toUpperCase(), server.getBitstring().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeBitString = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
+	//Scrittura delle informazioni legate alla Knowledge chiave simmetrica
+	private void writeKnowledgeSymKey(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getSymmetricKey().size(); i++) {
+				map.put(alice.getSymmetricKey().get(i).toUpperCase(), alice.getSymmetricKey().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getSymmetricKey().size(); i++) {
+				map.put(bob.getSymmetricKey().get(i).toUpperCase(), bob.getSymmetricKey().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getSymmetricKey().size(); i++) {
+				map.put(eve.getSymmetricKey().get(i).toUpperCase(), eve.getSymmetricKey().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getSymmetricKey().size(); i++) {
+				map.put(server.getSymmetricKey().get(i).toUpperCase(), server.getSymmetricKey().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeSymKey = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+        
+	}
+	//Scrittura delle info sulle chiavi asimmetriche
+	private String[] writeKnowledgeAsymPrivEPubKey(BufferedWriter b) throws IOException {
+		String[] elencoPrivPub = new String[60];
+		for (int i=0; i<60;i++) {
+			elencoPrivPub[i]="";
+		}
+		if (alice != null) { 
+			for (int i = 0; i < alice.getAsymmetricPrivateKey().size(); i++) {
+				map.put(alice.getAsymmetricPrivateKey().get(i).toUpperCase() + " -> "  + alice.getAsymmetricPublicKey().get(i).toUpperCase(), alice.getAsymmetricPrivateKey().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getAsymmetricPrivateKey().size(); i++) {
+				map.put(bob.getAsymmetricPrivateKey().get(i).toUpperCase() + " -> "  + bob.getAsymmetricPublicKey().get(i).toUpperCase(), bob.getAsymmetricPrivateKey().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getAsymmetricPrivateKey().size(); i++) {
+				map.put(eve.getAsymmetricPrivateKey().get(i).toUpperCase() + " -> "  + eve.getAsymmetricPublicKey().get(i).toUpperCase(), alice.getAsymmetricPrivateKey().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getAsymmetricPrivateKey().size(); i++) {
+				map.put(server.getAsymmetricPrivateKey().get(i).toUpperCase() + " -> "  + server.getAsymmetricPublicKey().get(i).toUpperCase(), alice.getAsymmetricPrivateKey().get(i));
+			}
+		}
+	    int numeMap = 0;
+	    
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeAsymPrivKey = {" + s.substring(0, s.lastIndexOf(" -> ")));
+	    		elencoPrivPub[numeMap] = s.replace(" -> ", ": ");
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s.substring(0, s.lastIndexOf(" -> ")));
+	    		elencoPrivPub[numeMap] = s.replace(" -> ", ": ");
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+	    numeMap = 0;
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeAsymPubKey = {" + s.substring(s.lastIndexOf(" -> ")+4, s.length()));
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s.substring(s.lastIndexOf(" -> ")+4, s.length()));
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+		return elencoPrivPub;
+	}
+	//Scrittura delle info sulle chiavi per la firma
+	private String[] writeKnowledgeSignPrivePubKey(BufferedWriter b) throws IOException {
+		String[] elencoPrivPub = new String[60];
+		for (int i=0; i<60;i++) {
+			elencoPrivPub[i]="";
+		}
+		if (alice != null) {
+			for (int i = 0; i < alice.getSignaturePrivKey().size(); i++) {
+				map.put(alice.getSignaturePrivKey().get(i).toUpperCase() + " -> "  + alice.getSignaturePubKey().get(i).toUpperCase(), alice.getSignaturePrivKey().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getSignaturePrivKey().size(); i++) {
+				map.put(bob.getSignaturePrivKey().get(i).toUpperCase() + " -> "  + bob.getSignaturePubKey().get(i).toUpperCase(), bob.getSignaturePrivKey().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getSignaturePrivKey().size(); i++) {
+				map.put(eve.getSignaturePrivKey().get(i).toUpperCase() + " -> "  + eve.getSignaturePubKey().get(i).toUpperCase(), alice.getSignaturePrivKey().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getSignaturePrivKey().size(); i++) {
+				map.put(server.getSignaturePrivKey().get(i).toUpperCase() + " -> "  + server.getSignaturePubKey().get(i).toUpperCase(), alice.getSignaturePrivKey().get(i));
+			}
+		}
+	    int numeMap = 0;
+	    
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeSignPrivKey = {" + s.substring(0, s.lastIndexOf(" -> ")));
+	    		elencoPrivPub[numeMap] = s.replace(" -> ", ": ");
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s.substring(0, s.lastIndexOf(" -> ")));
+	    		elencoPrivPub[numeMap] = s.replace(" -> ", ": ");
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+	    numeMap = 0;
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeSignPubKey = {" + s.substring(s.lastIndexOf(" -> ")+4, s.length()));
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s.substring(s.lastIndexOf(" -> ")+4, s.length()));
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+		return elencoPrivPub;
+	}
+	//Scrittura delle informazioni legate alla Knowledge Tag
+	private void writeKnowledgeTag(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getTag().size(); i++) {
+				map.put(alice.getTag().get(i).toUpperCase(), alice.getTag().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getTag().size(); i++) {
+				map.put(bob.getTag().get(i).toUpperCase(), bob.getTag().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getTag().size(); i++) {
+				map.put(eve.getTag().get(i).toUpperCase(), eve.getTag().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getTag().size(); i++) {
+				map.put(server.getTag().get(i).toUpperCase(), server.getTag().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeTag = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+        
+	}
+	//Scrittura delle informazioni legate alla Knowledge Digest
+	private void writeKnowledgeDigest(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getDigest().size(); i++) {
+				map.put(alice.getDigest().get(i).toUpperCase(), alice.getDigest().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getDigest().size(); i++) {
+				map.put(bob.getDigest().get(i).toUpperCase(), bob.getDigest().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getDigest().size(); i++) {
+				map.put(eve.getDigest().get(i).toUpperCase(), eve.getDigest().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getDigest().size(); i++) {
+				map.put(server.getDigest().get(i).toUpperCase(), server.getDigest().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeDigest = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
+	//Scrittura delle informazioni legate alla Knowledge Hash
+	private void writeKnowledgeHash(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getHashKey().size(); i++) {
+				map.put(alice.getHashKey().get(i).toUpperCase(), alice.getHashKey().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getHashKey().size(); i++) {
+				map.put(bob.getHashKey().get(i).toUpperCase(), bob.getHashKey().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getHashKey().size(); i++) {
+				map.put(eve.getHashKey().get(i).toUpperCase(), eve.getHashKey().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getHashKey().size(); i++) {
+				map.put(server.getHashKey().get(i).toUpperCase(), server.getHashKey().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeHashKey = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
+	//Scrittura delle informazioni legate alla Knowledge Timestamp
+	private void writeKnowledgeTimestamp(BufferedWriter b) throws IOException {
+		if (alice != null) {
+			for (int i = 0; i < alice.getTimestamp().size(); i++) {
+				map.put(alice.getTimestamp().get(i).toUpperCase(), alice.getTimestamp().get(i));
+			}
+		}
+		if (bob != null) {
+			for (int i = 0; i < bob.getTimestamp().size(); i++) {
+				map.put(bob.getTimestamp().get(i).toUpperCase(), bob.getTimestamp().get(i));
+			}
+		}
+		if (eve != null) {
+			for (int i = 0; i < eve.getHashKey().size(); i++) {
+				map.put(eve.getTimestamp().get(i).toUpperCase(), eve.getTimestamp().get(i));
+			}
+		}
+		
+		if (server != null) {
+			for (int i = 0; i < server.getDigest().size(); i++) {
+				map.put(server.getTimestamp().get(i).toUpperCase(), server.getTimestamp().get(i));
+			}
+		}
+	    int numeMap = 0;
+
+	    for(String s : map.keySet()) {
+	    	if (numeMap ==0 ) {
+	    		b.write("	domain KnowledgeTimestamp = {" + s);
+	    		numeMap++;
+	    	}else {
+	    		b.write( "," + s);
+	    		numeMap++;
+	    	}
+	    }
+	    if (numeMap !=0 ) { 
+	    	b.write( "}\n");
+	    }
+        Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getKey().startsWith("")){
+                it.remove();
+            }
+        }
+	}
 }

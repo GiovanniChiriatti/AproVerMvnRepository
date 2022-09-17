@@ -259,7 +259,7 @@ public class CreateProperties {
 			       for(int i = 0; i <eve.getNonce().size(); i++) {
 			    	   names.add(eve.getNonce().get(i));
 			       }
-			       for(int i = 0; i <server.getAsymmetricPrivateKey().size(); i++) {
+			       for(int i = 0; i <server.getNonce().size(); i++) {
 			    	   names.add(server.getNonce().get(i));
 			       }
 			       listview.setItems(names);
