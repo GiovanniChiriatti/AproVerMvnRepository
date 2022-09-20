@@ -1,15 +1,20 @@
 package org.unimi.model;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javafx.scene.image.Image;
+
 public class WriteASM {
+	
 	private Boolean actorServer;
 	private SecurityKey securityKey;
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
-	private int indSignature;
+	private int indSignature, levelTot;
+	ArrayList numEleMsg;
 
 	private Messages messages;
 	private SecurityKey alice;
@@ -18,7 +23,7 @@ public class WriteASM {
 	private SecurityKey server;
 	private Map<String, String> map = new TreeMap<String, String>();
 	private String toolEve;
-	public WriteASM(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve) 
+	public WriteASM(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve, ArrayList numEleMsg, int levelTot) 
 			  throws IOException {
 				this.actorServer = actorServer;
 				this.messages = messages;
@@ -27,7 +32,10 @@ public class WriteASM {
 				this.eve = eve;
 				this.server = server;
 				this.toolEve = toolEve;
+				this.numEleMsg=numEleMsg;
+				this.levelTot=levelTot;
 				indSignature=0;
+				System.out.println("-------WriteASM---------");
 			    FileWriter w;
 			    w=new FileWriter("src/main/resources/AProVerFile/protocolInfo.asm");
 
@@ -51,8 +59,18 @@ public class WriteASM {
 		b.write("signature:\n");
 		b.write("\n");
 		b.write("definitions:\n");
-		b.write("	domain Level = {1}\n");
-		b.write("	domain FieldPosition = {1:2}\n");
+		if (levelTot > 0) {
+			levelTot++;
+			b.write("	domain Level = {1:"+ levelTot  + "}\n");
+		} else {
+			b.write("	domain Level = {1}\n");
+		}
+		if (numEleMsg.size()>1 ) {
+			b.write("	domain FieldPosition = {1:"+ numEleMsg.size() + "}\n");
+		} else {
+			b.write("	domain FieldPosition = {1}\n");
+		}
+		
 		b.write("	domain EncField1={1}\n");
 		b.write("	domain EncField2={2}\n");
 	}
@@ -91,6 +109,8 @@ public class WriteASM {
 			}
 			b.write("	       endswitch\n");
 		}
+		
+		writeMessageAttacker(b);
 	}
 	//Scrittura delle informazioni legate alla Knowledge Nonce
 	private void writeKnowledgeNonce(BufferedWriter b) throws IOException {
@@ -567,7 +587,7 @@ public class WriteASM {
 	    	}
 	    }
 	    if (numeMap !=0 ) { 
-	    	b.write( "}\n");
+	    	b.write("}\n");
 	    }
         Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
         while (it.hasNext()) {
@@ -576,4 +596,172 @@ public class WriteASM {
             }
         }
 	}
+	//Scrittura delle informazioni legate ai messaggi scambiati prendendo in cosniderazione un eventuale attacco
+	private void writeMessageAttacker(BufferedWriter b) throws IOException {
+		b.write("\n");
+		b.write("	/*ATTACKER RULES*/\n");
+		for (int i = 0; i < 15; i++) {
+			Message message = messages.getMessage(i);
+			if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
+				if (i > 0) {
+					break;
+				}
+			}
+			b.write("	rule r_message_replay_M"+ i +" =\n");
+			b.write("		//choose what agets are interested by the message\n");
+			b.write("		let ($b=agent" + message.getActorTo().substring(0,1).toUpperCase() + ",$a=agent" + message.getActorfrom().substring(0,1).toUpperCase() + ") in\n");
+			b.write("			//check the reception of the message and the modality of the attack\n");
+			b.write("			if(protocolMessage($a ,self)=M"+ i +" and protocolMessage(self,$b )!=M"+ i + " and mode=PASSIVE)then\n");
+			b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
+			b.write("			        // the message must be sent unaltered\n");
+			
+			String keyUsed = findKey(message.getSecurityFunctionsPartMessage(i));
+			if (keyUsed != null) {
+				String operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());
+				System.out.println("operation " + operation);
+			}
+			String[] msgEncField1EncField2 = new String[15];
+			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2);
+			
+		}
+	}
+	// determina quale chiave è stata usata prima di inviare il messaggio
+	private String findKey(String partMsg) {
+		String keyUsed=null;
+		
+		if (!partMsg.substring(partMsg.length()-3).equals(" - ")) {
+			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
+			return keyUsed;
+		}
+		keyUsed= partMsg.substring(0,partMsg.length()-3);
+		keyUsed = keyUsed.substring(keyUsed.lastIndexOf(" - ")+3);
+		return keyUsed;
+	}
+	// determina quale algoritmo crittografico è stato usato prima di inviare il messaggio
+	private String findOperation(String keyUsed, String actorFrom,String actorTo ) {
+		String operation = null;
+		SecurityKey KeyActorFrom;
+		SecurityKey KeyActorTo;		
+		switch (actorFrom) {
+		case "Alice":
+			KeyActorFrom = alice;
+			break;
+		case "Bob":
+			KeyActorFrom = bob;
+			break;
+		case "Eve":
+			KeyActorFrom = eve;
+			break;
+		case "Server":
+			KeyActorFrom = server;
+			break;
+		default:
+			KeyActorFrom = null;
+		}
+		
+		switch (actorTo) {
+		case "Alice":
+			KeyActorTo = alice;
+			break;
+		case "Bob":
+			KeyActorTo = bob;
+			break;
+		case "Eve":
+			KeyActorTo = eve;
+			break;
+		case "Server":
+			KeyActorTo = server;
+			break;
+		default:
+			KeyActorTo = null;
+		}
+		if (KeyActorFrom !=null) {
+			operation= KeyActorFrom.searchEle(keyUsed);
+			System.out.println("operation " + operation);
+			if (operation == null) {
+				if (KeyActorTo !=null) {
+					operation= KeyActorTo.searchEle(keyUsed);
+					System.out.println("operation to " + operation);
+				}
+			}
+		}
+
+		
+		
+		if (operation != null) {
+			switch (operation) {
+			case "Asymmetric Public Key":
+				return "asymDec";
+			case "Asymmetric Private Key":
+				return "asymEnc";
+			case "Symmetric Key":
+				return "symDec";	
+			case "Signature Pub Key":
+				return "VerifySign";	
+			case "Signature Priv Key":
+				return "Sig";	
+			case "Hash":
+				return "hash";	
+			default:
+				return  null;
+			}
+		}
+		return null;
+	}
+	private String calcLevelEncField1EncField2(Message message, String[] msgEncField1EncField2) {
+		int encField1, encField2, level;
+		encField1=0;
+		encField2=0;
+		level=1;
+		String calcLevelEncField1EncField2 = null;
+		for (int numMsg = 0; numMsg < 15; numMsg++) {
+			msgEncField1EncField2[numMsg] = "";
+			if (message.getSecurityFunctionsPartMessage(numMsg) != null
+					&& !message.getSecurityFunctionsPartMessage(numMsg).isEmpty()) {
+				for (int j = 0; j < 15; j++) {
+					System.out.println(" messaggio " + message.getListPartMessage(numMsg, j));
+					if (message.getListPartMessage(numMsg, j) != null
+							&& !message.getListPartMessage(numMsg, j).isEmpty()) {
+						System.out.println("1");
+						if (message.getListPartMessage(numMsg, j).length() > 3  && message.getListPartMessage(numMsg, j).substring(message.getListPartMessage(numMsg, j).length()-3).equals(" - ")
+			 					&& message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOADFIELD")) 
+							{ 
+								System.out.println("Aumento livello ");
+							   level++;
+							}
+						System.out.println("2");
+						if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD2)")) {	
+							System.out.println("ho trovato payload 2 ed imposto ad 1 encField1 ");
+							encField1 = 1;
+						} else {
+							System.out.println("3");
+							if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD)")) {
+								System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
+								encField2 = encField1;
+							} else {
+								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
+								if (encField1 == 0) {
+									encField1 = encField2 + 1;
+									encField2 = encField1;
+								} else {
+									encField2++;
+									if (j == 0) {
+										encField1 = encField2;
+									}
+								}
+							}
+						}
+					}
+				}
+				if (encField2==0) {
+					encField2=encField1;
+				}
+				msgEncField1EncField2[numMsg] = level+","+encField1+","+encField2;
+				System.out.println(" risultato " +numMsg + " " + msgEncField1EncField2[numMsg]);
+			}
+		}
+
+		return level+","+encField1+","+encField2;
+	}
+
 }

@@ -1,5 +1,6 @@
 package org.unimi.model;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -8,13 +9,18 @@ public class WriteCryptoLibrary {
 	private SecurityKey securityKey;
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
-	private int indSignature;
-	Messages messages;
-	SecurityKey alice;
-	SecurityKey bob;
-	SecurityKey eve;
-	SecurityKey server;
-	Map<String, String> map = new TreeMap<String, String>();
+	private int indSignature,levelMsg,levelTot;
+	private Messages messages;
+	private SecurityKey alice;
+	private SecurityKey bob;
+	private SecurityKey eve;
+	private SecurityKey server;
+	private Map<String, String> map = new TreeMap<String, String>();
+	private Map<String, String> mapMsg = new TreeMap<String, String>();
+	private int numMap = 0;
+	
+	ArrayList eleMsg = new ArrayList();
+
 	private String toolEve;
 	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve) 
 			  throws IOException {
@@ -27,17 +33,19 @@ public class WriteCryptoLibrary {
 				this.toolEve = toolEve;
 				indSignature=0;
 			    FileWriter w;
-			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibrary.asm");
+			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibraryXXX.asm");
 
 			    BufferedWriter b;
 			    b=new BufferedWriter (w);
 			    // scrittura info iniziali del file asm
-			    System.out.println("writeOpen");
+		//	    System.out.println("writeOpen");
 			    writeOpen(b);
 			    
 			    // scrittura info domain Agent_x
-			    System.out.println("writeAgent");
+		//	    System.out.println("writeAgent");
 			    writeAgent(actorServer, b);
+			    
+			    
 			    
 			    //vengono memorizzate in una tabella l'elenco knows sia dalle SecurityKey che dai messaggi per ogni singolo attore
 			    storeKnows(alice);
@@ -48,20 +56,31 @@ public class WriteCryptoLibrary {
 			    }
 		    
 			    
-			    System.out.println("writeMessaget");
+		//	    System.out.println("writeMessaget");
 			    writeMessage(b);
  		    
 			    String payloadXXX = "";
 			    
-			    int numeMap = 0;
-
-			    for(String s : map.keySet()) {
-			    	if (numeMap ==0 ) {
+			    numMap = 0;
+			    
+			    for(String s : mapMsg.keySet()) {
+			    	if (numMap ==0 ) {
 			    		payloadXXX = "	enum domain Knowledge ={" + s;
-			    		numeMap++;
+			    		numMap++;
+			    		eleMsg.add(s);
 			    	}else {
 			    		payloadXXX = payloadXXX + "|" + s;
-			    		numeMap++;
+			    		numMap++;
+			    		eleMsg.add(s);
+			    	}
+			    }
+			    for(String s : map.keySet()) {
+			    	if (numMap ==0 ) {
+			    		payloadXXX = "	enum domain Knowledge ={" + s;
+			    		numMap++;
+			    	}else {
+			    		payloadXXX = payloadXXX + "|" + s;
+			    		numMap++;
 			    	}
 			    }
 			    if (!payloadXXX.isEmpty()) {
@@ -118,23 +137,24 @@ public class WriteCryptoLibrary {
 		    indSignature++;
 	    }
 	}
+
 	//memorizza elenco knows sia dalle SecurityKey che dai messaggi 
 		private void storeKnows(SecurityKey actor){
-			for(int i = 0; i <actor.getNonce().size(); i++) {
-				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
-		       }
+//			for(int i = 0; i <actor.getNonce().size(); i++) {
+//				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
+//		       }
 			for(int i = 0; i <actor.getBitstring().size(); i++) {
 				map.put(actor.getBitstring().get(i).toUpperCase(), actor.getBitstring().get(i));
 		       }
 			for(int i = 0; i <actor.getHashKey().size(); i++) {
 				map.put(actor.getHashKey().get(i).toUpperCase(), actor.getHashKey().get(i));
 		       }
-			for(int i = 0; i <actor.getHashKey().size(); i++) {
-				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
-		       }
-			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
-				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
-		       }
+//			for(int i = 0; i <actor.getHashKey().size(); i++) {
+//				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
+//		       }
+//			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
+//				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
+//		       }
 			for(int i = 0; i <actor.getAsymmetricPrivateKey().size(); i++) {
 				map.put(actor.getAsymmetricPrivateKey().get(i).toUpperCase(), actor.getAsymmetricPrivateKey().get(i));
 		       }
@@ -150,18 +170,19 @@ public class WriteCryptoLibrary {
 			for(int i = 0; i <actor.getSignaturePrivKey().size(); i++) {
 				map.put(actor.getSignaturePrivKey().get(i).toUpperCase(), actor.getSignaturePrivKey().get(i));
 		       }
-			for(int i = 0; i <actor.getTag().size(); i++) {
-				map.put(actor.getTag().get(i).toUpperCase(), actor.getTag().get(i));
-		       }
-			for(int i = 0; i <actor.getTimestamp().size(); i++) {
-				map.put(actor.getTimestamp().get(i).toUpperCase(), actor.getTimestamp().get(i));
-		       }
+//			for(int i = 0; i <actor.getTag().size(); i++) {
+//				map.put(actor.getTag().get(i).toUpperCase(), actor.getTag().get(i));
+//		       }
+//			for(int i = 0; i <actor.getTimestamp().size(); i++) {
+//				map.put(actor.getTimestamp().get(i).toUpperCase(), actor.getTimestamp().get(i));
+//		       }
 		}
 		//Scrittura Signature Domini and state Agent 
 		private void writeMessage(BufferedWriter b) throws IOException {
 			b.write("\n");
 			String messageXXX = "";		
 			int numPayloadSection = 0;
+			levelTot=0;
 			for (int i = 0; i < 15; i++) {
 				Message message = messages.getMessage(i);
 				if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
@@ -170,10 +191,18 @@ public class WriteCryptoLibrary {
 						break;
 					}
 				}
+				levelMsg=0;
+				for (int numMsg = 0; numMsg < 15; numMsg++) {
+					if (message.getSecurityFunctionsPartMessage(numMsg) != null
+							&& !message.getSecurityFunctionsPartMessage(numMsg).isEmpty()) {
+						storeMessage(message, numMsg);
+					}
+				}
+				if (levelMsg > levelTot) {
+					levelTot=levelMsg;
+				}
 				// si inseriscono nella tabella di appoggio le informazioni sugli stati degli attori
-				System.out.println("loadStateActor");
 				loadStateActor(i,message.getActorfrom(),message.getActorTo());
-				System.out.println("loadStateActor end");
 				// signature[indSignature]="	protocolMessage(" + defAgent(message.getActorfrom()) + ","+ defAgent (message.getActorTo())  + "):=M"+ i+"\n";
 			   // indSignature++;
 				if (i==0) {
@@ -186,19 +215,19 @@ public class WriteCryptoLibrary {
 			if (messageXXX.isEmpty()) {
 		    	return;}
 			b.write("\n");
-			System.out.println("loadStateActor -0- " + stateActor[0] );
+	//		System.out.println("loadStateActor -0- " + stateActor[0] );
 			if (stateActor[0] !=null) {
 				b.write("	enum domain StateAlice = {"+stateActor[0]+" | END_A}\n");
 			}
-			System.out.println("loadStateActor -1- " + stateActor[0] );
+	//		System.out.println("loadStateActor -1- " + stateActor[0] );
 			if (stateActor[1] !=null) {
 				b.write("	enum domain StateBob = {"+stateActor[1]+" | END_B}\n");
 			}
-			System.out.println("loadStateActor -2- " + stateActor[2] );
+	//		System.out.println("loadStateActor -2- " + stateActor[2] );
 			if (stateActor[2] !=null) {
 				b.write("	enum domain StateEve = {"+stateActor[2]+" | END_E}\n");
 			}
-			System.out.println("loadStateActor -3- " + stateActor[3] );
+	//		System.out.println("loadStateActor -3- " + stateActor[3] );
 			if (stateActor[3] !=null) {
 				b.write("	enum domain StateServer = {"+stateActor[3]+" | END_S}\n");
 			}
@@ -400,7 +429,7 @@ public class WriteCryptoLibrary {
 		int indActorFrom, indActorTo;
 		indActorFrom=0;
 		indActorTo=0;
-		System.out.println(actorFrom + " - " + actorTo);
+	//	System.out.println(actorFrom + " - " + actorTo);
 		switch(actorFrom) {
 		  case "Alice":
 			  indActorFrom=0;
@@ -431,7 +460,7 @@ public class WriteCryptoLibrary {
 			  break;
 		}
 		
-		System.out.println(indActorFrom + " - " + indActorTo);
+	//	System.out.println(indActorFrom + " - " + indActorTo);
 		if (i==0) {
 			stateActor[indActorFrom]="IDLE_M"+i;
 		} else {
@@ -453,8 +482,11 @@ public class WriteCryptoLibrary {
 		for (int j = 0; j < 15; j++) {
 			if (message.getListPartMessage(numMsg, j) != null && !message.getListPartMessage(numMsg, j).isEmpty()) {
 				if (!message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOAD")) {
-//							System.out.println(" <---- PArte del Messaggio numero " + j + " -------->"+message.getListPartMessage(i, j));
-					map.put(message.getListPartMessage(numMsg, j).toUpperCase(), message.getListPartMessage(numMsg, j));
+					if (!map.containsKey(message.getListPartMessage(numMsg, j).toUpperCase())) {
+						mapMsg.put(message.getListPartMessage(numMsg, j).toUpperCase(), message.getListPartMessage(numMsg, j));
+					}
+				} else {
+					levelMsg++;
 				}
 			}
 		}
@@ -472,5 +504,10 @@ public class WriteCryptoLibrary {
 		}
 		return "Errore";
 	}
-
+	public ArrayList getNumEleMsg () {
+		return eleMsg;
+	}
+	public int getLevelTot () {
+		return levelTot;
+	}
 }

@@ -16,7 +16,7 @@ signature:
 
 	enum domain Message = {M0} 
 
-	enum domain Knowledge ={A|A1|A2|A3|B|B1|B2|B3|C|C1|C2|C3|D|D1|D2|D3|E|E1|E2|E3|F|F1|F2|F3|G|G1|G2|H|H1|H11|H2|H21|H3|I|I1|I2|I3|I31|L|L1|L2|L3|M|M1|M2|M3|N3}
+	enum domain Knowledge ={NA|XXXXXX|A|A1|A2|A3|B|B1|B2|B3|C|C1|C2|C3|D|D1|D2|D3|E|E1|E2|E3|H|H1|H11|H2|H21|I3|I31}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_B|AG_E|AG_S}

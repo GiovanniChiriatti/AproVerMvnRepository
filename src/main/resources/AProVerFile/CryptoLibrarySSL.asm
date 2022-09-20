@@ -3,6 +3,9 @@ module CryptoLibrarySSL
 import ../StandardLibrary 
 export *
 
+// A->B:{SKAB}PUBKB
+// B->A:{NB}SKAB
+// A->B:{CA,{NB}SIGNPRIVKA}SKAB
 signature:
 
 	domain Alice subsetof Agent

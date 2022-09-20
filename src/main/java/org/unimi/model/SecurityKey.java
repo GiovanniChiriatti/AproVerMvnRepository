@@ -528,7 +528,7 @@ public class SecurityKey {
 		if (!tipo.equals("10")) {
 			for (int i = 0; i < digest.size(); i++) {
 				if (digest.get(i).equals(nuovoValore)) {
-					System.out.println("trovato in 11 " + digest.get(i));					
+		//			System.out.println("trovato in 11 " + digest.get(i));					
 
 					return true;
 				}
@@ -558,12 +558,35 @@ public class SecurityKey {
 				return "Symmetric Key";
 			}
 		}
+		for (int i = 0; i < signaturePubKey.size(); i++) {
+			if (signaturePubKey.get(i).equals(Valore)) {
+				return "Signature Pub Key";
+			}
+		}
+		
+		for (int i = 0; i < signaturePrivKey.size(); i++) {
+			if (signaturePrivKey.get(i).equals(Valore)) {
+				return "Signature Priv Key";
+			}
+		}		
 
 		for (int i = 0; i < hashKey.size(); i++) {
 			if (hashKey.get(i).equals(Valore)) {
 				return "Hash";
 			}
 
+		}
+		for (int i = 0; i < idCertificate.size(); i++) {
+			if (idCertificate.get(i).equals(Valore)) {
+				return "Identity Certificate";
+			}
+		}
+
+
+		for (int i = 0; i < nonce.size(); i++) {
+			if (nonce.get(i).equals(Valore)) {
+				return "Nonce";
+			}
 		}
 		
 		for (int i = 0; i < bitstring.size(); i++) {
@@ -572,32 +595,7 @@ public class SecurityKey {
 			}
 		}
 
-			for (int i = 0; i < idCertificate.size(); i++) {
-				if (idCertificate.get(i).equals(Valore)) {
-					return "Identity Certificate";
-				}
-			}
-
-
-			for (int i = 0; i < nonce.size(); i++) {
-				if (nonce.get(i).equals(Valore)) {
-					return "Nonce";
-				}
-			}
-
-
-			for (int i = 0; i < signaturePubKey.size(); i++) {
-				if (signaturePubKey.get(i).equals(Valore)) {
-					return "Signature Pub Key";
-				}
-			}
-			
-			for (int i = 0; i < signaturePrivKey.size(); i++) {
-				if (signaturePrivKey.get(i).equals(Valore)) {
-					return "Signature Priv Key";
-				}
-			}		
-			for (int i = 0; i < tag.size(); i++) {
+		for (int i = 0; i < tag.size(); i++) {
 				if (tag.get(i).equals(Valore)) {
 					return "Tag";
 				}

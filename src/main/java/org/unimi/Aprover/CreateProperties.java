@@ -129,7 +129,7 @@ public class CreateProperties {
     
 	@FXML
 	public void initialize() {
-		System.out.println("entro");
+	//	System.out.println("entro");
 		exclamationPoint.setVisible(false);
 		xPoint.setVisible(false);
 		okPoint.setVisible(false);
@@ -231,7 +231,7 @@ public class CreateProperties {
 		}
 		@FXML
 		public void typeKnowledgeSelected() {
-			System.out.println("typeKnowledgeSelected " + typeKnowledge.getValue());
+		//	System.out.println("typeKnowledgeSelected " + typeKnowledge.getValue());
 			defaultSelRadioButton = 99;
 			if (group.getSelectedToggle() != null) {
 				group.getSelectedToggle().setSelected(false);
@@ -245,7 +245,7 @@ public class CreateProperties {
 			listview.getItems().removeAll(names);
 			names.clear();
 			if (listSel.toString().equals(" ")|| listSel.toString().isEmpty()) {
-				System.out.println("cancellooo " + listSel);
+		//		System.out.println("cancellooo " + listSel);
 				return;
 			}
 			
@@ -492,25 +492,25 @@ public class CreateProperties {
 			int numSelect = 0;
 			if (ctlSel.getValue() != null && !ctlSel.getValue().isEmpty() && !ctlSel.getValue().equals(" ")) {
 				numSelect++;
-				System.out.println("ctlSel.getValue() "+ ctlSel.getValue());
+		//		System.out.println("ctlSel.getValue() "+ ctlSel.getValue());
 				expression=ctlSel.getValue().substring(0,ctlSel.getValue().indexOf(" "))+"(";
 			}
 			if (actorKnow.getValue() != null && !actorKnow.getValue().isEmpty() && !actorKnow.getValue().equals(" ")) {
 				numSelect++;
-				System.out.println("actorKnow.getValue() "+ actorKnow.getValue());
+		//		System.out.println("actorKnow.getValue() "+ actorKnow.getValue());
 				expression=actorKnow.getValue();
 			}
 			if (otherComboBox.getValue() != null && !otherComboBox.getValue().isEmpty()
 					&& !otherComboBox.getValue().equals(" ")) {
 				numSelect++;
-				System.out.println("otherComboBox.getValue() "+ otherComboBox.getValue());
+		//		System.out.println("otherComboBox.getValue() "+ otherComboBox.getValue());
 
 				expression=otherComboBox.getValue();
 			}
 			
 			if(listview.getSelectionModel().getSelectedItem() !=null) {
 				numSelect++;
-				System.out.println("listview.getSelectionModel().getSelectedItem() "+ listview.getSelectionModel().getSelectedItem());
+		//		System.out.println("listview.getSelectionModel().getSelectedItem() "+ listview.getSelectionModel().getSelectedItem());
 
 				expression=listview.getSelectionModel().getSelectedItem().toString();					
 			}
@@ -554,10 +554,10 @@ public class CreateProperties {
 					numOpen++;
 					xPoint.setVisible(true);
 					okPoint.setVisible(false);
-					System.out.println("2 trovo parentesi aperta " + numOpen);					
+		//			System.out.println("2 trovo parentesi aperta " + numOpen);					
 				}
 				if (expressionValue.getText().charAt(word) == ')' && numOpen==0) {
-					System.out.println("3 trovo parentesi chiusa ma non aperta " + numOpen);
+		//			System.out.println("3 trovo parentesi chiusa ma non aperta " + numOpen);
 					xPoint.setVisible(true);
 					okPoint.setVisible(false);
 					return false;
@@ -565,7 +565,7 @@ public class CreateProperties {
 
 				if (expressionValue.getText().charAt(word) == ')' && numOpen>0) {
 					numOpen--;
-					System.out.println("6 trovo parentesi chiusa " + numOpen);
+		//			System.out.println("6 trovo parentesi chiusa " + numOpen);
 				}
 			word++;
 		}
@@ -589,14 +589,14 @@ public class CreateProperties {
 	}
 	
 	public boolean checkCombinationWord(String expression) {
-		System.out.println("Entro in  checkCombinationWord" + expression);					
+	//	System.out.println("Entro in  checkCombinationWord" + expression);					
 
 		expression = expressionValue.getText()+ expression;
-		System.out.println("espressione " + expression + " " +wordsNotAllowed.size());					
+	//	System.out.println("espressione " + expression + " " +wordsNotAllowed.size());					
 		
 		for (int i=0; i < wordsNotAllowed.size(); i++ ) {
 			if (expression.contains(wordsNotAllowed.get(i))) {
-				System.out.println("5 trovo combinazione non valida " + wordsNotAllowed.get(i));					
+	//			System.out.println("5 trovo combinazione non valida " + wordsNotAllowed.get(i));					
 				return false;
 			}
 		}

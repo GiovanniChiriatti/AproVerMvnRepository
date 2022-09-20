@@ -4196,10 +4196,10 @@ public class SelectAProVerController {
 	private void writeFileAsm() throws IOException {
 		if (tool.getText().contains("Enable")) {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(false,messages,alice,bob,eve,null,toolEve.getText());
-			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText());
+			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText(),writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot());
 		} else {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(true,messages,alice,bob,eve,server,toolEve.getText());
-			WriteASM writeASM = new WriteASM(true,messages,alice,bob,eve,server,toolEve.getText());
+			WriteASM writeASM = new WriteASM(true,messages,alice,bob,eve,server,toolEve.getText(),writeCrypto.getNumEleMsg(),writeCrypto.getLevelTot());
 
 		}
 

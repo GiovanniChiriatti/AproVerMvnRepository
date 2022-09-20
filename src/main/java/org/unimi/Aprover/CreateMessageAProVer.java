@@ -60,6 +60,7 @@ public class CreateMessageAProVer {
 	private Stage dialogStage;
 	private String[][] oldMessagePayloadField = new String[16][16];
 	private String[] oldSecurityFunction = new String[16];
+	boolean selectfield2;
 	
 	SecurityKey securityKey;
 	SecurityKey alice;
@@ -156,6 +157,7 @@ public class CreateMessageAProVer {
         actorTo.getSelectionModel().selectFirst();
         evesIntercept.setDisable(true);
 
+        
 		for (int j = 0; j < 16; j++) {
 			oldSecurityFunction[j] = "";
 			if (message.getSecurityFunctionsPartMessage(j) != null
@@ -195,11 +197,16 @@ public class CreateMessageAProVer {
 				payloadField.setVisible(true);
 				payloadField2.setVisible(true);
 			}
-
+			selectfield2= false;
+			if (!oldSecurityFunction[0].isEmpty()) {
+				if (oldMessagePayloadField[NumNodiSecurityFunctions][0].contains("(payloadField2)")) {
+					selectfield2 = true;
+				}
+			}
 			writeTxtPreview(createPreviewField());
 			Node nodeLastSecurytyFunction = searchLastSecurityFuncion(NumNodiSecurityFunctions);
  			writeTextField(nodeLastSecurytyFunction);
- 			
+ 			selectfield2= false; 
 		}
  
     }
@@ -496,7 +503,7 @@ public class CreateMessageAProVer {
             numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	System.out.println(" numEleMenuButton xx " +numEleMenuButton);
+       //	System.out.println(" numEleMenuButton xx " +numEleMenuButton);
     }
 	private void AddPartSecurityMessage(String messaggioSecurity) {
 		
@@ -575,7 +582,7 @@ public class CreateMessageAProVer {
         	appoFrom=server;
         }
         
-        System.out.println("numero elementi " + numEleMenuButton + " ActorTo" + actorTo.getValue().toString() + " appoFrom " + appoFrom  );
+     //   System.out.println("numero elementi " + numEleMenuButton + " ActorTo" + actorTo.getValue().toString() + " appoFrom " + appoFrom  );
         if (numEleMenuButton>0) {
         	menuSecurityFunction.getItems().remove(0,numEleMenuButton);
         }
@@ -590,6 +597,7 @@ public class CreateMessageAProVer {
     	Node nodeVuotoSecurityFuncion = cercaNodoVuotoSecurityFuncion();
     	boolean primoTesto= true;
     	String appMessage ="";
+    	selectfield2=false;
 
 //  
     	NumNodiSecurityFunctions++;
@@ -601,6 +609,7 @@ public class CreateMessageAProVer {
 			numNodiMessagePayloadField ++;
 		}
 		if (ceckPayloadField2.isSelected()) {
+			selectfield2= true;
 			oldMessagePayloadField[NumNodiSecurityFunctions][numNodiMessagePayloadField]= ("(payloadField2)");
 			primoTesto = false;
 			inserisciOldMesage(nodeVuotoSecurityFuncion,payloadField2,numNodiMessagePayloadField);
@@ -756,6 +765,7 @@ public class CreateMessageAProVer {
 			}
 			if (oldMessagePayloadField[NumNodiSecurityFunctions][i] != null && oldMessagePayloadField[NumNodiSecurityFunctions][i].contains("(payloadField2)")) {
 				Text str = new Text(oldMessagePayloadField[NumNodiSecurityFunctions][i].replaceAll("(payloadField2)", ""));
+				payloadField2.getChildren().clear();
 				payloadField2.getChildren().add(str);
 				ceckPayloadField.setSelected(false);
 				ceckPayloadField.setVisible(true);
@@ -905,7 +915,7 @@ public class CreateMessageAProVer {
     	piuTabeMessage.setVisible(true);
     	textSecurityFunction.setText("");
     	menuSecurityFunction.setVisible(false);
-    	
+    	 
 		Node nodeLastSecurytyFunction = searchLastSecurityFuncion(NumNodiSecurityFunctions);
 		String compactMessage="";
 		if (nodeLastSecurytyFunction != null) {
@@ -926,9 +936,15 @@ public class CreateMessageAProVer {
 		if (NumNodiSecurityFunctions>=0) {
 			
 			message.setPayload(createPreviewField());
+		//	System.out.println("set Payload  --->"+ createPreviewField());
 			writeTxtPreview(createPreviewField());
 			nodeLastSecurytyFunction = searchLastSecurityFuncion(NumNodiSecurityFunctions);
  			writeTextField(nodeLastSecurytyFunction);
+ 			if (selectfield2) {
+ 				txtPreview.getChildren().clear();
+ 				payloadField2.getChildren().clear();
+ 				copyField1(payloadField);
+ 			}
 		}else {
 			
 			txtPreview.getChildren().clear();
@@ -954,9 +970,12 @@ public class CreateMessageAProVer {
 		String compactMessagePrec = "";
 		String compactMessageFinale = "";
 		Node nodeLastSecurytyFunction;
-		for (int i = 0; i <= NumNodiSecurityFunctions; i++) {
+		int iinit=0;
+		if (selectfield2) { iinit=NumNodiSecurityFunctions;}
+		for (int i = iinit; i <= NumNodiSecurityFunctions; i++) {
 			nodeLastSecurytyFunction = searchLastSecurityFuncion(i);
 			compactMessageSuc = setComboBoxpayloadFieldList(nodeLastSecurytyFunction).replaceAll(" ", "");
+		//	System.out.println("last security function --->"+ compactMessageSuc);
 			compactMessageFinale = confrontaPreviewField(compactMessageFinale, compactMessageSuc, compactMessagePrec).replaceAll(" ", "");
 			compactMessagePrec = compactMessageSuc;
 		}
@@ -979,6 +998,7 @@ public class CreateMessageAProVer {
     	return compactMessageFinale;
     }
     private void writeTxtPreview(String compactMessageFinale) {
+    //	System.out.println("MESSAGGIO che viene composto --->"+ compactMessageFinale);
     	txtPreview.getChildren().clear();
     	payloadField2.getChildren().clear();
     	int endDash = compactMessageFinale.indexOf("-");
@@ -1041,6 +1061,43 @@ public class CreateMessageAProVer {
     			}
     		}
     	}
+    }
+    @FXML
+    private void copyField1(TextFlow payloadField) {
+    	
+    	for (Node node : payloadField.getChildren()) {
+			if (node !=null && node instanceof Text && !((Text) node).getText().isEmpty()) {
+				if (((Text)node).getTranslateY() > 0){
+					Text normal = new Text("normal");
+					Text sub = new Text (((Text) node).getText().toString());
+					Text sub2 = new Text (((Text) node).getText().toString());
+					sub.setTranslateY(normal.getFont().getSize() * 0.3);
+					sub2.setTranslateY(normal.getFont().getSize() * 0.3);
+					payloadField2.getChildren().add(sub2);
+	    		} else {
+	    			Text sub = new Text (((Text) node).getText().toString());
+	    			Text sub2 = new Text (((Text) node).getText().toString());
+	    			payloadField2.getChildren().add(sub2);
+	    		}
+			}
+		}
+    	for (Node node : payloadField.getChildren()) {
+			if (node !=null && node instanceof Text && !((Text) node).getText().isEmpty()) {
+				if (((Text)node).getTranslateY() > 0){
+					Text normal = new Text("normal");
+					Text sub = new Text (((Text) node).getText().toString());
+					Text sub2 = new Text (((Text) node).getText().toString());
+					sub.setTranslateY(normal.getFont().getSize() * 0.3);
+					sub2.setTranslateY(normal.getFont().getSize() * 0.3);
+					txtPreview.getChildren().add(sub2);
+	    		} else {
+	    			Text sub = new Text (((Text) node).getText().toString());
+	    			Text sub2 = new Text (((Text) node).getText().toString());
+	    			txtPreview.getChildren().add(sub2);
+	    		}
+			}
+		}
+    	
     }
     @FXML
     public void menuSecurityFunction(MouseEvent event) {

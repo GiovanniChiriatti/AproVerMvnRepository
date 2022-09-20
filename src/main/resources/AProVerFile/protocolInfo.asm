@@ -6,7 +6,7 @@ import CryptoLibraryXXX
 signature:
 
 definitions:
-	domain Level = {1}
+	domain Level = {1:2}
 	domain FieldPosition = {1:2}
 	domain EncField1={1}
 	domain EncField2={2}
@@ -38,3 +38,12 @@ definitions:
 	              case H21: H2
 	              case I31: I3
 	       endswitch
+
+	/*ATTACKER RULES*/
+	rule r_message_replay_M0 =
+		//choose what agets are interested by the message
+		let ($b=agentB,$a=agentA) in
+			//check the reception of the message and the modality of the attack
+			if(protocolMessage($a ,self)=M0 and protocolMessage(self,$b )!=M0 and mode=PASSIVE)then
+			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
+			        // the message must be sent unaltered

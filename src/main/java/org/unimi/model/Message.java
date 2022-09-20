@@ -69,6 +69,8 @@ public class Message {
 
 	public void  addListPartMessage(String listPartMessage, int riga) {
 		if (numRow1 < 16) {
+	//		System.out.println("listPartMessage " + numRow1 + " - "+ riga + " Valore " + listPartMessage);
+
 			this.listPartMessage[numRow1][riga] = listPartMessage;
 		}
 	}
@@ -96,6 +98,7 @@ public class Message {
 		
 		if (numRow1 < 16) {
 			numRow1++;
+	//		System.out.println("addSecurityFunctionsPartMessage " + numRow1 + " Valore " + securityFunctionsPartMessage);
 			this.securityFunctionsPartMessage[numRow1]= securityFunctionsPartMessage;
 		}
 	}

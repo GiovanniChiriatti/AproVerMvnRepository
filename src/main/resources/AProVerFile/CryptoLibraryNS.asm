@@ -2,6 +2,9 @@ module CryptoLibraryNS
  
 import ../StandardLibrary 
 export *
+// A->B:{NA,A}PUBKB
+// B->A:{NA,NB}PUBKA
+// A->B:{NB}PKB
 
 signature:
 
