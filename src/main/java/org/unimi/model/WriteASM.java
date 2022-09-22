@@ -14,8 +14,9 @@ public class WriteASM {
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
 	private int indSignature, levelTot;
-	ArrayList numEleMsg;
-
+	private ArrayList numEleMsg;
+	private SecurityKey KeyActorFrom;
+	private SecurityKey KeyActorTo;	
 	private Messages messages;
 	private SecurityKey alice;
 	private SecurityKey bob;
@@ -611,17 +612,58 @@ public class WriteASM {
 			b.write("		//choose what agets are interested by the message\n");
 			b.write("		let ($b=agent" + message.getActorTo().substring(0,1).toUpperCase() + ",$a=agent" + message.getActorfrom().substring(0,1).toUpperCase() + ") in\n");
 			b.write("			//check the reception of the message and the modality of the attack\n");
-			b.write("			if(protocolMessage($a ,self)=M"+ i +" and protocolMessage(self,$b )!=M"+ i + " and mode=PASSIVE)then\n");
+			b.write("			if(protocolMessage($a ,self)=M"+ i +" and protocolMessage(self,$b)!=M"+ i + " and mode=PASSIVE)then\n");
 			b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
 			b.write("			        // the message must be sent unaltered\n");
 			
-			String keyUsed = findKey(message.getSecurityFunctionsPartMessage(i));
+			String keyUsed = findKey(message.getPayload());
+			String operation=null;
 			if (keyUsed != null) {
-				String operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());
-				System.out.println("operation " + operation);
+				operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());
+			} else {
+				b.write("PAYLOAD KEY DECODING ERROR");
+				return;
 			}
 			String[] msgEncField1EncField2 = new String[15];
-			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2);
+			String[] msgField = new String[15];
+			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2, msgField);
+			b.write("			        if("+operation+"(M"+ i+","+ levelEncField1EncField2 +",self)=true)then\n");
+			b.write("			                par\n");
+			String[] linesKnowledge = writeKnowledge(message,i,msgField);
+			String spaces="";
+			printKnowledge(b,"Know",linesKnowledge,spaces);
+			printKnowledge(b,"Prot",linesKnowledge,spaces);
+			printKnowledge(b,"Mess",linesKnowledge,spaces);
+			b.write("			                endpar\n");
+			b.write("			        else\n");
+			b.write("			                par\n");
+			printKnowledge(b,"Prot",linesKnowledge,spaces);
+			printKnowledge(b,"Mess",linesKnowledge,spaces);
+			b.write("			                endpar\n");
+			b.write("			        endif\n");
+			b.write("			else\n");
+			b.write("			        //check the reception of the message and the modality of the attack\n");
+			b.write("			        if(protocolMessage($a ,self)=M"+ i +" and protocolMessage(self,$b)!=M"+ i + " and mode=ACTIVE)then\n");
+			b.write("			                 // in the active mode the attacker can forge the message with all his knowledge\n");
+			b.write("			                 if("+operation+"(M"+ i+","+ levelEncField1EncField2 +",self)=true)then\n");
+			b.write("			                          par\n");
+			spaces="         ";
+			printKnowledge(b,"Know",linesKnowledge,spaces);
+			printKnowledge(b,"Prot",linesKnowledge,spaces);
+			printKnowledge(b,"Mess",linesKnowledge,spaces);			
+			b.write("			                               "+operation+"(M"+ i+","+ levelEncField1EncField2 +"):=" + keyUsed +"\n");
+			b.write("			                          endpar\n");			
+			b.write("			                 else\n");
+			b.write("			                          par\n");			
+			printKnowledge(b,"Prot",linesKnowledge,spaces);
+			printKnowledge(b,"Mess",linesKnowledge,spaces);				
+			b.write("			                          endpar\n");
+			b.write("			                 endif\n");
+			b.write("			        endif\n");
+			b.write("			endif\n");
+			
+			
+			
 			
 		}
 	}
@@ -629,19 +671,17 @@ public class WriteASM {
 	private String findKey(String partMsg) {
 		String keyUsed=null;
 		
-		if (!partMsg.substring(partMsg.length()-3).equals(" - ")) {
+		if (!partMsg.substring(partMsg.length()-1).equals("-")) {
 			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
 			return keyUsed;
 		}
-		keyUsed= partMsg.substring(0,partMsg.length()-3);
-		keyUsed = keyUsed.substring(keyUsed.lastIndexOf(" - ")+3);
+		keyUsed= partMsg.substring(0,partMsg.length()-1);
+		keyUsed = keyUsed.substring(keyUsed.lastIndexOf("-")+1);
 		return keyUsed;
 	}
 	// determina quale algoritmo crittografico è stato usato prima di inviare il messaggio
 	private String findOperation(String keyUsed, String actorFrom,String actorTo ) {
 		String operation = null;
-		SecurityKey KeyActorFrom;
-		SecurityKey KeyActorTo;		
 		switch (actorFrom) {
 		case "Alice":
 			KeyActorFrom = alice;
@@ -708,45 +748,56 @@ public class WriteASM {
 		}
 		return null;
 	}
-	private String calcLevelEncField1EncField2(Message message, String[] msgEncField1EncField2) {
+	// routin che server per determinare di quanti field si compone il messaggio e quanti livelli di cripr/encript ci sono
+	private String calcLevelEncField1EncField2(Message message, String[] msgEncField1EncField2, String[] msgField) {
 		int encField1, encField2, level;
 		encField1=0;
 		encField2=0;
-		level=1;
+		level=0;
 		String calcLevelEncField1EncField2 = null;
+		System.out.println(" messaggio payload " + message.getPayload());
 		for (int numMsg = 0; numMsg < 15; numMsg++) {
 			msgEncField1EncField2[numMsg] = "";
+			System.out.println(" Leggo riga numero : " + numMsg);
+			System.out.println(" messaggio SecurityFunctionsPartMessage" + message.getSecurityFunctionsPartMessage(numMsg));
+			if (message.getSecurityFunctionsPartMessage(numMsg)!= null && message.getSecurityFunctionsPartMessage(numMsg).length() > 3  && message.getSecurityFunctionsPartMessage(numMsg).substring(message.getSecurityFunctionsPartMessage(numMsg).length()-3).equals(" - ")	
+				&&	((message.getListPartMessage(numMsg, 0)!=null && message.getListPartMessage(numMsg, 0).toUpperCase().contains("PAYLOADFIELD"))|| numMsg==0||level==0))
+			{ 
+			   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
+			   level++;
+			}
 			if (message.getSecurityFunctionsPartMessage(numMsg) != null
 					&& !message.getSecurityFunctionsPartMessage(numMsg).isEmpty()) {
 				for (int j = 0; j < 15; j++) {
-					System.out.println(" messaggio " + message.getListPartMessage(numMsg, j));
 					if (message.getListPartMessage(numMsg, j) != null
 							&& !message.getListPartMessage(numMsg, j).isEmpty()) {
-						System.out.println("1");
-						if (message.getListPartMessage(numMsg, j).length() > 3  && message.getListPartMessage(numMsg, j).substring(message.getListPartMessage(numMsg, j).length()-3).equals(" - ")
-			 					&& message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOADFIELD")) 
-							{ 
-								System.out.println("Aumento livello ");
-							   level++;
-							}
-						System.out.println("2");
+						System.out.println("          Leggo colonna numero : " + j);
+						System.out.println("          messaggio " + message.getListPartMessage(numMsg, j));
+			//			if (message.getListPartMessage(numMsg, j).length() > 3  && message.getListPartMessage(numMsg, j).substring(message.getListPartMessage(numMsg, j).length()-3).equals(" - ")
+			// 					&& message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOADFIELD")) 
+			//			if (message.getSecurityFunctionsPartMessage(numMsg).length() > 3  && message.getSecurityFunctionsPartMessage(numMsg).substring(message.getSecurityFunctionsPartMessage(numMsg).length()-3).equals(" - "))	
+			//				{ 
+			//				   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
+			//				   level++;
+			//				}
 						if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD2)")) {	
-							System.out.println("ho trovato payload 2 ed imposto ad 1 encField1 ");
+			//				System.out.println("ho trovato payload 2 ed imposto ad 1 encField1 ");
 							encField1 = 1;
 						} else {
-							System.out.println("3");
 							if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD)")) {
-								System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
+			//					System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
 								encField2 = encField1;
 							} else {
 								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
 								if (encField1 == 0) {
 									encField1 = encField2 + 1;
 									encField2 = encField1;
+									msgField[encField2]  = message.getListPartMessage(numMsg, j).toUpperCase();
 								} else {
 									encField2++;
+									msgField[encField2]  = message.getListPartMessage(numMsg, j).toUpperCase();
 									if (j == 0) {
-										encField1 = encField2;
+										encField1 = encField2;		
 									}
 								}
 							}
@@ -757,11 +808,85 @@ public class WriteASM {
 					encField2=encField1;
 				}
 				msgEncField1EncField2[numMsg] = level+","+encField1+","+encField2;
+				
+				//
 				System.out.println(" risultato " +numMsg + " " + msgEncField1EncField2[numMsg]);
+				for(int i=0; i<15; i++) {
+					if (msgField[i] != null) {
+						System.out.println(" Campo " + i + " Valore: " + msgField[i]);
+					}
+				}
+				
+				//
 			}
 		}
 
 		return level+","+encField1+","+encField2;
 	}
-
+	// routin che server per determinare di quanti field si compone il messaggio e quanti livelli di cripr/encript ci sono
+	private String[] writeKnowledge(Message message,int numMessage, String[] msgField) throws IOException {
+		String[] linesKnowledge = new String[50];
+		linesKnowledge[0]="Prot                                              protocolMessage(self,$b):= M"+numMessage+"\n";
+		int numRighe = 1;
+		for(int i=0; i<15; i++) {
+			if (msgField[i] != null) {
+				String typeFieldActorFrom = KeyActorFrom.searchEle(msgField[i]);
+				System.out.println(" Campo "+ msgField[i] + " Tipo Campo " + typeFieldActorFrom);
+				if (typeFieldActorFrom != null) {
+						switch (typeFieldActorFrom) {
+						case "Asymmetric Public Key":
+							typeFieldActorFrom =  "knowsAsymPubKey";
+							break;
+						case "Asymmetric Private Key":
+							typeFieldActorFrom =  "knowsAsymPrivKey";
+							break;
+						case "Symmetric Key":
+							typeFieldActorFrom = "knowsSymKey";	
+							break;
+						case "Signature Pub Key":
+							typeFieldActorFrom =  "knowsSignPubKey";
+							break;
+						case "Signature Priv Key":
+							typeFieldActorFrom =  "knowsSignPrivKey";	
+							break;
+						case "Hash":
+							typeFieldActorFrom =  "knowsHash";	
+							break;
+						case "Nonce":
+							typeFieldActorFrom= "knowsNonce";
+							break;
+						case "Identity Certificate":
+							typeFieldActorFrom = "knowsIdentityCertificate";
+							break;
+						case "Bitstring":
+							typeFieldActorFrom =  "knowsBitString";
+							break;
+						case "Tag":
+							typeFieldActorFrom =  "knowsTag";
+							break;
+						case "Timestamp":
+							typeFieldActorFrom = "knowsTimestamp";
+							break;
+						case "Digest":
+							typeFieldActorFrom =  "knowsDigest";
+							break;
+						default:
+							typeFieldActorFrom = null;
+						}
+						linesKnowledge[numRighe]= "Know                                              " + typeFieldActorFrom + "(self,messageField($a,self,"+ i +",M"+ numMessage + ")):=true\n";
+						numRighe++;
+				}
+				linesKnowledge[numRighe]="Mess                                              messageField(self,$b,"+i+",M"+ numMessage +"):=messageField($a,self,"+i+",M"+ numMessage +")\n"; 
+				numRighe++;
+			}
+		}
+		return linesKnowledge;
+	}
+	private void printKnowledge(BufferedWriter b, String type,String[]linesKnowledge,String spaces ) throws IOException {
+		for (int i=0; i<50;i++) {
+			if (linesKnowledge[i] != null && linesKnowledge[i].startsWith(type)) {
+				b.write(spaces+linesKnowledge[i].substring(4));
+			}
+		}
+	}
 }

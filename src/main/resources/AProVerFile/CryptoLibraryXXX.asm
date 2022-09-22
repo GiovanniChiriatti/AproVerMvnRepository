@@ -8,18 +8,17 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
-	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_M0 | END_A}
-	enum domain StateBob = {WAITING_M0 | END_B}
+	enum domain StateAlice = {IDLE_M0 | WAITING_M1 | END_A}
+	enum domain StateBob = {WAITING_M0 | SEND_M1 | END_B}
 
-	enum domain Message = {M0} 
+	enum domain Message = {M0 | M1} 
 
-	enum domain Knowledge ={NA|XXXXXX|A|A1|A2|A3|B|B1|B2|B3|C|C1|C2|C3|D|D1|D2|D3|E|E1|E2|E3|H|H1|H11|H2|H21|I3|I31}
+	enum domain Knowledge ={ID_A|NA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_B|AG_E|AG_S}
+	enum domain Receiver={AG_B|AG_E}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -49,7 +48,6 @@ signature:
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
-	controlled internalStateS: Server -> StateServer
 
 	//name of the message
 	controlled protocolMessage: Prod(Agent,Agent)-> Message
@@ -87,13 +85,13 @@ signature:
 
 	controlled knowsSignPrivKey:Prod(Agent,KnowledgeSignPrivKey)->Boolean
 
-	controlled knowsHash:Prod(Agent,KnowledgeTag)->Boolean
+	controlled knowsTag:Prod(Agent,KnowledgeTag)->Boolean
 
-	controlled knowsHash:Prod(Agent,KnowledgeDigest)->Boolean
+	controlled knowsDigest:Prod(Agent,KnowledgeDigest)->Boolean
 
 	controlled knowsHash:Prod(Agent,KnowledgeHash)->Boolean
 
-	controlled knowsHash:Prod(Agent,KnowledgeTimestamp)->Boolean
+	controlled knowsTimestamp:Prod(Agent,KnowledgeTimestamp)->Boolean
 
 	/*------------------------------------------------------------------- */
 	//                  Cryptographic functions
@@ -123,7 +121,6 @@ signature:
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
-	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
@@ -131,7 +128,6 @@ definitions:
 				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
-				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=

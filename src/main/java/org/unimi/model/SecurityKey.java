@@ -542,24 +542,24 @@ public class SecurityKey {
 	public String  searchEle(String Valore) {
 
 		for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
-			if (AsymmetricPublicKey.get(i).equals(Valore)) {
+			if (AsymmetricPublicKey.get(i).equals(Valore) || AsymmetricPublicKey.get(i).toUpperCase().equals(Valore)) {
 				return "Asymmetric Public Key";
 			}
 		}
 
 		for (int i = 0; i < AsymmetricPrivateKey.size(); i++) {
-			if (AsymmetricPrivateKey.get(i).equals(Valore)) {
+			if (AsymmetricPrivateKey.get(i).equals(Valore)|| AsymmetricPrivateKey.get(i).toUpperCase().equals(Valore)) {
 				return "Asymmetric Private Key";
 			}
 		}
 
 		for (int i = 0; i < SymmetricKey.size(); i++) {
-			if (SymmetricKey.get(i).equals(Valore)) {
+			if (SymmetricKey.get(i).equals(Valore)|| SymmetricKey.get(i).toUpperCase().equals(Valore)) {
 				return "Symmetric Key";
 			}
 		}
 		for (int i = 0; i < signaturePubKey.size(); i++) {
-			if (signaturePubKey.get(i).equals(Valore)) {
+			if (signaturePubKey.get(i).equals(Valore) || signaturePubKey.get(i).toUpperCase().equals(Valore)) {
 				return "Signature Pub Key";
 			}
 		}
@@ -571,44 +571,44 @@ public class SecurityKey {
 		}		
 
 		for (int i = 0; i < hashKey.size(); i++) {
-			if (hashKey.get(i).equals(Valore)) {
+			if (hashKey.get(i).equals(Valore) || hashKey.get(i).toUpperCase().equals(Valore)) {
 				return "Hash";
 			}
 
 		}
 		for (int i = 0; i < idCertificate.size(); i++) {
-			if (idCertificate.get(i).equals(Valore)) {
+			if (idCertificate.get(i).equals(Valore) || idCertificate.get(i).toUpperCase().equals(Valore)) {
 				return "Identity Certificate";
 			}
 		}
 
 
 		for (int i = 0; i < nonce.size(); i++) {
-			if (nonce.get(i).equals(Valore)) {
+			if (nonce.get(i).equals(Valore) || nonce.get(i).toUpperCase().equals(Valore)) {
 				return "Nonce";
 			}
 		}
 		
 		for (int i = 0; i < bitstring.size(); i++) {
-			if (bitstring.get(i).equals(Valore)) {
+			if (bitstring.get(i).equals(Valore) || bitstring.get(i).toUpperCase().equals(Valore)) {
 				return "Bitstring";
 			}
 		}
 
 		for (int i = 0; i < tag.size(); i++) {
-				if (tag.get(i).equals(Valore)) {
+				if (tag.get(i).equals(Valore)|| tag.get(i).toUpperCase().equals(Valore)) {
 					return "Tag";
 				}
 			}
 
 			for (int i = 0; i < timestamp.size(); i++) {
-				if (timestamp.get(i).equals(Valore)) {
+				if (timestamp.get(i).equals(Valore)|| timestamp.get(i).toUpperCase().equals(Valore)) {
 					return "Timestamp";
 				}
 			}
 
 			for (int i = 0; i < digest.size(); i++) {
-				if (digest.get(i).equals(Valore)) {
+				if (digest.get(i).equals(Valore) || digest.get(i).toUpperCase().equals(Valore)) {
 					return "Digest";
 				}
 			}

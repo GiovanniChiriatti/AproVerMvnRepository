@@ -345,14 +345,14 @@ public class WriteCryptoLibrary {
 		b.write("\n");
 		b.write("	controlled knowsSignPrivKey:Prod(Agent,KnowledgeSignPrivKey)->Boolean\n");
 		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeTag)->Boolean\n");
+		b.write("	controlled knowsTag:Prod(Agent,KnowledgeTag)->Boolean\n");
 		//Queste aggiunte io 
 		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeDigest)->Boolean\n");
+		b.write("	controlled knowsDigest:Prod(Agent,KnowledgeDigest)->Boolean\n");
 		b.write("\n");
 		b.write("	controlled knowsHash:Prod(Agent,KnowledgeHash)->Boolean\n");
 		b.write("\n");
-		b.write("	controlled knowsHash:Prod(Agent,KnowledgeTimestamp)->Boolean\n");
+		b.write("	controlled knowsTimestamp:Prod(Agent,KnowledgeTimestamp)->Boolean\n");
 
 		b.write("\n");
 		b.write("	/*------------------------------------------------------------------- */\n");

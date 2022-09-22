@@ -60,7 +60,7 @@ public class CreateMessageAProVer {
 	private Stage dialogStage;
 	private String[][] oldMessagePayloadField = new String[16][16];
 	private String[] oldSecurityFunction = new String[16];
-	boolean selectfield2;
+	boolean selectfield2 , asymEnc , asymDec, 	symDecEnc, sigPriv, sigPub, hashDecEnc;
 	
 	SecurityKey securityKey;
 	SecurityKey alice;
@@ -114,6 +114,13 @@ public class CreateMessageAProVer {
 
 	@FXML
 	public void initialize() {
+		// questi boolean servono per far vedere dal menù delle kiavi da utilizzare nel payload solo alcune tipologie
+		asymEnc = false;
+		asymDec = true;
+		symDecEnc = true;
+		sigPriv =false;
+		sigPub = true;
+		hashDecEnc = true;
 		
 		doneButton.setVisible(false);
 		menuSecurityFunction.setVisible(false);
@@ -368,7 +375,7 @@ public class CreateMessageAProVer {
     	this.message = message;
      	
     	numEleMenuButton = 0;
-    	if (securityKey.getAsymmetricPrivateKey() !=null && !securityKey.getAsymmetricPrivateKey().isEmpty() ) {
+    	if (securityKey.getAsymmetricPrivateKey() !=null && !securityKey.getAsymmetricPrivateKey().isEmpty() && asymEnc) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Asymmetric Encryption", menuSecurityFunction);
             MenuItem subMenuItem;
@@ -386,8 +393,8 @@ public class CreateMessageAProVer {
             menuSecurityFunction.getItems().addAll(menu);
     	}
     	
-		if (securityKey.getAsymmetricPublicKey() != null && !securityKey.getAsymmetricPublicKey().isEmpty()|| 
-					(securityKeyActorTo != null && securityKeyActorTo.getAsymmetricPublicKey() != null && !securityKeyActorTo.getAsymmetricPublicKey().isEmpty())) {
+		if (securityKey.getAsymmetricPublicKey() != null && !securityKey.getAsymmetricPublicKey().isEmpty() && asymDec|| 
+					(securityKeyActorTo != null && securityKeyActorTo.getAsymmetricPublicKey() != null && !securityKeyActorTo.getAsymmetricPublicKey().isEmpty()&& asymDec)) {
 			Menu menu = new Menu();
 			MenuItem subMenuItem;
 			prepareMenuItem(menu, "Asymmetric Decryption", menuSecurityFunction);
@@ -418,7 +425,7 @@ public class CreateMessageAProVer {
 			numEleMenuButton++;
 			menuSecurityFunction.getItems().addAll(menu);		
 		}
-       	if (securityKey.getSymmetricKey() !=null && !securityKey.getSymmetricKey().isEmpty()) {
+       	if (securityKey.getSymmetricKey() !=null && !securityKey.getSymmetricKey().isEmpty()&& symDecEnc) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Symmetric Encryption", menuSecurityFunction);
             MenuItem subMenuItem;
@@ -435,7 +442,7 @@ public class CreateMessageAProVer {
             numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	if (securityKey.getSignaturePrivKey() !=null && !securityKey.getSignaturePrivKey().isEmpty()) {
+       	if (securityKey.getSignaturePrivKey() !=null && !securityKey.getSignaturePrivKey().isEmpty() && sigPriv) {
        		Menu menu = new Menu();
             prepareMenuItem(menu, "Signature Priv Key", menuSecurityFunction);
             MenuItem subMenuItem;
@@ -453,8 +460,8 @@ public class CreateMessageAProVer {
             menuSecurityFunction.getItems().addAll(menu);
     	}
 
-       	if (securityKey.getSignaturePubKey() !=null && !securityKey.getSignaturePubKey().isEmpty() ||
-			(securityKeyActorTo != null && securityKeyActorTo.getSignaturePubKey() != null && !securityKeyActorTo.getSignaturePubKey().isEmpty())) {
+       	if (securityKey.getSignaturePubKey() !=null && !securityKey.getSignaturePubKey().isEmpty() && sigPub ||
+			(securityKeyActorTo != null && securityKeyActorTo.getSignaturePubKey() != null && !securityKeyActorTo.getSignaturePubKey().isEmpty() && sigPub)) {
        		Menu menu = new Menu();
             prepareMenuItem(menu, "Signature Pub Key", menuSecurityFunction);
             MenuItem subMenuItem;
@@ -486,7 +493,7 @@ public class CreateMessageAProVer {
             numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
-       	if (securityKey.getHashKey() !=null && !securityKey.getHashKey().isEmpty()) {
+       	if (securityKey.getHashKey() !=null && !securityKey.getHashKey().isEmpty() && hashDecEnc) {
        		Menu menu = new Menu();
             prepareMenuItem(menu, "Hash", menuSecurityFunction);
             MenuItem subMenuItem;
