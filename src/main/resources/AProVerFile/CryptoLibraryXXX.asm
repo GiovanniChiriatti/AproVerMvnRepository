@@ -10,10 +10,10 @@ signature:
 	domain Eve subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_M0 | WAITING_M1 | END_A}
-	enum domain StateBob = {WAITING_M0 | SEND_M1 | END_B}
+	enum domain StateAlice = {IDLE_M0 | WAITING_M1 | SEND_M2 | END_A}
+	enum domain StateBob = {WAITING_M0 | SEND_M1 | WAITING_M2 | END_B}
 
-	enum domain Message = {M0 | M1} 
+	enum domain Message = {M0 | M1 | M2} 
 
 	enum domain Knowledge ={ID_A|NA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
 
@@ -34,6 +34,7 @@ signature:
 	domain KnowledgeDigest subsetof Any
 	domain KnowledgeHash subsetof Any
 	domain KnowledgeTimestamp subsetof Any
+	domain KnowledgeOther subsetof Any
 
 	//range on which apply the cryptographic function
 	domain  FieldPosition subsetof Integer
@@ -92,6 +93,8 @@ signature:
 	controlled knowsHash:Prod(Agent,KnowledgeHash)->Boolean
 
 	controlled knowsTimestamp:Prod(Agent,KnowledgeTimestamp)->Boolean
+
+	controlled knowsOther:Prod(Agent,KnowledgeOther)->Boolean
 
 	/*------------------------------------------------------------------- */
 	//                  Cryptographic functions

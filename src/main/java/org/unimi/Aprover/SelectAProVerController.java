@@ -941,7 +941,7 @@ public class SelectAProVerController {
 			}
 			if (act.contains("Eve")) {
 				toolFlag= true;
-				comboBoxActor.setValue("Eye");
+				comboBoxActor.setValue("Eve");
 				nomeActor.setText("Eve's");
 				initialKnowledge.setVisible(true);
 				faceEve.setOpacity(1);
@@ -2194,61 +2194,64 @@ public class SelectAProVerController {
 			}
 		}
 		if (tool.getText().contains("Disable")) {
-			if (actorFrom == "Eve") {
+			if (actorFrom.equals("Eve")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
-				if (actorTo != "Alice") {
+				if (!actorTo.equals("Alice")) {
 					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsg = 335;
 				}
 			}
-			if (actorFrom == "Bob") {
+			if (actorFrom.equals("Bob")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
 				coordinateMsg = 605;
-				if (actorTo != "Server" || eveIntercept) {
+				if (!actorTo.equals("Server") || eveIntercept) {
 					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsg = 335;
 				}
 			}
-			if (actorFrom == "Server") {
+			if (actorFrom.equals("Server")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
 				coordinateMsg = 605;
 			}
 		}
 		if (tool.getText().contains("Disable")) {
-			if (actorFrom == "Alice") {
-				if (actorTo == "Eve") {
+			System.out.println("A "+ actorTo);
+			if (actorFrom.equals("Alice")) {
+				System.out.println("A1");
+				if (actorTo.equals("Eve")) {
 					coordinateMsf = 0;
 				}
-				if (actorTo == "Bob") {
+				if (actorTo.equals("Bob")) {
+					System.out.println("A2");
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 335;
 				}
-				if (actorTo == "Server") {
+				if (actorTo.equals("Server")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 605;
 				}
 			}
-			if (actorFrom == "Eve") {
-				if (actorTo == "Alice") {
+			if (actorFrom.equals("Eve")) {
+				if (actorTo.equals("Alice")) {
 					coordinateMsf = 0;
 				}
-				if (actorTo == "Bob") {
+				if (actorTo.equals("Bob")) {
 					coordinateMsf = 0;
 				}
-				if (actorTo == "Server") {
+				if (actorTo.equals("Server")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 605;
 				}
 			}
-			if (actorFrom == "Bob") {
-				if (actorTo == "Alice") {
+			if (actorFrom.equals("Bob")) {
+				if (actorTo.equals("Alice")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 335;
 				}
-				if (actorTo == "Eve") {
+				if (actorTo.equals("Eve")) {
 					coordinateMsf = 0;
 				}
-				if (actorTo == "Server") {
+				if (actorTo.equals("Server")) {
 					coordinateMsf = 0;
 					if (eveIntercept) {
 						((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
@@ -2256,16 +2259,16 @@ public class SelectAProVerController {
 					}
 				}
 			}
-			if (actorFrom == "Server") {
+			if (actorFrom.equals("Server")) {
 				if (actorTo == "Alice") {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsf = 90;
 				}
-				if (actorTo == "Eve") {
+				if (actorTo.equals("Eve")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsf = 335;
 				}
-				if (actorTo == "Bob") {
+				if (actorTo.equals("Bob")) {
 					coordinateMsf = 0;
 					if (eveIntercept) {
 						((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
@@ -2279,36 +2282,39 @@ public class SelectAProVerController {
 			if (actorFrom == "Eve") {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
 				coordinateMsg = 205;
-				if (actorTo != "Alice") {
+				if (!actorTo.equals("Alice")) {
 					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsg = 485;
 				}
 			}
-			if (actorFrom == "Bob") {
+			if (actorFrom.equals("Bob")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
 				coordinateMsg = 605;
 			}
 		}
 		
 		if (tool.getText().contains("Enable")) {
-			if (actorFrom == "Alice") {
-				if (actorTo == "Eve") {
+			System.out.println("B " + actorFrom + "-" + actorTo);
+			if (actorFrom.equals("Alice")) {
+				System.out.println("B1 " + actorTo);
+				if (actorTo.equals("Eve")) {
 					coordinateMsf = 0;
-				}
-				if (actorTo == "Bob") {
+				} 
+				if (actorTo.equals("Bob")) {
+					System.out.println("B2 " + actorTo);
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 605;
 				}
 			}
-			if (actorFrom == "Eye") {
-					coordinateMsf = 0;
+			if (actorFrom.equals("Eve")) {
+				coordinateMsf = 0;
 			}
-			if (actorFrom == "Bob") {
-				if (actorTo == "Alice") {
+			if (actorFrom.equals("Bob")) {
+				if (actorTo.equals("Alice")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsf = 90;
 				}
-				if (actorTo == "Eye") {
+				if (actorTo.equals("Eve")) {
 					coordinateMsf = 0;
 				}
 			}
@@ -3825,6 +3831,7 @@ public class SelectAProVerController {
 			node = node4;
 			break;
 		}
+		System.out.println("---------->" + actorToMsg + " " + actorFromMsg + " " + riga);
 		viewSpecificLinea(actorToMsg, actorFromMsg, line,liey,livy,msg,msf,riga);
 		tool.setDisable(true);
 		toolEve.setDisable(true);
@@ -4196,10 +4203,12 @@ public class SelectAProVerController {
 	private void writeFileAsm() throws IOException {
 		if (tool.getText().contains("Enable")) {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(false,messages,alice,bob,eve,null,toolEve.getText());
-			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText(),writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot());
+			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText(),writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(),
+					writeCrypto.getNumEncField (),writeCrypto.getNumSignField(), writeCrypto.getNumSymField(),writeCrypto.getNumHashField());
 		} else {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(true,messages,alice,bob,eve,server,toolEve.getText());
-			WriteASM writeASM = new WriteASM(true,messages,alice,bob,eve,server,toolEve.getText(),writeCrypto.getNumEleMsg(),writeCrypto.getLevelTot());
+			WriteASM writeASM = new WriteASM(true,messages,alice,bob,eve,server,toolEve.getText(),writeCrypto.getNumEleMsg(),writeCrypto.getLevelTot(),
+					writeCrypto.getNumEncField (),writeCrypto.getNumSignField(), writeCrypto.getNumSymField(),writeCrypto.getNumHashField());
 
 		}
 

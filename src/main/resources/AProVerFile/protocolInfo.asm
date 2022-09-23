@@ -7,20 +7,20 @@ signature:
 
 definitions:
 	domain Level = {1}
-	domain FieldPosition = {1:3}
+	domain FieldPosition = {1:2}
 	domain EncField1={1}
 	domain EncField2={2}
 
 	domain KnowledgeNonce = {NA,NB,NE}
 	domain KnowledgeIdentityCertificate = {ID_A,ID_B,ID_E}
-	domain KnowledgeAsymPrivKey = {PRIVKA,PRIVKB,PUBKE}
-	domain KnowledgeAsymPubKey = {PUBKA,PUBKB,PRIVKE}
+	domain KnowledgeAsymPrivKey = {PRIVKA,PRIVKB,PRIVKE}
+	domain KnowledgeAsymPubKey = {PUBKA,PUBKB,PUBKE}
 
 	function asim_keyAssociation($a in KnowledgeAsymPubKey)=
 	       switch( $a )
 	              case PRIVKA: PUBKA
 	              case PRIVKB: PUBKB
-	              case PUBKE: PRIVKE
+	              case PRIVKE: PUBKE
 	       endswitch
 
 	/*ATTACKER RULES*/
@@ -66,7 +66,7 @@ definitions:
                                                        messageField(self,$b,2,M0):=messageField($a,self,2,M0)
 			                          endpar
 			                 endif
-			         endif
+			        endif
 			endif
 	rule r_message_replay_M1 =
 		//choose what agets are interested by the message
@@ -101,7 +101,7 @@ definitions:
                                                        protocolMessage(self,$b):= M1
                                                        messageField(self,$b,1,M1):=messageField($a,self,1,M1)
                                                        messageField(self,$b,2,M1):=messageField($a,self,2,M1)
-			                               asymDec(M1,1,1,2):=PUBKA
+			                               asymDec(M1,1,1,2):=PUBKB
 			                          endpar
 			                 else
 			                          par
@@ -110,5 +110,43 @@ definitions:
                                                        messageField(self,$b,2,M1):=messageField($a,self,2,M1)
 			                          endpar
 			                 endif
-			         endif
+			        endif
+			endif
+	rule r_message_replay_M2 =
+		//choose what agets are interested by the message
+		let ($b=agentB,$a=agentA) in
+			//check the reception of the message and the modality of the attack
+			if(protocolMessage($a ,self)=M2 and protocolMessage(self,$b)!=M2 and mode=PASSIVE)then
+			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
+			        // the message must be sent unaltered
+			        if(asymDec(M2,1,1,1,self)=true)then
+			                par
+                                              knowsOther(self,messageField($a,self,1,M2)):=true
+                                              protocolMessage(self,$b):= M2
+                                              messageField(self,$b,1,M2):=messageField($a,self,1,M2)
+			                endpar
+			        else
+			                par
+                                              protocolMessage(self,$b):= M2
+                                              messageField(self,$b,1,M2):=messageField($a,self,1,M2)
+			                endpar
+			        endif
+			else
+			        //check the reception of the message and the modality of the attack
+			        if(protocolMessage($a ,self)=M2 and protocolMessage(self,$b)!=M2 and mode=ACTIVE)then
+			                 // in the active mode the attacker can forge the message with all his knowledge
+			                 if(asymDec(M2,1,1,1,self)=true)then
+			                          par
+                                                       knowsOther(self,messageField($a,self,1,M2)):=true
+                                                       protocolMessage(self,$b):= M2
+                                                       messageField(self,$b,1,M2):=messageField($a,self,1,M2)
+			                               asymDec(M2,1,1,1):=PUBKB
+			                          endpar
+			                 else
+			                          par
+                                                       protocolMessage(self,$b):= M2
+                                                       messageField(self,$b,1,M2):=messageField($a,self,1,M2)
+			                          endpar
+			                 endif
+			        endif
 			endif

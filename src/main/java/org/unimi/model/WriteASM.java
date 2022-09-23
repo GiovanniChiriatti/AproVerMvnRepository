@@ -14,7 +14,11 @@ public class WriteASM {
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
 	private int indSignature, levelTot;
-	private ArrayList numEleMsg;
+	private int fieldPosition;
+	private int numEncField;
+	private int numSymField;
+	private int numSignField;
+	private int numHashField;
 	private SecurityKey KeyActorFrom;
 	private SecurityKey KeyActorTo;	
 	private Messages messages;
@@ -24,7 +28,7 @@ public class WriteASM {
 	private SecurityKey server;
 	private Map<String, String> map = new TreeMap<String, String>();
 	private String toolEve;
-	public WriteASM(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve, ArrayList numEleMsg, int levelTot) 
+	public WriteASM(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve, int fieldPosition, int levelTot,int numEncField,int numSignField,int numSymField,int numHashField) 
 			  throws IOException {
 				this.actorServer = actorServer;
 				this.messages = messages;
@@ -33,10 +37,16 @@ public class WriteASM {
 				this.eve = eve;
 				this.server = server;
 				this.toolEve = toolEve;
-				this.numEleMsg=numEleMsg;
+				this.fieldPosition=fieldPosition;
 				this.levelTot=levelTot;
+				this.numEncField=numEncField;
+				this.numSignField=numSignField;
+				this.numSymField=numSymField;
+				this.numHashField=numHashField;
+				
+				
 				indSignature=0;
-				System.out.println("-------WriteASM---------");
+//				System.out.println("-------WriteASM---------");
 			    FileWriter w;
 			    w=new FileWriter("src/main/resources/AProVerFile/protocolInfo.asm");
 
@@ -66,14 +76,39 @@ public class WriteASM {
 		} else {
 			b.write("	domain Level = {1}\n");
 		}
-		if (numEleMsg.size()>1 ) {
-			b.write("	domain FieldPosition = {1:"+ numEleMsg.size() + "}\n");
+		if (fieldPosition>1 ) {
+			b.write("	domain FieldPosition = {1:"+ fieldPosition + "}\n");
 		} else {
 			b.write("	domain FieldPosition = {1}\n");
 		}
+		if (numEncField>0) {
+			if (numEncField==2) {
+				b.write("	domain EncField1={1}\n");
+				b.write("	domain EncField2={2}\n");
+			} else {
+				b.write("	domain EncField1={1:"+ numEncField +"}\n");
+				b.write("	domain EncField2={2:"+ numEncField +"}\n");
 		
-		b.write("	domain EncField1={1}\n");
-		b.write("	domain EncField2={2}\n");
+			}
+		}
+		if (numSignField > 0) {
+			if (numSignField == 2) {
+				b.write("	domain SignField1={1}\n");
+				b.write("	domain SignField2={2}\n");
+			} else {
+				b.write("	domain SignField1={1:" + numSignField + "}\n");
+				b.write("	domain SignField2={2:" + numSignField + "}\n");
+			}
+		}
+		if (numHashField > 0) {
+			if (numHashField == 2) {
+				b.write("	domain HashField1={1}\n");
+				b.write("	domain HashField2={2}\n");
+			} else {
+				b.write("	domain HashField1={1}\n");
+				b.write("	domain HashField2={2}\n");
+			}
+		}
 	}
 	//Scrittura prime info file asm
 	private void writeKnowledge(BufferedWriter b) throws IOException {
@@ -672,7 +707,7 @@ public class WriteASM {
 		String keyUsed=null;
 		
 		if (!partMsg.substring(partMsg.length()-1).equals("-")) {
-			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
+//			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
 			return keyUsed;
 		}
 		keyUsed= partMsg.substring(0,partMsg.length()-1);
@@ -717,11 +752,11 @@ public class WriteASM {
 		}
 		if (KeyActorFrom !=null) {
 			operation= KeyActorFrom.searchEle(keyUsed);
-			System.out.println("operation " + operation);
+//			System.out.println("operation " + operation);
 			if (operation == null) {
 				if (KeyActorTo !=null) {
 					operation= KeyActorTo.searchEle(keyUsed);
-					System.out.println("operation to " + operation);
+//					System.out.println("operation to " + operation);
 				}
 			}
 		}
@@ -755,15 +790,15 @@ public class WriteASM {
 		encField2=0;
 		level=0;
 		String calcLevelEncField1EncField2 = null;
-		System.out.println(" messaggio payload " + message.getPayload());
+//		System.out.println(" messaggio payload " + message.getPayload());
 		for (int numMsg = 0; numMsg < 15; numMsg++) {
 			msgEncField1EncField2[numMsg] = "";
-			System.out.println(" Leggo riga numero : " + numMsg);
-			System.out.println(" messaggio SecurityFunctionsPartMessage" + message.getSecurityFunctionsPartMessage(numMsg));
+//			System.out.println(" Leggo riga numero : " + numMsg);
+//			System.out.println(" messaggio SecurityFunctionsPartMessage" + message.getSecurityFunctionsPartMessage(numMsg));
 			if (message.getSecurityFunctionsPartMessage(numMsg)!= null && message.getSecurityFunctionsPartMessage(numMsg).length() > 3  && message.getSecurityFunctionsPartMessage(numMsg).substring(message.getSecurityFunctionsPartMessage(numMsg).length()-3).equals(" - ")	
 				&&	((message.getListPartMessage(numMsg, 0)!=null && message.getListPartMessage(numMsg, 0).toUpperCase().contains("PAYLOADFIELD"))|| numMsg==0||level==0))
 			{ 
-			   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
+//			   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
 			   level++;
 			}
 			if (message.getSecurityFunctionsPartMessage(numMsg) != null
@@ -771,8 +806,8 @@ public class WriteASM {
 				for (int j = 0; j < 15; j++) {
 					if (message.getListPartMessage(numMsg, j) != null
 							&& !message.getListPartMessage(numMsg, j).isEmpty()) {
-						System.out.println("          Leggo colonna numero : " + j);
-						System.out.println("          messaggio " + message.getListPartMessage(numMsg, j));
+//						System.out.println("          Leggo colonna numero : " + j);
+//						System.out.println("          messaggio " + message.getListPartMessage(numMsg, j));
 			//			if (message.getListPartMessage(numMsg, j).length() > 3  && message.getListPartMessage(numMsg, j).substring(message.getListPartMessage(numMsg, j).length()-3).equals(" - ")
 			// 					&& message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOADFIELD")) 
 			//			if (message.getSecurityFunctionsPartMessage(numMsg).length() > 3  && message.getSecurityFunctionsPartMessage(numMsg).substring(message.getSecurityFunctionsPartMessage(numMsg).length()-3).equals(" - "))	
@@ -788,7 +823,7 @@ public class WriteASM {
 			//					System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
 								encField2 = encField1;
 							} else {
-								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
+//								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
 								if (encField1 == 0) {
 									encField1 = encField2 + 1;
 									encField2 = encField1;
@@ -810,14 +845,14 @@ public class WriteASM {
 				msgEncField1EncField2[numMsg] = level+","+encField1+","+encField2;
 				
 				//
-				System.out.println(" risultato " +numMsg + " " + msgEncField1EncField2[numMsg]);
+/*				System.out.println(" risultato " +numMsg + " " + msgEncField1EncField2[numMsg]);
 				for(int i=0; i<15; i++) {
 					if (msgField[i] != null) {
 						System.out.println(" Campo " + i + " Valore: " + msgField[i]);
 					}
 				}
 				
-				//
+*/				//
 			}
 		}
 
@@ -828,55 +863,62 @@ public class WriteASM {
 		String[] linesKnowledge = new String[50];
 		linesKnowledge[0]="Prot                                              protocolMessage(self,$b):= M"+numMessage+"\n";
 		int numRighe = 1;
-		for(int i=0; i<15; i++) {
+		for (int i = 0; i < 15; i++) {
 			if (msgField[i] != null) {
 				String typeFieldActorFrom = KeyActorFrom.searchEle(msgField[i]);
-				System.out.println(" Campo "+ msgField[i] + " Tipo Campo " + typeFieldActorFrom);
-				if (typeFieldActorFrom != null) {
-						switch (typeFieldActorFrom) {
-						case "Asymmetric Public Key":
-							typeFieldActorFrom =  "knowsAsymPubKey";
-							break;
-						case "Asymmetric Private Key":
-							typeFieldActorFrom =  "knowsAsymPrivKey";
-							break;
-						case "Symmetric Key":
-							typeFieldActorFrom = "knowsSymKey";	
-							break;
-						case "Signature Pub Key":
-							typeFieldActorFrom =  "knowsSignPubKey";
-							break;
-						case "Signature Priv Key":
-							typeFieldActorFrom =  "knowsSignPrivKey";	
-							break;
-						case "Hash":
-							typeFieldActorFrom =  "knowsHash";	
-							break;
-						case "Nonce":
-							typeFieldActorFrom= "knowsNonce";
-							break;
-						case "Identity Certificate":
-							typeFieldActorFrom = "knowsIdentityCertificate";
-							break;
-						case "Bitstring":
-							typeFieldActorFrom =  "knowsBitString";
-							break;
-						case "Tag":
-							typeFieldActorFrom =  "knowsTag";
-							break;
-						case "Timestamp":
-							typeFieldActorFrom = "knowsTimestamp";
-							break;
-						case "Digest":
-							typeFieldActorFrom =  "knowsDigest";
-							break;
-						default:
-							typeFieldActorFrom = null;
-						}
-						linesKnowledge[numRighe]= "Know                                              " + typeFieldActorFrom + "(self,messageField($a,self,"+ i +",M"+ numMessage + ")):=true\n";
-						numRighe++;
+//				System.out.println(" Campo " + msgField[i] + " Tipo Campo " + typeFieldActorFrom);
+				if (typeFieldActorFrom == null) {
+					typeFieldActorFrom = "Other";
 				}
-				linesKnowledge[numRighe]="Mess                                              messageField(self,$b,"+i+",M"+ numMessage +"):=messageField($a,self,"+i+",M"+ numMessage +")\n"; 
+				switch (typeFieldActorFrom) {
+				case "Asymmetric Public Key":
+					typeFieldActorFrom = "knowsAsymPubKey";
+					break;
+				case "Asymmetric Private Key":
+					typeFieldActorFrom = "knowsAsymPrivKey";
+					break;
+				case "Symmetric Key":
+					typeFieldActorFrom = "knowsSymKey";
+					break;
+				case "Signature Pub Key":
+					typeFieldActorFrom = "knowsSignPubKey";
+					break;
+				case "Signature Priv Key":
+					typeFieldActorFrom = "knowsSignPrivKey";
+					break;
+				case "Hash":
+					typeFieldActorFrom = "knowsHash";
+					break;
+				case "Nonce":
+					typeFieldActorFrom = "knowsNonce";
+					break;
+				case "Identity Certificate":
+					typeFieldActorFrom = "knowsIdentityCertificate";
+					break;
+				case "Bitstring":
+					typeFieldActorFrom = "knowsBitString";
+					break;
+				case "Tag":
+					typeFieldActorFrom = "knowsTag";
+					break;
+				case "Timestamp":
+					typeFieldActorFrom = "knowsTimestamp";
+					break;
+				case "Digest":
+					typeFieldActorFrom = "knowsDigest";
+					break;
+				case "Other":
+					typeFieldActorFrom = "knowsOther";
+					break;
+				default:
+					typeFieldActorFrom = null;
+				}
+				linesKnowledge[numRighe] = "Know                                              " + typeFieldActorFrom
+						+ "(self,messageField($a,self," + i + ",M" + numMessage + ")):=true\n";
+				numRighe++;
+
+				linesKnowledge[numRighe] = "Mess                                              messageField(self,$b," + i
+						+ ",M" + numMessage + "):=messageField($a,self," + i + ",M" + numMessage + ")\n";
 				numRighe++;
 			}
 		}

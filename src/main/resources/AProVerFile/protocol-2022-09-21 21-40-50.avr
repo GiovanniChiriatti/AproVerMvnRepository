@@ -36,9 +36,9 @@ dati Bob Tag
 dati Bob Timestamp 
 dati Bob Digest 
 dati Eve AsymmetricPublicKey 
-PRIVKE
-dati Eve AsymmetricPrivateKey 
 PUBKE
+dati Eve AsymmetricPrivateKey 
+PRIVKE
 dati Eve SymmetricKey 
 dati Eve Hash 
 dati Eve Bitstring 
@@ -79,12 +79,23 @@ dati Messaggio 1
 ActorFrom Bob
 ActorTo Alice
 Eve Intercept true
-Messages {NA,NB}-PUBKA-
+Messages {NA,NB}-PUBKB-
 dati SecurityFunctionsPartMessage j=0
-{NA,NB}  - PUBKA - 
+{NA,NB}  - PUBKB - 
 dati listPartMessage j=0 k=0
 NA
 dati listPartMessage j=0 k=1
+NB
+dati SecurityFunctionsPartMessage j=1
+
+dati Messaggio 2
+ActorFrom Alice
+ActorTo Bob
+Eve Intercept true
+Messages {NB}-PUBKB-
+dati SecurityFunctionsPartMessage j=0
+{NB}  - PUBKB - 
+dati listPartMessage j=0 k=0
 NB
 dati Properties 
 TAB =0 Confidentiality

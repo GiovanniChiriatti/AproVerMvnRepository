@@ -17,9 +17,10 @@ public class WriteCryptoLibrary {
 	private SecurityKey server;
 	private Map<String, String> map = new TreeMap<String, String>();
 	private Map<String, String> mapMsg = new TreeMap<String, String>();
-	private int numMap = 0;
-	
-	ArrayList eleMsg = new ArrayList();
+	private int numMap = 0, fieldPosition=0,fieldPositionMsg=0,numEncField=0,numSignField =0,numSymField =0,numHashField =0,numEncSignHashMsg=0;
+	private SecurityKey KeyActorFrom;
+	private SecurityKey KeyActorTo;	
+
 
 	private String toolEve;
 	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve) 
@@ -67,11 +68,9 @@ public class WriteCryptoLibrary {
 			    	if (numMap ==0 ) {
 			    		payloadXXX = "	enum domain Knowledge ={" + s;
 			    		numMap++;
-			    		eleMsg.add(s);
 			    	}else {
 			    		payloadXXX = payloadXXX + "|" + s;
 			    		numMap++;
-			    		eleMsg.add(s);
 			    	}
 			    }
 			    for(String s : map.keySet()) {
@@ -182,7 +181,12 @@ public class WriteCryptoLibrary {
 			b.write("\n");
 			String messageXXX = "";		
 			int numPayloadSection = 0;
+			fieldPosition=0;
 			levelTot=0;
+			numEncField=0;
+			numSignField =0;
+			numHashField =0;
+
 			for (int i = 0; i < 15; i++) {
 				Message message = messages.getMessage(i);
 				if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
@@ -192,14 +196,21 @@ public class WriteCryptoLibrary {
 					}
 				}
 				levelMsg=0;
+				fieldPositionMsg=0;
 				for (int numMsg = 0; numMsg < 15; numMsg++) {
 					if (message.getSecurityFunctionsPartMessage(numMsg) != null
 							&& !message.getSecurityFunctionsPartMessage(numMsg).isEmpty()) {
+//						System.out.println("getSecurityFunctionsPartMessage mes:"+ numMsg + " valore: "+ message.getSecurityFunctionsPartMessage(numMsg));
+						numEncSignHashMsg=0;
 						storeMessage(message, numMsg);
+						findTypeKey(message, numMsg);
 					}
 				}
 				if (levelMsg > levelTot) {
 					levelTot=levelMsg;
+				}
+				if (fieldPositionMsg > fieldPosition) {
+					fieldPosition=fieldPositionMsg;
 				}
 				// si inseriscono nella tabella di appoggio le informazioni sugli stati degli attori
 				loadStateActor(i,message.getActorfrom(),message.getActorTo());
@@ -284,6 +295,7 @@ public class WriteCryptoLibrary {
 	    b.write("	domain KnowledgeDigest subsetof Any\n");
 	    b.write("	domain KnowledgeHash subsetof Any\n");
 	    b.write("	domain KnowledgeTimestamp subsetof Any\n");
+	    b.write("	domain KnowledgeOther subsetof Any\n");
 	    b.write("\n");
 	    
 	    b.write("	//range on which apply the cryptographic function\n");
@@ -353,6 +365,8 @@ public class WriteCryptoLibrary {
 		b.write("	controlled knowsHash:Prod(Agent,KnowledgeHash)->Boolean\n");
 		b.write("\n");
 		b.write("	controlled knowsTimestamp:Prod(Agent,KnowledgeTimestamp)->Boolean\n");
+		b.write("\n");
+		b.write("	controlled knowsOther:Prod(Agent,KnowledgeOther)->Boolean\n");
 
 		b.write("\n");
 		b.write("	/*------------------------------------------------------------------- */\n");
@@ -481,7 +495,10 @@ public class WriteCryptoLibrary {
 	private void storeMessage(Message message, int numMsg) {
 		for (int j = 0; j < 15; j++) {
 			if (message.getListPartMessage(numMsg, j) != null && !message.getListPartMessage(numMsg, j).isEmpty()) {
+//				System.out.println("getListPartMessage riga: "+ j + " Valore: " + message.getListPartMessage(numMsg, j));
+				numEncSignHashMsg++;
 				if (!message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOAD")) {
+					fieldPositionMsg++;
 					if (!map.containsKey(message.getListPartMessage(numMsg, j).toUpperCase())) {
 						mapMsg.put(message.getListPartMessage(numMsg, j).toUpperCase(), message.getListPartMessage(numMsg, j));
 					}
@@ -504,10 +521,113 @@ public class WriteCryptoLibrary {
 		}
 		return "Errore";
 	}
-	public ArrayList getNumEleMsg () {
-		return eleMsg;
+
+	// determina quali algoritmi crittografici sono stati usati prima di inviare il messaggio
+	private void findTypeKey(Message message, int numMsg ) {
+		String keyUsed=null;
+		String partMsg = message.getSecurityFunctionsPartMessage(numMsg);
+		
+		if (!partMsg.substring(partMsg.length()-3).equals(" - ")) {
+//			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
+			return;
+		}
+		keyUsed= partMsg.substring(0,partMsg.length()-3);
+		keyUsed = keyUsed.substring(keyUsed.lastIndexOf(" - ")+3);
+//		System.out.println(" trovata chiave --> "+ keyUsed);
+		String operation = null;
+		String actorFrom = message.getActorfrom();
+		String actorTo = message.getActorTo();
+		switch (actorFrom) {
+		case "Alice":
+			KeyActorFrom = alice;
+			break;
+		case "Bob":
+			KeyActorFrom = bob;
+			break;
+		case "Eve":
+			KeyActorFrom = eve;
+			break;
+		case "Server":
+			KeyActorFrom = server;
+			break;
+		default:
+			KeyActorFrom = null;
+		}
+		
+		switch (actorTo) {
+		case "Alice":
+			KeyActorTo = alice;
+			break;
+		case "Bob":
+			KeyActorTo = bob;
+			break;
+		case "Eve":
+			KeyActorTo = eve;
+			break;
+		case "Server":
+			KeyActorTo = server;
+			break;
+		default:
+			KeyActorTo = null;
+		}
+		if (KeyActorFrom !=null) {
+			operation= KeyActorFrom.searchEle(keyUsed);
+//			System.out.println("operation " + operation);
+			if (operation == null) {
+				if (KeyActorTo !=null) {
+					operation= KeyActorTo.searchEle(keyUsed);
+//					System.out.println("operation to " + operation);
+				}
+			}
+		}
+
+		
+		
+		if (operation != null) {
+			switch (operation) {
+			case "Asymmetric Public Key":
+				if (numEncSignHashMsg>numEncField) {
+					numEncField = numEncSignHashMsg;
+				}
+				break;
+			case "Symmetric Key":
+				if (numEncSignHashMsg>numSymField) {
+					numSymField = numEncSignHashMsg;
+				}
+				break;	
+			case "Signature Pub Key":
+				if (numEncSignHashMsg>numSignField) {
+					numSignField = numEncSignHashMsg;
+				}
+				break;	
+			case "Hash":
+				if (numEncSignHashMsg>numSignField) {
+					numHashField = numEncSignHashMsg;
+				}
+				break;		
+			default:
+				return;
+			}
+		}
+		return;
+	}
+	public int getNumEleMsg () {
+		return fieldPosition;
 	}
 	public int getLevelTot () {
 		return levelTot;
 	}
+	public int getNumSignField () {
+		return numSignField;
+	}
+	public int getNumEncField () {
+		return numEncField;
+	}
+	public int getNumSymField () {
+		return numSymField;
+	}
+	public int getNumHashField () {
+		return numHashField;
+	}
+
 }
