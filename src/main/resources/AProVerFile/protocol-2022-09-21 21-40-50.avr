@@ -79,9 +79,9 @@ dati Messaggio 1
 ActorFrom Bob
 ActorTo Alice
 Eve Intercept true
-Messages {NA,NB}-PUBKB-
+Messages {NA,NB}-PUBKA-
 dati SecurityFunctionsPartMessage j=0
-{NA,NB}  - PUBKB - 
+{NA,NB}  - PUBKA - 
 dati listPartMessage j=0 k=0
 NA
 dati listPartMessage j=0 k=1
