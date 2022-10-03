@@ -23,6 +23,7 @@ public class WriteCryptoLibrary {
 	private BufferedWriter b;
 	private FileWriter w;
 	private String acronym;
+	String[] changNumMSG = new String[15];
 
 	private String toolEve;
 	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve,String acronym) 
@@ -36,6 +37,21 @@ public class WriteCryptoLibrary {
 				this.server = server;
 				this.toolEve = toolEve;
 				indSignature=0;
+				changNumMSG[0]="A";
+				changNumMSG[1]="B";
+				changNumMSG[2]="C";
+				changNumMSG[3]="D";
+				changNumMSG[4]="E";
+				changNumMSG[5]="F";
+				changNumMSG[6]="G";
+				changNumMSG[7]="H";
+				changNumMSG[8]="I";
+				changNumMSG[9]="L";
+				changNumMSG[10]="M";
+				changNumMSG[11]="N";
+				changNumMSG[12]="O";
+				changNumMSG[13]="P";
+				changNumMSG[14]="Q";
 			    
 			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibrary"+acronym+".asm");
 
@@ -154,21 +170,21 @@ public class WriteCryptoLibrary {
 
 	//memorizza elenco knows sia dalle SecurityKey che dai messaggi 
 		private void storeKnows(SecurityKey actor){
-//			for(int i = 0; i <actor.getNonce().size(); i++) {
-//				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
-//		       }
+ 			for(int i = 0; i <actor.getNonce().size(); i++) {
+ 				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
+ 		       }
 			for(int i = 0; i <actor.getBitstring().size(); i++) {
 				map.put(actor.getBitstring().get(i).toUpperCase(), actor.getBitstring().get(i));
 		       }
 			for(int i = 0; i <actor.getHashKey().size(); i++) {
 				map.put(actor.getHashKey().get(i).toUpperCase(), actor.getHashKey().get(i));
 		       }
-//			for(int i = 0; i <actor.getHashKey().size(); i++) {
-//				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
-//		       }
-//			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
-//				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
-//		       }
+ 			for(int i = 0; i <actor.getHashKey().size(); i++) {
+ 				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
+ 		       }
+ 			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
+ 				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
+ 		       }
 			for(int i = 0; i <actor.getAsymmetricPrivateKey().size(); i++) {
 				map.put(actor.getAsymmetricPrivateKey().get(i).toUpperCase(), actor.getAsymmetricPrivateKey().get(i));
 		       }
@@ -232,9 +248,9 @@ public class WriteCryptoLibrary {
 				// signature[indSignature]="	protocolMessage(" + defAgent(message.getActorfrom()) + ","+ defAgent (message.getActorTo())  + "):=M"+ i+"\n";
 			   // indSignature++;
 				if (i==0) {
-		    		messageXXX= messageXXX + "	enum domain Message = {M"+ i;
+		    		messageXXX= messageXXX + "	enum domain Message = {M"+ changNumMSG[i];
 		    	} else {
-		    		messageXXX= messageXXX + " | M"+ i;
+		    		messageXXX= messageXXX + " | M"+ changNumMSG[i];
 		    	}
 		    }
 			
@@ -267,9 +283,9 @@ public class WriteCryptoLibrary {
 		b.write("	//DOMAIN OF POSSIBLE RECEIVER\n"); 
 		if (stateActor[0] !=null && stateActor[0].contains("IDLE")){
 			if (server != null || actorServer) {
-				b.write("	enum domain Receiver={AG_B|AG_E|AG_S}\n");
+				b.write("	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}\n");
 			} else {
-				b.write("	enum domain Receiver={AG_B|AG_E}\n");
+				b.write("	enum domain Receiver={AG_A|AG_B|AG_E}\n");
 			}
 		}
 		if (stateActor[1] !=null && stateActor[1].contains("IDLE")){
@@ -491,18 +507,18 @@ public class WriteCryptoLibrary {
 		
 	//	System.out.println(indActorFrom + " - " + indActorTo);
 		if (i==0) {
-			stateActor[indActorFrom]="IDLE_M"+i;
+			stateActor[indActorFrom]="IDLE_M"+changNumMSG[i];
 		} else {
 			if (stateActor[indActorFrom] == null) {
-				stateActor[indActorFrom]="SEND_M"+i;
+				stateActor[indActorFrom]="SEND_M"+changNumMSG[i];
 			} else {
-				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_M"+i;
+				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_M"+changNumMSG[i];
 			}
 		}
 		if (stateActor[indActorTo] == null) {
-			stateActor[indActorTo]="WAITING_M"+i;
+			stateActor[indActorTo]="WAITING_M"+changNumMSG[i];
 		} else {
-			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_M"+i;
+			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_M"+changNumMSG[i];
 		}
 		
 	}

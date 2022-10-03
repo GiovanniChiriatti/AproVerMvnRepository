@@ -1,4 +1,4 @@
-module CryptoLibraryNS2
+module CryptoLibrarySSL2
 
 import ../StandardLibrary
 export *
@@ -15,7 +15,7 @@ signature:
 
 	enum domain Message = {MA | MB | MC} 
 
-	enum domain Knowledge ={ID_A|ID_B|ID_E|NA|NB|NE|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
+	enum domain Knowledge ={CA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE|SIGNPRIVKA|SIGNPRIVKB|SIGNPRIVKE|SIGNPUBKA|SIGNPUBKB|SIGNPUBKE|SKAB|SKAE|SKEB}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E}
