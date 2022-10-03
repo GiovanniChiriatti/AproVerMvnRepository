@@ -20,11 +20,14 @@ public class WriteCryptoLibrary {
 	private int numMap = 0, fieldPosition=0,fieldPositionMsg=0,numEncField=0,numSignField =0,numSymField =0,numHashField =0,numEncSignHashMsg=0;
 	private SecurityKey KeyActorFrom;
 	private SecurityKey KeyActorTo;	
-
+	private BufferedWriter b;
+	private FileWriter w;
+	private String acronym;
 
 	private String toolEve;
-	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve) 
+	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve,String acronym) 
 			  throws IOException {
+		 		this.acronym=acronym;
 				this.actorServer = actorServer;
 				this.messages = messages;
 				this.alice = alice;
@@ -33,81 +36,93 @@ public class WriteCryptoLibrary {
 				this.server = server;
 				this.toolEve = toolEve;
 				indSignature=0;
-			    FileWriter w;
-			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibraryXXX.asm");
+			    
+			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibrary"+acronym+".asm");
 
-			    BufferedWriter b;
+			    
 			    b=new BufferedWriter (w);
-			    // scrittura info iniziali del file asm
-		//	    System.out.println("writeOpen");
-			    writeOpen(b);
-			    
-			    // scrittura info domain Agent_x
-		//	    System.out.println("writeAgent");
-			    writeAgent(actorServer, b);
-			    
-			    
-			    
-			    //vengono memorizzate in una tabella l'elenco knows sia dalle SecurityKey che dai messaggi per ogni singolo attore
-			    storeKnows(alice);
-			    storeKnows(bob);
-			    storeKnows(eve);
-			    if (server != null || actorServer) {
-			    	storeKnows(server);
-			    }
-		    
-			    
-		//	    System.out.println("writeMessaget");
-			    writeMessage(b);
- 		    
-			    String payloadXXX = "";
-			    
-			    numMap = 0;
-			    
-			    for(String s : mapMsg.keySet()) {
-			    	if (numMap ==0 ) {
-			    		payloadXXX = "	enum domain Knowledge ={" + s;
-			    		numMap++;
-			    	}else {
-			    		payloadXXX = payloadXXX + "|" + s;
-			    		numMap++;
-			    	}
-			    }
-			    for(String s : map.keySet()) {
-			    	if (numMap ==0 ) {
-			    		payloadXXX = "	enum domain Knowledge ={" + s;
-			    		numMap++;
-			    	}else {
-			    		payloadXXX = payloadXXX + "|" + s;
-			    		numMap++;
-			    	}
-			    }
-			    if (!payloadXXX.isEmpty()) {
-			    	payloadXXX = payloadXXX + "}\n";
-			    	b.write(payloadXXX);
-			    }
-			    b.write("\n");
-			    writeEndSignature(b);
-			    writeDefinitions(b);				
-/*
-			    for (String s : signature) {
-			    	if (s!=null)   	b.write(s);
-			    }
-			    
-			    
-			    b.write("	controlled knownAsimPubKey: Agent −> Powerset(AsimPubKeyType)\n");
-			    b.write("	controlled knownAsimPrivKey: Agent −> Powerset(AsimPrivKeyType)\n");
-			    b.write("	controlled knownSimmKey: Agent −> Powerset(SimmKeyType)\n");
-			    b.write("	controlled knownPayload: Agent −> Powerset(PayloadType)\n");
-			    b.write("	domain State subsetof Any\n");
-			    b.write("	controlled internalState: Agent −> State\n");
-*/			    
-			    b.flush();
+			    System.out.println("fine");
 			    
 			  }
 	//Scrittura prime info file asm
+	public boolean writeFile() throws IOException {
+		 
+	    // scrittura info iniziali del file asm
+//	    System.out.println("writeOpen");
+	    writeOpen(b);
+	    
+	    // scrittura info domain Agent_x
+//	    System.out.println("writeAgent");
+	     
+	    writeAgent(actorServer, b);
+	    
+	    
+	     
+	    //vengono memorizzate in una tabella l'elenco knows sia dalle SecurityKey che dai messaggi per ogni singolo attore
+	    storeKnows(alice);
+	    
+	    storeKnows(bob);
+	     
+	    storeKnows(eve);
+	     
+	    if (server != null || actorServer) {
+	    	storeKnows(server);
+	    }
+    
+	     
+//	    System.out.println("writeMessaget");
+	    writeMessage(b);
+	    
+	    String payloadXXX = "";
+	    System.out.println("altro");
+	    numMap = 0;
+	    
+	    for(String s : mapMsg.keySet()) {
+	    	if (numMap ==0 ) {
+	    		payloadXXX = "	enum domain Knowledge ={" + s;
+	    		numMap++;
+	    	}else {
+	    		payloadXXX = payloadXXX + "|" + s;
+	    		numMap++;
+	    	}
+	    }
+	    for(String s : map.keySet()) {
+	    	if (numMap ==0 ) {
+	    		payloadXXX = "	enum domain Knowledge ={" + s;
+	    		numMap++;
+	    	}else {
+	    		payloadXXX = payloadXXX + "|" + s;
+	    		numMap++;
+	    	}
+	    }
+	    if (!payloadXXX.isEmpty()) {
+	    	payloadXXX = payloadXXX + "}\n";
+	    	b.write(payloadXXX);
+	    }
+	    b.write("\n");
+	    writeEndSignature(b);
+	    writeDefinitions(b);				
+/*
+	    for (String s : signature) {
+	    	if (s!=null)   	b.write(s);
+	    }
+	    
+	    
+	    b.write("	controlled knownAsimPubKey: Agent −> Powerset(AsimPubKeyType)\n");
+	    b.write("	controlled knownAsimPrivKey: Agent −> Powerset(AsimPrivKeyType)\n");
+	    b.write("	controlled knownSimmKey: Agent −> Powerset(SimmKeyType)\n");
+	    b.write("	controlled knownPayload: Agent −> Powerset(PayloadType)\n");
+	    b.write("	domain State subsetof Any\n");
+	    b.write("	controlled internalState: Agent −> State\n");
+*/			    
+	    b.flush();
+	    b.close();
+	    return true;
+	}
+
+	//Scrittura prime info file asm
 	private void writeOpen(BufferedWriter b) throws IOException {
-		b.write("module CryptoLibraryXXX\n");
+		b.write("module CryptoLibrary"+acronym+"\n");
 		b.write("\n");
 		b.write("import ../StandardLibrary\n");
 		b.write("export *\n");

@@ -84,7 +84,7 @@ public class SecurityKey {
 	}
 	
 // ---------------- Symmetric Key
-	public ArrayList<String> getSymmetricKey() {
+	public ArrayList<String> getSymmetricKey() {	
 		return SymmetricKey;
 	}
 	public String getStringSymmetricKey() {
@@ -614,5 +614,14 @@ public class SecurityKey {
 			}
 	
 		return null;
+	}
+	// ---------------- trova un elemento in tutte le tabelle
+	public boolean searchSym(String Valore) {
+		for (int i = 0; i < SymmetricKey.size(); i++) {
+			if (SymmetricKey.get(i).equals(Valore) || SymmetricKey.get(i).toUpperCase().equals(Valore)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

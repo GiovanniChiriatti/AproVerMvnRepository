@@ -1,0 +1,112 @@
+tool value 
+Enable Server
+toolEve value 
+Eve Create Messages
+dati Alice AsymmetricPublicKey 
+PUBKA
+dati Alice AsymmetricPrivateKey 
+PRIVKA
+dati Alice SymmetricKey 
+SKAB
+SKAE
+dati Alice Hash 
+dati Alice Bitstring 
+dati Alice IdCertificate 
+CA
+dati Alice Nonce 
+dati Alice Signature Pub Key 
+SIGNPUBKA
+dati Alice Signature Priv Key 
+SIGNPRIVKA
+dati Alice Tag 
+dati Alice Timestamp 
+dati Alice Digest 
+dati Bob AsymmetricPublicKey 
+PUBKB
+dati Bob AsymmetricPrivateKey 
+PRIVKB
+dati Bob SymmetricKey 
+SKAB
+SKEB
+dati Bob Hash 
+dati Bob Bitstring 
+dati Bob IdCertificate 
+dati Bob Nonce 
+NB
+dati Bob Signature Pub Key 
+SIGNPUBKB
+dati Bob Signature Priv Key 
+SIGNPRIVKB
+dati Bob Tag 
+dati Bob Timestamp 
+dati Bob Digest 
+dati Eve AsymmetricPublicKey 
+PUBKE
+dati Eve AsymmetricPrivateKey 
+PRIVKE
+dati Eve SymmetricKey 
+SKEB
+SKAE
+dati Eve Hash 
+dati Eve Bitstring 
+dati Eve IdCertificate 
+dati Eve Nonce 
+dati Eve Signature Pub Key 
+SIGNPUBKE
+dati Eve Signature Priv Key 
+SIGNPRIVKE
+dati Eve Tag 
+dati Eve Timestamp 
+dati Eve Digest 
+dati Server AsymmetricPublicKey 
+dati Server AsymmetricPrivateKey 
+dati Server SymmetricKey 
+dati Server Hash 
+dati Server Bitstring 
+dati Server IdCertificate 
+dati Server Nonce 
+dati Server Signature Pub Key 
+dati Server Signature Priv Key 
+dati Server Tag 
+dati Server Timestamp 
+dati Server Digest 
+dati Messaggi 
+dati Messaggio 0
+ActorFrom Alice
+ActorTo Bob
+Eve Intercept true
+Messages {SKAB}-PUBKB-
+dati SecurityFunctionsPartMessage j=0
+{SKAB}  - PUBKB - 
+dati listPartMessage j=0 k=0
+SKAB
+dati Messaggio 1
+ActorFrom Bob
+ActorTo Alice
+Eve Intercept true
+Messages {NB}-SKAB-
+dati SecurityFunctionsPartMessage j=0
+{NB}  - SKAB - 
+dati listPartMessage j=0 k=0
+NB
+dati Messaggio 2
+ActorFrom Alice
+ActorTo Bob
+Eve Intercept true
+Messages {{CA},{NB}-SIGNPRIVKA-}-SKAB-
+dati SecurityFunctionsPartMessage j=0
+{CA} 
+dati listPartMessage j=0 k=0
+CA
+dati SecurityFunctionsPartMessage j=1
+{NB}  - SIGNPRIVKA - 
+dati listPartMessage j=1 k=0
+NB
+dati SecurityFunctionsPartMessage j=2
+{{CA},{NB} - SIGNPRIVKA - }  - SKAB - 
+dati listPartMessage j=2 k=0
+(payloadField2){CA},{NB} - SIGNPRIVKA - 
+dati Properties 
+TAB =0 Confidentiality
+TAB =1 Integrity
+TAB =2 Authentication

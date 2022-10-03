@@ -82,6 +82,7 @@ definitions:
 						knowsNonce(self,messageField($b,self,1,NK)):=true
 						protocolMessage(self,$a ):= NK
 						messageField(self,$a,1,KK):= messageField($b,self,1,NK)
+	//-------------------------------------------- Questo sotto è giusto (nel messaggio precedente è asteriscato
 						symEnc(NK,1,1,1):= messageField($a,self,1,KK)
 					endpar
 				else
@@ -96,12 +97,15 @@ definitions:
 						par
 							knowsNonce(self,messageField($b,self,1,NK)):=true
 							protocolMessage(self,$a ):= NK
+//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
 							messageField(self,$a,1,KK):= messageField($b,self,1,NK)
+//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
 							symEnc(NK,1,1,1):= messageField($a,self,1,KK)
 						endpar
 					else
 						par
 							protocolMessage(self,$a ):= NK
+//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
 							messageField(self,$a,1,KK):= messageField($b,self,1,NK)
 						endpar
 					endif
@@ -114,6 +118,8 @@ definitions:
 			if(protocolMessage($a ,self)=CSNK and protocolMessage(self,$b )!=CSNK and mode=PASSIVE)then				
 				if(symDec(CSNK,2,1,2,self)=true)then
 					par
+//------------------- non manca :knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
+// ------------------------------ è sicuro che il sia il field 1 e non il 2 se si perchè?
 						knowsNonce(self,messageField($a,self,1,CSNK)):=true
 						protocolMessage(self,$b ):= CSNK
 						messageField(self,$b,1,CSNK):= messageField($a,self,1,CSNK)
@@ -131,6 +137,8 @@ definitions:
 				if(protocolMessage($a ,self)=CSNK and protocolMessage(self,$b )!=CSNK and mode=ACTIVE)then				
 					if(symDec(CSNK,2,1,2,self)=true)then
 						par
+//------------------- non manca :knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
+// ------------------------------ è sicuro che il sia il field 1 e non il 2, se si perchè??
 							knowsNonce(self,messageField($a,self,1,CSNK)):=true
 							protocolMessage(self,$b ):= CSNK
 							messageField(self,$b,1,CSNK):= messageField($a,self,1,CSNK)
@@ -194,6 +202,7 @@ definitions:
 				if(receiver=AG_B)then
 					if(symDec(NK,1,1,1,self)=true)then
 						par
+//------------------- non manca :knowsNonce(self,messageField($e,self,1,M1)):=true
 							protocolMessage(self,$e ):=CSNK
 							messageField(self,$e,1,CSNK):=CA
 							messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
@@ -205,6 +214,7 @@ definitions:
 				else
 					if(symDec(NK,1,1,1,self)=true)then
 						par
+//------------------- non manca :knowsNonce(self,messageField($e,self,1,M1)):=true
 							protocolMessage(self,$e ):=CSNK
 							messageField(self,$e,1,CSNK):=CA
 							messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)

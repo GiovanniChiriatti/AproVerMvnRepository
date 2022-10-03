@@ -93,8 +93,8 @@ definitions:
 				else
 					par
 						protocolMessage(self,$a ):= NNK
-						messageField(self,$b,1,NNK):=messageField($b,self,1,NNK)
-						messageField(self,$b,2,NNK):=messageField($b,self,2,NNK)
+						messageField(self,$b,1,NNK):=messageField($a,self,1,NNK) 
+						messageField(self,$b,2,NNK):=messageField($a,self,2,NNK) )
 						//asymEnc(NNK,1,1,2 ):=PUBKA	
 					endpar
 				endif
@@ -112,8 +112,9 @@ definitions:
 					else
 						par
 							protocolMessage(self,$a ):= NNK
-							messageField(self,$b,1,NNK):=messageField($b,self,1,NNK)
-							messageField(self,$b,2,NNK):=messageField($b,self,2,NNK)
+							messageField(self,$b,1,NNK):=messageField($a,self,1,NNK) 
+							messageField(self,$b,2,NNK):=messageField($a,self,2,NNK)
+//----------------------> non capisco quando va messa l'istruzione di uso della crittografia e quando no    ----- asymEnc(NNK,1,1,2 ):=PUBKA
 							asymEnc(NNK,1,1,2 ):=PUBKA	
 						endpar
 					endif
@@ -128,21 +129,25 @@ definitions:
 					par
 						knowsNonce(self,messageField($a,self,1,NK)):=true
 						protocolMessage(self,$b ):= NK						
-						//asymEnc(NK,1,1,1 ):=PUBKB	
+						//asymEnc(NK,1,1,1 ):=PUBKB
+//---> manca 	messageField(self,$b,1,M2):=messageField($a,self,1,M2)
 					endpar
 				else
 						protocolMessage(self,$b ):= NK
+//---> manca messageField(self,$b,1,M2):=messageField($a,self,1,M2)
 				endif
 			else
 				if(protocolMessage($a ,self)=NK and protocolMessage(self,$b )!=NK and mode=ACTIVE)then				
 					if(asymDec(NK,1,1,1,self)=true)then
 						par
 							knowsNonce(self,messageField($a,self,1,NK)):=true
-							protocolMessage(self,$b ):= NK						
+							protocolMessage(self,$b ):= NK	
+//---> manca messageField(self,$b,1,M2):=messageField($a,self,1,M2)					
 							asymEnc(NK,1,1,1 ):=PUBKB	
 						endpar
 					else
 							protocolMessage(self,$b ):= NK
+//----> manca messageField(self,$b,1,M2):=messageField($a,self,1,M2)
 					endif
 				endif
 			endif
@@ -184,7 +189,7 @@ definitions:
 						knowsNonce(self,messageField($e,self,1,NAK)):=true
 						knowsIdentityCertificate(self,messageField($e,self,2,NAK)):=true
 						protocolMessage(self,$e):=NNK
-						messageField(self,$e,1,NNK):=NA
+						messageField(self,$e,1,NNK):=NA ---->(messageField($e,self,1,M0))
 						messageField(self,$e,2,NNK):=NB
 						asymEnc(NNK,1,1,2):=PUBKA
 						internalStateB(self):= WAITING_NK						
@@ -202,8 +207,8 @@ definitions:
 							knowsNonce(self,messageField($e,self,1,NNK)):=true
 							knowsNonce(self,messageField($e,self,2,NNK)):=true
 							protocolMessage(self,$e ):=NK
-							messageField(self,$e,1,NK):=NB							
-							asymEnc(NK,1,1,1):=PUBKB
+							messageField(self,$e,1,NK):=NB	---->(messageField($e,self,2,M1))						
+							asymEnc(NK,1,1,1):=PUBKB 
 							internalStateA(self):= END_A
 						endpar
 					endif	

@@ -3,9 +3,11 @@ package org.unimi.Aprover;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
+import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,18 +62,18 @@ public class CreateMessageAProVer {
 	private Stage dialogStage;
 	private String[][] oldMessagePayloadField = new String[16][16];
 	private String[] oldSecurityFunction = new String[16];
-	boolean selectfield2 , asymEnc , asymDec, 	symDecEnc, sigPriv, sigPub, hashDecEnc;
-	
-	SecurityKey securityKey;
-	SecurityKey alice;
-	SecurityKey bob;
-	SecurityKey eve;
-	SecurityKey server;
-	Message  message;
+	boolean selectfield2 , asymEnc , asymDec, 	symDecEnc, sigPriv, sigPub, hashDecEnc, other;
+	private Map<String, String> otherElement = new HashMap<String, String>();
+	private SecurityKey securityKey;
+	private SecurityKey alice;
+	private SecurityKey bob;
+	private SecurityKey eve;
+	private SecurityKey server;
+	private Message  message;
 	int numMessage,appRow,appColumn,numNodiMessagePayloadField, NumNodiSecurityFunctions;
-	Node nodeTabeSecurityFunctionCurrent;
-	Boolean helpFlag = true;
-    String unicAtorToSelected = null;
+	private Node nodeTabeSecurityFunctionCurrent;
+	private Boolean helpFlag = true;
+	private String unicAtorToSelected = null;
 	int numEleMenuButton=0;
 	
 	
@@ -114,13 +116,15 @@ public class CreateMessageAProVer {
 
 	@FXML
 	public void initialize() {
+		System.out.println("initialize");
 		// questi boolean servono per far vedere dal menù delle kiavi da utilizzare nel payload solo alcune tipologie
 		asymEnc = false;
 		asymDec = true;
 		symDecEnc = true;
-		sigPriv =false;
+		sigPriv =true;
 		sigPub = true;
 		hashDecEnc = true;
+		other = true;
 		
 		doneButton.setVisible(false);
 		menuSecurityFunction.setVisible(false);
@@ -154,7 +158,7 @@ public class CreateMessageAProVer {
  // qui viene passato il numero del messaggio quando si sta effettuando la modifica del messaggio gia creato in precedenza
  // in questo caso il controller imposta le informazioni registrate nella classe Message
     public void setMessage(int numMessage) {
-    	
+    	System.out.println("setMessage");
     	this.numMessage = numMessage;
     	
         this.actorFrom.setText(message.getActorfrom());
@@ -308,6 +312,7 @@ public class CreateMessageAProVer {
     
  // prima di essere creata la Scene il controller precedente inizializza le impostazioni sul cursore help che se attivato fa evidenziare le info sui singoli oggetti
      public void setHelp(Boolean inHelpFlag) {
+    	 System.out.println("setHelp");
     	 Scene sc1 = closeButton.getScene();
     	 helpFlag = inHelpFlag;
     	 if (!helpFlag) {
@@ -334,7 +339,9 @@ public class CreateMessageAProVer {
 // il controller chiamante passa i dati della classe SecurityKey che contiene le informazioni delle chiavi di sicurezza possedute 
 // dall'actor che invia il messaggio e l'elenco di tutti i  messaggi    
 // in questo metodo si costruisce il men� per la visualizzazione delle security function
-    public void setInfo(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
+    public void setInfo(SecurityKey securityKey, Messages messages,Message message,SecurityKey securityKeyActorTo, int numMessage) {
+    	System.out.println("setInfo");
+    	this.numMessage = numMessage;
     	textFlowSecurity.getChildren().clear();
     	
     	if (securityKeyActorTo==null && unicAtorToSelected!=null) {
@@ -351,8 +358,12 @@ public class CreateMessageAProVer {
             	securityKeyActorTo=server;
             }
     	}
-
-
+    	System.out.println("non so dove sto " + message.getActorfrom() + " " + actorFrom.getText());
+		if (message.getActorfrom() != null && !message.getActorfrom().isEmpty()) {
+			loadEleOther(messages, message.getActorfrom());
+		} else {
+			loadEleOther(messages, actorFrom.getText());
+		}
     	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo);
        	
 		txtPreview.getChildren().clear();
@@ -369,7 +380,83 @@ public class CreateMessageAProVer {
 		payloadField2.setVisible(false);
 
     }
-    public void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
+    private void loadEleOther(Messages messages, String actorFrom) {
+    	System.out.println(" numero messaggio che so caricando" +    numMessage + " ActorFrom "+ actorFrom);
+    	for (int i = 0; i<numMessage-1 ; i++) {
+    		System.out.println(" leggo messaggio " + i + " - " + messages.getListMessages()[i] + " - " +  messages.getListMessages()[i].getActorTo());
+    		if (messages.getListMessages()[i] !=null && messages.getListMessages()[i].getActorTo() !=null && messages.getListMessages()[i].getActorTo().equals(actorFrom)) {
+    			for(int j=0; j<15 ; j++) {
+        			for(int k=0; k<15 ; k++) {
+        				System.out.println("lista " + i + " " + j + "  "+ messages.getListMessages()[i].getListPartMessage()[j][k]);
+        				if (messages.getListMessages()[i].getListPartMessage()[j][k] != null 
+        							&& !messages.getListMessages()[i].getListPartMessage()[j][k].contains("PAYLOAD")) {
+        					String valore; 
+        					System.out.println("Alice " + alice + " actor from " +actorFrom); 
+        					if (alice!=null && !actorFrom.equals("Alice") ) {
+        						valore = alice.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						System.out.println("valore " + valore);
+        						if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
+        								               valore.contains("Asymmetric Private Key") ||
+        								               valore.contains("Symmetric Key") ||
+        								               valore.contains("Signature Pub Key") ||
+        								               valore.contains("Signature Priv Key") ||
+        								               valore.contains("Hash") )) {
+        							System.out.println("inserisco valore " + valore);
+        							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						}
+        					}
+        					if (bob!=null && !actorFrom.equals("bob") ) {
+        						valore = bob.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						System.out.println("valore " + valore);
+        						if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
+        								               valore.contains("Asymmetric Private Key") ||
+        								               valore.contains("Symmetric Key") ||
+        								               valore.contains("Signature Pub Key") ||
+        								               valore.contains("Signature Priv Key") ||
+        								               valore.contains("Hash") )) {
+        							System.out.println("inserisco valore " + valore);
+        							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						}
+        					}
+        					if (eve!=null && !actorFrom.equals("Eve") ) {
+        						valore = eve.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						System.out.println("valore " + valore);
+        						if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
+        								               valore.contains("Asymmetric Private Key") ||
+        								               valore.contains("Symmetric Key") ||
+        								               valore.contains("Signature Pub Key") ||
+        								               valore.contains("Signature Priv Key") ||
+        								               valore.contains("Hash") )) {
+        							System.out.println("inserisco valore " + valore);
+        							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						}
+        					}
+        					if (server!=null && !actorFrom.equals("Server") ) {
+        						valore = server.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						System.out.println("valore " + valore);
+        						if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
+        								               valore.contains("Asymmetric Private Key") ||
+        								               valore.contains("Symmetric Key") ||
+        								               valore.contains("Signature Pub Key") ||
+        								               valore.contains("Signature Priv Key") ||
+        								               valore.contains("Hash") )) {
+        							System.out.println("inserisco valore " + valore);
+        							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
+        						}
+        					}
+       					
+     				
+        				}
+        			}
+    			}
+    			
+    		}
+    	}
+    	
+    }
+
+
+    private void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
 
     	this.securityKey = securityKey;
     	this.message = message;
@@ -500,6 +587,24 @@ public class CreateMessageAProVer {
             for (int i=0; i< securityKey.getHashKey().size(); i++) {
             	subMenuItem = new MenuItem(securityKey.getHashKey().get(i));
             	String a = securityKey.getHashKey().get(i);
+            	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            		public void handle(ActionEvent t) {
+            			AddPartSecurityMessage(a);
+                    }
+                });
+            	menu.getItems().add(subMenuItem);       	
+            }
+            numEleMenuButton++;
+            menuSecurityFunction.getItems().addAll(menu);
+    	}
+       	
+       	if (!otherElement.isEmpty()) {
+       		Menu menu = new Menu();
+            prepareMenuItem(menu, "Key Recived", menuSecurityFunction);
+            MenuItem subMenuItem;
+            for (String ele : otherElement.keySet()) {
+            	subMenuItem = new MenuItem(ele);
+            	String a = ele;
             	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             		public void handle(ActionEvent t) {
             			AddPartSecurityMessage(a);

@@ -2395,7 +2395,7 @@ public class SelectAProVerController {
         controller.setSecurity(alice,bob,eve,server);
         controller.setActorFrom(actorFrom,messageNumber,tool.getText(),toolEve.getText());
         controller.setHelp(helpFlag);
-        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),null);
+        controller.setInfo(appoFrom,messages, messages.getMessage(messageNumber-1),null,messageNumber);
 
         
         dialogStage.showAndWait();
@@ -2572,12 +2572,12 @@ public class SelectAProVerController {
         	appoTo=server;
         }      
         
-        controller.setInfo(appoFrom, messages.getMessage(messageNumber-1),appoTo);
-       
-
-		controller.setMessage(messageNumber);
+        controller.setSecurity(alice,bob,eve,server);
+        controller.setInfo(appoFrom, messages, messages.getMessage(messageNumber-1),appoTo,messageNumber);
 		controller.setHelp(helpFlag);
-
+		
+		controller.setMessage(messageNumber);
+		
 		dialogStage.showAndWait();
         eveIntercept = controller.getEvesIntercept();
 
@@ -4201,7 +4201,23 @@ public class SelectAProVerController {
 	// richiama la scrittura del file aSM	
 	@FXML
 	private void writeFileAsm() throws IOException {
-		if (tool.getText().contains("Enable")) {
+		FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/CreateFilesASM.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+     
+        Stage dialogStage = new Stage();
+                
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        
+        CreateFilesASM controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.receivInfo(messages,alice,bob,eve,server,toolEve.getText(),tool.getText());
+        dialogStage.showAndWait();
+        
+/*		if (tool.getText().contains("Enable")) {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(false,messages,alice,bob,eve,null,toolEve.getText());
 			WriteASM writeASM = new WriteASM(false,messages,alice,bob,eve,null,toolEve.getText(),writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(),
 					writeCrypto.getNumEncField (),writeCrypto.getNumSignField(), writeCrypto.getNumSymField(),writeCrypto.getNumHashField());
@@ -4211,7 +4227,7 @@ public class SelectAProVerController {
 					writeCrypto.getNumEncField (),writeCrypto.getNumSignField(), writeCrypto.getNumSymField(),writeCrypto.getNumHashField());
 
 		}
-
+*/
 	}
 
 	// se viene cliccato dal menu l'opzione about si visualizza il file PdF 
