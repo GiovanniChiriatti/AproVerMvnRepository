@@ -1,0 +1,328 @@
+simulating SSL3.asm
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\AProverASM\SSL3.asm
+INFO - file successfully parsed for asm SSL3
+Running interactively SSL3.asm
+INITIAL STATE:Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Insert a symbol of Receiver in [AG_A, AG_B, AG_E] for chosenReceiver:
+AG_B
+Insert a symbol of Modality in [ACTIVE, PASSIVE] for chosenMode:
+PASSIVE
+<State 0 (monitored)>
+chosenMode=PASSIVE
+chosenReceiver=AG_B
+</State 0 (monitored)>
+<UpdateSet - 0>
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_MB
+messageField(agentA,agentE,1,MA)=SKAB
+protocolMessage(agentA,agentE)=MA
+</UpdateSet>
+<State 1 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_MB
+internalStateB(agentB)=WAITING_MA
+messageField(agentA,agentE,1,MA)=SKAB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MA
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=undef
+receiver=AG_B
+</State 1 (controlled)>
+<UpdateSet - 1>
+messageField(agentE,agentB,1,MA)=SKAB
+protocolMessage(agentE,agentB)=MA
+</UpdateSet>
+<State 2 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_MB
+internalStateB(agentB)=WAITING_MA
+knowsAsymPrivKey(agentE,PRIVKB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentE,agentB,1,MA)=SKAB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MA
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=MA
+receiver=AG_B
+</State 2 (controlled)>
+<UpdateSet - 2>
+internalStateB(agentB)=WAITING_MC
+knowsSymKey(agentB,SKAB)=true
+messageField(agentB,agentE,1,MB)=NB
+protocolMessage(agentB,agentE)=MB
+symEnc(MB,1,1,1)=SKAB
+</UpdateSet>
+<State 3 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_MB
+internalStateB(agentB)=WAITING_MC
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+knowsSymKey(agentB,SKAB)=true
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentB,1,MA)=SKAB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MA
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=MA
+receiver=AG_B
+symEnc(MB,1,1,1)=SKAB
+</State 3 (controlled)>
+<UpdateSet - 3>
+messageField(agentE,agentA,1,MB)=NB
+protocolMessage(agentE,agentA)=MB
+</UpdateSet>
+<State 4 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_MB
+internalStateB(agentB)=WAITING_MC
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB
+messageField(agentE,agentB,1,MA)=SKAB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MA
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MA
+receiver=AG_B
+symEnc(MB,1,1,1)=SKAB
+</State 4 (controlled)>
+<UpdateSet - 4>
+internalStateA(agentA)=END_A
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB    <---------------- 
+protocolMessage(agentA,agentE)=MC
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MC,2,1,2)=SKAB
+</UpdateSet>
+<State 5 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=WAITING_MC
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+knowsSymKey(agentA,SKAB)=true
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB   <------------------
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB
+messageField(agentE,agentB,1,MA)=SKAB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MC
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MA
+receiver=AG_B
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MB,1,1,1)=SKAB
+symEnc(MC,2,1,2)=SKAB
+</State 5 (controlled)>
+<UpdateSet - 5>
+messageField(agentE,agentB,1,MC)=CA
+messageField(agentE,agentB,2,MC)=NB    <-----------------
+protocolMessage(agentE,agentB)=MC
+</UpdateSet>
+<State 6 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=WAITING_MC
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+knowsSymKey(agentA,SKAB)=true
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB  <------------
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB  <------------
+messageField(agentE,agentB,1,MA)=SKAB
+messageField(agentE,agentB,1,MC)=CA
+messageField(agentE,agentB,2,MC)=NB  <----------
+				manca : messageField(agentE,agentA,1,MA)=NB 
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MC
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MC
+receiver=AG_B
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MB,1,1,1)=SKAB
+symEnc(MC,2,1,2)=SKAB
+</State 6 (controlled)>
+<UpdateSet - 6>
+internalStateB(agentB)=END_B   <--------------- non c'è in SSL originale
+</UpdateSet>
+<State 7 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+                                     <--------  manca knowsSignPubKey(agentB,SIGNPUBKA)=undef
+knowsSymKey(agentA,SKAB)=true
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB <-----------undef
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB  <------- undef
+messageField(agentE,agentB,1,MA)=SKAB
+messageField(agentE,agentB,1,MC)=CA
+messageField(agentE,agentB,2,MC)=NB <--------- undef
+					<-------- manca messageField(agentE,agentA,1,MA)=NB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MC
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MC
+receiver=AG_B
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MB,1,1,1)=SKAB
+symEnc(MC,2,1,2)=SKAB
+</State 7 (controlled)>
+<UpdateSet - 7>
+		<--------- su SSL ORIGINALE QUI C'è IL FINAL STATE
+</UpdateSet>
+<State 8 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B  <--------- qui c'è WAITING_CSNK
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+			<-------in SSL ORIGINALE c'è knowsSignPubKey(agentB,SIGNPUBKA)=undef
+knowsSymKey(agentA,SKAB)=true
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB
+messageField(agentE,agentB,1,MA)=SKAB
+messageField(agentE,agentB,1,MC)=CA
+messageField(agentE,agentB,2,MC)=NB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MC
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MC
+receiver=AG_B
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MB,1,1,1)=SKAB
+symEnc(MC,2,1,2)=SKAB
+</State 8 (controlled)>
+FINAL STATE: Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(MA,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B
+knowsAsymPrivKey(agentB,PRIVKB)=true
+knowsAsymPrivKey(agentE,PRIVKB)=false
+knowsSymKey(agentA,SKAB)=true
+knowsSymKey(agentB,SKAB)=true
+knowsSymKey(agentE,SKAB)=false
+messageField(agentA,agentE,1,MA)=SKAB
+messageField(agentA,agentE,1,MC)=CA
+messageField(agentA,agentE,2,MC)=NB
+messageField(agentB,agentE,1,MB)=NB
+messageField(agentE,agentA,1,MB)=NB
+messageField(agentE,agentB,1,MA)=SKAB
+messageField(agentE,agentB,1,MC)=CA
+messageField(agentE,agentB,2,MC)=NB
+mode=PASSIVE
+protocolMessage(agentA,agentE)=MC
+protocolMessage(agentB,agentE)=MB
+protocolMessage(agentE,agentA)=MB
+protocolMessage(agentE,agentB)=MC
+receiver=AG_B
+self=agentE
+sign(MC,1,2,2)=SIGNPRIVKA
+symEnc(MB,1,1,1)=SKAB
+symEnc(MC,2,1,2)=SKAB
+run terminated
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\AProverASM\SSL3.asm
+INFO - file successfully parsed for asm SSL3
+simulating SSL3.asm
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\AProverASM\SSL3.asm
+INFO - file successfully parsed for asm SSL3
+Running interactively SSL3.asm
+INITIAL STATE:Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Insert a symbol of Receiver in [AG_A, AG_B, AG_E] for chosenReceiver:
+AG_A
+Insert a symbol of Modality in [ACTIVE, PASSIVE] for chosenMode:
+PASSIVE
+<State 0 (monitored)>
+chosenMode=PASSIVE
+chosenReceiver=AG_A
+</State 0 (monitored)>
+<UpdateSet - 0>
+</UpdateSet>
+<State 1 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+internalStateA(agentA)=IDLE_MA
+internalStateB(agentB)=WAITING_MA
+mode=PASSIVE
+protocolMessage(agentA,agentE)=undef
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=undef
+receiver=AG_A
+</State 1 (controlled)>
+FINAL STATE: Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+internalStateA(agentA)=IDLE_MA
+internalStateB(agentB)=WAITING_MA
+mode=PASSIVE
+protocolMessage(agentA,agentE)=undef
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=undef
+receiver=AG_A
+self=agentE
+run terminated

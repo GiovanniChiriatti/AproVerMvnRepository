@@ -11,7 +11,8 @@ import javafx.scene.image.Image;
 public class WriteASM {
 	
 	private Boolean actorServer;
-	private String[] ruleR_Agent = new String[50];
+	private String[] ruleR_Agent = new String[10];
+	private String[] operationMessage = new String[50];
 	private Map<String, String> otherElement = new HashMap<String, String>();
 	private Map<String, String> attackerElement = new HashMap<String, String>();
 	private Map<String, String> honestElement = new HashMap<String, String>();
@@ -734,6 +735,15 @@ public class WriteASM {
 			printKnowledge(b,"Know",linesKnowledge,spaces);
 			printKnowledge(b,"Prot",linesKnowledge,spaces);
 			printKnowledge(b,"Mess",linesKnowledge,spaces);
+			// qui devo verificare se inserire la codifica o no
+			//
+			if (reversOperation(operation).equals("symEnc")) {
+				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), true)+"\n");
+			} else {
+				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), false)+"\n");
+			}
+			//
+			//
 			b.write("			                endpar\n");
 			b.write("			        else\n");
 			b.write("			                par\n");
@@ -752,10 +762,9 @@ public class WriteASM {
 			printKnowledge(b,"Prot",linesKnowledge,spaces);
 			printKnowledge(b,"Mes2",linesKnowledge,spaces);
 			if (reversOperation(operation).equals("symEnc")) {
-					b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), true)+"\n");
+				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), true)+"\n");
 			} else {
 				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), false)+"\n");
-				
 			}
 			b.write("			                          endpar\n");			
 			b.write("			                 else\n");
@@ -1239,8 +1248,21 @@ public class WriteASM {
 						b.write("		let ($e=agentE) in\n");
 						b.write("			if(internalState" + message.getActorTo().substring(0, 1)
 								+ "(self)=WAITING_M" + changNumMSG[i] + " and protocolMessage($e,self)=M" + changNumMSG[i] + ")then\n");
-						b.write("			        if(" + operation + "(M" + changNumMSG[i] + "," + levelEncField1EncField2
-								+ ",self)=true)then\n");
+//						b.write("			        if(" + operation + "(M" + changNumMSG[i] + "," + levelEncField1EncField2
+//								+ ",self)=true)then\n");
+ 						b.write("			        if(");
+ 						boolean flgPrimo = true;
+						for (String eleOperationMessage : operationMessage) {
+							if (eleOperationMessage != null) {
+								if (flgPrimo) {
+			 						b.write(eleOperationMessage.replace(":", ""));
+									flgPrimo= false;
+								} else {
+									b.write(" and " + eleOperationMessage.replace(":", ""));
+								}
+							}
+						}
+ 					    b.write(") then\n");
 						b.write("			                      internalState" + message.getActorTo().substring(0, 1)
 								+ "(self):=END_" + message.getActorTo().substring(0, 1) + "\n");
 						b.write("			        endif\n");
@@ -1949,7 +1971,12 @@ public class WriteASM {
 			int elePartenza=0; 
 			int eleArrivo=0;
 			int ultimoEle=0;
+			int numOperationMessage=0;
 			String keyUsedMsg;
+			// pulisce la tabella delle operazioni.
+			for (String eleOperationMessage : operationMessage) {
+				eleOperationMessage="";
+			}
 			for (int numMsg = 0; numMsg < 15; numMsg++) {
 				keyUsedMsg = null;
 				if (message.getSecurityFunctionsPartMessage(numMsg) != null
@@ -2017,13 +2044,16 @@ public class WriteASM {
 							changValueEve = changValueEve(keyUsedMsg, message.getActorfrom(), true).replace("($e",
 									"(self");
 						}
-						changValueEve.replace(",self", ",$e");					
+						changValueEve = changValueEve.replace(",self", ",$e");	
 						if (numMsgNext < 15 && message.getSecurityFunctionsPartMessage(numMsgNext) != null
 								&& !message.getSecurityFunctionsPartMessage(numMsgNext).isEmpty()) {
-							b.write("			                      " + operationMsg + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");
+							b.write("			                      " + operationMsg + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
+							operationMessage[numOperationMessage] = reversOperation(operationMsg) + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";
+							numOperationMessage++;
 						} else {
 							b.write("			                      " + reversOperation(operationMsg) + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");
-							
+							operationMessage[numOperationMessage] = operationMsg + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";		
+							numOperationMessage++;
 						}
 					}
 				}
@@ -2031,7 +2061,10 @@ public class WriteASM {
 		   // for (Map.Entry<String, Integer> entry : honestLevelElement.entrySet()) {
  		   // 	System.out.println("   dati in tabella :  "+ entry.getKey() + " - " +entry.getValue());
 		   //     }
-
+			System.out.println("*-------operazioni --------");
+			for (String eleOperationMessage : operationMessage) {
+				if (eleOperationMessage != null) System.out.println( "eleOperationMessage " + eleOperationMessage);
+			}
 			
 		}
 }
