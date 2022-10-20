@@ -50,7 +50,7 @@ definitions:
 			        else
 			                par
                                               protocolMessage(self,$b):=KK
-                                              messageField(self,$b,1,KK):=SKEB
+                                              messageField(self,$b,1,KK):=messageField($a,self,1,KK)
 			                      asymEnc(KK,1,1,1):=PUBKB
 			                endpar
 			        endif
@@ -68,7 +68,7 @@ definitions:
 			                 else
 			                          par
                                                        protocolMessage(self,$b):=KK
-                                                       messageField(self,$b,1,KK):=SKEB
+                                                       messageField(self,$b,1,KK):=messageField($a,self,1,KK)
 			                               asymEnc(KK,1,1,1):=PUBKB
 			                          endpar
 			                 endif

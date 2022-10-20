@@ -1152,8 +1152,8 @@ public class WriteASM {
 							+ i + "," + changNumMSG[numMessage] + "):=" + eleEve + "\n";
 					numRighe++;
 					linesKnowledge[numRighe] = "Mes3                  messageField(self,$b,"
-							+ i + "," + changNumMSG[0] + "):=" + eleEve + "\n";
-					System.out.println("MES3 :::::::::::::::: " + linesKnowledge[numRighe]);
+							+ i + "," + changNumMSG[0] + "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage]
+							+ ")\n";					System.out.println("MES3 :::::::::::::::: " + linesKnowledge[numRighe]);
 					numRighe++;
 				} else {
 					linesKnowledge[numRighe] = "Mes2                  messageField(self,$b,"
