@@ -3,6 +3,7 @@ package org.unimi.model;
 import java.util.ArrayList;
 
 public class Message {
+	private String nameMess;
 	private String actorFrom;
 	private String actorTo;
 	private String payload;
@@ -13,6 +14,7 @@ public class Message {
 	private String[] securityFunctionsPartMessage = new String[16];
 
 	public Message() {
+		nameMess="";
 		payload = "";
 		actorTo = "";
 		evesIntercept = true;
@@ -21,8 +23,9 @@ public class Message {
 		numRow2 =-1;
 	}
 
-	public Message(String actorFrom, String actorTo, String payload, Boolean  evesIntercept) {
+	public Message(String nameMess, String actorFrom, String actorTo, String payload, Boolean  evesIntercept) {
 		super();
+		this.nameMess = nameMess;
 		this.actorFrom = actorFrom;
 		this.actorTo = actorTo;
 		this.payload = payload;
@@ -37,7 +40,10 @@ public class Message {
 	public String getActorTo() {
 		return actorTo;
 	}
-
+	public String getNameMess() {
+		System.out.println("leggo name MEss " + nameMess);
+		return nameMess;
+	}
 	public void setActorTo(String actorTo) {
 		this.actorTo = actorTo;
 	}
@@ -45,6 +51,10 @@ public class Message {
 		return actorFrom;
 	}
 
+	public void setNameMess(String nameMess) {
+		System.out.println("inserisco name MEss " + nameMess);
+		this.nameMess = nameMess;
+	}
 	public void setActorFrom(String actorFrom) {
 		this.actorFrom = actorFrom;
 	}

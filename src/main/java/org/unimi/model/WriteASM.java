@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 public class WriteASM {
 	
 	private Boolean actorServer;
-	private String[] ruleR_Agent = new String[10];
-	private String[] operationMessage = new String[50];
+	private String[] ruleR_Agent = new String[150];
+	private String[] operationMessage = new String[150];
 	private Map<String, String> otherElement = new HashMap<String, String>();
 	private Map<String, String> attackerElement = new HashMap<String, String>();
 	private Map<String, String> honestElement = new HashMap<String, String>();
@@ -60,25 +60,33 @@ public class WriteASM {
 				this.numHashField=numHashField;
 				this.nameFile=nameFile;
 				this.acronym=acronym;
-				changNumMSG[0]="A";
-				changNumMSG[1]="B";
-				changNumMSG[2]="C";
-				changNumMSG[3]="D";
-				changNumMSG[4]="E";
-				changNumMSG[5]="F";
-				changNumMSG[6]="G";
-				changNumMSG[7]="H";
-				changNumMSG[8]="I";
-				changNumMSG[9]="L";
-				changNumMSG[10]="M";
-				changNumMSG[11]="N";
-				changNumMSG[12]="O";
-				changNumMSG[13]="P";
-				changNumMSG[14]="Q";
+				changNumMSG[0]="MA";
+				changNumMSG[1]="MB";
+				changNumMSG[2]="MC";
+				changNumMSG[3]="MD";
+				changNumMSG[4]="ME";
+				changNumMSG[5]="MF";
+				changNumMSG[6]="MG";
+				changNumMSG[7]="MH";
+				changNumMSG[8]="MI";
+				changNumMSG[9]="ML";
+				changNumMSG[10]="MM";
+				changNumMSG[11]="MN";
+				changNumMSG[12]="MO";
+				changNumMSG[13]="MP";
+				changNumMSG[14]="MQ";
+				int i=0;
+				for(Message e: messages.getListMessages()) {
+					if (e.getNameMess()!=null && !e.getNameMess().isEmpty()
+						&& !e.getNameMess().isBlank() && !e.getNameMess().equals("")) {
+						changNumMSG[i]= e.getNameMess();
+						}
+					i++;
+					}
 				indRuleR_Agent=0;
 //				System.out.println("-------WriteASM---------");
 			    FileWriter w;
-			    w=new FileWriter("src/main/resources/AProVerFile/"+ nameFile+".asm");
+			    w=new FileWriter("src/main/resources/AProVerTest/"+ nameFile+".asm");
 
 			   
 			    b=new BufferedWriter (w);
@@ -93,28 +101,34 @@ public class WriteASM {
 			    b.close();
 				return false;
 			}
-		    
+			System.out.println("controlli ok");
 		    // scrittura info iniziali del file asm
 		    writeOpen(b);
-
+		    System.out.println("oper ok");
 		    // scrittura delle Knowledge
 		    writeKnowledge(b);
+		    System.out.println("Know ok");
 		    b.flush();
 		    b.close();
 			
 			return true;
 		}
 	private boolean initialControl() {
+		System.out.println("initialControl");
 		if (alice == null) return false;
+		System.out.println("alice");
 		if (bob == null) return false;
+		System.out.println("bob");
 		if (eve == null) return false;
+		System.out.println("eve");
 		if (messages == null) return false;
+		System.out.println("messages");
 		if (alice.getAsymmetricPrivateKey().size()> 0 && !(eve.getAsymmetricPrivateKey().size() > 0)) return false;
 		if (alice.getAsymmetricPublicKey().size()> 0 && !(eve.getAsymmetricPublicKey().size() > 0)) return false;
-		if (alice.getAsymmetricPrivateKey().size()> 0 && !(eve.getAsymmetricPrivateKey().size() > 0)) return false;
-		if (alice.getSignaturePrivKey().size()> 0 && !(eve.getSignaturePrivKey().size() > 0)) return false;
-		if (alice.getSignaturePubKey().size()> 0 && !(eve.getSignaturePubKey().size() > 0)) return false;
-		if (alice.getSymmetricKey().size()> 0 && !(eve.getSymmetricKey().size() > 0)) return false;
+		
+	 	if (alice.getSignaturePrivKey().size()> 0 && !(eve.getSignaturePrivKey().size() > 0)) return false;
+	 	if (alice.getSignaturePubKey().size()> 0 && !(eve.getSignaturePubKey().size() > 0)) return false;
+	 	if (alice.getSymmetricKey().size()> 0 && !(eve.getSymmetricKey().size() > 0)) return false;
 
 		
 		
@@ -176,15 +190,23 @@ public class WriteASM {
 		String[] elencoSignPrivPub = new String[60];
 		b.write("\n");
 		writeKnowledgeNonce(b);
+		System.out.println("KnowledgeNonce");
 		writeKnowledgeIdentityCertificate(b);
+		System.out.println("IdentityCertificate");
 		writeKnowledgeBitString(b);
+		System.out.println("BitString");
 		writeKnowledgeSymKey(b);
+		System.out.println("SymKey");
 		elencoAsymPrivPub = writeKnowledgeAsymPrivEPubKey(b);
 		elencoSignPrivPub = writeKnowledgeSignPrivePubKey(b);
 		writeKnowledgeTag(b);
+		System.out.println("Tag");
 		writeKnowledgeDigest(b);
+		System.out.println("Digest");
 		writeKnowledgeHash(b);
+		System.out.println("hash");
 		writeKnowledgeTimestamp(b);
+		System.out.println("Timestamp");
 		b.write("\n");
 		if (!elencoAsymPrivPub[0].isEmpty()) {
 			b.write("	function asim_keyAssociation($a in KnowledgeAsymPubKey)=\n");
@@ -205,12 +227,16 @@ public class WriteASM {
 			}
 			b.write("	       endswitch\n");
 		}
-		
+		System.out.println("1-----"+actorStartProtocol);
 		writeMessageAttacker(b);
+		System.out.println("2-----"+actorStartProtocol);
 		writeMessageHonest(b);
+		System.out.println("3-----"+actorStartProtocol);
 		
 		writeRuleR_Agent(b);
+		System.out.println("4-----"+actorStartProtocol);
 		writeDefaultInitS0(b);
+		System.out.println("5-----"+actorStartProtocol);
 	}
 	//Scrittura delle informazioni legate alla Knowledge Nonce
 	private void writeKnowledgeNonce(BufferedWriter b) throws IOException {
@@ -707,72 +733,123 @@ public class WriteASM {
 					break;
 				}
 			}
-			b.write("	rule r_message_replay_M"+ changNumMSG[i] +" =\n");
-			ruleR_Agent[indRuleR_Agent]= "E r_message_replay_M"+ changNumMSG[i]+"[]";
+			b.write("	rule r_message_replay_"+ changNumMSG[i] +" =\n");
+			ruleR_Agent[indRuleR_Agent]= "E r_message_replay_"+ changNumMSG[i]+"[]";
 			indRuleR_Agent++;
 			b.write("		//choose what agets are interested by the message\n");
 			b.write("		let ($b=agent" + message.getActorTo().substring(0,1).toUpperCase() + ",$a=agent" + message.getActorfrom().substring(0,1).toUpperCase() + ") in\n");
 			b.write("			//check the reception of the message and the modality of the attack\n");
-			b.write("			if(protocolMessage($a,self)=M"+ changNumMSG[i] +" and protocolMessage(self,$b)!=M"+ changNumMSG[i] + " and mode=PASSIVE)then\n");
+			b.write("			if(protocolMessage($a,self)="+ changNumMSG[i] +" and protocolMessage(self,$b)!="+ changNumMSG[i] + " and mode=PASSIVE)then\n");
 			b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
 			b.write("			        // the message must be sent unaltered\n");
 			
 			String keyUsed = findKey(message.getPayload());
-			String operation=null;
+			String operation="";
 			if (keyUsed != null) {
 				operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());
 			} else {
-				b.write("PAYLOAD KEY DECODING ERROR");
-				return;
+				findActorFromTo(message.getActorfrom(),message.getActorTo());
 			}
 			String[] msgEncField1EncField2 = new String[15];
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2, msgField);
-			b.write("			        if("+operation+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +",self)=true)then\n");
+			System.out.println("Operation" + operation);
+			if (operation != null && !operation.isEmpty()) {
+				System.out.println("entrato");
+				b.write("			        if("+operation+"("+ changNumMSG[i]+","+ levelEncField1EncField2 +",self)=true)then\n");
+			}
+			System.out.println("uscito");
 			b.write("			                par\n");
+			System.out.println("A1");
 			String[] linesKnowledge = writeKnowledge(message,i,msgField,"$a");
-			String spaces="";
+			System.out.println("A2");
+			String spaces="                            ";
 			printKnowledge(b,"Know",linesKnowledge,spaces);
+			System.out.println("A3");
 			printKnowledge(b,"Prot",linesKnowledge,spaces);
+			System.out.println("A4");
 			printKnowledge(b,"Mess",linesKnowledge,spaces);
+			System.out.println("A5");
 			// qui devo verificare se inserire la codifica o no
 			//
-			if (reversOperation(operation).equals("symEnc")) {
-				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), true)+"\n");
-			} else {
-				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), false)+"\n");
+			if (operation != null && !operation.isEmpty()) {
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
+							+ "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
+							+ "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
 			}
 			//
 			//
 			b.write("			                endpar\n");
-			b.write("			        else\n");
-			b.write("			                par\n");
-			printKnowledge(b,"Prot",linesKnowledge,spaces);
-			printKnowledge(b,"Mess",linesKnowledge,spaces);
-			b.write("			                endpar\n");
-			b.write("			        endif\n");
+			if (operation != null && !operation.isEmpty()) {
+				b.write("			        else\n");
+				b.write("			                par\n");
+				printKnowledge(b, "Prot", linesKnowledge, spaces);
+				
+				printKnowledge(b, "Mes3", linesKnowledge, spaces);
+				
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
+							+ "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
+							+ "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
+				b.write("			                endpar\n");
+				b.write("			        endif\n");
+			}
 			b.write("			else\n");
 			b.write("			        //check the reception of the message and the modality of the attack\n");
-			b.write("			        if(protocolMessage($a,self)=M"+ changNumMSG[i] +" and protocolMessage(self,$b)!=M"+ changNumMSG[i] + " and mode=ACTIVE)then\n");
-			b.write("			                 // in the active mode the attacker can forge the message with all his knowledge\n");
-			b.write("			                 if("+operation+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +",self)=true)then\n");
+			b.write("			        if(protocolMessage($a,self)="+ changNumMSG[i] +" and protocolMessage(self,$b)!="+ changNumMSG[i] + " and mode=ACTIVE)then\n");
+			if (operation != null && !operation.isEmpty()) {
+				b.write("			                 // in the active mode the attacker can forge the message with all his knowledge\n");
+				b.write("			                 if(" + operation + "(" + changNumMSG[i] + ","
+						+ levelEncField1EncField2 + ",self)=true)then\n");
+			}
 			b.write("			                          par\n");
-			spaces="         ";
+			spaces="                                     ";
 			printKnowledge(b,"Know",linesKnowledge,spaces);
 			printKnowledge(b,"Prot",linesKnowledge,spaces);
 			printKnowledge(b,"Mes2",linesKnowledge,spaces);
-			if (reversOperation(operation).equals("symEnc")) {
-				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), true)+"\n");
-			} else {
-				b.write("			                               "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(), false)+"\n");
+			if (operation != null && !operation.isEmpty()) {
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("			                               " + reversOperation(operation) + "("
+							+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("			                               " + reversOperation(operation) + "("
+							+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
 			}
-			b.write("			                          endpar\n");			
-			b.write("			                 else\n");
-			b.write("			                          par\n");			
-			printKnowledge(b,"Prot",linesKnowledge,spaces);
-			printKnowledge(b,"Mess",linesKnowledge,spaces);				
 			b.write("			                          endpar\n");
-			b.write("			                 endif\n");
+			if (operation != null && !operation.isEmpty()) {
+				b.write("			                 else\n");
+				b.write("			                          par\n");
+				spaces="                                     ";
+				printKnowledge(b, "Prot", linesKnowledge, spaces);
+				
+				printKnowledge(b, "Mes3", linesKnowledge, spaces);
+				
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("			                               " + reversOperation(operation) + "("
+							+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("			                               " + reversOperation(operation) + "("
+							+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
+				b.write("			                          endpar\n");
+				b.write("			                 endif\n");
+			}
 			b.write("			        endif\n");
 			b.write("			endif\n");
 			b.write("		endlet\n");
@@ -818,9 +895,8 @@ public class WriteASM {
 		}
 		return keyUsed;
 	}
-	// determina quale algoritmo crittografico è stato usato prima di inviare il messaggio
-	private String findOperation(String keyUsed, String actorFrom,String actorTo ) {
-		String operation = null;
+	// determina quale SecurityKey appartiene all'cator from e all'actor to
+	private void findActorFromTo(String actorFrom,String actorTo ) {
 		switch (actorFrom) {
 		case "Alice":
 			KeyActorFrom = alice;
@@ -854,6 +930,11 @@ public class WriteASM {
 		default:
 			KeyActorTo = null;
 		}
+	}
+	// determina quale algoritmo crittografico è stato usato prima di inviare il messaggio
+	private String findOperation(String keyUsed, String actorFrom,String actorTo ) {
+		String operation = null;
+		findActorFromTo(actorFrom,actorTo);
 		if (KeyActorFrom !=null) {
 			operation= KeyActorFrom.searchEle(keyUsed);
 //			System.out.println("operation " + operation);
@@ -979,52 +1060,60 @@ public class WriteASM {
 	// routin che server per determinare di quanti field si compone il messaggio e quanti livelli di cripr/encript ci sono
 	private String[] writeKnowledge(Message message,int numMessage, String[] msgField,String typeActor) throws IOException {
 		String[] linesKnowledge = new String[50];
-		linesKnowledge[0]="Prot                                              protocolMessage(self,$b):=M"+changNumMSG[numMessage]+"\n";
+		linesKnowledge[0]="Prot                  protocolMessage(self,$b):="+changNumMSG[numMessage]+"\n";
 		Boolean flgAtorTo = true;
 		int numRighe = 1;
+		System.out.println("writeKnowledge A1");
 		for (int i = 0; i < 15; i++) {
 			if (msgField[i] != null) {
+				System.out.println("writeKnowledge A2 " + msgField[i] + " --" + KeyActorFrom);
 				String typeFieldActorFrom = KeyActorFrom.searchEle(msgField[i]);
 //				System.out.println(" Campo " + msgField[i] + " Tipo Campo " + typeFieldActorFrom);
+				System.out.println("writeKnowledge A3");
 				if (typeFieldActorFrom == null) {
+					System.out.println("writeKnowledge A4");
 					flgAtorTo = false;
 					typeFieldActorFrom = KeyActorTo.searchEle(msgField[i]);
+					System.out.println("writeKnowledge A5");
 						if (typeFieldActorFrom == null) {	
+							System.out.println("writeKnowledge A6");
 								typeFieldActorFrom = "Other";
 								otherElement.put(message.getActorfrom().substring(0,1) + " "+ msgField[i].toUpperCase(),message.getActorfrom().substring(0,1) + " "+ msgField[i].toUpperCase() );
+								System.out.println("writeKnowledge A7");
 						}
 				}
+				System.out.println("writeKnowledge A8 " + typeFieldActorFrom );
 				String eleEve=null;
 				switch (typeFieldActorFrom) {
 				case "Asymmetric Public Key":
 					typeFieldActorFrom = "knowsAsymPubKey";
 					eleEve = eve.getAsymmetricPublicKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")");}
 					break;
 				case "Asymmetric Private Key":
 					typeFieldActorFrom = "knowsAsymPrivKey";
 					eleEve = eve.getAsymmetricPrivateKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")");}
 					break;
 				case "Symmetric Key":
 					typeFieldActorFrom = "knowsSymKey";
 					eleEve = eve.getSymmetricKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")");}
 					break;
 				case "Signature Pub Key":
 					typeFieldActorFrom = "knowsSignPubKey";
 					eleEve = eve.getSignaturePubKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")");}
 					break;
 				case "Signature Priv Key":
 					typeFieldActorFrom = "knowsSignPrivKey";
 					eleEve = eve.getSignaturePrivKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")");}
 					break;
 				case "Hash":
 					typeFieldActorFrom = "knowsHash";
 					eleEve = eve.getHashKey().get(0);
-					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + ",M" + changNumMSG[numMessage] + ")\n");}
+					if (flgAtorTo) { attackerElement.put(message.getActorTo().substring(0, 1) + " " + msgField[i].toUpperCase(), "messageField($b,self," + i + "," + changNumMSG[numMessage] + ")\n");}
 					break;
 				case "Nonce":
 					typeFieldActorFrom = "knowsNonce";
@@ -1050,25 +1139,36 @@ public class WriteASM {
 				default:
 					typeFieldActorFrom = null;
 				}
-				linesKnowledge[numRighe] = "Know                                              " + typeFieldActorFrom
-						+ "(self,messageField("+ typeActor+",self," + i + ",M" + changNumMSG[numMessage] + ")):=true\n";
+				System.out.println("writeKnowledge A9 ");
+				linesKnowledge[numRighe] = "Know                  " + typeFieldActorFrom
+						+ "(self,messageField("+ typeActor+",self," + i + "," + changNumMSG[numMessage] + ")):=true\n";
 				numRighe++;
 
-				linesKnowledge[numRighe] = "Mess                                              messageField(self,$b," + i
-						+ ",M" + changNumMSG[numMessage] + "):=messageField("+typeActor +",self," + i + ",M" + changNumMSG[numMessage] + ")\n";
+				linesKnowledge[numRighe] = "Mess                  messageField(self,$b," + i
+						+ "," + changNumMSG[numMessage] + "):=messageField("+typeActor +",self," + i + "," + changNumMSG[numMessage] + ")\n";
 				numRighe++;
 				if (eleEve != null) {
-					linesKnowledge[numRighe] = "Mes2                                              messageField(self,$b,"
-							+ i + ",M" + changNumMSG[numMessage] + "):=" + eleEve + "\n";
+					linesKnowledge[numRighe] = "Mes2                  messageField(self,$b,"
+							+ i + "," + changNumMSG[numMessage] + "):=" + eleEve + "\n";
+					numRighe++;
+					linesKnowledge[numRighe] = "Mes3                  messageField(self,$b,"
+							+ i + "," + changNumMSG[0] + "):=" + eleEve + "\n";
+					System.out.println("MES3 :::::::::::::::: " + linesKnowledge[numRighe]);
 					numRighe++;
 				} else {
-					linesKnowledge[numRighe] = "Mes2                                              messageField(self,$b,"
-							+ i + ",M" + changNumMSG[numMessage] + "):=messageField(" + typeActor + ",self," + i + ",M" + changNumMSG[numMessage]
+					linesKnowledge[numRighe] = "Mes2                  messageField(self,$b,"
+							+ i + "," + changNumMSG[numMessage] + "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage]
 							+ ")\n";
+					numRighe++;
+					linesKnowledge[numRighe] = "Mes3                  messageField(self,$b,"
+							+ i + "," + changNumMSG[0] + "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage]
+							+ ")\n";
+					System.out.println("MES3 ............. " + linesKnowledge[numRighe]);
 					numRighe++;
 				}
 			}
 		}
+		System.out.println("writeKnowledge A10 ");
 		return linesKnowledge;
 	}
 	private void printKnowledge(BufferedWriter b, String type,String[]linesKnowledge,String spaces ) throws IOException {
@@ -1085,19 +1185,35 @@ public class WriteASM {
 		b.write("	/*HONEST AGENT RULES*/	\n");
 		String operationPrev="";
 		String levelEncField1EncField2Prev="";
+		boolean flgBob = false;
+		boolean flgAlice = false;
+		boolean flgServer = false;
 		
 		for (int i = 0; i < 15; i++) {
 			Message message = messages.getMessage(i);
+			System.out.println("-------> " + message);
+			System.out.println("i " + i + " actorfrom " + message.getActorfrom());
 			if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
 				if (i > 0) {
 					break;
 				}
 			}
+			switch (message.getActorfrom()) {
+			case "Alice":
+				flgAlice =true;
+				break;
+			case "Bob":
+				flgBob =true;
+				break;
+			case "Server":
+				flgServer =true;
+				break;
+			}	
 			String[] msgEncField1EncField2 = new String[15];
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2, msgField);
-			b.write("	rule r_message_M"+ changNumMSG[i] +" =\n");
-			ruleR_Agent[indRuleR_Agent]= message.getActorfrom().toUpperCase().substring(0, 1)+" r_message_M"+ changNumMSG[i]+"[]";
+			b.write("	rule r_message_"+ changNumMSG[i] +" =\n");
+			ruleR_Agent[indRuleR_Agent]= message.getActorfrom().toUpperCase().substring(0, 1)+" r_message_"+ changNumMSG[i]+"[]";
 			indRuleR_Agent++;
 			b.write("		let ($e=agentE) in\n");
 			String keyUsed = findKey(message.getPayload());
@@ -1105,38 +1221,47 @@ public class WriteASM {
 			if (keyUsed != null) {
 				operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());				
 			} else {
-				b.write("PAYLOAD KEY DECODING ERROR");
-				return;
+				findActorFromTo(message.getActorfrom(),message.getActorTo());
 			}
 			if(i==0) {
 				actorStartProtocol = message.getActorfrom();
 				actorReceiveProtocol = message.getActorTo();
-				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=IDLE_M"+ changNumMSG[i] + ")then \n");
+				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=IDLE_"+ changNumMSG[i] + ")then \n");
 				b.write("			        if(receiver=AG_"+message.getActorTo().substring(0, 1)+")then\n");
 				b.write("			                par\n");
-				b.write("			                       protocolMessage(self,$e):=M"+changNumMSG[i]+"\n");
+				b.write("			                       protocolMessage(self,$e):="+changNumMSG[i]+"\n");
 				for (int k = 0; k < 15; k++) {
 					if (msgField[k] != null) {
-						b.write("			                       messageField(self,$e,"+k+",M"+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");						
-						honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");					
+						b.write("			                       messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");						
+						honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 					}
 				}
-				b.write("			                       "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findValueHonest(findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(),false),message.getActorTo()) +"\n");
+				if (operation != null && !operation.isEmpty()) {
+					b.write("			                       " + reversOperation(operation) + "(" + changNumMSG[i]
+							+ "," + levelEncField1EncField2 + "):="
+							+ findValueHonest(findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false),
+									message.getActorTo())
+							+ "\n");
+				}
 				int j = i+1;
-				b.write("			                       internalState"+message.getActorfrom().substring(0, 1)+"(self):=WAITING_M"+changNumMSG[j]+"\n");					
+				b.write("			                       internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
 				b.write("			                endpar\n");
 				b.write("			        else\n");
 				b.write("			                if(receiver=AG_E)then\n");
 				b.write("			                        par\n");
-				b.write("			                              protocolMessage(self,$e):=M"+changNumMSG[i]+"\n");
+				b.write("			                              protocolMessage(self,$e):="+changNumMSG[i]+"\n");
 				for (int k = 0; k < 15; k++) {
 					if (msgField[k] != null) {
-						b.write("			                              messageField(self,$e,"+k+",M"+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");				
-						honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");
+						b.write("			                              messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");				
+						honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
 					}
 				}
-				b.write("			                              "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + changValueEve(keyUsed,message.getActorfrom(),true).toUpperCase() +"\n");
-				b.write("			                              internalState"+message.getActorfrom().substring(0, 1)+"(self):=WAITING_M"+changNumMSG[j]+"\n");					
+				if (operation != null && !operation.isEmpty()) {
+					b.write("			                              " + reversOperation(operation) + "("
+							+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+							+ changValueEve(keyUsed, message.getActorfrom(), true).toUpperCase() + "\n");
+				}
+				b.write("			                              internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
 				b.write("			                        endpar\n");
 				b.write("			                endif\n");				
 				b.write("			        endif\n");	
@@ -1146,38 +1271,53 @@ public class WriteASM {
 				
 			} else {
 				int j = i-1;
-				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=WAITING_M"+ changNumMSG[j] + " and protocolMessage($e,self)=M"+ changNumMSG[j] +")then\n");
+				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=WAITING_"+ changNumMSG[j] + " and protocolMessage($e,self)="+ changNumMSG[j] +")then\n");
 				if (actorStartProtocol.equals(message.getActorTo())){
 								Message messagePrev = messages.getMessage(i-1);
 								String[] msgEncField1EncField2Prev = new String[15];
 								String[] msgFieldPrev = new String[15];
 								levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-								b.write("			        if("+operationPrev+"(M"+ changNumMSG[j]+","+ levelEncField1EncField2Prev +",self)=true)then\n");
+								if (operationPrev != null && !operationPrev.isEmpty()) {
+									b.write("			        if(" + operationPrev + "(" + changNumMSG[j] + ","
+											+ levelEncField1EncField2Prev + ",self)=true)then\n");
+								}
 								b.write("			                par\n");
 								String[] linesKnowledgePrev = writeKnowledge(messagePrev,j,msgFieldPrev,"$e");
-								String spaces="";
+								String spaces="                            ";
 								printKnowledge(b,"Know",linesKnowledgePrev,spaces);
-								b.write("			                      protocolMessage(self,$e):=M"+ changNumMSG[i] +"\n");
+								b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
 								for (int k = 0; k < 15; k++) {
 									if (msgField[k] != null) {
-										b.write("			                      messageField(self,$e,"+k+",M"+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");															
-										honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");
-										honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");					
+										b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");															
+										honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
+										honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 									}
 								}
-								if (reversOperation(operation).equals("symEnc")) {
-									b.write("			                      "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(),true).replace("$b", "$e") +"\n");
-								} else {
-									b.write("			                      "+reversOperation(operation)+"(M"+ changNumMSG[i]+","+ levelEncField1EncField2 +"):=" + findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(),false).replace("$b", "$e") +"\n");									
+								if (operationPrev != null && !operationPrev.isEmpty()) {
+									if (reversOperation(operationPrev).equals("symEnc")) {
+										b.write("			                      " + reversOperation(operationPrev) + "("
+												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
+														true).replace("$b", "$e")
+												+ "\n");
+									} else {
+										b.write("			                      " + reversOperation(operationPrev) + "("
+												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
+														false).replace("$b", "$e")
+												+ "\n");
+									}
 								}
 									j=i+1;
 								if (messages.getMessage(i+1).getActorfrom()!=null && !messages.getMessage(i+1).getActorfrom().isEmpty()) {
-								       b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=WAITING_M"+changNumMSG[j]+"\n");					
+								       b.write("			                      internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
 								} else {
 								       b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=END_"+message.getActorfrom().substring(0, 1)+"\n");								
 								}
-								b.write("			                endpar\n");	
-								b.write("			        endif\n");	
+								b.write("			                endpar\n");
+								if (operationPrev != null && !operationPrev.isEmpty()) {
+									b.write("			        endif\n");
+								}
 								b.write("			endif\n");
 								b.write("	endlet\n");
 				} else {
@@ -1186,72 +1326,94 @@ public class WriteASM {
 					String[] msgEncField1EncField2Prev = new String[15];
 					String[] msgFieldPrev = new String[15];
 					levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-					b.write("			           if("+operationPrev+"(M"+ changNumMSG[j]+","+ levelEncField1EncField2Prev +",self)=true)then\n");
+					if (operationPrev != null && !operationPrev.isEmpty()) {
+						b.write("			           if(" + operationPrev + "(" + changNumMSG[j] + ","
+								+ levelEncField1EncField2Prev + ",self)=true)then\n");
+					}
 					b.write("			                par\n");
 					String[] linesKnowledgePrev = writeKnowledge(messagePrev,j,msgFieldPrev,"$e");
-					String spaces="";
+					String spaces="                            ";
 					printKnowledge(b,"Know",linesKnowledgePrev,spaces);
-					b.write("			                      protocolMessage(self,$e):=M"+ changNumMSG[i] +"\n");
+					b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
 					for (int k = 0; k < 15; k++) {
 						if (msgField[k] != null) {
 			//				b.write("			                      messageField(self,$e,"+k+",M"+i+"):="+msgField[k].toUpperCase()+"\n");						
-							b.write("			                      messageField(self,$e,"+k+",M"+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");															
-							honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");					
+							b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");															
+							honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 						}
 					}
 			//		b.write("			                      "+reversOperation(operation)+"(M"+ i+","+ levelEncField1EncField2 +"):=" + findValueHonest(findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(),false),message.getActorTo()) +"\n");
+					System.out.println("determinesOperation b IN");
 					determinesOperation ( b, message, i, message.getActorfrom(), "",true);
+					System.out.println("determinesOperation b OUT");
 					j=i+1;
 					if (messages.getMessage(i+1).getActorfrom()!=null && !messages.getMessage(i+1).getActorfrom().isEmpty()) {
-					       b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=WAITING_M"+changNumMSG[j]+"\n");					
+					       b.write("			                      internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
 					} else {
 					       b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=END_"+message.getActorfrom().substring(0, 1)+"\n");								
 					}
 					b.write("			                endpar\n");	
-					b.write("			        endif\n");	
+					if (operationPrev != null && !operationPrev.isEmpty()) {
+						b.write("			        endif\n");	
+					}
 					b.write("			else\n");
 					msgFieldPrev = new String[15];
 					j=i-1; 
 					levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-					b.write("			           if("+operationPrev+"(M"+ changNumMSG[j]+","+ levelEncField1EncField2Prev +",self)=true)then\n");
+					if (operationPrev != null && !operationPrev.isEmpty()) {
+						b.write("			           if("+operationPrev+"("+ changNumMSG[j]+","+ levelEncField1EncField2Prev +",self)=true)then\n");
+					}
 					b.write("			                par\n");
 					linesKnowledgePrev = writeKnowledge(messagePrev,j,msgFieldPrev,"$e");
-					spaces="";
+					spaces="                            ";
 					printKnowledge(b,"Know",linesKnowledgePrev,spaces);
-					b.write("			                      protocolMessage(self,$e):=M"+ changNumMSG[i] +"\n");
+					b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
 					for (int k = 0; k < 15; k++) {
 						if (msgField[k] != null) {
-							b.write("			                      messageField(self,$e,"+k+",M"+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");						
-							honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+",M"+changNumMSG[i]+")");
+							b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");						
+							honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
 						}
 					}
 	//				b.write("			                      "+reversOperation(operation)+"(M"+ i+","+ levelEncField1EncField2 +"):=" + changValueEve(keyUsed,message.getActorfrom(),true) +"\n");
+					System.out.println("determinesOperation a IN");
 					determinesOperation ( b, message, i, message.getActorfrom(), "",false);
+					System.out.println("determinesOperation a OUT");
 					j=i+1;
 					if (messages.getMessage(i+1).getActorfrom()!=null && !messages.getMessage(i+1).getActorfrom().isEmpty()) {
 						   endMessage = false;
-						   b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=WAITING_M"+changNumMSG[j]+"\n");					
+						   b.write("			                      internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
 					} else {
 						   endMessage = true;
 					       b.write("			                      internalState"+message.getActorfrom().substring(0, 1)+"(self):=END_"+message.getActorfrom().substring(0, 1)+"\n");								
 					}
+					System.out.println("determinesOperation c OUT");
 					b.write("			                endpar\n");	
-					b.write("				  endif\n");	
+				//	if (operationPrev != null && !operationPrev.isEmpty()) {
+				 		b.write("				  endif\n");	
+				//	}
 					b.write("				endif\n");
 					b.write("			endif\n");
 					b.write("		endlet\n");
+					System.out.println("determinesOperation d OUT" + endMessage);
 					if (endMessage) {
-						b.write("	rule r_check_M" + changNumMSG[i] + " =\n");
-						ruleR_Agent[indRuleR_Agent] = message.getActorTo().toUpperCase().substring(0, 1) + " r_check_M"
+						System.out.println("determinesOperation d1 OUT");
+						System.out.println("determinesOperation d1 OUT" + changNumMSG[i]);
+						b.write("	rule r_check_" + changNumMSG[i] + " =\n");
+						System.out.println("determinesOperation d2 OUT " + i + " - " + indRuleR_Agent);
+						System.out.println("determinesOperation d2 OUT " +message.getActorTo());
+						ruleR_Agent[indRuleR_Agent] = message.getActorTo().toUpperCase().substring(0, 1) + " r_check_"
 								+ changNumMSG[i]+"[]";
+						System.out.println("determinesOperation d3 OUT");
 						indRuleR_Agent++;
 						b.write("		let ($e=agentE) in\n");
 						b.write("			if(internalState" + message.getActorTo().substring(0, 1)
-								+ "(self)=WAITING_M" + changNumMSG[i] + " and protocolMessage($e,self)=M" + changNumMSG[i] + ")then\n");
-//						b.write("			        if(" + operation + "(M" + changNumMSG[i] + "," + levelEncField1EncField2
+								+ "(self)=WAITING_" + changNumMSG[i] + " and protocolMessage($e,self)=" + changNumMSG[i] + ")then\n");
+//						b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 //								+ ",self)=true)then\n");
+						System.out.println("determinesOperation d4 OUT");
  						b.write("			        if(");
  						boolean flgPrimo = true;
+ 						System.out.println("determinesOperation e OUT");
 						for (String eleOperationMessage : operationMessage) {
 							if (eleOperationMessage != null) {
 								if (flgPrimo) {
@@ -1262,12 +1424,33 @@ public class WriteASM {
 								}
 							}
 						}
+						System.out.println("determinesOperation f OUT");
  					    b.write(") then\n");
 						b.write("			                      internalState" + message.getActorTo().substring(0, 1)
 								+ "(self):=END_" + message.getActorTo().substring(0, 1) + "\n");
+						
+						if (message.getActorTo().substring(0, 1).equals("A") && message.getActorfrom().substring(0, 1).equals("B") && flgServer ) {
+							b.write("			                      internalStateS(self):=END_S\n");
+						}
+						if (message.getActorTo().substring(0, 1).equals("A") && message.getActorfrom().substring(0, 1).equals("S") && flgBob ) {
+							b.write("			                      internalStateB(self):=END_B\n");
+						}
+						if (message.getActorTo().substring(0, 1).equals("B") && message.getActorfrom().substring(0, 1).equals("A") && flgServer ) {
+							b.write("			                      internalStateS(self):=END_S\n");
+						}
+						if (message.getActorTo().substring(0, 1).equals("B") && message.getActorfrom().substring(0, 1).equals("S") && flgAlice ) {
+							b.write("			                      internalStateA(self):=END_A\n");
+						}	
+						if (message.getActorTo().substring(0, 1).equals("S") && message.getActorfrom().substring(0, 1).equals("A") && flgBob ) {
+							b.write("			                      internalStateB(self):=END_B\n");
+						}
+						if (message.getActorTo().substring(0, 1).equals("S") && message.getActorfrom().substring(0, 1).equals("B") && flgAlice ) {
+							b.write("			                      internalStateA(self):=END_A\n");
+						}
 						b.write("			        endif\n");
 						b.write("			endif\n");
 						b.write("		endlet\n");
+						System.out.println("determinesOperation g OUT-" + message.getActorTo().substring(0, 1) + " - "  + message.getActorfrom().substring(0, 1)+ " - " + flgAlice + " - " + flgBob+ " - " + flgServer);
 					}
 				}
 			}
@@ -1298,22 +1481,22 @@ public class WriteASM {
 			case "Symmetric Key":
 				if (eve.getSymmetricKey().get(0) != null) {
 					valueOutput = eve.getSymmetricKey().get(0);
-				}
-				for (String e : eve.getSymmetricKey()) {
+					for (String e : eve.getSymmetricKey()) {
 //					System.out.println("Verifico Alice " + (actorFrom.contains("Alice") && alice.searchSym(e)));
 //					System.out.println("Verifico Bob " + (actorFrom.contains("Bob") && alice.searchSym(e)));
 
-					if (actorFrom.contains("Alice") && alice.searchSym(e)) {
-						valueOutput = e;
-						break;
-					}
-					if (actorFrom.contains("Bob") && bob.searchSym(e)) {
-						valueOutput = e;
-						break;
-					}
-					if (actorFrom.contains("Server") && server.searchSym(e)) {
-						valueOutput = e;
-						break;
+						if (actorFrom.contains("Alice") && alice.searchSym(e)) {
+							valueOutput = e;
+							break;
+						}
+						if (actorFrom.contains("Bob") && bob.searchSym(e)) {
+							valueOutput = e;
+							break;
+						}
+						if (actorFrom.contains("Server") && server.searchSym(e)) {
+							valueOutput = e;
+							break;
+						}
 					}
 				}
 	
@@ -1350,7 +1533,7 @@ public class WriteASM {
 				case "Symmetric Key":
 					if (eve.getSymmetricKey().get(0) != null) {
 						valueOutput = eve.getSymmetricKey().get(0);
-					}
+					
 					for (String e : eve.getSymmetricKey()) {
 						if (actorFrom.contains("Alice") && alice.searchSym(e)) {
 							valueOutput = e;
@@ -1364,6 +1547,7 @@ public class WriteASM {
 							valueOutput = e;
 							break;
 						}
+					  }
 					}
 					break;
 				case "Signature Pub Key":
@@ -1513,22 +1697,31 @@ public class WriteASM {
 		b.write("	  endpar\n");		
 	}
 	private void writeDefaultInitS0(BufferedWriter b) throws IOException {
+		System.out.println("5b-----");
 		b.write("default init s0:\n");
-		b.write("	function internalState"+actorStartProtocol.substring(0, 1)+"($a in "+actorStartProtocol+")=IDLE_MA\n");				
-		b.write("	function internalState"+actorReceiveProtocol.substring(0, 1)+"($b in "+actorReceiveProtocol+")=WAITING_MA\n");				
+		System.out.println("5b1-----" + actorStartProtocol);
+		b.write("	function internalState"+actorStartProtocol.substring(0, 1)+"($a in "+actorStartProtocol+")=IDLE_"+changNumMSG[0]+"\n");				
+		System.out.println("5b2-----");
+		b.write("	function internalState"+actorReceiveProtocol.substring(0, 1)+"($b in "+actorReceiveProtocol+")=WAITING_"+changNumMSG[0]+"\n");				
+		System.out.println("5b3-----");
 		b.write("	function receiver=chosenReceiver\n");
 		boolean found = false;
 		
-		
+		System.out.println("5b4-----");
 		// Scrittura dello stato S0 per la KnowledgeNonce
 		countIf=0;
 		found = writeDefaultInitS0Nonce(b, alice, "Alice", found);
+		System.out.println("5c-----");
 		found = writeDefaultInitS0Nonce(b, bob, "Bob", found);
+		System.out.println("5e-----");
 		found = writeDefaultInitS0Nonce(b, eve, "Eve", found);
+		System.out.println("5f-----");
 		if (actorServer) {
+			System.out.println("5g-----");
 			found = writeDefaultInitS0Nonce(b, server, "Server", found);
 		}
-		
+		System.out.println("5h-----");
+		System.out.println("6-----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1536,7 +1729,7 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}
-		
+		System.out.println("7-----");
 		// Scrittura dello stato S0 per la knowsIdentityCertificate
 		countIf=0;
 		found = false;
@@ -1546,7 +1739,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0IDCer(b, server, "Server", found);
 		}
-		
+		System.out.println("8-----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1554,7 +1747,7 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}
-		
+		System.out.println("9-----");
 		// Scrittura dello stato S0 per la knowsBitString
 		countIf=0;
 		found = false;
@@ -1564,7 +1757,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0BitSt(b, server, "Server", found);
 		}
-		
+		System.out.println("10----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1572,7 +1765,7 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}
-		
+		System.out.println("11----");
 		// Scrittura dello stato S0 per la KnowledgeTag
 		countIf=0;
 		found = false;
@@ -1582,7 +1775,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0Tag(b, server, "Server", found);
 		}
-		
+		System.out.println("12----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1590,7 +1783,7 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}
-	
+		System.out.println("13----");
 		// Scrittura dello stato S0 per la KnowledgeDigest
 		countIf=0;
 		found = false;
@@ -1600,7 +1793,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0Dig(b, server, "Server", found);
 		}
-		
+		System.out.println("14----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1608,16 +1801,22 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}
+		System.out.println("15----");
 		// Scrittura dello stato S0 per la KnowledgeOther
 				countIf=0;
 				found = false;
 				found = writeDefaultInitS0Hot(b, alice, "Alice", found);
+				System.out.println("15a----");
 				found = writeDefaultInitS0Hot(b, bob, "Bob", found);
+				System.out.println("15b----");
 				found = writeDefaultInitS0Hot(b, eve, "Eve", found);
+				System.out.println("15c----");
 				if (actorServer) {
+					System.out.println("15d----");
 					found = writeDefaultInitS0Hot(b, server, "Server", found);
+					System.out.println("15e----");
 				}
-				
+				System.out.println("15f----");
 				if (countIf>0) {
 					b.write(" false");
 					for (int i = 0; i < countIf; i++) {
@@ -1625,6 +1824,7 @@ public class WriteASM {
 					}
 					b.write("\n");
 				}
+				System.out.println("16----");
 		// Scrittura dello stato S0 per la KnowledgeTimestamp
 		countIf=0;
 		found = false;
@@ -1634,7 +1834,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0Tim(b, server, "Server", found);
 		}
-		
+		System.out.println("17----");
 		if (countIf>0) {
 			b.write(" false");
 			for (int i = 0; i < countIf; i++) {
@@ -1642,7 +1842,7 @@ public class WriteASM {
 			}
 			b.write("\n");
 		}			
-
+		System.out.println("18----");
 		// Scrittura dello stato S0 per la knowsAsymPrivKey e knowsAsymPubKey
 		countIf=0;
 		found = false;
@@ -1652,12 +1852,12 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0AsPr(b, server, "Server", found);
 		}
-		
+		System.out.println("19----");
 		if (countIf>0) {
 			b.write(") then true else false endif\n");
 			b.write("	function knowsAsymPubKey($a in Agent ,$pk in KnowledgeAsymPubKey)=true\n");
 		}
-		
+		System.out.println("20----");
 		// Scrittura dello stato S0 per la KnowledgeSymKey
 		countIf=0;
 		found = false;
@@ -1667,7 +1867,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0SymK(b, server, "Server", found);
 		}
-		
+		System.out.println("21----");
 		if (countIf>0) {
 			b.write(") then true else false endif\n");;
 		}
@@ -1682,7 +1882,7 @@ public class WriteASM {
 		if (actorServer) {
 			found = writeDefaultInitS0SiPu(b, server, "Server", found);
 		}
-		
+		System.out.println("22----");
 		if (countIf>0) {
 			b.write(") then true else false endif\n");
 			b.write("	function knowsSignPrivKey($a in Agent ,$spr in KnowledgeSignPrivKey)=true\n");
@@ -1923,6 +2123,18 @@ public class WriteASM {
 						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $k=" + ele.toUpperCase() + ")");
 					}
 			}
+			for (String ele : KeyActor.getKnowAcq()) {
+				if (ele.contains("Asymmetric Private Key")) {
+					if (!found) {
+						b.write("	function knowsAsymPrivKey($a in Agent ,$k in KnowledgeSymKey)=if(($a=agent"
+								+ agent.substring(0, 1) + " and $k=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+						countIf++;
+						found = true;
+					} else {
+						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $k=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+					}
+				}
+			}
 
 			return found;
 		}		
@@ -1941,7 +2153,20 @@ public class WriteASM {
 						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $sk=" + ele.toUpperCase() + ")");
 					}
 			}
-
+			for (String ele : KeyActor.getKnowAcq()) {
+				if (ele.contains("Symmetric Key")) {
+					if (!found) {
+						b.write("	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agent"
+								+ agent.substring(0, 1) + " and $sk=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+						countIf++;
+						found = true;
+					} else {
+						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $sk=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+					}
+				}
+			}
+			
+			
 			return found;
 		}		
 		
@@ -1959,6 +2184,19 @@ public class WriteASM {
 						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $spu=" + ele.toUpperCase() + ")");
 					}
 			}
+			for (String ele : KeyActor.getKnowAcq()) {
+				if (ele.contains("Signature Pub Key")) {
+					if (!found) {
+						b.write("	function knowsSymKey($a in Agent ,$spu in KnowledgeSymKey)=if(($a=agent"
+								+ agent.substring(0, 1) + " and $spu=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+						countIf++;
+						found = true;
+					} else {
+						b.write(" or ($a=agent" + agent.substring(0, 1) + " and $spu=" + ele.substring(0,ele.indexOf(" - ")).toUpperCase() + ")");
+					}
+				}
+			}
+
 
 			return found;
 		}		
@@ -2047,12 +2285,12 @@ public class WriteASM {
 						changValueEve = changValueEve.replace(",self", ",$e");	
 						if (numMsgNext < 15 && message.getSecurityFunctionsPartMessage(numMsgNext) != null
 								&& !message.getSecurityFunctionsPartMessage(numMsgNext).isEmpty()) {
-							b.write("			                      " + operationMsg + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
-							operationMessage[numOperationMessage] = reversOperation(operationMsg) + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";
+							b.write("			                      " + operationMsg + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
+							operationMessage[numOperationMessage] = reversOperation(operationMsg) + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";
 							numOperationMessage++;
 						} else {
-							b.write("			                      " + reversOperation(operationMsg) + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");
-							operationMessage[numOperationMessage] = operationMsg + "(M" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";		
+							b.write("			                      " + reversOperation(operationMsg) + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");
+							operationMessage[numOperationMessage] = operationMsg + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";		
 							numOperationMessage++;
 						}
 					}

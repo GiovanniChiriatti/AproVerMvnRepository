@@ -95,6 +95,8 @@ public class CreateFilesASM {
 					writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(), writeCrypto.getNumEncField(),
 					writeCrypto.getNumSignField(), writeCrypto.getNumSymField(), 
 					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());
+			System.out.println("---");
+			System.out.println("Verifica WriteCryptoLibrary  ");
 			if (!writeASM.writeFile()) {
 				resultOperation.setText("Create Files Error");
 				return;
@@ -102,6 +104,8 @@ public class CreateFilesASM {
 		} else {
 				WriteCryptoLibrary writeCrypto1 = new WriteCryptoLibrary(true, messages, alice, bob, eve, server,
 						toolEve, acronymProcolASM.getText());
+				System.out.println("---");
+				System.out.println("Verifica WriteCryptoLibrary: ");
 				if (!writeCrypto1.writeFile()) {
 					resultOperation.setText("Create Files Error");
 					return;

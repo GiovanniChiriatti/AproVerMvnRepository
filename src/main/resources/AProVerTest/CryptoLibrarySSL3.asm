@@ -1,4 +1,4 @@
-module CryptoLibraryfff
+module CryptoLibrarySSL3
 
 import ../StandardLibrary
 export *
@@ -10,10 +10,10 @@ signature:
 	domain Eve subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MC | END_A}
-	enum domain StateBob = {WAITING_MA | SEND_MB | WAITING_MC | END_B}
+	enum domain StateAlice = {IDLE_KK | WAITING_NK | SEND_MCSNK | END_A}
+	enum domain StateBob = {WAITING_KK | SEND_MNK | WAITING_CSNK | END_B}
 
-	enum domain Message = {MA | MB | MC} 
+	enum domain Message = {KK | NK | CSNK} 
 
 	enum domain Knowledge ={CA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE|SIGNPRIVKA|SIGNPRIVKB|SIGNPRIVKE|SIGNPUBKA|SIGNPUBKB|SIGNPUBKE|SKAB|SKAE|SKEB}
 

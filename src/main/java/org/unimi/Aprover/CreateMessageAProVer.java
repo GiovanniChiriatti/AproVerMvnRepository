@@ -75,10 +75,10 @@ public class CreateMessageAProVer {
 	private Boolean helpFlag = true;
 	private String unicAtorToSelected = null;
 	int numEleMenuButton=0;
-	
+	String[] changNumMSG = new String[15];
 	
     @FXML
-    private TextField actorFrom, msgPayload;
+    private TextField actorFrom, msgPayload,nameMess;
 
     @FXML
     private ComboBox actorTo;
@@ -125,11 +125,29 @@ public class CreateMessageAProVer {
 		sigPub = true;
 		hashDecEnc = true;
 		other = true;
-		
+		changNumMSG[0]="A";
+		changNumMSG[1]="B";
+		changNumMSG[2]="C";
+		changNumMSG[3]="D";
+		changNumMSG[4]="E";
+		changNumMSG[5]="F";
+		changNumMSG[6]="G";
+		changNumMSG[7]="H";
+		changNumMSG[8]="I";
+		changNumMSG[9]="L";
+		changNumMSG[10]="M";
+		changNumMSG[11]="N";
+		changNumMSG[12]="O";
+		changNumMSG[13]="P";
+		changNumMSG[14]="Q";
 		doneButton.setVisible(false);
 		menuSecurityFunction.setVisible(false);
 		numNodiMessagePayloadField= -1;
 		NumNodiSecurityFunctions=-1;
+		//if (alice == null) { alice = new SecurityKey();}
+		//if (bob == null) { alice = new SecurityKey();}
+		//if (eve == null) { alice = new SecurityKey();}
+		//if (server == null) { alice = new SecurityKey();}
 	}
 	
 // prima di essere creata la Scene il controller precedente inizializza le informazioni di questo controller
@@ -365,6 +383,7 @@ public class CreateMessageAProVer {
 			loadEleOther(messages, actorFrom.getText());
 		}
     	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo);
+       	nameMess.setText(message.getNameMess());
        	
 		txtPreview.getChildren().clear();
 		textFlowSecurity.getChildren().clear();
@@ -382,6 +401,8 @@ public class CreateMessageAProVer {
     }
     private void loadEleOther(Messages messages, String actorFrom) {
     	System.out.println(" numero messaggio che so caricando" +    numMessage + " ActorFrom "+ actorFrom);
+    	
+    	
     	for (int i = 0; i<numMessage-1 ; i++) {
     		System.out.println(" leggo messaggio " + i + " - " + messages.getListMessages()[i] + " - " +  messages.getListMessages()[i].getActorTo());
     		if (messages.getListMessages()[i] !=null && messages.getListMessages()[i].getActorTo() !=null && messages.getListMessages()[i].getActorTo().equals(actorFrom)) {
@@ -390,6 +411,7 @@ public class CreateMessageAProVer {
         				System.out.println("lista " + i + " " + j + "  "+ messages.getListMessages()[i].getListPartMessage()[j][k]);
         				if (messages.getListMessages()[i].getListPartMessage()[j][k] != null 
         							&& !messages.getListMessages()[i].getListPartMessage()[j][k].contains("PAYLOAD")) {
+        					writeKnowAcqui(messages.getListMessages()[i].getActorfrom(),messages.getListMessages()[i].getActorTo() , messages.getListMessages()[i].getListPartMessage()[j][k]);
         					String valore; 
         					System.out.println("Alice " + alice + " actor from " +actorFrom); 
         					if (alice!=null && !actorFrom.equals("Alice") ) {
@@ -403,9 +425,9 @@ public class CreateMessageAProVer {
         								               valore.contains("Hash") )) {
         							System.out.println("inserisco valore " + valore);
         							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
-        						}
+         						}
         					}
-        					if (bob!=null && !actorFrom.equals("bob") ) {
+        					if (bob!=null && !actorFrom.equals("Bob") ) {
         						valore = bob.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
         						System.out.println("valore " + valore);
         						if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
@@ -416,7 +438,7 @@ public class CreateMessageAProVer {
         								               valore.contains("Hash") )) {
         							System.out.println("inserisco valore " + valore);
         							otherElement.put(messages.getListMessages()[i].getListPartMessage()[j][k], messages.getListMessages()[i].getListPartMessage()[j][k]);
-        						}
+         						}
         					}
         					if (eve!=null && !actorFrom.equals("Eve") ) {
         						valore = eve.searchEle(messages.getListMessages()[i].getListPartMessage()[j][k]);
@@ -454,6 +476,57 @@ public class CreateMessageAProVer {
     	}
     	
     }
+
+    // aggiunge tra le conoscenze i dati ricevuti all'interno del payload
+    private void  writeKnowAcqui(String getActorfrom,String getActorTo , String partMessage) {
+        System.out.println ("writeKnowAcqui from " + getActorfrom + " To " + getActorTo + " Valore " + partMessage);
+    	
+    	SecurityKey securityKeyActorTo = null;
+        SecurityKey securityKeyActorFrom = null;
+        
+    	if (getActorTo.equals("Alice")) {
+        	securityKeyActorTo=alice;
+        }
+        if (getActorTo.equals("Bob")) {
+        	securityKeyActorTo=bob;
+        }
+        if (getActorTo.equals("Eve")) {
+        	securityKeyActorTo=eve;
+        }
+        if (getActorTo.equals("Server")) {
+        	securityKeyActorTo=server;
+        }
+   
+        if (getActorfrom.equals("Alice")) {
+        	securityKeyActorFrom=alice;
+        }
+        if (getActorfrom.equals("Bob")) {
+        	securityKeyActorFrom=bob;
+        }
+        if (getActorfrom.equals("Eve")) {
+        	securityKeyActorFrom=eve;
+        }
+        if (getActorfrom.equals("Server")) {
+        	securityKeyActorFrom=server;
+        }
+ 
+        System.out.println ("securityKeyActorFrom " + securityKeyActorFrom);
+        System.out.println ("securityKeyActorTo " + securityKeyActorTo);
+        
+		String valore = securityKeyActorFrom.searchEle(partMessage);
+		System.out.println("valore2 " + valore);
+		if (valore !=null && ( valore.contains("Asymmetric Public Key") ||
+				               valore.contains("Asymmetric Private Key") ||
+				               valore.contains("Symmetric Key") ||
+				               valore.contains("Signature Pub Key") ||
+				               valore.contains("Signature Priv Key") ||
+				               valore.contains("Hash") )) {
+			System.out.println("inserisco in KnowAcqu valore " + valore + " messaggio " + partMessage);
+			securityKeyActorTo.addKnowAcq(partMessage,valore);
+			}
+		System.out.println("valore3 " + valore);
+        
+    } 
 
 
     private void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
@@ -710,6 +783,20 @@ public class CreateMessageAProVer {
     	boolean primoTesto= true;
     	String appMessage ="";
     	selectfield2=false;
+    	for (Node node : tabeMessage.getChildren()) {
+    		if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty()) {
+    			if (((TextField) node).getText().toString().length() < 2){
+    		    	Stage stage = (Stage) dialogStage.getScene().getWindow();
+    		    	Alert.AlertType type =  Alert.AlertType.WARNING;
+    		    	Alert alert = new Alert(type, "");
+    		    	alert.initModality(Modality.APPLICATION_MODAL);
+    		    	alert.initOwner(stage);
+    		    	alert.getDialogPane().setHeaderText("*- Attenction!! ERROR DATA - minimum field payload length must be 2 characters -*");
+    		    	alert.showAndWait();
+    		    	return;  				
+    			}
+    		}
+    	}
 
 //  
     	NumNodiSecurityFunctions++;
@@ -980,6 +1067,20 @@ public class CreateMessageAProVer {
     }
     @FXML 
     public void closeWindows(ActionEvent e){
+    	if(nameMess.getText().matches(".*\\d+.*")) {
+    		System.out.println("----------");
+    		Stage stage = (Stage) dialogStage.getScene().getWindow();
+        	Alert.AlertType type =  Alert.AlertType.WARNING;
+        	Alert alert = new Alert(type, "");
+        	alert.initModality(Modality.APPLICATION_MODAL);
+        	alert.initOwner(stage);
+        	alert.getDialogPane()
+			.setHeaderText("*- Attenction!! Message name can't contain numbers-* \n *- Attenction!! Message Payload Fields not saved -*");
+        	alert.showAndWait();
+        	return;
+    	}
+    	
+    	
     	boolean riempito = false;
     	for (Node node : tabeMessage.getChildren()) {
     		if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty()) {
@@ -987,13 +1088,20 @@ public class CreateMessageAProVer {
     			break;
     		}
     	}
-    	if (actorTo.getValue() !="" && actorTo.getValue() != null  && !riempito) {
+    	
+    	if (actorTo.getValue() !="" && actorTo.getValue() != null && !riempito) {
+    		System.out.println("nameMess.toString().equals() " + nameMess.toString());
         	message.setActorTo(actorTo.getValue().toString());
         	message.setActorFrom(actorFrom.getText());
         	message.setEvesIntercept(evesIntercept.isSelected());
-    		dialogStage.close();
-    		return;
+        	if (nameMess.getText().toString()!= null
+        			&& !nameMess.getText().toString().equals("") && !nameMess.getText().toString().isEmpty()) { 
+        		message.setNameMess(nameMess.getText().toString());
+        		dialogStage.close();
+        		return;
+        	}
     	}
+    	
     	
     	Stage stage = (Stage) dialogStage.getScene().getWindow();
     	Alert.AlertType type =  Alert.AlertType.CONFIRMATION;
@@ -1004,19 +1112,29 @@ public class CreateMessageAProVer {
     	alert.getDialogPane().setContentText("Confirm Exit?");
 		if ((actorTo.getValue() == "" || actorTo.getValue() == null) && (riempito)) {
 			alert.getDialogPane()
-					.setHeaderText("*- Attenction!! ActorTo not Selected -* \n *- Attenction!! Message Payload Fields not saved -*");
+					.setHeaderText("*- Attenction!! ActorTo not Selected the message name is empty-* \n *- Attenction!! Message Payload Fields not saved -*");
 		} else {
 			if ((actorTo.getValue() == "" || actorTo.getValue() == null)) {
 				alert.getDialogPane().setHeaderText("*- Attenction!! ActorTo not Selected -*");
 			} else {
 				if (riempito) {
 					alert.getDialogPane().setHeaderText("*- Attenction!! Message Payload Fields not saved -*");
+				} else {
+					if (nameMess.getText().toString() == null || nameMess.getText().toString().isEmpty()|| nameMess.getText().toString().equals("")) {
+						alert.getDialogPane().setHeaderText("*- Attenction!! Message name is empty -*");
+				
+					}
 				}
 			}
 		}
     	Optional<ButtonType> result  = alert.showAndWait();
-    	if (result.get()== ButtonType.OK) {
-    	    	dialogStage.close();
+//    	if (result.get()== ButtonType.OK && nameMess.getText().toString()!= null
+//    			&& !nameMess.getText().toString().equals("") && !nameMess.getText().toString().isEmpty()) {
+        if (result.get()== ButtonType.OK) {
+        	if (nameMess.getText().toString() == null || nameMess.getText().toString().isEmpty()|| nameMess.getText().toString().equals("")) {
+        	    message.setNameMess("M"+changNumMSG[this.numMessage]);
+        	}
+    		dialogStage.close();
     	}
     }
     

@@ -70,6 +70,8 @@
                         <Font size="13.0" />
                      </font>
                   </CheckBox>
+                  <TextField fx:id="nameMess" layoutX="551.0" layoutY="45.0" />
+                  <Text layoutX="458.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Name" wrappingWidth="90.0" />
 					</children>
 				</AnchorPane>
 				<Text fill="#f8f5f5" layoutX="26.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Creator" wrappingWidth="241.13671875">

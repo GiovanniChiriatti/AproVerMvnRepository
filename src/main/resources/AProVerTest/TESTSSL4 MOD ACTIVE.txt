@@ -1,16 +1,16 @@
-simulating SSL3.asm
-INFO - parsing file C:\Users\gioeg\AProVerDirectory\AProverASM\SSL3.asm
-INFO - file successfully parsed for asm SSL3
-Running interactively SSL3.asm
+simulating SSL4.asm
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\AProverASM\SSL4.asm
+INFO - file successfully parsed for asm SSL4
+Running interactively SSL4.asm
 INITIAL STATE:Alice={agentA}
 Bob={agentB}
 Eve={agentE}
 Insert a symbol of Receiver in [AG_A, AG_B, AG_E] for chosenReceiver:
 AG_B
 Insert a symbol of Modality in [ACTIVE, PASSIVE] for chosenMode:
-PASSIVE
+ACTIVE
 <State 0 (monitored)>
-chosenMode=PASSIVE
+chosenMode=ACTIVE
 chosenReceiver=AG_B
 </State 0 (monitored)>
 <UpdateSet - 0>
@@ -27,7 +27,7 @@ asymEnc(MA,1,1,1)=PUBKB
 internalStateA(agentA)=WAITING_MB
 internalStateB(agentB)=WAITING_MA
 messageField(agentA,agentE,1,MA)=SKAB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MA
 protocolMessage(agentB,agentE)=undef
 protocolMessage(agentE,agentA)=undef
@@ -48,7 +48,7 @@ internalStateB(agentB)=WAITING_MA
 knowsAsymPrivKey(agentE,PRIVKB)=false
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentE,agentB,1,MA)=SKAB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MA
 protocolMessage(agentB,agentE)=undef
 protocolMessage(agentE,agentA)=undef
@@ -75,7 +75,7 @@ knowsSymKey(agentB,SKAB)=true
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentB,agentE,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MA
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=undef
@@ -102,7 +102,7 @@ messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentB,agentE,1,MB)=NB
 messageField(agentE,agentA,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MA
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=MB
@@ -114,10 +114,10 @@ symEnc(MB,1,1,1)=SKAB
 internalStateA(agentA)=END_A
 knowsNonce(agentA,NB)=true
 messageField(agentA,agentE,1,MC)=CA
-messageField(agentA,agentE,2,MC)=NB   <----------------------------
+messageField(agentA,agentE,2,MC)=NB
 protocolMessage(agentA,agentE)=MC
 sign(MC,1,2,2)=SIGNPRIVKA
-symEnc(MC,2,1,2)=undef        <----------------------
+symEnc(MC,2,1,2)=SKAB
 </UpdateSet>
 <State 5 (controlled)>
 Alice={agentA}
@@ -132,15 +132,13 @@ knowsNonce(agentA,NB)=true
 knowsSymKey(agentA,SKAB)=true
 knowsSymKey(agentB,SKAB)=true
 knowsSymKey(agentE,SKAB)=false
-messageField(agentA,agentA,1,MA)=undef  <----------- inutile
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentA,agentE,1,MC)=CA
-messageField(agentA,agentE,2,MC)=NB     <-------------- (potrebbe essere giusto il mio
+messageField(agentA,agentE,2,MC)=NB
 messageField(agentB,agentE,1,MB)=NB
-messageField(agentE,agentA,1,MB)=NB     <-----------------
-					--> manca messageField(agentE,agentA,1,KK)=NB
+messageField(agentE,agentA,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MC
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=MB
@@ -148,11 +146,11 @@ protocolMessage(agentE,agentB)=MA
 receiver=AG_B
 sign(MC,1,2,2)=SIGNPRIVKA
 symEnc(MB,1,1,1)=SKAB
-symEnc(MC,2,1,2)=undef     <----------------------
+symEnc(MC,2,1,2)=SKAB
 </State 5 (controlled)>
 <UpdateSet - 5>
 messageField(agentE,agentB,1,MC)=CA
-messageField(agentE,agentB,2,MC)=NB   <------------
+messageField(agentE,agentB,2,MC)=NB
 protocolMessage(agentE,agentB)=MC
 </UpdateSet>
 <State 6 (controlled)>
@@ -168,8 +166,6 @@ knowsNonce(agentA,NB)=true
 knowsSymKey(agentA,SKAB)=true
 knowsSymKey(agentB,SKAB)=true
 knowsSymKey(agentE,SKAB)=false
-knowsSymKey(agentE,undef)=false    <--------------- non c'è proprio
-messageField(agentA,agentA,1,MA)=undef
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentA,agentE,1,MC)=CA
 messageField(agentA,agentE,2,MC)=NB
@@ -178,7 +174,7 @@ messageField(agentE,agentA,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
 messageField(agentE,agentB,1,MC)=CA
 messageField(agentE,agentB,2,MC)=NB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MC
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=MB
@@ -186,7 +182,7 @@ protocolMessage(agentE,agentB)=MC
 receiver=AG_B
 sign(MC,1,2,2)=SIGNPRIVKA
 symEnc(MB,1,1,1)=SKAB
-symEnc(MC,2,1,2)=undef
+symEnc(MC,2,1,2)=SKAB
 </State 6 (controlled)>
 <UpdateSet - 6>
 </UpdateSet>
@@ -200,12 +196,10 @@ internalStateB(agentB)=WAITING_MC
 knowsAsymPrivKey(agentB,PRIVKB)=true
 knowsAsymPrivKey(agentE,PRIVKB)=false
 knowsNonce(agentA,NB)=true
+knowsSignPubKey(agentB,SIGNPUBKA)=false
 knowsSymKey(agentA,SKAB)=true
 knowsSymKey(agentB,SKAB)=true
-knowsSymKey(agentB,undef)=false
 knowsSymKey(agentE,SKAB)=false
-knowsSymKey(agentE,undef)=false
-messageField(agentA,agentA,1,MA)=undef
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentA,agentE,1,MC)=CA
 messageField(agentA,agentE,2,MC)=NB
@@ -214,7 +208,7 @@ messageField(agentE,agentA,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
 messageField(agentE,agentB,1,MC)=CA
 messageField(agentE,agentB,2,MC)=NB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MC
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=MB
@@ -222,7 +216,7 @@ protocolMessage(agentE,agentB)=MC
 receiver=AG_B
 sign(MC,1,2,2)=SIGNPRIVKA
 symEnc(MB,1,1,1)=SKAB
-symEnc(MC,2,1,2)=undef
+symEnc(MC,2,1,2)=SKAB
 </State 7 (controlled)>
 FINAL STATE: Alice={agentA}
 Bob={agentB}
@@ -233,12 +227,10 @@ internalStateB(agentB)=WAITING_MC
 knowsAsymPrivKey(agentB,PRIVKB)=true
 knowsAsymPrivKey(agentE,PRIVKB)=false
 knowsNonce(agentA,NB)=true
+knowsSignPubKey(agentB,SIGNPUBKA)=false
 knowsSymKey(agentA,SKAB)=true
 knowsSymKey(agentB,SKAB)=true
-knowsSymKey(agentB,undef)=false
 knowsSymKey(agentE,SKAB)=false
-knowsSymKey(agentE,undef)=false
-messageField(agentA,agentA,1,MA)=undef
 messageField(agentA,agentE,1,MA)=SKAB
 messageField(agentA,agentE,1,MC)=CA
 messageField(agentA,agentE,2,MC)=NB
@@ -247,7 +239,7 @@ messageField(agentE,agentA,1,MB)=NB
 messageField(agentE,agentB,1,MA)=SKAB
 messageField(agentE,agentB,1,MC)=CA
 messageField(agentE,agentB,2,MC)=NB
-mode=PASSIVE
+mode=ACTIVE
 protocolMessage(agentA,agentE)=MC
 protocolMessage(agentB,agentE)=MB
 protocolMessage(agentE,agentA)=MB
@@ -256,5 +248,5 @@ receiver=AG_B
 self=agentE
 sign(MC,1,2,2)=SIGNPRIVKA
 symEnc(MB,1,1,1)=SKAB
-symEnc(MC,2,1,2)=undef
+symEnc(MC,2,1,2)=SKAB
 run terminated

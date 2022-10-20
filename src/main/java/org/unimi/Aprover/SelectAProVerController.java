@@ -3368,6 +3368,7 @@ public class SelectAProVerController {
 			line.equals("dati Alice Tag ")||
 			line.equals("dati Alice Timestamp ")||
 			line.equals("dati Alice Digest ")||
+			line.equals("dati Alice KnowAcq ")||
 			line.equals("dati Bob AsymmetricPublicKey ") ||
 			line.equals("dati Bob AsymmetricPrivateKey ") ||
 			line.equals("dati Bob SymmetricKey ") ||	
@@ -3380,6 +3381,7 @@ public class SelectAProVerController {
 			line.equals("dati Bob Tag ")||
 			line.equals("dati Bob Timestamp ")||
 			line.equals("dati Bob Digest ")||
+			line.equals("dati Bob KnowAcq ")||
 			line.equals("dati Eve AsymmetricPublicKey ") ||
 			line.equals("dati Eve AsymmetricPrivateKey ") ||
 			line.equals("dati Eve SymmetricKey ") ||
@@ -3392,6 +3394,7 @@ public class SelectAProVerController {
 			line.equals("dati Eve Tag ")||
 			line.equals("dati Eve Timestamp ")||
 			line.equals("dati Eve Digest ")||
+			line.equals("dati Eve KnowAcq ")||
 			line.equals("dati Server AsymmetricPublicKey ") ||
 			line.equals("dati Server AsymmetricPrivateKey ") ||
 			line.equals("dati Server SymmetricKey ") ||
@@ -3404,6 +3407,7 @@ public class SelectAProVerController {
 			line.equals("dati Server Tag ")||
 			line.equals("dati Server Timestamp ")||
 			line.equals("dati Server Digest ")||
+			line.equals("dati Server KnowAcq ")||
 			line.equals("dati Messaggi ") ||
 			line.contains("dati Messaggio") ||
 			line.contains("dati listPartMessage j=") ||
@@ -3483,6 +3487,10 @@ public class SelectAProVerController {
 			lineaAlice.setOpacity(1);
 			alice.addDigest(line);
 		}
+		if (typeInfo.equals("dati Alice KnowAcq ")) {
+			alice.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+		}
 		
 		if (typeInfo.equals("dati Bob AsymmetricPublicKey ")) {
 			faceBob.setOpacity(1);
@@ -3545,6 +3553,11 @@ public class SelectAProVerController {
 			lineaBob.setOpacity(1);
 			bob.addDigest(line);
 		}
+		if (typeInfo.equals("dati Bob KnowAcq ")) {
+			bob.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+		}
+
 
 		if (typeInfo.equals("dati Eve AsymmetricPublicKey ")) {
 			faceEve.setOpacity(1);
@@ -3607,6 +3620,11 @@ public class SelectAProVerController {
 			lineaEve.setOpacity(1);
 			eve.addDigest(line);
 		}
+		if (typeInfo.equals("dati Eve KnowAcq ")) {
+			eve.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+		}
+
 		if (typeInfo.equals("dati Server AsymmetricPublicKey ")) {
 			faceServer.setOpacity(1);
 			lineaServer.setOpacity(1);
@@ -3667,6 +3685,11 @@ public class SelectAProVerController {
 			lineaServer.setOpacity(1);
 			server.addDigest(line);
 		}
+		if (typeInfo.equals("dati Server KnowAcq ")) {
+			server.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+		}
+
 		
 		if (typeInfo.equals("dati Messaggi ")) {
 			//se � stata completata la fase di definizione delle varie chiavi per tutti gli attori, abilita il button + per inserire i messaggi 		
@@ -3690,6 +3713,9 @@ public class SelectAProVerController {
 				lineaServer.setOpacity(1);
 				
 				numMessage = Integer.parseInt(typeInfo.substring(15, typeInfo.length()));
+				if (line.contains("NameMess ")){
+					messages.getListMessages()[numMessage].setNameMess(line.substring(9, line.length()));
+				}
 				if (line.contains("ActorFrom ")){
 					messages.getListMessages()[numMessage].setActorFrom(line.substring(10, line.length()));
 				}
@@ -3953,8 +3979,12 @@ public class SelectAProVerController {
 			for (int i = 0; i < alice.getDigest().size(); i++) {
 				bw.write(alice.getDigest().get(i) + "\n");
 			}
-
-
+			bw.write("dati Alice KnowAcq \n");
+			System.out.println("alice.getKnowAcq");
+			for (int i = 0; i < alice.getKnowAcq().size(); i++) {
+				bw.write(alice.getKnowAcq().get(i) + "\n");
+			}
+			System.out.println("fin alice.getKnowAcq");
 
 			
 			bw.write("dati Bob AsymmetricPublicKey \n");
@@ -4018,7 +4048,12 @@ public class SelectAProVerController {
 			for (int i = 0; i < bob.getDigest().size(); i++) {
 				bw.write(bob.getDigest().get(i) + "\n");
 			}
-			
+			System.out.println("bob.getKnowAcq");
+			bw.write("dati Bob KnowAcq \n");
+			for (int i = 0; i < bob.getKnowAcq().size(); i++) {
+				bw.write(bob.getKnowAcq().get(i) + "\n");
+			}
+			System.out.println("fin bob.getKnowAcq");
 			
 			bw.write("dati Eve AsymmetricPublicKey \n");
 
@@ -4081,6 +4116,13 @@ public class SelectAProVerController {
 			for (int i = 0; i < eve.getDigest().size(); i++) {
 				bw.write(eve.getDigest().get(i) + "\n");
 			}
+			System.out.println("ve.getKnowAcq");
+			bw.write("dati Eve KnowAcq \n");
+			for (int i = 0; i < eve.getKnowAcq().size(); i++) {
+				bw.write(eve.getKnowAcq().get(i) + "\n");
+			}
+			System.out.println("fin eve.getKnowAcq");
+			
 			
 			bw.write("dati Server AsymmetricPublicKey \n");
 
@@ -4143,6 +4185,13 @@ public class SelectAProVerController {
 			for (int i = 0; i < server.getDigest().size(); i++) {
 				bw.write(server.getDigest().get(i) + "\n");
 			}
+			bw.write("dati Server KnowAcq \n");
+			System.out.println("fin server.getKnowAcq");
+			for (int i = 0; i < server.getKnowAcq().size(); i++) {
+				bw.write(server.getKnowAcq().get(i) + "\n");
+			}
+			System.out.println("fin server.getKnowAcq");
+			
 			bw.flush();
 			bw.write("dati Messaggi \n");
 			if (aliceButton01.isVisible() && aliceButton01.getText().equals("+")) {
@@ -4153,6 +4202,7 @@ public class SelectAProVerController {
 			for (int i = 0; i < 15; i++) {
 				if (!messages.getListMessages()[i].getActorfrom().isEmpty()) {
 					bw.write("dati Messaggio " + i + "\n");
+					bw.write("NameMess " + messages.getListMessages()[i].getNameMess() + "\n");
 					bw.write("ActorFrom " + messages.getListMessages()[i].getActorfrom() + "\n");
 					bw.write("ActorTo " + messages.getListMessages()[i].getActorTo() + "\n");
 					bw.write("Eve Intercept " + messages.getListMessages()[i].getEvesIntercept() + "\n");

@@ -37,56 +37,68 @@ public class WriteCryptoLibrary {
 				this.server = server;
 				this.toolEve = toolEve;
 				indSignature=0;
-				changNumMSG[0]="A";
-				changNumMSG[1]="B";
-				changNumMSG[2]="C";
-				changNumMSG[3]="D";
-				changNumMSG[4]="E";
-				changNumMSG[5]="F";
-				changNumMSG[6]="G";
-				changNumMSG[7]="H";
-				changNumMSG[8]="I";
-				changNumMSG[9]="L";
-				changNumMSG[10]="M";
-				changNumMSG[11]="N";
-				changNumMSG[12]="O";
-				changNumMSG[13]="P";
-				changNumMSG[14]="Q";
+				changNumMSG[0]="MA";
+				changNumMSG[1]="MB";
+				changNumMSG[2]="MC";
+				changNumMSG[3]="MD";
+				changNumMSG[4]="ME";
+				changNumMSG[5]="MF";
+				changNumMSG[6]="MG";
+				changNumMSG[7]="MH";
+				changNumMSG[8]="MI";
+				changNumMSG[9]="ML";
+				changNumMSG[10]="MM";
+				changNumMSG[11]="MN";
+				changNumMSG[12]="MO";
+				changNumMSG[13]="MP";
+				changNumMSG[14]="MQ";
+				int i=0;
+				for(Message e: messages.getListMessages()) {
+					if (e.getNameMess()!=null && !e.getNameMess().isEmpty()
+						&& !e.getNameMess().isBlank() && !e.getNameMess().equals("")) {
+						changNumMSG[i]= e.getNameMess();
+						}
+					i++;
+					}
+
 			    
-			    w=new FileWriter("src/main/resources/AProVerFile/CryptoLibrary"+acronym+".asm");
+			    w=new FileWriter("src/main/resources/AProVerTest/CryptoLibrary"+acronym+".asm");
 
 			    
 			    b=new BufferedWriter (w);
-			    System.out.println("fine");
+			    System.out.println("finee");
 			    
 			  }
 	//Scrittura prime info file asm
 	public boolean writeFile() throws IOException {
 		 
 	    // scrittura info iniziali del file asm
-//	    System.out.println("writeOpen");
+ 	    System.out.println("writeOpen");
 	    writeOpen(b);
 	    
 	    // scrittura info domain Agent_x
-//	    System.out.println("writeAgent");
+ 	    System.out.println("writeAgent " + actorServer);
 	     
 	    writeAgent(actorServer, b);
 	    
 	    
-	     
+	    System.out.println("writeAlice " + alice);
 	    //vengono memorizzate in una tabella l'elenco knows sia dalle SecurityKey che dai messaggi per ogni singolo attore
 	    storeKnows(alice);
 	    
+	    System.out.println("writeBob " + bob);
 	    storeKnows(bob);
-	     
+	    
+	    System.out.println("writeEve " + eve);
 	    storeKnows(eve);
 	     
 	    if (server != null || actorServer) {
+	    	System.out.println("writeServer " + server);
 	    	storeKnows(server);
 	    }
     
 	     
-//	    System.out.println("writeMessaget");
+	    System.out.println("writeMessaget");
 	    writeMessage(b);
 	    
 	    String payloadXXX = "";
@@ -170,33 +182,44 @@ public class WriteCryptoLibrary {
 
 	//memorizza elenco knows sia dalle SecurityKey che dai messaggi 
 		private void storeKnows(SecurityKey actor){
+			
+			System.out.println("a");
  			for(int i = 0; i <actor.getNonce().size(); i++) {
  				map.put(actor.getNonce().get(i).toUpperCase(), actor.getNonce().get(i));
  		       }
+ 			System.out.println("b");
 			for(int i = 0; i <actor.getBitstring().size(); i++) {
 				map.put(actor.getBitstring().get(i).toUpperCase(), actor.getBitstring().get(i));
 		       }
+			System.out.println("c");
 			for(int i = 0; i <actor.getHashKey().size(); i++) {
 				map.put(actor.getHashKey().get(i).toUpperCase(), actor.getHashKey().get(i));
 		       }
- 			for(int i = 0; i <actor.getHashKey().size(); i++) {
+			System.out.println("d");
+ 			for(int i = 0; i <actor.getDigest().size(); i++) {
  				map.put(actor.getDigest().get(i).toUpperCase(), actor.getDigest().get(i));
  		       }
+ 			System.out.println("e");
  			for(int i = 0; i <actor.getIdCertificate().size(); i++) {
  				map.put(actor.getIdCertificate().get(i).toUpperCase(), actor.getIdCertificate().get(i));
  		       }
+ 			System.out.println("f");
 			for(int i = 0; i <actor.getAsymmetricPrivateKey().size(); i++) {
 				map.put(actor.getAsymmetricPrivateKey().get(i).toUpperCase(), actor.getAsymmetricPrivateKey().get(i));
 		       }
+			System.out.println("g");
 			for(int i = 0; i <actor.getAsymmetricPublicKey().size(); i++) {
 				map.put(actor.getAsymmetricPublicKey().get(i).toUpperCase(), actor.getAsymmetricPublicKey().get(i));
 		       }
+			System.out.println("h");
 			for(int i = 0; i <actor.getSymmetricKey().size(); i++) {
 				map.put(actor.getSymmetricKey().get(i).toUpperCase(), actor.getSymmetricKey().get(i));
 		       }
+			System.out.println("i");
 			for(int i = 0; i <actor.getSignaturePubKey().size(); i++) {
 				map.put(actor.getSignaturePubKey().get(i).toUpperCase(), actor.getSignaturePubKey().get(i));
 		       }
+			System.out.println("l");
 			for(int i = 0; i <actor.getSignaturePrivKey().size(); i++) {
 				map.put(actor.getSignaturePrivKey().get(i).toUpperCase(), actor.getSignaturePrivKey().get(i));
 		       }
@@ -206,6 +229,7 @@ public class WriteCryptoLibrary {
 //			for(int i = 0; i <actor.getTimestamp().size(); i++) {
 //				map.put(actor.getTimestamp().get(i).toUpperCase(), actor.getTimestamp().get(i));
 //		       }
+			System.out.println("m");
 		}
 		//Scrittura Signature Domini and state Agent 
 		private void writeMessage(BufferedWriter b) throws IOException {
@@ -248,9 +272,9 @@ public class WriteCryptoLibrary {
 				// signature[indSignature]="	protocolMessage(" + defAgent(message.getActorfrom()) + ","+ defAgent (message.getActorTo())  + "):=M"+ i+"\n";
 			   // indSignature++;
 				if (i==0) {
-		    		messageXXX= messageXXX + "	enum domain Message = {M"+ changNumMSG[i];
+		    		messageXXX= messageXXX + "	enum domain Message = {"+ changNumMSG[i];
 		    	} else {
-		    		messageXXX= messageXXX + " | M"+ changNumMSG[i];
+		    		messageXXX= messageXXX + " | "+ changNumMSG[i];
 		    	}
 		    }
 			
@@ -507,18 +531,18 @@ public class WriteCryptoLibrary {
 		
 	//	System.out.println(indActorFrom + " - " + indActorTo);
 		if (i==0) {
-			stateActor[indActorFrom]="IDLE_M"+changNumMSG[i];
+			stateActor[indActorFrom]="IDLE_"+changNumMSG[i];
 		} else {
 			if (stateActor[indActorFrom] == null) {
-				stateActor[indActorFrom]="SEND_M"+changNumMSG[i];
+				stateActor[indActorFrom]="SEND_"+changNumMSG[i];
 			} else {
 				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_M"+changNumMSG[i];
 			}
 		}
 		if (stateActor[indActorTo] == null) {
-			stateActor[indActorTo]="WAITING_M"+changNumMSG[i];
+			stateActor[indActorTo]="WAITING_"+changNumMSG[i];
 		} else {
-			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_M"+changNumMSG[i];
+			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_"+changNumMSG[i];
 		}
 		
 	}

@@ -1,7 +1,9 @@
 package org.unimi.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class SecurityKey {
 	ArrayList<String> AsymmetricPublicKey=new ArrayList<String>();
@@ -16,7 +18,7 @@ public class SecurityKey {
 	ArrayList<String> tag=new ArrayList<String>();
 	ArrayList<String> timestamp=new ArrayList<String>();
 	ArrayList<String> digest=new ArrayList<String>();
-	
+	private Map<String, String> knowAcquired = new HashMap<String, String>();
 	public SecurityKey() {
 	}
 // ---------------- Asymmetric Public Key
@@ -437,7 +439,17 @@ public class SecurityKey {
 	public void setDigest(ArrayList<String> digest) {
 		this.digest = digest;
 	}
-
+// ------- conoscenze acquisite durante lo scambio di messaggi
+	public void addKnowAcq(String nuovoValore, String typeKnow) {
+		knowAcquired.put(nuovoValore,typeKnow);
+	}
+	public ArrayList<String> getKnowAcq() {
+		ArrayList<String> eleKnowAcq=new ArrayList<String>();
+	    for (Map.Entry<String, String> entry : knowAcquired.entrySet()) {
+	    	eleKnowAcq.add(entry.getKey() + " - " + entry.getValue());      
+	    }
+		return eleKnowAcq;
+	}
 // ---------------- Verifica duplicati
 	public boolean checkDuplicate(String nuovoValore, String tipo) {
 		if (!tipo.equals("01" )) {
@@ -601,18 +613,23 @@ public class SecurityKey {
 				}
 			}
 
-			for (int i = 0; i < timestamp.size(); i++) {
+		for (int i = 0; i < timestamp.size(); i++) {
 				if (timestamp.get(i).equals(Valore)|| timestamp.get(i).toUpperCase().equals(Valore)) {
 					return "Timestamp";
 				}
 			}
 
-			for (int i = 0; i < digest.size(); i++) {
+		for (int i = 0; i < digest.size(); i++) {
 				if (digest.get(i).equals(Valore) || digest.get(i).toUpperCase().equals(Valore)) {
 					return "Digest";
 				}
 			}
-	
+		
+	    for (Map.Entry<String, String> entry : knowAcquired.entrySet()) {
+	        if (entry.getKey().equals(Valore)) {
+	        	return entry.getValue();
+	        }
+	    }
 		return null;
 	}
 	// ---------------- trova un elemento in tutte le tabelle
