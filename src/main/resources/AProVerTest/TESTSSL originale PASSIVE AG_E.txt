@@ -1,0 +1,99 @@
+simulating SSL.asm
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\SSL.asm
+INFO - file successfully parsed for asm SSL
+Running interactively SSL.asm
+INITIAL STATE:Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Insert a symbol of Receiver in [AG_B, AG_E, AG_S] for chosenReceiver:
+AG_E
+Insert a symbol of Modality in [ACTIVE, PASSIVE] for chosenMode:
+PASSIVE
+<State 0 (monitored)>
+chosenMode=PASSIVE
+chosenReceiver=AG_E
+</State 0 (monitored)>
+<UpdateSet - 0>
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_NK
+messageField(agentA,agentE,1,KK)=SKAE
+protocolMessage(agentA,agentE)=KK
+</UpdateSet>
+<State 1 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_NK
+internalStateB(agentB)=WAITING_KAB
+messageField(agentA,agentE,1,KK)=SKAE
+mode=PASSIVE
+protocolMessage(agentA,agentE)=KK
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=undef
+receiver=AG_E
+</State 1 (controlled)>
+<UpdateSet - 1>
+knowsSymKey(agentE,SKAE)=true
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(agentE,agentB)=KK
+</UpdateSet>
+<State 2 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_NK
+internalStateB(agentB)=WAITING_KAB
+knowsAsymPrivKey(agentE,PRIVKE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentE,agentB,1,KK)=SKAE
+mode=PASSIVE
+protocolMessage(agentA,agentE)=KK
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=KK
+receiver=AG_E
+</State 2 (controlled)>
+<UpdateSet - 2>
+</UpdateSet>
+<State 3 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_NK
+internalStateB(agentB)=WAITING_KAB
+knowsAsymPrivKey(agentB,PRIVKE)=false
+knowsAsymPrivKey(agentE,PRIVKE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentE,agentB,1,KK)=SKAE
+mode=PASSIVE
+protocolMessage(agentA,agentE)=KK
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=KK
+receiver=AG_E
+</State 3 (controlled)>
+FINAL STATE: Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_NK
+internalStateB(agentB)=WAITING_KAB
+knowsAsymPrivKey(agentB,PRIVKE)=false
+knowsAsymPrivKey(agentE,PRIVKE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentE,agentB,1,KK)=SKAE
+mode=PASSIVE
+protocolMessage(agentA,agentE)=KK
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=KK
+receiver=AG_E
+self=agentE
+run terminated

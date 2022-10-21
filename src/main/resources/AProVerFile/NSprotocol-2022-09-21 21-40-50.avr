@@ -18,6 +18,7 @@ dati Alice Signature Priv Key
 dati Alice Tag 
 dati Alice Timestamp 
 dati Alice Digest 
+dati Alice KnowAcq 
 dati Bob AsymmetricPublicKey 
 PUBKB
 dati Bob AsymmetricPrivateKey 
@@ -35,6 +36,7 @@ dati Bob Signature Priv Key
 dati Bob Tag 
 dati Bob Timestamp 
 dati Bob Digest 
+dati Bob KnowAcq 
 dati Eve AsymmetricPublicKey 
 PUBKE
 dati Eve AsymmetricPrivateKey 
@@ -51,6 +53,7 @@ dati Eve Signature Priv Key
 dati Eve Tag 
 dati Eve Timestamp 
 dati Eve Digest 
+dati Eve KnowAcq 
 dati Server AsymmetricPublicKey 
 dati Server AsymmetricPrivateKey 
 dati Server SymmetricKey 
@@ -63,8 +66,10 @@ dati Server Signature Priv Key
 dati Server Tag 
 dati Server Timestamp 
 dati Server Digest 
+dati Server KnowAcq 
 dati Messaggi 
 dati Messaggio 0
+NameMess NAK
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true
@@ -76,6 +81,7 @@ NA
 dati listPartMessage j=0 k=1
 ID_A
 dati Messaggio 1
+NameMess NNK
 ActorFrom Bob
 ActorTo Alice
 Eve Intercept true
@@ -89,6 +95,7 @@ NB
 dati SecurityFunctionsPartMessage j=1
 
 dati Messaggio 2
+NameMess NK
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true

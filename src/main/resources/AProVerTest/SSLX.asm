@@ -1,6 +1,6 @@
-asm SSL5
+asm SSLX
 
-import CryptoLibrarySSL5
+import CryptoLibrarySSLX
 
 
 signature:
@@ -194,10 +194,10 @@ definitions:
 			if(internalStateB(self)=WAITING_KK and protocolMessage($e,self)=KK)then
 			        if(asymDec(KK,1,1,1,self)=true)then
 			                par
-                                              knowsSymKey(self,messageField($e,self,1,KK)):=true
+                                  knowsSymKey(self,messageField($e,self,1,KK)):=true
 			                      protocolMessage(self,$e):=NK
 			                      messageField(self,$e,1,NK):=NB
-			                      asymEnc(NK,1,1,1):=messageField($e,self,1,KK)
+ 			                      symEnc(NK,1,1,1):=messageField($e,self,1,KK)
 			                      internalStateB(self):=WAITING_CSNK
 			                endpar
 			        endif
@@ -207,9 +207,9 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_NK and protocolMessage($e,self)=NK)then
 			        if(receiver=AG_B)then
-			           if(symDec(NK,1,1,1,self)=true)then
+   			           if(symDec(NK,1,1,1,self)=true)then
 			                par
-                                              knowsNonce(self,messageField($e,self,1,NK)):=true
+                                  knowsNonce(self,messageField($e,self,1,KK)):=true
 			                      protocolMessage(self,$e):=CSNK
 			                      messageField(self,$e,1,CSNK):=CA
 			                      messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
@@ -221,7 +221,7 @@ definitions:
 			else
 			           if(symDec(NK,1,1,1,self)=true)then
 			                par
-                                              knowsNonce(self,messageField($e,self,1,NK)):=true
+                                  knowsNonce(self,messageField($e,self,1,KK)):=true
 			                      protocolMessage(self,$e):=CSNK
 			                      messageField(self,$e,1,CSNK):=CA
 			                      messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)

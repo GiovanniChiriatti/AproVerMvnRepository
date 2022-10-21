@@ -1,4 +1,4 @@
-module CryptoLibrarySSL5
+module CryptoLibraryNSX
 
 import ../StandardLibrary
 export *
@@ -10,12 +10,12 @@ signature:
 	domain Eve subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_KK | WAITING_NK | SEND_MCSNK | END_A}
-	enum domain StateBob = {WAITING_KK | SEND_MNK | WAITING_CSNK | END_B}
+	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_MNK | END_A}
+	enum domain StateBob = {WAITING_NAK | SEND_MNNK | WAITING_NK | END_B}
 
-	enum domain Message = {KK | NK | CSNK} 
+	enum domain Message = {NAK | NNK | NK} 
 
-	enum domain Knowledge ={CA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE|SIGNPRIVKA|SIGNPRIVKB|SIGNPRIVKE|SIGNPUBKA|SIGNPUBKB|SIGNPUBKE|SKAB|SKAE|SKEB}
+	enum domain Knowledge ={ID_A|ID_B|ID_E|NA|NB|NE|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E}
