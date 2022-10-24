@@ -1,4 +1,4 @@
-module CryptoLibraryNSSYN
+module CryptoLibraryNSSYM
 
 import ../StandardLibrary
 export *

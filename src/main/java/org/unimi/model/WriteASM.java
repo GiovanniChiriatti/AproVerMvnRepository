@@ -1335,7 +1335,7 @@ public class WriteASM {
 					System.out.println("1levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
 					System.out.println("1verifico se in precedenza c'era unopz " +operationPrev);
 					if (operationPrev != null && !operationPrev.isEmpty()) {
-						b.write("++"+"   			           if(" + operationPrev + "(" + changNumMSG[j] + ","
+						b.write("   			           if(" + operationPrev + "(" + changNumMSG[j] + ","
 								+ levelEncField1EncField2Prev + ",self)=true)then\n");
 					}
 					b.write("			                par\n");
@@ -1366,7 +1366,7 @@ public class WriteASM {
 					}
 					b.write("			                endpar\n");	
 					if (operationPrev != null && !operationPrev.isEmpty()) {
-						b.write("::"+"			        endif\n");	
+						b.write("			        endif\n");	
 					}
 					b.write("			else\n");
 					msgFieldPrev = new String[15];
@@ -2340,7 +2340,7 @@ public class WriteASM {
 				 		System.out.println ("changValueEve " + changValueEve);
 						if (numMsgNext < 15 && message.getSecurityFunctionsPartMessage(numMsgNext) != null
 								&& !message.getSecurityFunctionsPartMessage(numMsgNext).isEmpty()) {
-							b.write("::"+"			                      " + operationMsg + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
+							b.write("			                      " + operationMsg + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
 							operationMessage[numOperationMessage] = reversOperation(operationMsg) + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + ",self):= true";
 							numOperationMessage++;
 						} else {

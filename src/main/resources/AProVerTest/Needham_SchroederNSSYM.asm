@@ -1,6 +1,6 @@
-asm Needham_SchroederNSSYN
+asm Needham_SchroederNSSYM
 
-import CryptoLibraryNSSYN
+import CryptoLibraryNSSYM
 
 
 signature:
@@ -294,7 +294,7 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_MB and protocolMessage($e,self)=MB)then
 			        if(receiver=AG_B)then
-++   			           if(symDec(MB,2,1,5,self)=true)then
+   			           if(symDec(MB,2,1,5,self)=true)then
 			                par
                                   knowsNonce(self,messageField($e,self,1,MA)):=true
                                   knowsSymKey(self,messageField($e,self,2,MA)):=true
@@ -307,7 +307,7 @@ definitions:
 			                      symEnc(MC,1,1,2):=KBS
 			                      internalStateA(self):=WAITING_MD
 			                endpar
-::			        endif
+			        endif
 			else
 			           if(symDec(MB,2,1,5,self)=true)then
 			                par
@@ -345,7 +345,7 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_MD and protocolMessage($e,self)=MD)then
 			        if(receiver=AG_B)then
-++   			           if(symDec(MD,1,1,1,self)=true)then
+   			           if(symDec(MD,1,1,1,self)=true)then
 			                par
                                   knowsNonce(self,messageField($e,self,1,MA)):=true
 			                      protocolMessage(self,$e):=ME
@@ -353,7 +353,7 @@ definitions:
 			                      symEnc(ME,1,1,1):=messageField(self,$e,4,MB)
 			                      internalStateA(self):=END_A
 			                endpar
-::			        endif
+			        endif
 			else
 			           if(symDec(MD,1,1,1,self)=true)then
 			                par
