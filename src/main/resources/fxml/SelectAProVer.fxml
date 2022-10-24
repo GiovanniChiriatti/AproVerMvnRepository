@@ -1044,28 +1044,28 @@
 																<Text fx:id="rowNum10" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="9" />
 																<Text fx:id="rowNum11" strokeType="OUTSIDE" strokeWidth="0.0" text="11" textAlignment="RIGHT" visible="false" wrappingWidth="30.13671875" GridPane.rowIndex="10" />
 																<TextField GridPane.columnIndex="1" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
-																<TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
                                                 <TextField layoutX="55.0" layoutY="10.0" GridPane.columnIndex="2" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <TextField layoutX="363.0" layoutY="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField layoutX="363.0" layoutY="34.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <TextField layoutX="363.0" layoutY="58.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <TextField layoutX="363.0" layoutY="58.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                 <TextField layoutX="363.0" layoutY="58.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                 <TextField layoutX="363.0" layoutY="130.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                                 <TextField layoutX="363.0" layoutY="154.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                                 <TextField layoutX="363.0" layoutY="178.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                                 <TextField layoutX="363.0" layoutY="202.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                                 <TextField layoutX="363.0" layoutY="226.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+																<TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
                                                 <TextField layoutX="363.0" layoutY="250.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
 															</children>
 														</GridPane>

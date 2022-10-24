@@ -10,6 +10,8 @@ KBS
 dati Alice Hash 
 dati Alice Bitstring 
 dati Alice IdCertificate 
+CA
+CB
 dati Alice Nonce 
 NA
 dati Alice Signature Pub Key 
@@ -26,6 +28,8 @@ KBS
 dati Bob Hash 
 dati Bob Bitstring 
 dati Bob IdCertificate 
+CA
+CB
 dati Bob Nonce 
 NB
 dati Bob Signature Pub Key 
@@ -69,21 +73,21 @@ dati Server Digest
 dati Server KnowAcq 
 dati Messaggi 
 dati Messaggio 0
-NameMess 
+NameMess MA
 ActorFrom Alice
 ActorTo Server
 Eve Intercept true
-Messages {CA,CA,NA}
+Messages {CA,CB,NA}
 dati SecurityFunctionsPartMessage j=0
-{CA,CA,NA} 
+{CA,CB,NA} 
 dati listPartMessage j=0 k=0
 CA
 dati listPartMessage j=0 k=1
-CA
+CB
 dati listPartMessage j=0 k=2
 NA
 dati Messaggio 1
-NameMess 
+NameMess MB
 ActorFrom Server
 ActorTo Alice
 Eve Intercept true
@@ -107,7 +111,7 @@ dati SecurityFunctionsPartMessage j=2
 dati listPartMessage j=2 k=0
 (payloadField2){NA,KAB,CB},{KAB,CA} - KBS - 
 dati Messaggio 2
-NameMess 
+NameMess MC
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true
@@ -119,7 +123,7 @@ KAB
 dati listPartMessage j=0 k=1
 CA
 dati Messaggio 3
-NameMess 
+NameMess MD
 ActorFrom Bob
 ActorTo Alice
 Eve Intercept true
@@ -129,7 +133,7 @@ dati SecurityFunctionsPartMessage j=0
 dati listPartMessage j=0 k=0
 NB
 dati Messaggio 4
-NameMess 
+NameMess ME
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true

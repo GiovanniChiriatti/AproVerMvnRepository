@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class WriteCryptoLibrary {
-	private Boolean actorServer;
+	private Boolean actorServer,actorAlice,actorBob;
 	private SecurityKey securityKey;
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
@@ -53,10 +53,18 @@ public class WriteCryptoLibrary {
 				changNumMSG[13]="MP";
 				changNumMSG[14]="MQ";
 				int i=0;
+				actorAlice = false;
+				actorBob = false;
 				for(Message e: messages.getListMessages()) {
 					if (e.getNameMess()!=null && !e.getNameMess().isEmpty()
 						&& !e.getNameMess().isBlank() && !e.getNameMess().equals("")) {
 						changNumMSG[i]= e.getNameMess();
+						if (e.getActorTo().toUpperCase().contains("A") || e.getActorfrom().toUpperCase().contains("A")) {
+							actorAlice=true;
+						}
+						if (e.getActorTo().toUpperCase().contains("B") || e.getActorfrom().toUpperCase().contains("B")) {
+							actorBob=true;
+						}
 						}
 					i++;
 					}
@@ -258,7 +266,9 @@ public class WriteCryptoLibrary {
 //						System.out.println("getSecurityFunctionsPartMessage mes:"+ numMsg + " valore: "+ message.getSecurityFunctionsPartMessage(numMsg));
 						numEncSignHashMsg=0;
 						storeMessage(message, numMsg);
+						System.out.println("numEncSignHashMsg entro da findTypeKey numEncSignHashMsg: "+ numEncSignHashMsg);
 						findTypeKey(message, numMsg);
+						System.out.println("numEncSignHashMsg uscito da findTypeKey numEncSignHashMsg: "+ numEncSignHashMsg);
 					}
 				}
 				if (levelMsg > levelTot) {
@@ -365,8 +375,8 @@ public class WriteCryptoLibrary {
 	    
 	    b.write("\n");
 	    b.write("	//state of the actor\n");
-	    b.write("	controlled internalStateA: Alice -> StateAlice\n");
-	    b.write("	controlled internalStateB: Bob -> StateBob\n");
+	    if (actorAlice) { b.write("	controlled internalStateA: Alice -> StateAlice\n");}
+	    if (actorBob) {b.write("	controlled internalStateB: Bob -> StateBob\n");}
 	    if (toolEve.contains("Eve Doesn't Create Messages")){
 	    	b.write("	controlled internalStateE: Eve -> StateEve\n");
 	    }
@@ -550,14 +560,15 @@ public class WriteCryptoLibrary {
 	private void storeMessage(Message message, int numMsg) {
 		for (int j = 0; j < 15; j++) {
 			if (message.getListPartMessage(numMsg, j) != null && !message.getListPartMessage(numMsg, j).isEmpty()) {
-//				System.out.println("getListPartMessage riga: "+ j + " Valore: " + message.getListPartMessage(numMsg, j));
-				numEncSignHashMsg++;
+ 				System.out.println("getListPartMessage riga: "+ j + " Valore: " + message.getListPartMessage(numMsg, j));
 				if (!message.getListPartMessage(numMsg, j).toUpperCase().contains("PAYLOAD")) {
+					numEncSignHashMsg++;
 					fieldPositionMsg++;
 					if (!map.containsKey(message.getListPartMessage(numMsg, j).toUpperCase())) {
 						mapMsg.put(message.getListPartMessage(numMsg, j).toUpperCase(), message.getListPartMessage(numMsg, j));
 					}
 				} else {
+					numEncSignHashMsg=numEncSignHashMsg+countFields(message.getListPartMessage(numMsg, j));
 					levelMsg++;
 				}
 			}
@@ -579,19 +590,23 @@ public class WriteCryptoLibrary {
 
 	// determina quali algoritmi crittografici sono stati usati prima di inviare il messaggio
 	private void findTypeKey(Message message, int numMsg ) {
+		System.out.println("numEncSignHashMsg entro da findTypeKey "+ numEncSignHashMsg + " numMsg " + numMsg);
 		String keyUsed=null;
 		String partMsg = message.getSecurityFunctionsPartMessage(numMsg);
 		
 		if (!partMsg.substring(partMsg.length()-3).equals(" - ")) {
+			System.out.println("numEncSignHashMsg esco perchè non c'è operazione "+ numEncSignHashMsg);
 //			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
 			return;
 		}
 		keyUsed= partMsg.substring(0,partMsg.length()-3);
 		keyUsed = keyUsed.substring(keyUsed.lastIndexOf(" - ")+3);
-//		System.out.println(" trovata chiave --> "+ keyUsed);
+ 		System.out.println(" trovata chiave --> "+ keyUsed);
 		String operation = null;
 		String actorFrom = message.getActorfrom();
 		String actorTo = message.getActorTo();
+		System.out.println("numEncSignHashMsg Attore actorFrom"+ actorFrom);
+		
 		switch (actorFrom) {
 		case "Alice":
 			KeyActorFrom = alice;
@@ -609,6 +624,8 @@ public class WriteCryptoLibrary {
 			KeyActorFrom = null;
 		}
 		
+		System.out.println("numEncSignHashMsg Attore actorTo"+ actorTo);
+
 		switch (actorTo) {
 		case "Alice":
 			KeyActorTo = alice;
@@ -627,11 +644,15 @@ public class WriteCryptoLibrary {
 		}
 		if (KeyActorFrom !=null) {
 			operation= KeyActorFrom.searchEle(keyUsed);
+			System.out.println("cerco operation per actorFrom"+ operation + " numMsg " + numMsg + " KayUsed " + keyUsed );
+
 //			System.out.println("operation " + operation);
 			if (operation == null) {
 				if (KeyActorTo !=null) {
+					System.out.println("cerco operation per actorTo numMsg " + numMsg + " KayUsed " + keyUsed );
+
 					operation= KeyActorTo.searchEle(keyUsed);
-//					System.out.println("operation to " + operation);
+					System.out.println("operation to " + operation);
 				}
 			}
 		}
@@ -639,14 +660,19 @@ public class WriteCryptoLibrary {
 		
 		
 		if (operation != null) {
+			System.out.println(" Operatio " + operation);
 			switch (operation) {
 			case "Asymmetric Public Key":
+				System.out.println("Asymmetric Public Key -  numEncSignHashMsg " + numEncSignHashMsg + " numEncField "+ numEncField );
 				if (numEncSignHashMsg>numEncField) {
+					System.out.println("numEncField = numEncSignHashMsg");
 					numEncField = numEncSignHashMsg;
 				}
 				break;
 			case "Symmetric Key":
+				System.out.println("Symmetric Key -  numEncSignHashMsg " + numEncSignHashMsg + " numSymField "+ numSymField );
 				if (numEncSignHashMsg>numSymField) {
+					System.out.println("numSymField = numEncSignHashMsg");
 					numSymField = numEncSignHashMsg;
 				}
 				break;	
@@ -656,7 +682,7 @@ public class WriteCryptoLibrary {
 				}
 				break;	
 			case "Hash":
-				if (numEncSignHashMsg>numSignField) {
+				if (numEncSignHashMsg>numHashField) {
 					numHashField = numEncSignHashMsg;
 				}
 				break;		
@@ -665,6 +691,18 @@ public class WriteCryptoLibrary {
 			}
 		}
 		return;
+	}
+	public int countFields(String field) {
+		int numFieldCount=0;
+		char[] string = field.toCharArray();
+		char cPrec=' ';
+		for (char c : string){
+		    if ((c==',' || c=='}') && cPrec!='}') {
+		    	numFieldCount++;
+		    }
+		    cPrec = c;
+		}
+		return numFieldCount;
 	}
 	public int getNumEleMsg () {
 		return fieldPosition;

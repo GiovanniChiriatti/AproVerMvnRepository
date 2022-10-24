@@ -1132,7 +1132,7 @@ public class CreateMessageAProVer {
 //    			&& !nameMess.getText().toString().equals("") && !nameMess.getText().toString().isEmpty()) {
         if (result.get()== ButtonType.OK) {
         	if (nameMess.getText().toString() == null || nameMess.getText().toString().isEmpty()|| nameMess.getText().toString().equals("")) {
-        	    message.setNameMess("M"+changNumMSG[this.numMessage]);
+        	    message.setNameMess("M"+changNumMSG[this.numMessage-1]);
         	}
     		dialogStage.close();
     	}
