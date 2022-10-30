@@ -730,7 +730,7 @@ public class WriteASM {
 			b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
 			b.write("			        // the message must be sent unaltered\n");
 			
-			String keyUsed = findKey(message.getPayload());
+			String keyUsed = findKey(message);
 			String operation="";
 			if (keyUsed != null) {
 				operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());
@@ -835,13 +835,49 @@ public class WriteASM {
 		}
 	}
 	// determina quale chiave è stata usata prima di inviare il messaggio
-	private String findKey(String partMsg) {
+	private String findKey(Message message) {
+		String partMsg = message.getPayload();
 		String keyUsed=null;
+		System.out.println(" --> "+ partMsg);
+		int numBrackets=0;
+		char[] string = partMsg.toCharArray();
+		String subPayload ="";
+		int i=0;
+		String[] listSubPayload = new String[15];
+		boolean primo=true;
+		for (char c : string){
+		    if (c=='{') {
+		    	if (!primo) {
+				    if (numBrackets==0) {
+				    	listSubPayload[i]=subPayload;
+				    	i++;
+				    	numBrackets=0;
+				    	subPayload="";
+				    }
+ 
+		    	}
+		    	numBrackets++;
+		    }
+		    if (c=='}') {
+		    	numBrackets--;
+		    }
+		    primo=false;
+		    subPayload=subPayload+c;
+
+		}
+		listSubPayload[i]=subPayload;
+		for (int j=0 ; j<15; j++) {
+			if (listSubPayload[j] == null) {break;}
+			if (listSubPayload[j].substring(listSubPayload[j].length()-1).equals(",")) {
+				listSubPayload[j]=listSubPayload[j].substring(0, listSubPayload[j].length()-1);
+			}
+			System.out.println("listSubPayload[j] "+ listSubPayload[j]);
+		}
 		
 		if (!partMsg.substring(partMsg.length()-1).equals("-")) {
-//			System.out.println(" --> "+ partMsg.substring(partMsg.length()-3));
 			return keyUsed;
 		}
+
 		keyUsed= partMsg.substring(0,partMsg.length()-1);
 		keyUsed = keyUsed.substring(keyUsed.lastIndexOf("-")+1);
 		return keyUsed;
@@ -977,15 +1013,15 @@ public class WriteASM {
 		encField2=0;
 		level=0;
 		String calcLevelEncField1EncField2 = null;
-		System.out.println(" messaggio payload " + message.getPayload());
+//		System.out.println(" messaggio payload " + message.getPayload());
 		for (int numMsg = 0; numMsg < 15; numMsg++) {
 			msgEncField1EncField2[numMsg] = "";
-			System.out.println(" Leggo riga numero : " + numMsg);
-			System.out.println(" messaggio SecurityFunctionsPartMessage" + message.getSecurityFunctionsPartMessage(numMsg));
+//			System.out.println(" Leggo riga numero : " + numMsg);
+//			System.out.println(" messaggio SecurityFunctionsPartMessage" + message.getSecurityFunctionsPartMessage(numMsg));
 			if (message.getSecurityFunctionsPartMessage(numMsg)!= null && message.getSecurityFunctionsPartMessage(numMsg).length() > 3  && message.getSecurityFunctionsPartMessage(numMsg).substring(message.getSecurityFunctionsPartMessage(numMsg).length()-3).equals(" - ")	
 				&&	((message.getListPartMessage(numMsg, 0)!=null && message.getListPartMessage(numMsg, 0).toUpperCase().contains("PAYLOADFIELD"))|| numMsg==0||level==0))
 			{ 
-			   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
+//			   System.out.println(" AGGIUNGO 1 AL LIVEL in quanto il message.getSecurityFunctionsPartMessage(numMsg) continen alla fine  --- ");
 			   level++;
 			}
 			if (message.getSecurityFunctionsPartMessage(numMsg) != null
@@ -994,22 +1030,22 @@ public class WriteASM {
 					if (message.getListPartMessage(numMsg, j) != null
 							&& !message.getListPartMessage(numMsg, j).isEmpty()) {
 						if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD2)")) {	
-							System.out.println("ho trovato payload 2 ed imposto ad 1 encField1 ");
+//							System.out.println("ho trovato payload 2 ed imposto ad 1 encField1 ");
 							encField1 = 1;
 						} else {
 							if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD)")) {
-								System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
+//								System.out.println("ho trovato payload 1 ed imposto ad "+encField1 +" encField2 ");
 								encField2 = encField1;
 							} else {
-								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
+//								System.out.println(" Entro per il field " + encField1 + " - " + encField2);
 								if (encField1 == 0) {
 									encField1 = encField2 + 1;
 									encField2 = encField1;
-									System.out.println(" registro field in msgField[encField2] " + message.getListPartMessage(numMsg, j).toUpperCase());
+//									System.out.println(" registro field in msgField[encField2] " + message.getListPartMessage(numMsg, j).toUpperCase());
 									msgField[encField2]  = message.getListPartMessage(numMsg, j).toUpperCase();
 								} else {
 									encField2++;
-									System.out.println(" registro field in msgField[encField2] " + message.getListPartMessage(numMsg, j).toUpperCase());
+//									System.out.println(" registro field in msgField[encField2] " + message.getListPartMessage(numMsg, j).toUpperCase());
 									msgField[encField2]  = message.getListPartMessage(numMsg, j).toUpperCase();
 									if (j == 0) {
 										encField1 = encField2;		
@@ -1165,7 +1201,7 @@ public class WriteASM {
 		for (int i = 0; i < 15; i++) {
 			Message message = messages.getMessage(i);
 //			System.out.println("-------> " + message);
-			System.out.println("messaggio numero " + i + " actorfrom " + message.getActorfrom());
+//			System.out.println("messaggio numero " + i + " actorfrom " + message.getActorfrom());
 			if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
 				if (i > 0) {
 					break;
@@ -1185,26 +1221,26 @@ public class WriteASM {
 			String[] msgEncField1EncField2 = new String[15];
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(message, msgEncField1EncField2, msgField);
-			System.out.println("Caclolato livello e altro levelEncField1EncField2 " + levelEncField1EncField2);
+//			System.out.println("Caclolato livello e altro levelEncField1EncField2 " + levelEncField1EncField2);
 			b.write("	rule r_message_"+ changNumMSG[i] +" =\n");
 			ruleR_Agent[indRuleR_Agent]= message.getActorfrom().toUpperCase().substring(0, 1)+" r_message_"+ changNumMSG[i]+"[]";
-			System.out.println("ruleR_Agent[indRuleR_Agent] " + ruleR_Agent[indRuleR_Agent] + " indRuleR_Agent " + indRuleR_Agent);
+//			System.out.println("ruleR_Agent[indRuleR_Agent] " + ruleR_Agent[indRuleR_Agent] + " indRuleR_Agent " + indRuleR_Agent);
 			indRuleR_Agent++;
 			b.write("		let ($e=agentE) in\n");
-			System.out.println("cerco la chiave nel payload " + message.getPayload());
-			String keyUsed = findKey(message.getPayload());
-			System.out.println("trovata chiave " + keyUsed);
+//			System.out.println("cerco la chiave nel payload " + message.getPayload());
+			String keyUsed = findKey(message);
+//			System.out.println("trovata chiave " + keyUsed);
 			String operation="";
 			if (keyUsed != null) {
-				System.out.println("determino operazione " + keyUsed + " Act from "+ message.getActorfrom() + "Act To" + message.getActorTo());
+//				System.out.println("determino operazione " + keyUsed + " Act from "+ message.getActorfrom() + "Act To" + message.getActorTo());
 				operation = findOperation(keyUsed,message.getActorfrom(),message.getActorTo());				
-				System.out.println("operazione trovata" + operation);
+//				System.out.println("operazione trovata" + operation);
 			} else {
-				System.out.println("operazione non esistente  findActorFromTo Act from "+ message.getActorfrom() + "Act To" + message.getActorTo());
+//				System.out.println("operazione non esistente  findActorFromTo Act from "+ message.getActorfrom() + "Act To" + message.getActorTo());
 				findActorFromTo(message.getActorfrom(),message.getActorTo());
 			}
 			if(i==0) {
-				System.out.println("primo messaggio " + changNumMSG[i]);
+//				System.out.println("primo messaggio " + changNumMSG[i]);
 				actorStartProtocol = message.getActorfrom();
 				actorReceiveProtocol = message.getActorTo();
 				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=IDLE_"+ changNumMSG[i] + ")then \n");
@@ -1213,14 +1249,14 @@ public class WriteASM {
 				b.write("			                       protocolMessage(self,$e):="+changNumMSG[i]+"\n");
 				for (int k = 0; k < 15; k++) {
 					if (msgField[k] != null) {
-						System.out.println("Leggo campi numero " + k + " valore msgField[k]  " + msgField[k] );
+//						System.out.println("Leggo campi numero " + k + " valore msgField[k]  " + msgField[k] );
 						b.write("			                       messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");						
-						System.out.println("registro in  honestElement " + message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase() + " , messageField($e,self,"+k+","+changNumMSG[i]+")");
+//						System.out.println("registro in  honestElement " + message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase() + " , messageField($e,self,"+k+","+changNumMSG[i]+")");
 						honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 					}
 				}
 				if (operation != null && !operation.isEmpty()) {
-					System.out.println("scrivo operazione su file ricercando se gia registrato findValueHonest"); 
+//					System.out.println("scrivo operazione su file ricercando se gia registrato findValueHonest"); 
 					b.write("			                       " + reversOperation(operation) + "(" + changNumMSG[i]
 							+ "," + levelEncField1EncField2 + "):="
 							+ findValueHonest(findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false),
@@ -1254,21 +1290,21 @@ public class WriteASM {
 				
 				
 			} else {
-				System.out.println("non sono sul primo messaggio ma su " +i + " changNumMSG[i] " +changNumMSG[i] );
+//				System.out.println("non sono sul primo messaggio ma su " +i + " changNumMSG[i] " +changNumMSG[i] );
 				int j = i-1;
 				b.write("			if(internalState"+message.getActorfrom().substring(0, 1)+"(self)=WAITING_"+ changNumMSG[j] + " and protocolMessage($e,self)="+ changNumMSG[j] +")then\n");
-				System.out.println("verifico se l'actorTo è quello che ha fatto partire il protocollo actorStartProtocol "+ actorStartProtocol + " message.getActorTo() " + message.getActorTo()); 
+//				System.out.println("verifico se l'actorTo è quello che ha fatto partire il protocollo actorStartProtocol "+ actorStartProtocol + " message.getActorTo() " + message.getActorTo()); 
 				if (actorStartProtocol.equals(message.getActorTo())){
-								System.out.println("l'attore risulta uguale a quello cha ha avviato il protocollo allora guardo il messaggio precedente per vedere i campi che ha ricevuto l'attore e registrarli");
+//								System.out.println("l'attore risulta uguale a quello cha ha avviato il protocollo allora guardo il messaggio precedente per vedere i campi che ha ricevuto l'attore e registrarli");
 								Message messagePrev = messages.getMessage(i-1);
 								String[] msgEncField1EncField2Prev = new String[15];
 								String[] msgFieldPrev = new String[15];
-								System.out.println("calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
+//								System.out.println("calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
 								levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-								System.out.println("levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
-								System.out.println("verifico se in precedenza c'era unopz " +operationPrev);
+//								System.out.println("levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
+//								System.out.println("verifico se in precedenza c'era unopz " +operationPrev);
 								if (operationPrev != null && !operationPrev.isEmpty()) {
-									System.out.println("se in precedenza c'era opz allora la scrivo con IF" );
+//									System.out.println("se in precedenza c'era opz allora la scrivo con IF" );
 									b.write("			        if(" + operationPrev + "(" + changNumMSG[j] + ","
 											+ levelEncField1EncField2Prev + ",self)=true)then\n");
 								}
@@ -1279,37 +1315,37 @@ public class WriteASM {
 								b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
 								for (int k = 0; k < 15; k++) {
 									if (msgField[k] != null) {
-										System.out.println("scrivo i messageField ");
+//										System.out.println("scrivo i messageField ");
 										b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");															
-										System.out.println("registro i messaggi si a come attore ricevente E che come " + message.getActorTo().substring(0, 1));
+//										System.out.println("registro i messaggi si a come attore ricevente E che come " + message.getActorTo().substring(0, 1));
 										honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
 										honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 									}
 								}
-								System.out.println("verifico operazione " + operation);
+//								System.out.println("verifico operazione " + operation);
 								if (operation != null && !operation.isEmpty()) {
 									if (reversOperation(operation).equals("symEnc")) {
-										System.out.println("l'operazione  è symEnc allora scivo la reverse utilizzando la findkeyele con true " + operation);
+//										System.out.println("l'operazione  è symEnc allora scivo la reverse utilizzando la findkeyele con true " + operation);
 										b.write(" 			                      " + reversOperation(operation) + "("
 												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
 												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
 														true).replace("$b", "$e")
 												+ "\n");
-										System.out.println("l'operazione scritta è : " + reversOperation(operation) + "("
-												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
-														true).replace("$b", "$e"));
+//										System.out.println("l'operazione scritta è : " + reversOperation(operation) + "("
+//												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+//												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
+//														true).replace("$b", "$e"));
 
 									} else {
-										System.out.println("l'operazione  NON è symEnc allora scivo la reverse utilizzando la findkeyele con false " + operation);
+//										System.out.println("l'operazione  NON è symEnc allora scivo la reverse utilizzando la findkeyele con false " + operation);
 										b.write(" 			                      " + reversOperation(operation) + "("
 												+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
 												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
 														false).replace("$b", "$e")
-												+ "\n");
-										System.out.println("l'operazione scritta è :: " + changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
-														false).replace("$b", "$e"));
+ 												+ "\n");
+//										System.out.println("l'operazione scritta è :: " + changNumMSG[i] + "," + levelEncField1EncField2 + "):="
+//												+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(),
+//														false).replace("$b", "$e"));
 									}
 								}
 									j=i+1;
@@ -1325,15 +1361,15 @@ public class WriteASM {
 								b.write("			endif\n");
 								b.write("	endlet\n");
 				} else {
-					System.out.println("l'attore NON risulta uguale a quello cha ha avviato il protocollo allora guardo il messaggio precedente per vedere i campi che ha ricevuto l'attore e registrarli");
+//					System.out.println("l'attore NON risulta uguale a quello cha ha avviato il protocollo allora guardo il messaggio precedente per vedere i campi che ha ricevuto l'attore e registrarli");
 					b.write("			        if(receiver=AG_"+message.getActorTo().substring(0, 1)+")then\n");
 					Message messagePrev = messages.getMessage(i-1);
 					String[] msgEncField1EncField2Prev = new String[15];
 					String[] msgFieldPrev = new String[15];
-					System.out.println("1calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
+//					System.out.println("1calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
 					levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-					System.out.println("1levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
-					System.out.println("1verifico se in precedenza c'era unopz " +operationPrev);
+//					System.out.println("1levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
+//					System.out.println("1verifico se in precedenza c'era unopz " +operationPrev);
 					if (operationPrev != null && !operationPrev.isEmpty()) {
 						b.write("   			           if(" + operationPrev + "(" + changNumMSG[j] + ","
 								+ levelEncField1EncField2Prev + ",self)=true)then\n");
@@ -1346,18 +1382,18 @@ public class WriteASM {
 					for (int k = 0; k < 15; k++) {
 						if (msgField[k] != null) {
 			//				b.write("			                      messageField(self,$e,"+k+",M"+i+"):="+msgField[k].toUpperCase()+"\n");						
-							System.out.println("scrivo i messageField k: " + k +  " field "+  msgField[k]);
+//							System.out.println("scrivo i messageField k: " + k +  " field "+  msgField[k]);
 							b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");															
-							System.out.println("registro i messaggi come attore ricevente  " + message.getActorTo().substring(0, 1));
-							System.out.println(" registro " + message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase() + ", messageField($e,self,"+k+","+changNumMSG[i]+")");
+//							System.out.println("registro i messaggi come attore ricevente  " + message.getActorTo().substring(0, 1));
+//							System.out.println(" registro " + message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase() + ", messageField($e,self,"+k+","+changNumMSG[i]+")");
 							honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");					
 						    
 						}
 					}
 			//		b.write("			                      "+reversOperation(operation)+"(M"+ i+","+ levelEncField1EncField2 +"):=" + findValueHonest(findKeyEle(keyUsed,message.getActorfrom(),message.getActorTo(),false),message.getActorTo()) +"\n");
- 					System.out.println("determinesOperation b IN");
+// 					System.out.println("determinesOperation b IN");
 					determinesOperation ( b, message, i, message.getActorfrom(), "",true);
- 					System.out.println("determinesOperation b OUT");
+// 					System.out.println("determinesOperation b OUT");
 					j=i+1;
 					if (messages.getMessage(i+1).getActorfrom()!=null && !messages.getMessage(i+1).getActorfrom().isEmpty()) {
 					       b.write("			                      internalState"+messages.getMessage(i+1).getActorTo().substring(0, 1)+"(self):=WAITING_"+changNumMSG[j]+"\n");					
@@ -1371,10 +1407,10 @@ public class WriteASM {
 					b.write("			else\n");
 					msgFieldPrev = new String[15];
 					j=i-1; 
-					System.out.println("2calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
+//					System.out.println("2calcolo il levelEncField1EncField2Prev sul messaggio precedente calcLevelEncField1EncField2");
 					levelEncField1EncField2Prev = calcLevelEncField1EncField2(messagePrev, msgEncField1EncField2Prev, msgFieldPrev);
-					System.out.println("2levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
-					System.out.println("2verifico se in precedenza c'era unopz " +operationPrev);
+//					System.out.println("2levelEncField1EncField2Prev calcolato : " +levelEncField1EncField2Prev);
+//					System.out.println("2verifico se in precedenza c'era unopz " +operationPrev);
 					if (operationPrev != null && !operationPrev.isEmpty()) {
 						b.write("			           if("+operationPrev+"("+ changNumMSG[j]+","+ levelEncField1EncField2Prev +",self)=true)then\n");
 					}
@@ -1386,16 +1422,16 @@ public class WriteASM {
 					for (int k = 0; k < 15; k++) {
 						if (msgField[k] != null) {
 							b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");						
-							System.out.println(" messaggi scrive  messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true));
-							System.out.println(" registro in honestElement" + "E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase()+",messageField($e,self,"+k+","+changNumMSG[i]+")");
+//							System.out.println(" messaggi scrive  messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true));
+//							System.out.println(" registro in honestElement" + "E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase()+",messageField($e,self,"+k+","+changNumMSG[i]+")");
 
 							honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
 						}
 					}
 	//				b.write("			                      "+reversOperation(operation)+"(M"+ i+","+ levelEncField1EncField2 +"):=" + changValueEve(keyUsed,message.getActorfrom(),true) +"\n");
- 					System.out.println("determinesOperation a IN");
+// 					System.out.println("determinesOperation a IN");
 					determinesOperation ( b, message, i, message.getActorfrom(), "",false);
- 					System.out.println("determinesOperation a OUT");
+// 					System.out.println("determinesOperation a OUT");
 					j=i+1;
 					if (messages.getMessage(i+1).getActorfrom()!=null && !messages.getMessage(i+1).getActorfrom().isEmpty()) {
 						   endMessage = false;
@@ -1608,14 +1644,14 @@ public class WriteASM {
 	
 	// quando ad operare è l'EVE si deve effettuare il reverse delle chiavi e dei field	
 		private String findValueHonest(String value, String actorFrom){
-			System.out.println(" cerco su map.entry se ho gia registrato l'elemento " + actorFrom.toUpperCase().substring(0,1) + " "+ value.toUpperCase());
+//			System.out.println(" cerco su map.entry se ho gia registrato l'elemento " + actorFrom.toUpperCase().substring(0,1) + " "+ value.toUpperCase());
 			for (Map.Entry<String, String> entry : honestElement.entrySet()) {
 		    	if (entry.getKey().equals(actorFrom.toUpperCase().substring(0,1) + " "+ value.toUpperCase() )) {
-		    		System.out.println(" trovato elemento " + entry.getValue());
+//		    		System.out.println(" trovato elemento " + entry.getValue());
 		    		return entry.getValue();
 		        }
 		    }
-			System.out.println(" NON trovato elemento e quindi restituisco " + value);
+//			System.out.println(" NON trovato elemento e quindi restituisco " + value);
 		    return value;
 		}
 
@@ -2247,7 +2283,7 @@ public class WriteASM {
 		// determina le operazioni (crittografiche) all'interno del messaggio e scrive sul file di output
 		private void determinesOperation (BufferedWriter b, Message message,int i,  String agent, String space,boolean receiverAG_B) 
 				throws IOException {
-		 	System.out.println("entro");
+//		 	System.out.println("entro");
 			//honestLevelElement = new HashMap<String, Integer>();
 			int eleNum=0,levela=0,levelb=0;
 			int elePartenza=0; 
@@ -2264,15 +2300,15 @@ public class WriteASM {
 				if (message.getSecurityFunctionsPartMessage(numMsg) != null
 						&& !message.getSecurityFunctionsPartMessage(numMsg).isEmpty()) {
 
- 				 	System.out.println(
- 				 			numMsg + " ho trovato securityfunction " + message.getSecurityFunctionsPartMessage(numMsg));
+// 				 	System.out.println(
+// 				 			numMsg + " ho trovato securityfunction " + message.getSecurityFunctionsPartMessage(numMsg));
 					if (message.getSecurityFunctionsPartMessage(numMsg)
 							.substring(message.getSecurityFunctionsPartMessage(numMsg).length() - 2).equals("- ")) {
 
 						keyUsedMsg = message.getSecurityFunctionsPartMessage(numMsg).substring(0,
 								message.getSecurityFunctionsPartMessage(numMsg).length() - 3);
 						keyUsedMsg = keyUsedMsg.substring(keyUsedMsg.lastIndexOf("-") + 2);
- 				 		System.out.println("   " + numMsg + " trovata chiave :" + keyUsedMsg);
+// 				 		System.out.println("   " + numMsg + " trovata chiave :" + keyUsedMsg);
 						
 					}
 
@@ -2280,15 +2316,15 @@ public class WriteASM {
 						if (message.getListPartMessage(numMsg, j) != null
 								&& !message.getListPartMessage(numMsg, j).isEmpty()) {
 							if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD2)")) {
-	 			 				System.out.println(numMsg + " " + j + " ho trovato PAYLOADFIELD2 "
-	 			 						+ message.getListPartMessage(numMsg, j).toUpperCase());
+//	 			 				System.out.println(numMsg + " " + j + " ho trovato PAYLOADFIELD2 "
+//	 			 						+ message.getListPartMessage(numMsg, j).toUpperCase());
 								levelb++;
 								levela=levelb;
 								elePartenza=1;
-	 				 			System.out.println("PAYALOAD2"+ message.getListPartMessage(numMsg, j).toUpperCase());
+//	 				 			System.out.println("PAYALOAD2"+ message.getListPartMessage(numMsg, j).toUpperCase());
 							} else {
 								if (message.getListPartMessage(numMsg, j).toUpperCase().contains("(PAYLOADFIELD)")) {
-	 				 				System.out.println("PAYALOAD1"+ message.getListPartMessage(numMsg, j).toUpperCase());
+//	 				 				System.out.println("PAYALOAD1"+ message.getListPartMessage(numMsg, j).toUpperCase());
 									levela++;
 									elePartenza=ultimoEle;
 									if (levela>levelb) {levelb=levela;};
@@ -2297,7 +2333,7 @@ public class WriteASM {
 									if (j==0) {
 										elePartenza=eleNum;
 										levela=1;
-					 			 		System.out.println("-----> rimetto a 1 ");
+//					 			 		System.out.println("-----> rimetto a 1 ");
 										if (levela>levelb) {levelb=levela;};
 									}
 									
@@ -2313,31 +2349,31 @@ public class WriteASM {
 					}
 					eleArrivo=eleNum;
 					ultimoEle=eleNum;
-			 		System.out.println("messaggio " + message.getSecurityFunctionsPartMessage(numMsg)+ " livello " + levela + " ele Partenza "+ elePartenza + " ele Arrivo " + eleArrivo);
+//			 		System.out.println("messaggio " + message.getSecurityFunctionsPartMessage(numMsg)+ " livello " + levela + " ele Partenza "+ elePartenza + " ele Arrivo " + eleArrivo);
 					if (keyUsedMsg != null) {
-						System.out.println("passo a findOperation keyUsedMsg " + keyUsedMsg + " getActorfrom " + message.getActorfrom() + " getActorTo "+ message.getActorTo());
+//						System.out.println("passo a findOperation keyUsedMsg " + keyUsedMsg + " getActorfrom " + message.getActorfrom() + " getActorTo "+ message.getActorTo());
 						String operationMsg = findOperation(keyUsedMsg, message.getActorfrom(), message.getActorTo());
-						System.out.println("operationMsg determinato da findOperation " + operationMsg);
+//						System.out.println("operationMsg determinato da findOperation " + operationMsg);
 						int numMsgNext = numMsg + 1;
 						String changValueEve;
 						if (receiverAG_B) {
-			 				System.out.println ("findValueHonest " + findValueHonest(
-			 						findKeyEle(keyUsedMsg, message.getActorfrom(), message.getActorTo(), false),
-			 						message.getActorTo()));
+//			 				System.out.println ("findValueHonest " + findValueHonest(
+//			 						findKeyEle(keyUsedMsg, message.getActorfrom(), message.getActorTo(), false),
+//			 						message.getActorTo()));
 							changValueEve = findValueHonest(
 									findKeyEle(keyUsedMsg, message.getActorfrom(), message.getActorTo(), false),
 									message.getActorTo()).replace("($e", "(self");
 						} else {
-						 	System.out.println ("findValueHonest2 " + findValueHonest(
-						 			findKeyEle(keyUsedMsg, message.getActorfrom(), message.getActorTo(), false),
-						 			message.getActorTo()));
+//						 	System.out.println ("findValueHonest2 " + findValueHonest(
+//						 			findKeyEle(keyUsedMsg, message.getActorfrom(), message.getActorTo(), false),
+//						 			message.getActorTo()));
 							changValueEve = changValueEve(keyUsedMsg, message.getActorfrom(), true).replace("($e",
 									"(self");
 						}
 						changValueEve = changValueEve.replace(",self", ",$e");	
 						changValueEve = changValueEve.replace("($b", "(self");	
 						
-				 		System.out.println ("changValueEve " + changValueEve);
+//				 		System.out.println ("changValueEve " + changValueEve);
 						if (numMsgNext < 15 && message.getSecurityFunctionsPartMessage(numMsgNext) != null
 								&& !message.getSecurityFunctionsPartMessage(numMsgNext).isEmpty()) {
 							b.write("			                      " + operationMsg + "(" + changNumMSG[i] + ","+ levela +"," + elePartenza+"," + eleArrivo + "):="+ changValueEve+"\n");	
@@ -2354,10 +2390,10 @@ public class WriteASM {
 		   // for (Map.Entry<String, Integer> entry : honestLevelElement.entrySet()) {
  		   // 	System.out.println("   dati in tabella :  "+ entry.getKey() + " - " +entry.getValue());
 		   //     }
-		 	System.out.println("*-------operazioni --------");
-			for (String eleOperationMessage : operationMessage) {
-				if (eleOperationMessage != null) System.out.println( "eleOperationMessage " + eleOperationMessage);
-			}
+//		 	System.out.println("*-------operazioni --------");
+//			for (String eleOperationMessage : operationMessage) {
+//				if (eleOperationMessage != null) System.out.println( "eleOperationMessage " + eleOperationMessage);
+//			}
 			
 		}
 }

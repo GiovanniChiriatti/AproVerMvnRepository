@@ -585,7 +585,8 @@ public class CreateMessageAProVer {
 			numEleMenuButton++;
 			menuSecurityFunction.getItems().addAll(menu);		
 		}
-       	if (securityKey.getSymmetricKey() !=null && !securityKey.getSymmetricKey().isEmpty()&& symDecEnc) {
+       	if ((securityKey.getSymmetricKey() !=null && !securityKey.getSymmetricKey().isEmpty()&& symDecEnc) ||
+				(securityKeyActorTo != null && securityKeyActorTo.getSymmetricKey() != null && !securityKeyActorTo.getSymmetricKey().isEmpty()&& symDecEnc)) {
     		Menu menu = new Menu();
             prepareMenuItem(menu, "Symmetric Encryption", menuSecurityFunction);
             MenuItem subMenuItem;
@@ -599,6 +600,18 @@ public class CreateMessageAProVer {
                 });
             	menu.getItems().add(subMenuItem); 	
             }
+			if (securityKeyActorTo != null && !securityKeyActorTo.getSymmetricKey().isEmpty()) {
+				for (int i = 0; i < securityKeyActorTo.getSymmetricKey().size(); i++) {
+					subMenuItem = new MenuItem(securityKeyActorTo.getSymmetricKey().get(i));
+					String a = securityKeyActorTo.getSymmetricKey().get(i);
+					subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+						public void handle(ActionEvent t) {
+							AddPartSecurityMessage(a);
+						}
+					});
+					menu.getItems().add(subMenuItem);
+				}
+			}
             numEleMenuButton++;
             menuSecurityFunction.getItems().addAll(menu);
     	}
