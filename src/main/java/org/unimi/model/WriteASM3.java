@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import javafx.scene.image.Image;
 
-public class WriteASM2 {
+public class WriteASM3 {
 	
 	private Boolean actorServer;
 	private String[] ruleR_Agent = new String[150];
@@ -46,7 +46,7 @@ public class WriteASM2 {
 	private BufferedWriter b;
 	String[] changNumMSG = new String[15];
 	
-	public WriteASM2(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve, int fieldPosition, int levelTot,int numEncField,int numSignField,
+	public WriteASM3(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve, int fieldPosition, int levelTot,int numEncField,int numSignField,
 			int numSymField,int numHashField, String nameFile,String acronym) 
 			  throws IOException {
 		System.out.println("WriteASM");
@@ -721,17 +721,11 @@ public class WriteASM2 {
 					break;
 				}
 			}
-			// dal payload si estraggono tutti i filed 
-			String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());  
-			// si divide il payload in messaggi separati (se necessario) 
 			String[] listSubPayload = findMsg(message);
-			// per ogni messaggio si scrive il testo della macchian ASM
 			for (int j = 0; j < 15; j++) {
 				if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 					break;
 				}
-				//considerando che il messaggio payload è unico e si scompatta è necessario inserire 
-				// l'apposita Roule mettendo un numero sequenziale
 				if (j == 0) {
 					b.write("	rule r_message_replay_" + changNumMSG[i] + " =\n");
 					ruleR_Agent[indRuleR_Agent] = "E r_message_replay_" + changNumMSG[i] + "[]";
@@ -750,7 +744,7 @@ public class WriteASM2 {
 				b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
 				b.write("			        // the message must be sent unaltered\n");
 				// estraggo le parti dei messaggi interessati
-				// come ad esempio la chiave della crittografia
+
 				String keyUsed = findKey(listSubPayload[j]);
 				String operation = "";
 				if (keyUsed != null) {
@@ -760,17 +754,14 @@ public class WriteASM2 {
 				}
 				String[] msgEncField1EncField2 = new String[15];
 				String[] msgField = new String[15];
-				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
-						msgField,msgFieldTot);
-				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet = detField(msgField,msgFieldTot); 
+						msgField);
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
 				}
 				b.write("			                par\n");
-				String[] linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
+				String[] linesKnowledge = writeKnowledge(message, i, msgField, "$a");
 				String spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
 				printKnowledge(b, "Prot", linesKnowledge, spaces);
@@ -822,15 +813,14 @@ public class WriteASM2 {
 				msgEncField1EncField2 = new String[15];
 				msgField = new String[15];
 				levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
-						msgField,msgFieldTot);
-				msgFieldDet = detField(msgField,msgFieldTot);
+						msgField);
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			                 // in the active mode the attacker can forge the message with all his knowledge\n");
 					b.write("			                 if(" + operation + "(" + changNumMSG[i] + ","
 							+ levelEncField1EncField2 + ",self)=true)then\n");
 				}
 				b.write("			                          par\n");
-				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
+				linesKnowledge = writeKnowledge(message, i, msgField, "$a");
 				spaces = "                                     ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
 				printKnowledge(b, "Prot", linesKnowledge, spaces);
@@ -971,8 +961,6 @@ public class WriteASM2 {
 
 	// determina quale SecurityKey appartiene all'cator from e all'actor to
 	private void findActorFromTo(String actorFrom, String actorTo) {
-
-		
 		switch (actorFrom) {
 		case "Alice":
 			KeyActorFrom = alice;
@@ -1007,101 +995,10 @@ public class WriteASM2 {
 			KeyActorTo = null;
 		}
 	}
-	// routin che estrae tutti i campi dal payload
-	private String[] FindField(String messagePayload) {
-		
-		String[] msgField = new String[15];
-		String fieldMsg = "";
-		boolean dash = false;
-		int numField=0;
-		int counter = 0;
-		for (int i = 0; i < messagePayload.length(); i++) {
-	//		System.out.println("---> leggo carattere i " + i + " -->" + messagePart.charAt(i));
-			if (messagePayload.charAt(i) == '-') {
-				counter++;
-	//			System.out.println("conto trattino " + counter);
-			}
-			if (messagePayload.charAt(i) != '-' && messagePayload.charAt(i) != ' ' && messagePayload.charAt(i) != ','
-					&& messagePayload.charAt(i) != '}' && messagePayload.charAt(i) != '{') {
-				fieldMsg = fieldMsg + messagePayload.charAt(i);
-	//			System.out.println("memorizzo parte della stringa " + fieldMsg.toString());
-			}
-			if (fieldMsg != null && !fieldMsg.isEmpty()
-					&& (messagePayload.charAt(i) == ',' || messagePayload.charAt(i) == '}')) {
-				msgField[numField+1] = fieldMsg.toUpperCase();
-	//			System.out.println("archivio stringa " + (encField2+1) + " - " + msgField[encField2+1].toString());
-				fieldMsg = "";
-				numField++;
-			}
-			if (messagePayload.charAt(i) == '-') {
-				if (!dash) {
-	//				System.out.println("metto dash a true in quanto si tratta primo trattino");
-					dash = true;
-				} else {
-	//				System.out.println(
-	//						"trovo secondo trattino e torno indietro " + messagePart.charAt(i) + " OPZ: " + fieldMsg);
-					dash = false;
-					fieldMsg = "";
-					boolean first = false;
-					int countDash = 0;
-					int count = 0;
-					int countField = 0;
 
-				}
-			}
-
-		}
-
-		return msgField;
-
-	}
-	// determina i campi di output del sottomessaggio (si dividono i messaggi del payload)
-	private String[] detField (String[] msgField, String[] msgFieldTot) {
-		System.out.println("*---------- msg msgField ---------*");
-		for (String e : msgField){System.out.println("    " + e);}
-		System.out.println("*---------- msg msgFieldTot ---------*");
-		for (String e : msgFieldTot){System.out.println("    " + e);}
-		
-		String[] msgFieldDet = new String[15];
-		int i=1;
-		int start =0;
-		int end = 0;
-		boolean find = false;
-		for (int j=1; j<15 ; j++) {
-			System.out.println("leggo msgField con indice " + i + " " + msgField[i] + " e msgFieldTot " + j + " " + msgFieldTot[j]);
-			if (msgField[i] == null) {System.out.println("esco per msgField[i] " + msgField[i]); break;}
-			if (msgFieldTot[j] != null && !msgFieldTot[j].isEmpty() ) {
-				if (msgField[i].equals(msgFieldTot[j]) && !find ) {
-					System.out.println("memorizzo start " + j); 
-					start = j;
-				}
-				if (msgField[i].equals(msgFieldTot[j])) {
-					System.out.println("memorizzo end  " + j); 
-					find = true;
-					end = j;
-					i++;
-				} else {
-					System.out.println("rimetto tutto apposto  i lo rimetto a 1"); 
-					find = false;
-					i = 1;
-				}
-				if (i > 14) {
-					System.out.println("esco per i " + i);
-					break;
-				}
-			}
-		}
-		
-		System.out.println("determinate posizioni partenza:" + start + " Fine " + end);
-		for (int k=start ; k<end+1 ; k++) {msgFieldDet[k] = msgFieldTot[k];}
-		System.out.println("*---------- msg msgFieldDet ---------*");
-		for (String e : msgFieldDet){System.out.println("    " + e);}
-
-		return msgFieldDet;
-	}
 	// routin che server per determinare di quanti field si compone il messaggio e
 	// quanti livelli di cripr/encript ci sono
-	private String calcLevelEncField1EncField2(String messagePart, String[] msgEncField1EncField2, String[] msgField,String[] msgFieldTot) {
+	private String calcLevelEncField1EncField2(String messagePart, String[] msgEncField1EncField2, String[] msgField) {
 		int encField1, encField2, level, numMsgP;
 		encField1 = 1;
 		encField2 = 0;
@@ -1110,7 +1007,7 @@ public class WriteASM2 {
 		String calcLevelEncField1EncField2 = null;
 		String fieldMsg = "";
 		boolean dash = false;
-	 	System.out.println("analizzo la stringa " + messagePart.toString() + " lunghezza " + messagePart.length());
+	//	System.out.println("analizzo la stringa " + messagePart.toString() + " lunghezza " + messagePart.length());
 		int counter = 0;
 		for (int i = 0; i < messagePart.length(); i++) {
 	//		System.out.println("---> leggo carattere i " + i + " -->" + messagePart.charAt(i));
@@ -1170,102 +1067,13 @@ public class WriteASM2 {
 						}
 					}
 					encField1 = encField2 - countField + 1;
-					boolean trovaSequenza = false;
-					int j = encField1;
-					int appoField1 =encField1;
-					int appoField2 =encField2;
-					// cerca la sequenza dei field trovati all'interno dei field del payload
-					System.out.println("verifico i campi del messaggio con quelli del payload da " + encField1 + " a " + encField2);
-					System.out.println("Campi del messaggio : ");
-					for (int k=encField1 ; k<encField2+1; k++){
-						System.out.println("  " + msgField[k]);
-					}
-					System.out.println("Campi del payload : ");
-					for (int k=0 ; k<15; k++){
-						if (msgFieldTot[k] != null && !msgFieldTot[k].isEmpty()) {
-							System.out.println("  " + msgFieldTot[k]);
-						}
-					}
-					for (int k = 0; k < 15; k++) {
-						System.out.println("cerco  " + msgField[j] + " e lo confronto con " + msgFieldTot[k]);
-						
-						if (msgFieldTot[k] != null && !msgFieldTot[k].isEmpty()) {
-							if (msgField[j].equals(msgFieldTot[k]) && !trovaSequenza) {
-								System.out.println("trovato prima volta in posizione  " + k);
-								appoField1 = k;
-							}
-							if (msgField[j].equals(msgFieldTot[k])) {
-								System.out.println("metto a true l'inizio sequenza e memorizzo anche appoField2  " + k);
-								trovaSequenza = true;
-								j++;
-								appoField2 = k;
-							} else {
-							 	System.out.println("metto a false l'inizio sequenza e riposizione j  a " + encField1);
-								trovaSequenza = false;
-								j = encField1;
-							}
-							System.out.println("verifico se j è arrivato a encField2 " + j + " " +encField2);
-							if (j > encField2) {
-								break;
-							}
-						}
-					}
-					msgEncField1EncField2[numMsgP] = level + "," + appoField1 + "," + appoField2;
-					System.out.println("msgEncField1EncField2[numMsgP] " + msgEncField1EncField2[numMsgP]);
+					msgEncField1EncField2[numMsgP] = level + "," + encField1 + "," + encField2;
+	//				System.out.println("msgEncField1EncField2[numMsgP] " + msgEncField1EncField2[numMsgP]);
 					numMsgP++;
 				}
 			}
 
 		}
-		
-		
-/*		if (!(numMsgP > 0)) {
-
-			System.out.println("*------------- non c'è chiave -------* " + "field1 " + " Field 2 " + encField2);
-			encField1 = 1;
-			boolean trovaSequenza = false;
-			int j = encField1;
-			int appoField1 = encField1;
-			int appoField2 = encField2;
-			// cerca la sequenza dei field trovati all'interno dei field del payload
-			System.out.println(
-					"verifico i campi del messaggio con quelli del payload da " + encField1 + " a " + encField2);
-			System.out.println("Campi del messaggio : ");
-			for (int k = encField1; k < encField2 + 1; k++) {
-				System.out.println("  " + msgField[k]);
-			}
-			System.out.println("Campi del payload : ");
-			for (int k = 0; k < 15; k++) {
-				if (msgFieldTot[k] != null && !msgFieldTot[k].isEmpty()) {
-					System.out.println("  " + msgFieldTot[k]);
-				}
-			}
-			for (int k = 0; k < 15; k++) {
-				System.out.println("cerco  " + msgField[j] + " e lo confronto con " + msgFieldTot[k]);
-
-				if (msgFieldTot[k] != null && !msgFieldTot[k].isEmpty()) {
-					if (msgField[j].equals(msgFieldTot[k]) && !trovaSequenza) {
-						System.out.println("trovato prima volta in posizione  " + k);
-						appoField1 = k;
-					}
-					if (msgField[j].equals(msgFieldTot[k])) {
-						System.out.println("metto a true l'inizio sequenza e memorizzo anche appoField2  " + k);
-						trovaSequenza = true;
-						j++;
-						appoField2 = k;
-					} else {
-						System.out.println("metto a false l'inizio sequenza e riposizione j  a " + encField1);
-						trovaSequenza = false;
-						j = encField1;
-					}
-					System.out.println("verifico se j è arrivato a encField2 " + j + " " + encField2);
-					if (j > encField2) {
-						break;
-					}
-				}
-			}
-		}
-*/
 		if (numMsgP > 0) {
 			return msgEncField1EncField2[numMsgP - 1];
 		}
@@ -1617,8 +1425,6 @@ public class WriteASM2 {
 				flgServer = true;
 				break;
 			}
-
-			String[] msgFieldTot = FindField(messages.getMessage(i).getPayload()); 
 			b.write("	rule r_message_" + changNumMSG[i] + " =\n");
 			ruleR_Agent[indRuleR_Agent] = message.getActorfrom().toUpperCase().substring(0, 1) + " r_message_"
 					+ changNumMSG[i] + "[]";
@@ -1641,8 +1447,8 @@ public class WriteASM2 {
 					String[] msgEncField1EncField2 = new String[15];
 					String[] msgField = new String[15];
 					String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j],
-							msgEncField1EncField2, msgField,msgFieldTot);
-					String[] msgFieldDet = detField(msgField,msgFieldTot);
+							msgEncField1EncField2, msgField);
+
 					System.out.println("primo messaggio " + changNumMSG[i] + "  " + listSubPayload[j]);
 					actorStartProtocol = message.getActorfrom();
 					actorReceiveProtocol = message.getActorTo();
@@ -1652,13 +1458,13 @@ public class WriteASM2 {
 					b.write("			                par\n");
 					b.write("			                       protocolMessage(self,$e):=" + changNumMSG[i] + "\n");
 					for (int k = 0; k < 15; k++) {
-						if (msgFieldDet[k] != null) {
- 							System.out.println("Leggo campi numero " + k + " valore msgFieldDet[k]  " + msgFieldDet[k] );
+						if (msgField[k] != null) {
+ 							System.out.println("Leggo campi numero " + k + " valore msgField[k]  " + msgField[k] );
 							b.write("			                       messageField(self,$e," + k + "," + changNumMSG[i]
-									+ "):=" + findValueHonest(msgFieldDet[k].toUpperCase(), message.getActorfrom())
+									+ "):=" + findValueHonest(msgField[k].toUpperCase(), message.getActorfrom())
 									+ "\n");
- 							System.out.println("registro in  honestElement " + message.getActorTo().substring(0, 1)+ " "+ msgFieldDet[k].toUpperCase() + " , messageField($e,self,"+k+","+changNumMSG[i]+")");
-							honestElement.put(message.getActorTo().substring(0, 1) + " " + msgFieldDet[k].toUpperCase(),
+ 							System.out.println("registro in  honestElement " + message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase() + " , messageField($e,self,"+k+","+changNumMSG[i]+")");
+							honestElement.put(message.getActorTo().substring(0, 1) + " " + msgField[k].toUpperCase(),
 									"messageField($e,self," + k + "," + changNumMSG[i] + ")");
 						}
 					}
@@ -1688,13 +1494,13 @@ public class WriteASM2 {
 							+ "\n");
 					System.out.println("leggo Field");
 					for (int k = 0; k < 15; k++) {
-						if (msgFieldDet[k] != null) {
-							System.out.println("leggo Field " + k + " - " + msgFieldDet[k]);
+						if (msgField[k] != null) {
+							System.out.println("leggo Field " + k + " - " + msgField[k]);
 							b.write("			                              messageField(self,$e," + k + ","
-									+ changNumMSG[i] + "):=" + changValueEve(msgFieldDet[k], message.getActorfrom(), true)
+									+ changNumMSG[i] + "):=" + changValueEve(msgField[k], message.getActorfrom(), true)
 									+ "\n");
 							honestElement.put(
-									"E" + " " + changValueEve(msgFieldDet[k], message.getActorfrom(), false).toUpperCase(),
+									"E" + " " + changValueEve(msgField[k], message.getActorfrom(), false).toUpperCase(),
 									"messageField($e,self," + k + "," + changNumMSG[i] + ")");
 						}
 					}
@@ -1724,10 +1530,9 @@ public class WriteASM2 {
 				if (actorStartProtocol.equals(message.getActorTo())) {
 //						System.out.println("l'attore risulta uguale a quello cha ha avviato il protocollo allora guardo il messaggio precedente per vedere i campi che ha ricevuto l'attore e registrarli");
 					Message messagePrev = messages.getMessage(z);
-					String[] msgFieldTotPrev = FindField(messages.getMessage(i-1).getPayload());
 					System.out.println("message.getPayload() " + message.getPayload());
 					String[] listSubPayloadPrev = findMsg(messagePrev);
-					boolean fistOperation = true;   
+					boolean fistOperation = true;
 					String[] msgFieldPrev = new String[15];
 					for (int f = 0; f < 15; f++) {
 						if (listSubPayloadPrev[f] == null || listSubPayloadPrev[f].isEmpty()) {
@@ -1736,8 +1541,7 @@ public class WriteASM2 {
 						System.out.println("listSubPayloadPrev[f] " + listSubPayloadPrev[f]);
 						String[] msgEncField1EncField2Prev = new String[15];
 						levelEncField1EncField2Prev = calcLevelEncField1EncField2(listSubPayloadPrev[f],
-								msgEncField1EncField2Prev, msgFieldPrev,msgFieldTotPrev);
-						String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+								msgEncField1EncField2Prev, msgFieldPrev);
 						System.out.println("Cerco la chiave dal messaggio " + listSubPayload[f]);
 						String keyUsedPrev = findKey(listSubPayloadPrev[f]);
 						System.out.println("chiave trovata " + keyUsedPrev);
@@ -1761,9 +1565,8 @@ public class WriteASM2 {
 					if (!fistOperation) {
 						b.write(") then\n");
 					}
-					String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
 					b.write("			                par\n");
-					String[] linesKnowledgePrev = writeKnowledge(messagePrev,z,msgFieldDetPrev,"$e");
+					String[] linesKnowledgePrev = writeKnowledge(messagePrev,z,msgFieldPrev,"$e");
 					String spaces= "					";
 					printKnowledge(b,"Kno3",linesKnowledgePrev,spaces);
 					b.write("	 		                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
@@ -1775,27 +1578,26 @@ public class WriteASM2 {
 						String[] msgEncField1EncField2 = new String[15];
 						String[] msgField = new String[15];
 						String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j],
-								msgEncField1EncField2, msgField,msgFieldTot);
-						String[] msgFieldDet = detField(msgField,msgFieldTot);
+								msgEncField1EncField2, msgField);
 						String keyUsed = findKey(listSubPayload[j]);
 						String operation = "";
 						if (keyUsed != null) {
 							operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 						}
 						for (int k = 0; k < 15; k++) {
-							if (msgFieldDet[k] != null) {
+							if (msgField[k] != null) {
 //								System.out.println("scrivo i messageField ");
 								b.write("			                      messageField(self,$e," + k + ","
 										+ changNumMSG[i] + "):="
-										+ changValueEve(msgFieldDet[k], message.getActorfrom(), true) + "\n");
+										+ changValueEve(msgField[k], message.getActorfrom(), true) + "\n");
 //								System.out.println("registro i messaggi si a come attore ricevente E che come " + message.getActorTo().substring(0, 1));
 								honestElement.put(
 										"E" + " "
-												+ changValueEve(msgFieldDet[k], message.getActorfrom(), false)
+												+ changValueEve(msgField[k], message.getActorfrom(), false)
 														.toUpperCase(),
 										"messageField($e,self," + k + "," + changNumMSG[i] + ")");
 								honestElement.put(
-										message.getActorTo().substring(0, 1) + " " + msgFieldDet[k].toUpperCase(),
+										message.getActorTo().substring(0, 1) + " " + msgField[k].toUpperCase(),
 										"messageField($e,self," + k + "," + changNumMSG[i] + ")");
 							}
 						}
@@ -1846,7 +1648,6 @@ public class WriteASM2 {
 					Message messagePrev = messages.getMessage(i-1);
 					System.out.println("Sono nel terzo gruppo message.getPayload() " + message.getPayload());
 					String[] listSubPayloadPrev = findMsg(messagePrev);
-					String[] msgFieldTotPrev = FindField(messages.getMessage(i-1).getPayload());
 					boolean fistOperation = true;
 					String[] msgFieldPrev = new String[15];
 					for (int f = 0; f < 15; f++) {
@@ -1856,8 +1657,7 @@ public class WriteASM2 {
 						System.out.println("listSubPayloadPrev[f] " + listSubPayloadPrev[f]);
 						String[] msgEncField1EncField2Prev = new String[15];
 						levelEncField1EncField2Prev = calcLevelEncField1EncField2(listSubPayloadPrev[f],
-								msgEncField1EncField2Prev, msgFieldPrev,msgFieldTotPrev);
-						String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+								msgEncField1EncField2Prev, msgFieldPrev);
 						System.out.println("Cerco la chiave dal messaggio " + listSubPayload[f]);
 						String keyUsedPrev = findKey(listSubPayloadPrev[f]);
 						System.out.println("chiave trovata " + keyUsedPrev);
@@ -1882,8 +1682,7 @@ public class WriteASM2 {
 						b.write(") then\n");
 					}
 					b.write("			                par\n");
-					String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
-					String[] linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldDetPrev,"$e");
+					String[] linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldPrev,"$e");
 					String spaces="                            	        ";
 					printKnowledge(b,"Kno3",linesKnowledgePrev,spaces);
 					b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
@@ -1900,17 +1699,16 @@ public class WriteASM2 {
 						String[] msgEncField1EncField2 = new String[15];
 						String[] msgField = new String[15];
 						String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j],
-								msgEncField1EncField2, msgField,msgFieldTot);
-						String[] msgFieldDet = detField(msgField,msgFieldTot); 
+								msgEncField1EncField2, msgField);
 						String keyUsed = findKey(listSubPayload[j]);
 						String operation = "";
 						if (keyUsed != null) {
 							operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 						}
 						for (int k = 0; k < 15; k++) {
-							if (msgFieldDet[k] != null) {
-								b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgFieldDet[k].toUpperCase(),message.getActorfrom())+"\n");															
-								honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgFieldDet[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");											    
+							if (msgField[k] != null) {
+								b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+findValueHonest(msgField[k].toUpperCase(),message.getActorfrom())+"\n");															
+								honestElement.put(message.getActorTo().substring(0, 1)+ " "+ msgField[k].toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");											    
 							}
 						}
 						determinesOperation (b, i, message, listSubPayload[j], message.getActorfrom(), "",true);
@@ -1937,8 +1735,7 @@ public class WriteASM2 {
 						System.out.println("listSubPayloadPrev[f] " + listSubPayloadPrev[f]);
 						String[] msgEncField1EncField2Prev = new String[15];
 						levelEncField1EncField2Prev = calcLevelEncField1EncField2(listSubPayloadPrev[f],
-								msgEncField1EncField2Prev, msgFieldPrev,msgFieldTotPrev);
-						msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+								msgEncField1EncField2Prev, msgFieldPrev);
 						System.out.println("Cerco la chiave dal messaggio " + listSubPayload[f]);
 						String keyUsedPrev = findKey(listSubPayloadPrev[f]);
 						System.out.println("chiave trovata " + keyUsedPrev);
@@ -1963,7 +1760,7 @@ public class WriteASM2 {
 						b.write(") then\n");
 					}
 					b.write("			                par\n");
-					linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldDetPrev,"$e");
+					linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldPrev,"$e");
 					spaces="                            	        ";
 					printKnowledge(b,"Kno3",linesKnowledgePrev,spaces);
 					b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");
@@ -1981,17 +1778,16 @@ public class WriteASM2 {
 						String[] msgEncField1EncField2 = new String[15];
 						String[] msgField = new String[15];
 						String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j],
-								msgEncField1EncField2, msgField,msgFieldTot);
-						String[] msgFieldDet = detField(msgField,msgFieldTot);
+								msgEncField1EncField2, msgField);
 						String keyUsed = findKey(listSubPayload[j]);
 						String operation = "";
 						if (keyUsed != null) {
 							operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 						}
 						for (int k = 0; k < 15; k++) {
-							if (msgFieldDet[k] != null) {
-								b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgFieldDet[k], message.getActorfrom(),true)+"\n");						
-								honestElement.put("E"+ " "+ changValueEve(msgFieldDet[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
+							if (msgField[k] != null) {
+								b.write("			                      messageField(self,$e,"+k+","+changNumMSG[i]+"):="+changValueEve(msgField[k], message.getActorfrom(),true)+"\n");						
+								honestElement.put("E"+ " "+ changValueEve(msgField[k], message.getActorfrom(),false).toUpperCase(),"messageField($e,self,"+k+","+changNumMSG[i]+")");
 							}
 						}
 						determinesOperation (b, i, message, listSubPayload[j], message.getActorfrom(), "",false);

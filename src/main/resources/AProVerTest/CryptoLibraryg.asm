@@ -11,13 +11,13 @@ signature:
 	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MMC | WAITING_MD | SEND_MME | END_A}
-	enum domain StateBob = {WAITING_MC | SEND_MMD | WAITING_ME | END_B}
-	enum domain StateServer = {WAITING_MA | SEND_MMB | END_S}
+	enum domain StateAlice = {IDLE_MA | WAITING_MC | SEND_MMD | END_A}
+	enum domain StateBob = {WAITING_MA | SEND_MMB | WAITING_MD | END_B}
+	enum domain StateServer = {WAITING_MB | SEND_MMC | END_S}
 
-	enum domain Message = {MA | MB | MC | MD | ME} 
+	enum domain Message = {MA | MB | MC | MD} 
 
-	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KEA|KEB|KES|NA|NB}
+	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KES|NA|NB}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
