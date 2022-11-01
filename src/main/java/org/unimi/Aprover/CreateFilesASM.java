@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.unimi.model.Messages;
 import org.unimi.model.SecurityKey;
-import org.unimi.model.WriteASM2;
+import org.unimi.model.WriteASM;
 import org.unimi.model.WriteCryptoLibrary;
 
 import javafx.fxml.FXML;
@@ -91,7 +91,7 @@ public class CreateFilesASM {
 				resultOperation.setText("Create Files Error");
 				return;
 			} 
-			WriteASM2 writeASM = new WriteASM2(false, messages, alice, bob, eve, null, toolEve,
+			WriteASM writeASM = new WriteASM(false, messages, alice, bob, eve, null, toolEve,
 					writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(), writeCrypto.getNumEncField(),
 					writeCrypto.getNumSignField(), writeCrypto.getNumSymField(), 
 					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());
@@ -110,7 +110,7 @@ public class CreateFilesASM {
 					resultOperation.setText("Create Files Error");
 					return;
 				}
-				WriteASM2 writeASM1 = new WriteASM2(true, messages, alice, bob, eve, server, toolEve,
+				WriteASM writeASM1 = new WriteASM(true, messages, alice, bob, eve, server, toolEve,
 						writeCrypto1.getNumEleMsg(), writeCrypto1.getLevelTot(), writeCrypto1.getNumEncField(),
 						writeCrypto1.getNumSignField(), writeCrypto1.getNumSymField(), 
 						writeCrypto1.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());

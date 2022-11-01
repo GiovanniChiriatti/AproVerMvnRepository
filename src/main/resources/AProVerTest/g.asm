@@ -378,9 +378,9 @@ definitions:
 			if(internalStateS(self)=WAITING_MB and protocolMessage($e,self)=MB)then
  			        if(symDec(MB,1,2,4,self)=true ) then
 			                par
-					      knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
-					      knowsNonce(self,messageField($e,self,3,MA)):=true
-					      knowsOther(self,messageField($e,self,4,MA)):=true
+					      knowsIdentityCertificate(self,messageField($e,self,1,MA)):=true
+					      knowsNonce(self,messageField($e,self,2,MA)):=true
+					      knowsOther(self,messageField($e,self,3,MA)):=true
 	 		                      protocolMessage(self,$e):=MC
 			                      messageField(self,$e,1,MC):=messageField($e,self,1,MB)
 			                      messageField(self,$e,2,MC):=KES
@@ -401,22 +401,26 @@ definitions:
 			     if(receiver=AG_B)then
  			        if(symDec(MC,1,1,4,self)=true  and symDec(MC,1,5,6,self)=true ) then
 			                par
-                            	              knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
-                            	              knowsSymKey(self,messageField($e,self,6,MA)):=true
+                            	              knowsIdentityCertificate(self,messageField($e,self,1,MA)):=true
+                            	              knowsSymKey(self,messageField($e,self,2,MA)):=true
+                            	              knowsNonce(self,messageField($e,self,3,MA)):=true
+                            	              knowsNonce(self,messageField($e,self,4,MA)):=true
 			                      protocolMessage(self,$e):=MD
 			                      messageField(self,$e,1,MD):=messageField($e,self,5,MC)
 			                      messageField(self,$e,2,MD):=messageField($e,self,6,MC)
 			                      symEnc(MD,1,1,2):=KBS
 			                      messageField(self,$e,3,MD):=messageField($e,self,4,MC)
-			                      symEnc(MD,1,1,1):=messageField(self,$e,6,MC)
+			                      symEnc(MD,1,1,1):=messageField(self,$e,2,MC)
 			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif
 			else
  			        if(symDec(MC,1,1,4,self)=true  and symDec(MC,1,5,6,self)=true ) then
 			                par
-                            	              knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
-                            	              knowsSymKey(self,messageField($e,self,6,MA)):=true
+                            	              knowsIdentityCertificate(self,messageField($e,self,1,MA)):=true
+                            	              knowsSymKey(self,messageField($e,self,2,MA)):=true
+                            	              knowsNonce(self,messageField($e,self,3,MA)):=true
+                            	              knowsNonce(self,messageField($e,self,4,MA)):=true
 			                      protocolMessage(self,$e):=MD
 			                      messageField(self,$e,1,MD):=messageField($e,self,5,MC)
 			                      messageField(self,$e,2,MD):=messageField($e,self,6,MC)
