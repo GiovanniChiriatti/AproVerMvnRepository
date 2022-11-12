@@ -161,9 +161,11 @@ public class WriteASM {
 				b.write("	domain EncField1={1}\n");
 				b.write("	domain EncField2={2}\n");
 			} else {
-				b.write("	domain EncField1={1:"+ numEncSymField +"}\n");
-				b.write("	domain EncField2={2:"+ numEncSymField +"}\n");
-		
+	//			b.write("	domain EncField1={1:"+ numEncSymField +"}\n");
+	//			b.write("	domain EncField2={2:"+ numEncSymField +"}\n");
+				b.write("	domain EncField1={1:"+ fieldPosition +"}\n");
+				b.write("	domain EncField2={2:"+ fieldPosition +"}\n");
+
 			}
 		}
 		if (numSignField > 0) {
@@ -714,6 +716,7 @@ public class WriteASM {
 	private void writeMessageAttacker(BufferedWriter b) throws IOException {
 		b.write("\n");
 		b.write("	/*ATTACKER RULES*/\n");
+		// si leggono tutti i messaggi del protocollo
 		for (int i = 0; i < 15; i++) {
 			Message message = messages.getMessage(i);
 			if (message.getActorfrom() == null || message.getActorfrom().isEmpty()) {
@@ -721,160 +724,273 @@ public class WriteASM {
 					break;
 				}
 			}
-			// dal payload si estraggono tutti i filed 
-			String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());  
-			// si divide il payload in messaggi separati (se necessario) 
-			String[] listSubPayload = findMsg(message);
-			// per ogni messaggio si scrive il testo della macchian ASM
-			for (int j = 0; j < 15; j++) {
-				if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
-					break;
-				}
-				//considerando che il messaggio payload è unico e si scompatta è necessario inserire 
-				// l'apposita Roule mettendo un numero sequenziale
-				if (j == 0) {
-					b.write("	rule r_message_replay_" + changNumMSG[i] + " =\n");
-					ruleR_Agent[indRuleR_Agent] = "E r_message_replay_" + changNumMSG[i] + "[]";
-					indRuleR_Agent++;
-				} else {
-					b.write("	rule r_message_replay_" + changNumMSG[i] + j + " =\n");
-					ruleR_Agent[indRuleR_Agent] = "E r_message_replay_" + changNumMSG[i] + j + "[]";
-					indRuleR_Agent++;
-				}
-				b.write("		//choose what agets are interested by the message\n");
-				b.write("		let ($b=agent" + message.getActorTo().substring(0, 1).toUpperCase() + ",$a=agent"
-						+ message.getActorfrom().substring(0, 1).toUpperCase() + ") in\n");
-				b.write("			//check the reception of the message and the modality of the attack\n");
-				b.write("			if(protocolMessage($a,self)=" + changNumMSG[i] + " and protocolMessage(self,$b)!="
-						+ changNumMSG[i] + " and mode=PASSIVE)then\n");
-				b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
-				b.write("			        // the message must be sent unaltered\n");
-				// estraggo le parti dei messaggi interessati
-				// come ad esempio la chiave della crittografia
-				String keyUsed = findKey(listSubPayload[j]);
-				String operation = "";
-				if (keyUsed != null) {
-					operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
-				} else {
-					findActorFromTo(message.getActorfrom(), message.getActorTo());
-				}
+			// per ogni messaggio si scrivono l'istruzione Rule e la Let
+			b.write("	rule r_message_replay_" + changNumMSG[i] + " =\n");
+			ruleR_Agent[indRuleR_Agent] = "E r_message_replay_" + changNumMSG[i] + "[]";
+			indRuleR_Agent++;
+			b.write("		//choose what agets are interested by the message\n");
+			b.write("		let ($b=agent" + message.getActorTo().substring(0, 1).toUpperCase() + ",$a=agent"
+				+ message.getActorfrom().substring(0, 1).toUpperCase() + ") in\n");
+			b.write("		  par \n");
+//			if (messages.getMessage(i).getPayload().contains("-")) {b.write("		  par \n");}
+			// si iniziano a scrivere le istruzoni per la modalità passiva
+			writeMessageAttackerPassive(b,message,i);
+			// si iniziano a scrivere le istruzoni per la modalità attiva
+			writeMessageAttackerActive(b,message,i);
+//			if (messages.getMessage(i).getPayload().contains("-")) {b.write("		  endpar \n");}
+			b.write("		  endpar \n");
+			b.write("		endlet \n");
+		}
+	}
+
+	// Scrittura delle informazioni legate ai messaggi scambiati prendendo in
+	// cosniderazione un eventuale attacco quando EVE è passivo
+	private void writeMessageAttackerPassive(BufferedWriter b, Message message, int i) throws IOException {
+		b.write("			//check the reception of the message and the modality of the attack\n");
+		b.write("			if(protocolMessage($a,self)=" + changNumMSG[i] + " and protocolMessage(self,$b)!="
+				+ changNumMSG[i] + " and mode=PASSIVE)then\n");
+		b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
+		b.write("			        // the message must be sent unaltered\n");
+		b.write("		          par \n");
+		//
+		// per ogni messaggio
+		// dal payload si estraggono tutti i filed e si scrivono a prescindere
+		findActorFromTo(message.getActorfrom(), message.getActorTo());
+		String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());
+		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a");
+
+		String spaces = "                            ";
+		printKnowledge(b, "Prot", linesKnowledge, spaces);
+		if (i==0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
+		//
+		// si divide il payload in messaggi separati (se necessario)
+		String[] listSubPayload = findMsg(message);
+		// per ogni messaggio si estraggono le operazioni
+		int totOpz = 0;
+		for (int j = 0; j < 15; j++) {
+			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
+				break;
+			}
+			// per ogni sottomessaggio si scrivono le istruzioni di Encode
+			String keyUsed = findKey(listSubPayload[j]);
+			String operation = "";
+			if (keyUsed != null) {
+				totOpz++;
+				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 				String[] msgEncField1EncField2 = new String[15];
 				String[] msgField = new String[15];
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
-						msgField,msgFieldTot);
-				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet = detField(msgField,msgFieldTot); 
-				if (operation != null && !operation.isEmpty()) {
-					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
-							+ ",self)=true)then\n");
-				}
-				b.write("			                par\n");
-				String[] linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
-				String spaces = "                            ";
-				printKnowledge(b, "Know", linesKnowledge, spaces);
-				printKnowledge(b, "Prot", linesKnowledge, spaces);
-				printKnowledge(b, "Mess", linesKnowledge, spaces);
-				if (operation != null && !operation.isEmpty()) {
-					if (reversOperation(operation).equals("symEnc")) {
-						b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
-								+ "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
-					} else {
-						b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
-								+ "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
-					}
-				}
-				b.write("			                endpar\n");
-				if (operation != null && !operation.isEmpty()) {
-					b.write("			        else\n");
-					b.write("			                par\n");
-					printKnowledge(b, "Prot", linesKnowledge, spaces);
-
-					printKnowledge(b, "Mes3", linesKnowledge, spaces);
-
-					if (reversOperation(operation).equals("symEnc")) {
-						b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
-								+ "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
-					} else {
-						b.write("			                      " + reversOperation(operation) + "(" + changNumMSG[i]
-								+ "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
-					}
-					b.write("			                endpar\n");
-					b.write("			        endif\n");
-				}
-
-				b.write("			else\n");
-				b.write("			        //check the reception of the message and the modality of the attack\n");
-				b.write("			        if(protocolMessage($a,self)=" + changNumMSG[i]
-						+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=ACTIVE)then\n");
-
-				keyUsed = findKey(listSubPayload[j]);
-				operation = "";
-				if (keyUsed != null) {
-					operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+						msgField, msgFieldTot);
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("                            	" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
 				} else {
-					findActorFromTo(message.getActorfrom(), message.getActorTo());
+					b.write("                            	" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
 				}
-				msgEncField1EncField2 = new String[15];
-				msgField = new String[15];
-				levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
-						msgField,msgFieldTot);
-				msgFieldDet = detField(msgField,msgFieldTot);
-				if (operation != null && !operation.isEmpty()) {
-					b.write("			                 // in the active mode the attacker can forge the message with all his knowledge\n");
-					b.write("			                 if(" + operation + "(" + changNumMSG[i] + ","
-							+ levelEncField1EncField2 + ",self)=true)then\n");
-				}
-				b.write("			                          par\n");
+			} else {
+				// se nel sottomessaggio non c'è una funzione di crittografia si scrive la konw
+				String[] msgEncField1EncField2 = new String[15];
+				String[] msgField = new String[15];
+				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
+				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
+						msgField, msgFieldTot);
+				// determino i campi del messaggio e la posizione
+				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				findActorFromTo(message.getActorfrom(), message.getActorTo());
 				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
-				spaces = "                                     ";
+				spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
-				printKnowledge(b, "Prot", linesKnowledge, spaces);
-				printKnowledge(b, "Mes2", linesKnowledge, spaces);
-				if (operation != null && !operation.isEmpty()) {
-					if (reversOperation(operation).equals("symEnc")) {
-						b.write("			                               " + reversOperation(operation) + "("
-								+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
-					} else {
-						b.write("			                               " + reversOperation(operation) + "("
-								+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
-					}
-				}
-				b.write("			                          endpar\n");
-				if (operation != null && !operation.isEmpty()) {
-					b.write("			                 else\n");
-					b.write("			                          par\n");
-					spaces = "                                     ";
-					printKnowledge(b, "Prot", linesKnowledge, spaces);
-
-					printKnowledge(b, "Mes3", linesKnowledge, spaces);
-
-					if (reversOperation(operation).equals("symEnc")) {
-						b.write("			                               " + reversOperation(operation) + "("
-								+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
-					} else {
-						b.write("			                               " + reversOperation(operation) + "("
-								+ changNumMSG[i] + "," + levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
-					}
-					b.write("			                          endpar\n");
-					b.write("			                 endif\n");
-				}
-
-				b.write("			        endif\n");
-				b.write("			endif\n");
-				b.write("		endlet\n");
+				if (i!=0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
 			}
 		}
-	}
+		b.write("		          endpar \n");
+		b.write("			endif \n");
+		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
+		// decodificarli e in questo caso si aggiorna la knowlege
+		boolean firstOp = true;
+		for (int j = 0; j < 15; j++) {
+			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
+				break;
+			}
+			String keyUsed = findKey(listSubPayload[j]);
+			String operation = "";
+			if (keyUsed != null) {
+				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+				String[] msgEncField1EncField2 = new String[15];
+				String[] msgField = new String[15];
+				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
+				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
+						msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				if (operation != null && !operation.isEmpty()) {
+					if (firstOp) {
+						b.write("			if(protocolMessage($a,self)=" + changNumMSG[i]
+							+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=PASSIVE)then\n");
+						firstOp = false;
+						if(totOpz>1) {b.write("			  par \n");}
+					}
+					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+							+ ",self)=true)then\n");
+					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
+					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+						b.write("			  		  par \n");
+					}
+					spaces = "                            ";
+					printKnowledge(b, "Know", linesKnowledge, spaces);
+					if (i!=0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
+					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+						b.write("			  		  endpar \n");
+					}
+					if (i!=0) {
+						b.write("				    else \n");
+						if (countMsgFieldDet(msgFieldDet) > 1) {
+							b.write("			  		  par \n");
+						}
+						printKnowledge(b, "Mes3", linesKnowledge, spaces);
+						if (countMsgFieldDet(msgFieldDet) > 1) {
+							b.write("			  		  endpar \n");
+						}
+					}
+					b.write("					endif \n");
+					
+				}
+			}
 
+		}
+		if (!firstOp ) {
+			if(totOpz>1) {
+				b.write("			  endpar \n");
+			}
+			b.write("			endif \n");
+		}
+
+	}
+	// Scrittura delle informazioni legate ai messaggi scambiati prendendo in
+	// cosniderazione un eventuale attacco quando EVE è attivo
+	private void writeMessageAttackerActive(BufferedWriter b, Message message, int i) throws IOException {
+		b.write("			        //check the reception of the message and the modality of the attack\n");
+		b.write("			if(protocolMessage($a,self)=" + changNumMSG[i]
+				+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=ACTIVE)then\n");
+		b.write("		          par \n");
+		//
+		// per ogni messaggio
+		// dal payload si estraggono tutti i filed e si scrivono a prescindere
+		findActorFromTo(message.getActorfrom(), message.getActorTo());
+		String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());
+		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a");
+
+		String spaces = "                            ";
+		printKnowledge(b, "Prot", linesKnowledge, spaces);
+		if (i==0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
+		//
+		// si divide il payload in messaggi separati (se necessario)
+		String[] listSubPayload = findMsg(message);
+		// per ogni messaggio si estraggono le operazioni
+		int totOpz = 0;
+		for (int j = 0; j < 15; j++) {
+			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
+				break;
+			}
+			// per ogni sottomessaggio si scrivono le istruzioni di Encode
+			String keyUsed = findKey(listSubPayload[j]);
+			String operation = "";
+			if (keyUsed != null) {
+				totOpz++;
+				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+				String[] msgEncField1EncField2 = new String[15];
+				String[] msgField = new String[15];
+				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
+				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
+						msgField, msgFieldTot);
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("                            	" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("                            	" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
+			} else {
+				// se nel sottomessaggio non c'è una funzione di crittografia si scrive la konw
+				String[] msgEncField1EncField2 = new String[15];
+				String[] msgField = new String[15];
+				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
+				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
+						msgField, msgFieldTot);
+				// determino i campi del messaggio e la posizione
+				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				findActorFromTo(message.getActorfrom(), message.getActorTo());
+				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
+				spaces = "                            ";
+				printKnowledge(b, "Know", linesKnowledge, spaces);
+				if (i!=0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
+			}
+		}
+		b.write("		          endpar \n");
+		b.write("			endif \n");
+		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
+		// decodificarli e in questo caso si aggiorna la knowlege
+		boolean firstOp = true;
+		for (int j = 0; j < 15; j++) {
+			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
+				break;
+			}
+			String keyUsed = findKey(listSubPayload[j]);
+			String operation = "";
+			if (keyUsed != null) {
+				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+				String[] msgEncField1EncField2 = new String[15];
+				String[] msgField = new String[15];
+				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
+				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
+						msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				if (operation != null && !operation.isEmpty()) {
+					if (firstOp) {
+						b.write("			if(protocolMessage($a,self)=" + changNumMSG[i]
+								+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=ACTIVE)then\n");
+						firstOp = false;
+						if(totOpz>1) {b.write("			  par \n");}
+					}
+					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+							+ ",self)=true)then\n");
+					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a");
+					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+						b.write("			  		  par \n");
+					}
+					spaces = "                            ";
+					printKnowledge(b, "Know", linesKnowledge, spaces);
+					if (i!=0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
+					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+						b.write("			  		  endpar \n");
+					}
+					if (i!=0) {
+						b.write("				    else \n");
+						if (countMsgFieldDet(msgFieldDet) > 1) {
+							b.write("			  		  par \n");
+						}
+						printKnowledge(b, "Mes3", linesKnowledge, spaces);
+						if (countMsgFieldDet(msgFieldDet) > 1) {
+							b.write("			  		  endpar \n");
+						}
+					}					
+					b.write("					endif \n");
+				}
+			}
+
+		}
+		if (!firstOp ) {
+			if(totOpz>1) {
+				b.write("			  endpar \n");
+			}
+			b.write("			endif \n");
+		}
+	}
 	// determina l'elenco dei messaggi che compongono il payload
 	private String[] findMsg(Message message) {
 		String partMsg = message.getPayload();
@@ -1399,14 +1515,16 @@ public class WriteASM {
 	// quanti livelli di cripr/encript ci sono
 	private String[] writeKnowledge(Message message, int numMessage, String[] msgField, String typeActor)
 			throws IOException {
+		System.out.println(" entro in  writeKnowledge");
 		String[] linesKnowledge = new String[50];
-		linesKnowledge[0] = "Prot                  protocolMessage(self,$b):=" + changNumMSG[numMessage] + "\n";
+		linesKnowledge[0] = "Prot	protocolMessage(self,$b):=" + changNumMSG[numMessage] + "\n";
 		Boolean flgAtorTo = true;
 		int numRighe = 1;
 		for (int i = 0; i < 15; i++) {
+			System.out.println(" writeKnowledge i: " + i);
 			if (msgField[i] != null) {
 				String typeFieldActorFrom = KeyActorFrom.searchEle(msgField[i]);
-//						System.out.println(" Campo " + msgField[i] + " Tipo Campo " + typeFieldActorFrom);
+ 						System.out.println("writeKnowledge Campo " + msgField[i] + " Tipo Campo " + typeFieldActorFrom);
 				if (typeFieldActorFrom == null) {
 					flgAtorTo = false;
 					typeFieldActorFrom = KeyActorTo.searchEle(msgField[i]);
@@ -1490,36 +1608,44 @@ public class WriteASM {
 				default:
 					typeFieldActorFrom = null;
 				}
-				linesKnowledge[numRighe] = "Know                  " + typeFieldActorFrom + "(self,messageField("
+				linesKnowledge[numRighe] = "Know	" + typeFieldActorFrom + "(self,messageField("
 						+ typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")):=true\n";
 				numRighe++;
-				linesKnowledge[numRighe] = "Kno3      " + typeFieldActorFrom + "(self,messageField(" + typeActor
+				linesKnowledge[numRighe] = "Kno3	" + typeFieldActorFrom + "(self,messageField(" + typeActor
 						+ ",self," + i + "," + changNumMSG[0] + ")):=true\n";
 				numRighe++;
 
-				linesKnowledge[numRighe] = "Mess                  messageField(self,$b," + i + ","
+				linesKnowledge[numRighe] = "Mess	messageField(self,$b," + i + ","
 						+ changNumMSG[numMessage] + "):=messageField(" + typeActor + ",self," + i + ","
 						+ changNumMSG[numMessage] + ")\n";
 				numRighe++;
 				if (eleEve != null) {
-					linesKnowledge[numRighe] = "Mes2                  messageField(self,$b," + i + ","
+					linesKnowledge[numRighe] = "Mes2	messageField(self,$b," + i + ","
 							+ changNumMSG[numMessage] + "):=" + eleEve + "\n";
 					numRighe++;
-					linesKnowledge[numRighe] = "Mes3                  messageField(self,$b," + i + "," + changNumMSG[0]
+					linesKnowledge[numRighe] = "Mes3	messageField(self,$b," + i + "," + changNumMSG[0]
 							+ "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")\n";
 					numRighe++;
 				} else {
-					linesKnowledge[numRighe] = "Mes2                  messageField(self,$b," + i + ","
+					linesKnowledge[numRighe] = "Mes2	messageField(self,$b," + i + ","
 							+ changNumMSG[numMessage] + "):=messageField(" + typeActor + ",self," + i + ","
 							+ changNumMSG[numMessage] + ")\n";
 					numRighe++;
-					linesKnowledge[numRighe] = "Mes3                  messageField(self,$b," + i + "," + changNumMSG[0]
+					linesKnowledge[numRighe] = "Mes3	messageField(self,$b," + i + "," + changNumMSG[0]
 							+ "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")\n";
 					numRighe++;
 				}
 			}
 		}
 		return linesKnowledge;
+	}
+	// conta quanti campi contiene il sottomessaggio
+	private int countMsgFieldDet( String[] msgField) {
+		int tot = 0;
+		for (int i = 0; i < 15; i++) {
+			if (msgField[i] != null) { tot++;}
+		}
+		return tot;
 	}
 
 	// stampa le informazioni registrate nelle fasi precedenti delle Know, field e

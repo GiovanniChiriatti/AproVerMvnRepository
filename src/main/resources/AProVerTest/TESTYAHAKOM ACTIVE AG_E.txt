@@ -1,0 +1,262 @@
+simulating YAHALOM.asm
+INFO - parsing file C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\YAHALOM.asm
+INFO - file successfully parsed for asm YAHALOM
+Running interactively YAHALOM.asm
+INITIAL STATE:Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+Insert a symbol of Receiver in [AG_A, AG_B, AG_E, AG_S] for chosenReceiver:
+AG_E
+Insert a symbol of Modality in [ACTIVE, PASSIVE] for chosenMode:
+ACTIVE
+<State 0 (monitored)>
+chosenMode=ACTIVE
+chosenReceiver=AG_E
+</State 0 (monitored)>
+<UpdateSet - 0>
+internalStateS(agentS)=WAITING_ENCKBS
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+protocolMessage(agentA,agentE)=REQCOM
+</UpdateSet>
+<State 1 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=IDLE_REQCOM
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=undef
+protocolMessage(agentE,agentS)=undef
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+</State 1 (controlled)>
+<UpdateSet - 1>
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentE,NA)=true
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentE,agentB)=REQCOM
+</UpdateSet>
+<State 2 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=IDLE_REQCOM
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentE,NA)=true
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=undef
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=REQCOM
+protocolMessage(agentE,agentS)=undef
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+</State 2 (controlled)>
+<UpdateSet - 2>
+internalStateA(agentA)=WAITING_GENKEYSES
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentB,CA)=true
+knowsOther(agentB,NA)=true
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=ENCKBS
+symEnc(ENCKBS,1,1,3)=KES
+</UpdateSet>
+<State 3 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=WAITING_GENKEYSES
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentE,NA)=true
+knowsOther(agentB,NA)=true
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=ENCKBS
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=REQCOM
+protocolMessage(agentE,agentS)=undef
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+symEnc(ENCKBS,1,1,3)=KES
+</State 3 (controlled)>
+<UpdateSet - 3>
+internalStateA(agentA)=WAITING_GENKEYSES
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CB)=true
+knowsOther(agentB,NA)=true
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+messageField(agentE,agentS,1,ENCKBS)=CB
+messageField(agentE,agentS,2,REQCOM)=CA
+messageField(agentE,agentS,3,REQCOM)=NA
+messageField(agentE,agentS,4,REQCOM)=NB
+protocolMessage(agentB,agentE)=ENCKBS
+protocolMessage(agentE,agentS)=ENCKBS
+symEnc(ENCKBS,1,1,3)=KES
+symEnc(ENCKBS,1,2,4)=KES
+</UpdateSet>
+<State 4 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=WAITING_GENKEYSES
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsIdentityCertificate(agentE,CB)=true
+knowsNonce(agentE,NA)=true
+knowsOther(agentB,NA)=true
+knowsSymKey(agentE,undef)=false
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+messageField(agentE,agentS,1,ENCKBS)=CB
+messageField(agentE,agentS,2,REQCOM)=CA
+messageField(agentE,agentS,3,REQCOM)=NA
+messageField(agentE,agentS,4,REQCOM)=NB
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=ENCKBS
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=REQCOM
+protocolMessage(agentE,agentS)=ENCKBS
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+symEnc(ENCKBS,1,1,3)=KES
+symEnc(ENCKBS,1,2,4)=KES
+</State 4 (controlled)>
+<UpdateSet - 4>
+internalStateA(agentA)=WAITING_GENKEYSES
+knowsIdentityCertificate(agentB,CA)=true
+knowsOther(agentB,NA)=true
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+protocolMessage(agentB,agentE)=ENCKBS
+symEnc(ENCKBS,1,1,3)=KES
+</UpdateSet>
+<State 5 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=WAITING_GENKEYSES
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsIdentityCertificate(agentE,CB)=true
+knowsNonce(agentE,NA)=true
+knowsOther(agentB,NA)=true
+knowsSymKey(agentE,undef)=false
+knowsSymKey(agentS,KES)=false
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+messageField(agentE,agentS,1,ENCKBS)=CB
+messageField(agentE,agentS,2,REQCOM)=CA
+messageField(agentE,agentS,3,REQCOM)=NA
+messageField(agentE,agentS,4,REQCOM)=NB
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=ENCKBS
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=REQCOM
+protocolMessage(agentE,agentS)=ENCKBS
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+symEnc(ENCKBS,1,1,3)=KES
+symEnc(ENCKBS,1,2,4)=KES
+</State 5 (controlled)>
+FINAL STATE: Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+Server={agentS}
+internalStateA(agentA)=WAITING_GENKEYSES
+internalStateB(agentB)=WAITING_REQCOM
+internalStateS(agentS)=WAITING_ENCKBS
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsIdentityCertificate(agentE,CB)=true
+knowsNonce(agentE,NA)=true
+knowsOther(agentB,NA)=true
+knowsSymKey(agentE,undef)=false
+knowsSymKey(agentS,KES)=false
+messageField(agentA,agentE,1,REQCOM)=CA
+messageField(agentA,agentE,2,REQCOM)=NA
+messageField(agentB,agentE,1,ENCKBS)=CB
+messageField(agentB,agentE,2,ENCKBS)=CA
+messageField(agentB,agentE,3,ENCKBS)=NA
+messageField(agentB,agentE,4,ENCKBS)=NB
+messageField(agentE,agentB,1,REQCOM)=CA
+messageField(agentE,agentB,2,REQCOM)=NA
+messageField(agentE,agentS,1,ENCKBS)=CB
+messageField(agentE,agentS,2,REQCOM)=CA
+messageField(agentE,agentS,3,REQCOM)=NA
+messageField(agentE,agentS,4,REQCOM)=NB
+mode=ACTIVE
+protocolMessage(agentA,agentE)=REQCOM
+protocolMessage(agentB,agentE)=ENCKBS
+protocolMessage(agentE,agentA)=undef
+protocolMessage(agentE,agentB)=REQCOM
+protocolMessage(agentE,agentS)=ENCKBS
+protocolMessage(agentS,agentE)=undef
+receiver=AG_E
+self=agentE
+symEnc(ENCKBS,1,1,3)=KES
+symEnc(ENCKBS,1,2,4)=KES
+run terminated

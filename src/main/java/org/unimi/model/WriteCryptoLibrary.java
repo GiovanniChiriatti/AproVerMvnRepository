@@ -546,7 +546,7 @@ public class WriteCryptoLibrary {
 			if (stateActor[indActorFrom] == null) {
 				stateActor[indActorFrom]="SEND_"+changNumMSG[i];
 			} else {
-				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_M"+changNumMSG[i];
+				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_"+changNumMSG[i];
 			}
 		}
 		if (stateActor[indActorTo] == null) {

@@ -11,9 +11,9 @@ signature:
 	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MMC | WAITING_MD | SEND_MME | END_A}
-	enum domain StateBob = {WAITING_MC | SEND_MMD | WAITING_ME | END_B}
-	enum domain StateServer = {WAITING_MA | SEND_MMB | END_S}
+	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MC | WAITING_MD | SEND_ME | END_A}
+	enum domain StateBob = {WAITING_MC | SEND_MD | WAITING_ME | END_B}
+	enum domain StateServer = {WAITING_MA | SEND_MB | END_S}
 
 	enum domain Message = {MA | MB | MC | MD | ME} 
 

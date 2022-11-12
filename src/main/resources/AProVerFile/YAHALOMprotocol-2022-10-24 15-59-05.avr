@@ -69,7 +69,7 @@ dati Server Digest
 dati Server KnowAcq 
 dati Messaggi 
 dati Messaggio 0
-NameMess MA
+NameMess REQCOM
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true
@@ -81,7 +81,7 @@ CA
 dati listPartMessage j=0 k=1
 NA
 dati Messaggio 1
-NameMess MB
+NameMess ENCKBS
 ActorFrom Bob
 ActorTo Server
 Eve Intercept true
@@ -99,7 +99,7 @@ NA
 dati listPartMessage j=1 k=2
 NB
 dati Messaggio 2
-NameMess MC
+NameMess GENKEYSES
 ActorFrom Server
 ActorTo Alice
 Eve Intercept true
@@ -121,7 +121,7 @@ CA
 dati listPartMessage j=1 k=1
 KAB
 dati Messaggio 3
-NameMess MD
+NameMess FRWVRNB
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true

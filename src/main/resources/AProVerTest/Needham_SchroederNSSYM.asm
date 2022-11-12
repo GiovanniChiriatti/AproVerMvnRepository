@@ -20,232 +20,241 @@ definitions:
 	rule r_message_replay_MA =
 		//choose what agets are interested by the message
 		let ($b=agentS,$a=agentA) in
+		  par 
 			//check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MA and protocolMessage(self,$b)!=MA and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
-			                par
-                                              knowsIdentityCertificate(self,messageField($a,self,1,MA)):=true
-                                              knowsIdentityCertificate(self,messageField($a,self,2,MA)):=true
-                                              knowsNonce(self,messageField($a,self,3,MA)):=true
-                                              protocolMessage(self,$b):=MA
-                                              messageField(self,$b,1,MA):=messageField($a,self,1,MA)
-                                              messageField(self,$b,2,MA):=messageField($a,self,2,MA)
-                                              messageField(self,$b,3,MA):=messageField($a,self,3,MA)
-			                endpar
-			else
+		          par 
+                            	protocolMessage(self,$b):=MA
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MA)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MA)
+                            	messageField(self,$b,3,MA):=messageField($a,self,3,MA)
+                            	knowsIdentityCertificate(self,messageField($a,self,1,MA)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,2,MA)):=true
+                            	knowsNonce(self,messageField($a,self,3,MA)):=true
+		          endpar 
+			endif 
 			        //check the reception of the message and the modality of the attack
-			        if(protocolMessage($a,self)=MA and protocolMessage(self,$b)!=MA and mode=ACTIVE)then
-			                          par
-                                                       knowsIdentityCertificate(self,messageField($a,self,1,MA)):=true
-                                                       knowsIdentityCertificate(self,messageField($a,self,2,MA)):=true
-                                                       knowsNonce(self,messageField($a,self,3,MA)):=true
-                                                       protocolMessage(self,$b):=MA
-                                                       messageField(self,$b,1,MA):=messageField($a,self,1,MA)
-                                                       messageField(self,$b,2,MA):=messageField($a,self,2,MA)
-                                                       messageField(self,$b,3,MA):=messageField($a,self,3,MA)
-			                          endpar
-			        endif
-			endif
-		endlet
+			if(protocolMessage($a,self)=MA and protocolMessage(self,$b)!=MA and mode=ACTIVE)then
+		          par 
+                            	protocolMessage(self,$b):=MA
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MA)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MA)
+                            	messageField(self,$b,3,MA):=messageField($a,self,3,MA)
+                            	knowsIdentityCertificate(self,messageField($a,self,1,MA)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,2,MA)):=true
+                            	knowsNonce(self,messageField($a,self,3,MA)):=true
+		          endpar 
+			endif 
+		  endpar 
+		endlet 
 	rule r_message_replay_MB =
 		//choose what agets are interested by the message
 		let ($b=agentA,$a=agentS) in
+		  par 
 			//check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
+		          par 
+                            	protocolMessage(self,$b):=MB
+                            	symEnc(MB,2,1,5):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=PASSIVE)then
 			        if(symDec(MB,2,1,5,self)=true)then
-			                par
-                                              knowsNonce(self,messageField($a,self,1,MB)):=true
-                                              knowsSymKey(self,messageField($a,self,2,MB)):=true
-                                              knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
-                                              knowsSymKey(self,messageField($a,self,4,MB)):=true
-                                              knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
-                                              protocolMessage(self,$b):=MB
-                                              messageField(self,$b,1,MB):=messageField($a,self,1,MB)
-                                              messageField(self,$b,2,MB):=messageField($a,self,2,MB)
-                                              messageField(self,$b,3,MB):=messageField($a,self,3,MB)
-                                              messageField(self,$b,4,MB):=messageField($a,self,4,MB)
-                                              messageField(self,$b,5,MB):=messageField($a,self,5,MB)
-			                      symEnc(MB,2,1,5):=KEA
-			                endpar
-			        else
-			                par
-                                              protocolMessage(self,$b):=MB
-                                              messageField(self,$b,1,MA):=messageField($a,self,1,MB)
-                                              messageField(self,$b,2,MA):=messageField($a,self,2,MB)
-                                              messageField(self,$b,3,MA):=messageField($a,self,3,MB)
-                                              messageField(self,$b,4,MA):=messageField($a,self,4,MB)
-                                              messageField(self,$b,5,MA):=messageField($a,self,5,MB)
-			                      symEnc(MB,2,1,5):=KEA
-			                endpar
-			        endif
-			else
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,MB)):=true
+                            	knowsSymKey(self,messageField($a,self,2,MB)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
+                            	knowsSymKey(self,messageField($a,self,4,MB)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
+                            	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
+                            	messageField(self,$b,2,MB):=messageField($a,self,2,MB)
+                            	messageField(self,$b,3,MB):=messageField($a,self,3,MB)
+                            	messageField(self,$b,4,MB):=messageField($a,self,4,MB)
+                            	messageField(self,$b,5,MB):=messageField($a,self,5,MB)
+			  		  endpar 
+				    else 
+			  		  par 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MB)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MB)
+                            	messageField(self,$b,3,MA):=messageField($a,self,3,MB)
+                            	messageField(self,$b,4,MA):=messageField($a,self,4,MB)
+                            	messageField(self,$b,5,MA):=messageField($a,self,5,MB)
+			  		  endpar 
+					endif 
+			endif 
 			        //check the reception of the message and the modality of the attack
-			        if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=ACTIVE)then
-			                 // in the active mode the attacker can forge the message with all his knowledge
-			                 if(symDec(MB,2,1,5,self)=true)then
-			                          par
-                                                       knowsNonce(self,messageField($a,self,1,MB)):=true
-                                                       knowsSymKey(self,messageField($a,self,2,MB)):=true
-                                                       knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
-                                                       knowsSymKey(self,messageField($a,self,4,MB)):=true
-                                                       knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
-                                                       protocolMessage(self,$b):=MB
-                                                       messageField(self,$b,1,MB):=messageField($a,self,1,MB)
-                                                       messageField(self,$b,2,MB):=KEA
-                                                       messageField(self,$b,3,MB):=messageField($a,self,3,MB)
-                                                       messageField(self,$b,4,MB):=KEA
-                                                       messageField(self,$b,5,MB):=messageField($a,self,5,MB)
-			                               symEnc(MB,2,1,5):=KEA
-			                          endpar
-			                 else
-			                          par
-                                                       protocolMessage(self,$b):=MB
-                                                       messageField(self,$b,1,MA):=messageField($a,self,1,MB)
-                                                       messageField(self,$b,2,MA):=messageField($a,self,2,MB)
-                                                       messageField(self,$b,3,MA):=messageField($a,self,3,MB)
-                                                       messageField(self,$b,4,MA):=messageField($a,self,4,MB)
-                                                       messageField(self,$b,5,MA):=messageField($a,self,5,MB)
-			                               symEnc(MB,2,1,5):=KEA
-			                          endpar
-			                 endif
-			        endif
-			endif
-		endlet
+			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=ACTIVE)then
+		          par 
+                            	protocolMessage(self,$b):=MB
+                            	symEnc(MB,2,1,5):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=ACTIVE)then
+			        if(symDec(MB,2,1,5,self)=true)then
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,MB)):=true
+                            	knowsSymKey(self,messageField($a,self,2,MB)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
+                            	knowsSymKey(self,messageField($a,self,4,MB)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
+                            	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
+                            	messageField(self,$b,2,MB):=KEA
+                            	messageField(self,$b,3,MB):=messageField($a,self,3,MB)
+                            	messageField(self,$b,4,MB):=KEA
+                            	messageField(self,$b,5,MB):=messageField($a,self,5,MB)
+			  		  endpar 
+				    else 
+			  		  par 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MB)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MB)
+                            	messageField(self,$b,3,MA):=messageField($a,self,3,MB)
+                            	messageField(self,$b,4,MA):=messageField($a,self,4,MB)
+                            	messageField(self,$b,5,MA):=messageField($a,self,5,MB)
+			  		  endpar 
+					endif 
+			endif 
+		  endpar 
+		endlet 
 	rule r_message_replay_MC =
 		//choose what agets are interested by the message
 		let ($b=agentB,$a=agentA) in
+		  par 
 			//check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
+		          par 
+                            	protocolMessage(self,$b):=MC
+                            	symEnc(MC,1,1,2):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=PASSIVE)then
 			        if(symDec(MC,1,1,2,self)=true)then
-			                par
-                                              knowsSymKey(self,messageField($a,self,1,MC)):=true
-                                              knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
-                                              protocolMessage(self,$b):=MC
-                                              messageField(self,$b,1,MC):=messageField($a,self,1,MC)
-                                              messageField(self,$b,2,MC):=messageField($a,self,2,MC)
-			                      symEnc(MC,1,1,2):=KEA
-			                endpar
-			        else
-			                par
-                                              protocolMessage(self,$b):=MC
-                                              messageField(self,$b,1,MA):=messageField($a,self,1,MC)
-                                              messageField(self,$b,2,MA):=messageField($a,self,2,MC)
-			                      symEnc(MC,1,1,2):=KEA
-			                endpar
-			        endif
-			else
+			  		  par 
+                            	knowsSymKey(self,messageField($a,self,1,MC)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
+                            	messageField(self,$b,1,MC):=messageField($a,self,1,MC)
+                            	messageField(self,$b,2,MC):=messageField($a,self,2,MC)
+			  		  endpar 
+				    else 
+			  		  par 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MC)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MC)
+			  		  endpar 
+					endif 
+			endif 
 			        //check the reception of the message and the modality of the attack
-			        if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=ACTIVE)then
-			                 // in the active mode the attacker can forge the message with all his knowledge
-			                 if(symDec(MC,1,1,2,self)=true)then
-			                          par
-                                                       knowsSymKey(self,messageField($a,self,1,MC)):=true
-                                                       knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
-                                                       protocolMessage(self,$b):=MC
-                                                       messageField(self,$b,1,MC):=KEA
-                                                       messageField(self,$b,2,MC):=messageField($a,self,2,MC)
-			                               symEnc(MC,1,1,2):=KEA
-			                          endpar
-			                 else
-			                          par
-                                                       protocolMessage(self,$b):=MC
-                                                       messageField(self,$b,1,MA):=messageField($a,self,1,MC)
-                                                       messageField(self,$b,2,MA):=messageField($a,self,2,MC)
-			                               symEnc(MC,1,1,2):=KEA
-			                          endpar
-			                 endif
-			        endif
-			endif
-		endlet
+			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=ACTIVE)then
+		          par 
+                            	protocolMessage(self,$b):=MC
+                            	symEnc(MC,1,1,2):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=ACTIVE)then
+			        if(symDec(MC,1,1,2,self)=true)then
+			  		  par 
+                            	knowsSymKey(self,messageField($a,self,1,MC)):=true
+                            	knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
+                            	messageField(self,$b,1,MC):=KEA
+                            	messageField(self,$b,2,MC):=messageField($a,self,2,MC)
+			  		  endpar 
+				    else 
+			  		  par 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MC)
+                            	messageField(self,$b,2,MA):=messageField($a,self,2,MC)
+			  		  endpar 
+					endif 
+			endif 
+		  endpar 
+		endlet 
 	rule r_message_replay_MD =
 		//choose what agets are interested by the message
 		let ($b=agentA,$a=agentB) in
+		  par 
 			//check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
+		          par 
+                            	protocolMessage(self,$b):=MD
+                            	symEnc(MD,1,1,1):=messageField($b,self,1,MC)
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=PASSIVE)then
 			        if(symDec(MD,1,1,1,self)=true)then
-			                par
-                                              knowsNonce(self,messageField($a,self,1,MD)):=true
-                                              protocolMessage(self,$b):=MD
-                                              messageField(self,$b,1,MD):=messageField($a,self,1,MD)
-			                      symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-			                endpar
-			        else
-			                par
-                                              protocolMessage(self,$b):=MD
-                                              messageField(self,$b,1,MA):=messageField($a,self,1,MD)
-			                      symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-			                endpar
-			        endif
-			else
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,MD)):=true
+                            	messageField(self,$b,1,MD):=messageField($a,self,1,MD)
+			  		  endpar 
+				    else 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MD)
+					endif 
+			endif 
 			        //check the reception of the message and the modality of the attack
-			        if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=ACTIVE)then
-			                 // in the active mode the attacker can forge the message with all his knowledge
-			                 if(symDec(MD,1,1,1,self)=true)then
-			                          par
-                                                       knowsNonce(self,messageField($a,self,1,MD)):=true
-                                                       protocolMessage(self,$b):=MD
-                                                       messageField(self,$b,1,MD):=messageField($a,self,1,MD)
-			                               symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-			                          endpar
-			                 else
-			                          par
-                                                       protocolMessage(self,$b):=MD
-                                                       messageField(self,$b,1,MA):=messageField($a,self,1,MD)
-			                               symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-			                          endpar
-			                 endif
-			        endif
-			endif
-		endlet
+			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=ACTIVE)then
+		          par 
+                            	protocolMessage(self,$b):=MD
+                            	symEnc(MD,1,1,1):=messageField($b,self,1,MC)
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=ACTIVE)then
+			        if(symDec(MD,1,1,1,self)=true)then
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,MD)):=true
+                            	messageField(self,$b,1,MD):=messageField($a,self,1,MD)
+			  		  endpar 
+				    else 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,MD)
+					endif 
+			endif 
+		  endpar 
+		endlet 
 	rule r_message_replay_ME =
 		//choose what agets are interested by the message
 		let ($b=agentB,$a=agentA) in
+		  par 
 			//check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
+		          par 
+                            	protocolMessage(self,$b):=ME
+                            	symEnc(ME,1,1,1):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=PASSIVE)then
 			        if(symDec(ME,1,1,1,self)=true)then
-			                par
-                                              knowsNonce(self,messageField($a,self,1,ME)):=true
-                                              protocolMessage(self,$b):=ME
-                                              messageField(self,$b,1,ME):=messageField($a,self,1,ME)
-			                      symEnc(ME,1,1,1):=KEA
-			                endpar
-			        else
-			                par
-                                              protocolMessage(self,$b):=ME
-                                              messageField(self,$b,1,MA):=messageField($a,self,1,ME)
-			                      symEnc(ME,1,1,1):=KEA
-			                endpar
-			        endif
-			else
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,ME)):=true
+                            	messageField(self,$b,1,ME):=messageField($a,self,1,ME)
+			  		  endpar 
+				    else 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,ME)
+					endif 
+			endif 
 			        //check the reception of the message and the modality of the attack
-			        if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=ACTIVE)then
-			                 // in the active mode the attacker can forge the message with all his knowledge
-			                 if(symDec(ME,1,1,1,self)=true)then
-			                          par
-                                                       knowsNonce(self,messageField($a,self,1,ME)):=true
-                                                       protocolMessage(self,$b):=ME
-                                                       messageField(self,$b,1,ME):=messageField($a,self,1,ME)
-			                               symEnc(ME,1,1,1):=KEA
-			                          endpar
-			                 else
-			                          par
-                                                       protocolMessage(self,$b):=ME
-                                                       messageField(self,$b,1,MA):=messageField($a,self,1,ME)
-			                               symEnc(ME,1,1,1):=KEA
-			                          endpar
-			                 endif
-			        endif
-			endif
-		endlet
+			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=ACTIVE)then
+		          par 
+                            	protocolMessage(self,$b):=ME
+                            	symEnc(ME,1,1,1):=KEA
+		          endpar 
+			endif 
+			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=ACTIVE)then
+			        if(symDec(ME,1,1,1,self)=true)then
+			  		  par 
+                            	knowsNonce(self,messageField($a,self,1,ME)):=true
+                            	messageField(self,$b,1,ME):=messageField($a,self,1,ME)
+			  		  endpar 
+				    else 
+                            	messageField(self,$b,1,MA):=messageField($a,self,1,ME)
+					endif 
+			endif 
+		  endpar 
+		endlet 
 
 	/*HONEST AGENT RULES*/	
 	rule r_message_MA =
@@ -257,7 +266,7 @@ definitions:
 			                       messageField(self,$e,1,MA):=CA
 			                       messageField(self,$e,2,MA):=CB
 			                       messageField(self,$e,3,MA):=NA
-			                       internalStateA(self):=WAITING_MB
+			                       internalStateA(agentA):=WAITING_MB
 			                endpar
 			        else
 			                if(receiver=AG_E)then
@@ -266,7 +275,7 @@ definitions:
 			                              messageField(self,$e,1,MA):=CA
 			                              messageField(self,$e,2,MA):=CB
 			                              messageField(self,$e,3,MA):=NA
-			                              internalStateA(self):=WAITING_MB
+			                              internalStateA(agentA):=WAITING_MB
 			                        endpar
 			                endif
 			        endif
@@ -276,94 +285,94 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateS(self)=WAITING_MA and protocolMessage($e,self)=MA)then
 			                par
-                                  knowsIdentityCertificate(self,messageField($e,self,1,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
-                                  knowsNonce(self,messageField($e,self,3,MA)):=true
-			                      protocolMessage(self,$e):=MB
+						knowsIdentityCertificate(self,messageField($e,self,1,MA)):=true
+						knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
+						knowsNonce(self,messageField($e,self,3,MA)):=true
+	 		                      protocolMessage(self,$e):=MB
 			                      messageField(self,$e,1,MB):=messageField($e,self,3,MA)
 			                      messageField(self,$e,2,MB):=KEA
 			                      messageField(self,$e,3,MB):=messageField($e,self,2,MA)
 			                      messageField(self,$e,4,MB):=messageField($e,self,2,MB)
 			                      messageField(self,$e,5,MB):=messageField($e,self,1,MA)
  			                      symEnc(MB,2,1,5):=KEA
-			                      internalStateB(self):=WAITING_MC
+			                      internalStateB(agentB):=WAITING_MC
 			                endpar
 			endif
-	endlet
+		endlet
 	rule r_message_MC =
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_MB and protocolMessage($e,self)=MB)then
-			        if(receiver=AG_B)then
-   			           if(symDec(MB,2,1,5,self)=true)then
+			     if(receiver=AG_B)then
+ 			        if(symDec(MB,2,1,5,self)=true ) then
 			                par
-                                  knowsNonce(self,messageField($e,self,1,MA)):=true
-                                  knowsSymKey(self,messageField($e,self,2,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
-                                  knowsSymKey(self,messageField($e,self,4,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,MA)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
+                            	        	knowsSymKey(self,messageField($e,self,4,MA)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
 			                      protocolMessage(self,$e):=MC
 			                      messageField(self,$e,1,MC):=messageField($e,self,4,MB)
 			                      messageField(self,$e,2,MC):=messageField($e,self,5,MB)
 			                      symEnc(MC,1,1,2):=KBS
-			                      internalStateA(self):=WAITING_MD
+			                      internalStateA(agentA):=WAITING_MD
 			                endpar
 			        endif
 			else
-			           if(symDec(MB,2,1,5,self)=true)then
+ 			        if(symDec(MB,2,1,5,self)=true ) then
 			                par
-                                  knowsNonce(self,messageField($e,self,1,MA)):=true
-                                  knowsSymKey(self,messageField($e,self,2,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
-                                  knowsSymKey(self,messageField($e,self,4,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,MA)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
+                            	        	knowsSymKey(self,messageField($e,self,4,MA)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
 			                      protocolMessage(self,$e):=MC
 			                      messageField(self,$e,1,MC):=messageField($e,self,4,MB)
 			                      messageField(self,$e,2,MC):=messageField($e,self,5,MB)
 			                      symEnc(MC,1,1,2):=messageField(self,$e,1,MC)
-			                      internalStateA(self):=WAITING_MD
+			                      internalStateA(agentA):=WAITING_MD
 			                endpar
-				  endif
+			        endif
 				endif
 			endif
 		endlet
 	rule r_message_MD =
 		let ($e=agentE) in
 			if(internalStateB(self)=WAITING_MC and protocolMessage($e,self)=MC)then
-			        if(symDec(MC,1,1,2,self)=true)then
+ 			        if(symDec(MC,1,1,2,self)=true ) then
 			                par
-                                  knowsSymKey(self,messageField($e,self,1,MA)):=true
-                                  knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
-			                      protocolMessage(self,$e):=MD
+						knowsSymKey(self,messageField($e,self,1,MA)):=true
+						knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
+	 		                      protocolMessage(self,$e):=MD
 			                      messageField(self,$e,1,MD):=NB
  			                      symEnc(MD,1,1,1):=messageField($e,self,1,MC)
-			                      internalStateB(self):=WAITING_ME
+			                      internalStateB(agentB):=WAITING_ME
 			                endpar
 			        endif
 			endif
-	endlet
+		endlet
 	rule r_message_ME =
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_MD and protocolMessage($e,self)=MD)then
-			        if(receiver=AG_B)then
-   			           if(symDec(MD,1,1,1,self)=true)then
+			     if(receiver=AG_B)then
+ 			        if(symDec(MD,1,1,1,self)=true ) then
 			                par
-                                  knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
 			                      protocolMessage(self,$e):=ME
 			                      messageField(self,$e,1,ME):=messageField($e,self,1,MD)
 			                      symEnc(ME,1,1,1):=messageField(self,$e,4,MB)
-			                      internalStateA(self):=END_A
+			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif
 			else
-			           if(symDec(MD,1,1,1,self)=true)then
+ 			        if(symDec(MD,1,1,1,self)=true ) then
 			                par
-                                  knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
 			                      protocolMessage(self,$e):=ME
 			                      messageField(self,$e,1,ME):=messageField($e,self,1,MD)
 			                      symEnc(ME,1,1,1):=messageField(self,$e,1,MC)
-			                      internalStateA(self):=END_A
+			                      internalStateA(agentA):=END_A
 			                endpar
-				  endif
+			        endif
 				endif
 			endif
 		endlet
@@ -372,8 +381,8 @@ definitions:
 			if(internalStateB(self)=WAITING_ME and protocolMessage($e,self)=ME)then
 			        if(symDec(ME,1,1,1,self)= true) then
 			             par
-			                      internalStateB(self):=END_B
-			                      internalStateS(self):=END_S
+			                      internalStateB(agentB):=END_B
+			                      internalStateS(agentS):=END_S
 			            endpar
 			        endif
 			endif

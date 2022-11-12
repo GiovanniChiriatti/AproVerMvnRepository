@@ -10,8 +10,8 @@ signature:
 	domain Eve subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_MNK | END_A}
-	enum domain StateBob = {WAITING_NAK | SEND_MNNK | WAITING_NK | END_B}
+	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_NK | END_A}
+	enum domain StateBob = {WAITING_NAK | SEND_NNK | WAITING_NK | END_B}
 
 	enum domain Message = {NAK | NNK | NK} 
 
