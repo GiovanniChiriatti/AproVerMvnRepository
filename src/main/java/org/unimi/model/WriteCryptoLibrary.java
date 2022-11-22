@@ -337,7 +337,7 @@ public class WriteCryptoLibrary {
 			}
 		}
 		if (stateActor[3] !=null && stateActor[3].contains("IDLE")){
-				b.write("	enum domain Receiver={AG_A|AG_B|AG_E}\n");
+				b.write("	enum domain Receiver={AG_B|AG_E|AG_S}\n");
 		}
 		
 	    b.write("	///DOMAIN OF THE ATTACKER MODE\n"); 

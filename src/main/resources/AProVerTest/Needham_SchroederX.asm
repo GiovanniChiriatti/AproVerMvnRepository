@@ -196,7 +196,7 @@ definitions:
 	 		                      protocolMessage(self,$e):=NNK
 			                      messageField(self,$e,1,NNK):=messageField($e,self,1,NAK)
 			                      messageField(self,$e,2,NNK):=NB
- 			                      asymEnc(NNK,1,1,2):=PUBKA
+  			                      asymEnc(NNK,1,1,2):=PUBKA
 			                      internalStateB(agentB):=WAITING_NK
 			                endpar
 			        endif
@@ -208,8 +208,8 @@ definitions:
 			     if(receiver=AG_B)then
  			        if(asymDec(NNK,1,1,2,self)=true ) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,NAK)):=true
-                            	        	knowsNonce(self,messageField($e,self,2,NAK)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,NNK)):=true
+                            	        	knowsNonce(self,messageField($e,self,2,NNK)):=true
 			                      protocolMessage(self,$e):=NK
 			                      messageField(self,$e,1,NK):=messageField($e,self,2,NNK)
 			                      asymEnc(NK,1,1,1):=PUBKB
@@ -217,10 +217,10 @@ definitions:
 			                endpar
 			        endif
 			else
- 			        if(asymDec(NNK,1,1,2,self)=true ) then
+ 			        if(asymDec(NNK,1,1,2,self)=true and receiver=AG_E) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,NAK)):=true
-                            	        	knowsNonce(self,messageField($e,self,2,NAK)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,NNK)):=true
+                            	        	knowsNonce(self,messageField($e,self,2,NNK)):=true
 			                      protocolMessage(self,$e):=NK
 			                      messageField(self,$e,1,NK):=messageField($e,self,2,NNK)
 			                      asymEnc(NK,1,1,1):=PUBKE

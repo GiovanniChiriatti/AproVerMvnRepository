@@ -205,7 +205,7 @@ definitions:
 			     if(receiver=AG_B)then
  			        if(symDec(NK,1,1,1,self)=true ) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,KK)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,NK)):=true
 			                      protocolMessage(self,$e):=CSNK
 			                      messageField(self,$e,1,CSNK):=CA
 			                      messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
@@ -215,9 +215,9 @@ definitions:
 			                endpar
 			        endif
 			else
- 			        if(symDec(NK,1,1,1,self)=true ) then
+ 			        if(symDec(NK,1,1,1,self)=true and receiver=AG_E) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,KK)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,NK)):=true
 			                      protocolMessage(self,$e):=CSNK
 			                      messageField(self,$e,1,CSNK):=CA
 			                      messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)

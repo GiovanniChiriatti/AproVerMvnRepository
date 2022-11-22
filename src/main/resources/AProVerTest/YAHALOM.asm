@@ -8,8 +8,8 @@ signature:
 definitions:
 	domain Level = {1}
 	domain FieldPosition = {1:6}
-	domain EncField1={1:4}
-	domain EncField2={2:4}
+	domain EncField1={1:6}
+	domain EncField2={2:6}
 
 	domain KnowledgeNonce = {NA,NB}
 	domain KnowledgeIdentityCertificate = {CA,CB}
@@ -313,19 +313,19 @@ definitions:
 			                      messageField(self,$e,2,ENCKBS):=messageField($e,self,1,REQCOM)
 			                      messageField(self,$e,3,ENCKBS):=messageField($e,self,2,REQCOM)
 			                      messageField(self,$e,4,ENCKBS):=NB
-			                      symEnc(ENCKBS,1,1,3):=KBS
+			                      symEnc(ENCKBS,1,2,4):=KBS
 			                      internalStateA(agentA):=WAITING_GENKEYSES
 			                endpar
 			else
 			                par
                             	        	knowsIdentityCertificate(self,messageField($e,self,1,REQCOM)):=true
-                            	        	knowsOther(self,messageField($e,self,2,REQCOM)):=true
+                            	        	knowsNonce(self,messageField($e,self,2,REQCOM)):=true
 			                      protocolMessage(self,$e):=ENCKBS
 			                      messageField(self,$e,1,ENCKBS):=CB
 			                      messageField(self,$e,2,ENCKBS):=messageField($e,self,1,REQCOM)
 			                      messageField(self,$e,3,ENCKBS):=messageField($e,self,2,REQCOM)
 			                      messageField(self,$e,4,ENCKBS):=NB
-			                      symEnc(ENCKBS,1,1,3):=KES
+			                      symEnc(ENCKBS,1,2,4):=KES
 			                      internalStateA(agentA):=WAITING_GENKEYSES
 			                endpar
 				endif
@@ -336,9 +336,10 @@ definitions:
 			if(internalStateS(self)=WAITING_ENCKBS and protocolMessage($e,self)=ENCKBS)then
  			        if(symDec(ENCKBS,1,2,4,self)=true ) then
 			                par
-						knowsIdentityCertificate(self,messageField($e,self,1,REQCOM)):=true
-						knowsNonce(self,messageField($e,self,2,REQCOM)):=true
-						knowsOther(self,messageField($e,self,3,REQCOM)):=true
+						knowsIdentityCertificate(self,messageField($e,self,1,ENCKBS)):=true
+						knowsIdentityCertificate(self,messageField($e,self,2,ENCKBS)):=true
+						knowsNonce(self,messageField($e,self,3,ENCKBS)):=true
+						knowsNonce(self,messageField($e,self,4,ENCKBS)):=true
 	 		                      protocolMessage(self,$e):=GENKEYSES
 			                      messageField(self,$e,1,GENKEYSES):=messageField($e,self,1,ENCKBS)
 			                      messageField(self,$e,2,GENKEYSES):=KES
@@ -357,34 +358,28 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_GENKEYSES and protocolMessage($e,self)=GENKEYSES)then
 			     if(receiver=AG_B)then
- 			        if(symDec(GENKEYSES,1,1,4,self)=true  and symDec(GENKEYSES,1,5,6,self)=true ) then
+ 			        if(symDec(GENKEYSES,1,1,4,self)=true ) then
 			                par
-                            	        	knowsIdentityCertificate(self,messageField($e,self,1,REQCOM)):=true
-                            	        	knowsSymKey(self,messageField($e,self,2,REQCOM)):=true
-                            	        	knowsNonce(self,messageField($e,self,3,REQCOM)):=true
-                            	        	knowsNonce(self,messageField($e,self,4,REQCOM)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,1,GENKEYSES)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,GENKEYSES)):=true
+                            	        	knowsNonce(self,messageField($e,self,3,GENKEYSES)):=true
+                            	        	knowsNonce(self,messageField($e,self,4,GENKEYSES)):=true
 			                      protocolMessage(self,$e):=FRWVRNB
-			                      messageField(self,$e,1,FRWVRNB):=messageField($e,self,5,GENKEYSES)
-			                      messageField(self,$e,2,FRWVRNB):=messageField($e,self,6,GENKEYSES)
-			                      symEnc(FRWVRNB,1,1,2):=KBS
-			                      messageField(self,$e,3,FRWVRNB):=messageField($e,self,4,GENKEYSES)
+			                      messageField(self,$e,1,FRWVRNB):=messageField($e,self,4,GENKEYSES)
 			                      symEnc(FRWVRNB,1,1,1):=messageField(self,$e,2,GENKEYSES)
 			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif
 			else
- 			        if(symDec(GENKEYSES,1,1,4,self)=true  and symDec(GENKEYSES,1,5,6,self)=true ) then
+ 			        if(symDec(GENKEYSES,1,1,4,self)=true and receiver=AG_E) then
 			                par
-                            	        	knowsIdentityCertificate(self,messageField($e,self,1,REQCOM)):=true
-                            	        	knowsSymKey(self,messageField($e,self,2,REQCOM)):=true
-                            	        	knowsNonce(self,messageField($e,self,3,REQCOM)):=true
-                            	        	knowsNonce(self,messageField($e,self,4,REQCOM)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,1,GENKEYSES)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,GENKEYSES)):=true
+                            	        	knowsNonce(self,messageField($e,self,3,GENKEYSES)):=true
+                            	        	knowsNonce(self,messageField($e,self,4,GENKEYSES)):=true
 			                      protocolMessage(self,$e):=FRWVRNB
-			                      messageField(self,$e,1,FRWVRNB):=messageField($e,self,5,GENKEYSES)
-			                      messageField(self,$e,2,FRWVRNB):=messageField($e,self,6,GENKEYSES)
-			                      symEnc(FRWVRNB,1,1,2):=messageField(self,$e,2,FRWVRNB)
-			                      messageField(self,$e,3,FRWVRNB):=messageField($e,self,4,GENKEYSES)
-			                      symEnc(FRWVRNB,1,1,1):=messageField(self,$e,2,FRWVRNB)
+			                      messageField(self,$e,1,FRWVRNB):=messageField($e,self,4,GENKEYSES)
+			                      symEnc(FRWVRNB,1,1,1):=messageField(self,$e,6,GENKEYSES)
 			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif
@@ -394,7 +389,7 @@ definitions:
 	rule r_check_FRWVRNB =
 		let ($e=agentE) in
 			if(internalStateB(self)=WAITING_FRWVRNB and protocolMessage($e,self)=FRWVRNB)then
-			        if(symDec(FRWVRNB,1,1,2,self)= true and symDec(FRWVRNB,1,1,1,self)= true) then
+			        if(symDec(FRWVRNB,1,1,1,self)= true) then
 			             par
 			                      internalStateB(agentB):=END_B
 			                      internalStateS(agentS):=END_S
@@ -437,9 +432,9 @@ default init s0:
 	function internalStateA($a in Alice)=IDLE_REQCOM
 	function internalStateB($b in Bob)=WAITING_REQCOM
 	function receiver=chosenReceiver
-	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
-	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) then true else if($a=agentS and $i=CB) then true else false endif endif endif
-	function knowsOther($a in Agent, $ho in KnowledgeOther)=if($a=agentA and $ho=NA) then true else if($a=agentB and $ho=NB) or ($a=agentB and $ho=NA) then true else if($a=agentS and $ho=NB) then true else false endif endif endif
+	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) or ($a=agentA and $n=NB) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NA) then true else if($a=agentS and $n=NA) or ($a=agentS and $n=NB) then true else false endif endif endif
+	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) or ($a=agentA and $i=CB) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) then true else if($a=agentS and $i=CB) or ($a=agentS and $i=CA) then true else false endif endif endif
+	function knowsOther($a in Agent, $ho in KnowledgeOther)=if($a=agentB and $ho=NA) then true else if($a=agentS and $ho=NB) then true else false endif endif
 	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentE and $sk=KES) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
 	function knowsSignPubKey($a in Agent ,$spu in KnowledgeSignPubKey)=if(($a=agentA and $spu=KAS) or ($a=agentB and $spu=KBS) or ($a=agentE and $spu=KES) or ($a=agentS and $spu=KAB) or ($a=agentS and $spu=KBS) or ($a=agentS and $spu=KAS)) then true else false endif
 	function knowsSignPrivKey($a in Agent ,$spr in KnowledgeSignPrivKey)=true

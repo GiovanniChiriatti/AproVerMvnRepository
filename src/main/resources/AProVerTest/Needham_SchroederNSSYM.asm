@@ -305,11 +305,11 @@ definitions:
 			     if(receiver=AG_B)then
  			        if(symDec(MB,2,1,5,self)=true ) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
-                            	        	knowsSymKey(self,messageField($e,self,2,MA)):=true
-                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
-                            	        	knowsSymKey(self,messageField($e,self,4,MA)):=true
-                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MB)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,MB)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MB)):=true
+                            	        	knowsSymKey(self,messageField($e,self,4,MB)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MB)):=true
 			                      protocolMessage(self,$e):=MC
 			                      messageField(self,$e,1,MC):=messageField($e,self,4,MB)
 			                      messageField(self,$e,2,MC):=messageField($e,self,5,MB)
@@ -318,13 +318,13 @@ definitions:
 			                endpar
 			        endif
 			else
- 			        if(symDec(MB,2,1,5,self)=true ) then
+ 			        if(symDec(MB,2,1,5,self)=true and receiver=AG_E) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
-                            	        	knowsSymKey(self,messageField($e,self,2,MA)):=true
-                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MA)):=true
-                            	        	knowsSymKey(self,messageField($e,self,4,MA)):=true
-                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MB)):=true
+                            	        	knowsSymKey(self,messageField($e,self,2,MB)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,3,MB)):=true
+                            	        	knowsSymKey(self,messageField($e,self,4,MB)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,5,MB)):=true
 			                      protocolMessage(self,$e):=MC
 			                      messageField(self,$e,1,MC):=messageField($e,self,4,MB)
 			                      messageField(self,$e,2,MC):=messageField($e,self,5,MB)
@@ -340,8 +340,8 @@ definitions:
 			if(internalStateB(self)=WAITING_MC and protocolMessage($e,self)=MC)then
  			        if(symDec(MC,1,1,2,self)=true ) then
 			                par
-						knowsSymKey(self,messageField($e,self,1,MA)):=true
-						knowsIdentityCertificate(self,messageField($e,self,2,MA)):=true
+						knowsSymKey(self,messageField($e,self,1,MC)):=true
+						knowsIdentityCertificate(self,messageField($e,self,2,MC)):=true
 	 		                      protocolMessage(self,$e):=MD
 			                      messageField(self,$e,1,MD):=NB
  			                      symEnc(MD,1,1,1):=messageField($e,self,1,MC)
@@ -356,7 +356,7 @@ definitions:
 			     if(receiver=AG_B)then
  			        if(symDec(MD,1,1,1,self)=true ) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MD)):=true
 			                      protocolMessage(self,$e):=ME
 			                      messageField(self,$e,1,ME):=messageField($e,self,1,MD)
 			                      symEnc(ME,1,1,1):=messageField(self,$e,4,MB)
@@ -364,9 +364,9 @@ definitions:
 			                endpar
 			        endif
 			else
- 			        if(symDec(MD,1,1,1,self)=true ) then
+ 			        if(symDec(MD,1,1,1,self)=true and receiver=AG_E) then
 			                par
-                            	        	knowsNonce(self,messageField($e,self,1,MA)):=true
+                            	        	knowsNonce(self,messageField($e,self,1,MD)):=true
 			                      protocolMessage(self,$e):=ME
 			                      messageField(self,$e,1,ME):=messageField($e,self,1,MD)
 			                      symEnc(ME,1,1,1):=messageField(self,$e,1,MC)

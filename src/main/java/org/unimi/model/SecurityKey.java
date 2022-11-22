@@ -105,7 +105,10 @@ public class SecurityKey {
 		SymmetricKey = symmetricKey;
 	}
 	public void addSymmetricKey(String nuovoValore) {
-		SymmetricKey.add(nuovoValore);
+		System.out.println("securityKey inserisco Sym " + nuovoValore);
+		if (!(this.checkDuplicate(nuovoValore, "2"))){
+			SymmetricKey.add(nuovoValore);
+		}
 	}
 	public void remSymmetricKey(String vecchioValore) {
 		SymmetricKey.remove(vecchioValore);
