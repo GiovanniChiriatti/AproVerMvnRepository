@@ -36,16 +36,14 @@ definitions:
                             	protocolMessage(self,$b):=NAK
                             	messageField(self,$b,1,NAK):=messageField($a,self,1,NAK)
                             	messageField(self,$b,2,NAK):=messageField($a,self,2,NAK)
-                            	asymEnc(NAK,1,1,2):=PUBKB
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NAK and protocolMessage(self,$b)!=NAK and mode=PASSIVE)then
 			        if(asymDec(NAK,1,1,2,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NAK)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,2,NAK)):=true
-			  		  endpar 
-					endif 
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,NAK)):=true
+					knowsIdentityCertificate(self,messageField($a,self,2,NAK)):=true
+					asymEnc(NAK,1,1,2):=PUBKB
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=NAK and protocolMessage(self,$b)!=NAK and mode=ACTIVE)then
@@ -53,16 +51,14 @@ definitions:
                             	protocolMessage(self,$b):=NAK
                             	messageField(self,$b,1,NAK):=messageField($a,self,1,NAK)
                             	messageField(self,$b,2,NAK):=messageField($a,self,2,NAK)
-                            	asymEnc(NAK,1,1,2):=PUBKB
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NAK and protocolMessage(self,$b)!=NAK and mode=ACTIVE)then
 			        if(asymDec(NAK,1,1,2,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NAK)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,2,NAK)):=true
-			  		  endpar 
-					endif 
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,NAK)):=true
+ 					knowsIdentityCertificate(self,messageField($a,self,2,NAK)):=true
+					asymEnc(NAK,1,1,2):=PUBKB
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -76,45 +72,31 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=NNK
-                            	asymEnc(NNK,1,1,2):=PUBKA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NNK and protocolMessage(self,$b)!=NNK and mode=PASSIVE)then
-			        if(asymDec(NNK,1,1,2,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NNK)):=true
-                            	knowsNonce(self,messageField($a,self,2,NNK)):=true
                             	messageField(self,$b,1,NNK):=messageField($a,self,1,NNK)
                             	messageField(self,$b,2,NNK):=messageField($a,self,2,NNK)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,NAK):=messageField($a,self,1,NNK)
-                            	messageField(self,$b,2,NAK):=messageField($a,self,2,NNK)
-			  		  endpar 
-					endif 
+			        if(asymDec(NNK,1,1,2,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,NNK)):=true
+					knowsNonce(self,messageField($a,self,2,NNK)):=true
+					asymEnc(NNK,1,1,2):=PUBKA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=NNK and protocolMessage(self,$b)!=NNK and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=NNK
-                            	asymEnc(NNK,1,1,2):=PUBKA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NNK and protocolMessage(self,$b)!=NNK and mode=ACTIVE)then
-			        if(asymDec(NNK,1,1,2,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NNK)):=true
-                            	knowsNonce(self,messageField($a,self,2,NNK)):=true
                             	messageField(self,$b,1,NNK):=messageField($a,self,1,NNK)
                             	messageField(self,$b,2,NNK):=messageField($a,self,2,NNK)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,NAK):=messageField($a,self,1,NNK)
-                            	messageField(self,$b,2,NAK):=messageField($a,self,2,NNK)
-			  		  endpar 
-					endif 
+			        if(asymDec(NNK,1,1,2,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,NNK)):=true
+ 					knowsNonce(self,messageField($a,self,2,NNK)):=true
+					asymEnc(NNK,1,1,2):=PUBKA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -128,35 +110,27 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=NK
-                            	asymEnc(NK,1,1,1):=PUBKB
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NK and protocolMessage(self,$b)!=NK and mode=PASSIVE)then
-			        if(asymDec(NK,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NK)):=true
                             	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,NAK):=messageField($a,self,1,NK)
-					endif 
+			        if(asymDec(NK,1,1,1,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,NK)):=true
+					asymEnc(NK,1,1,1):=PUBKB
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=NK and protocolMessage(self,$b)!=NK and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=NK
-                            	asymEnc(NK,1,1,1):=PUBKB
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=NK and protocolMessage(self,$b)!=NK and mode=ACTIVE)then
-			        if(asymDec(NK,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,NK)):=true
                             	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,NAK):=messageField($a,self,1,NK)
-					endif 
+			        if(asymDec(NK,1,1,1,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,NK)):=true
+					asymEnc(NK,1,1,1):=PUBKB
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 

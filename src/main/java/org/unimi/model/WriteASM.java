@@ -99,32 +99,8 @@ public class WriteASM {
 				if (debug) {System.out.println("WriteASM ---> 000");}
 				
 				// Carico le conoscenze attuali 
-				alice = new SecurityKey();
-				if (aliceStart!=null) {
-				loadKnowActor(alice,aliceStart);
-				} else {
-					alice = null;
-				}
+				loadKnowActual();
 				
-				bob = new SecurityKey();
-				if (bobStart!=null) {
-					loadKnowActor(bob,bobStart);
-				} else {
-					bob = null;
-				}
-				
-				eve = new SecurityKey();
-				if (eveStart!=null) {
-					loadKnowActor(eve,eveStart);								
-				} else {
-					eve = null;
-				}				
-				server = new SecurityKey();
-				if (serverStart!=null) {
-					loadKnowActor(server,serverStart);
-				} else {
-					server = null;
-				}
 				if (debug) {System.out.println("WriteASM ---> 001");}
 				
 				indRuleR_Agent=0;
@@ -137,7 +113,36 @@ public class WriteASM {
 
 			    
 			  }
-	
+	//Carico le conoscenze attuali che possono essere modificate durante l'esecuzione del protocollo
+	private void loadKnowActual() {
+		// Carico le conoscenze attuali 
+		alice = new SecurityKey();
+		if (aliceStart!=null) {
+		loadKnowActor(alice,aliceStart);
+		} else {
+			alice = null;
+		}
+		
+		bob = new SecurityKey();
+		if (bobStart!=null) {
+			loadKnowActor(bob,bobStart);
+		} else {
+			bob = null;
+		}
+		
+		eve = new SecurityKey();
+		if (eveStart!=null) {
+			loadKnowActor(eve,eveStart);								
+		} else {
+			eve = null;
+		}				
+		server = new SecurityKey();
+		if (serverStart!=null) {
+			loadKnowActor(server,serverStart);
+		} else {
+			server = null;
+		}
+	}
 	private void loadKnowActor(SecurityKey arrived, SecurityKey start) {
 		if (debug) {System.out.println("WriteASM ---> 002");}
 		for (String e : start.getAsymmetricPublicKey()) {
@@ -863,7 +868,7 @@ public class WriteASM {
 
 		String spaces = "                            ";
 		printKnowledge(b, "Prot", linesKnowledge, spaces);
-		if (i==0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
+		printKnowledge(b, "Mess", linesKnowledge, spaces);
 		//
 		// si divide il payload in messaggi separati (se necessario)
 		String[] listSubPayload = findMsg(message);
@@ -878,7 +883,7 @@ public class WriteASM {
 			String operation = "";
 			if (keyUsed != null) {
 				totOpz++;
-				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+/*				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 				String[] msgEncField1EncField2 = new String[15];
 				String[] msgField = new String[15];
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
@@ -893,6 +898,7 @@ public class WriteASM {
 							+ levelEncField1EncField2 + "):="
 							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
 				}
+*/
 			} else {
 				// se nel sottomessaggio non c'è una funzione di crittografia si scrive la konw
 				String[] msgEncField1EncField2 = new String[15];
@@ -906,11 +912,8 @@ public class WriteASM {
 				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
 				spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
-				if (i!=0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
 			}
 		}
-		b.write("		          endpar \n");
-		b.write("			endif \n");
 		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
 		// decodificarli e in questo caso si aggiorna la knowlege
 		boolean firstOp = true;
@@ -929,35 +932,25 @@ public class WriteASM {
 						msgField, msgFieldTot);
 				String[] msgFieldDet = detField(msgField, msgFieldTot);
 				if (operation != null && !operation.isEmpty()) {
-					if (firstOp) {
-						b.write("			if(protocolMessage($a,self)=" + changNumMSG[i]
-							+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=PASSIVE)then\n");
-						firstOp = false;
-						if(totOpz>1) {b.write("			  par \n");}
-					}
 					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
 					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
-					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
-						b.write("			  		  par \n");
-					}
-					spaces = "                            ";
+					b.write("	   			 par \n");
+					spaces = "				";
 					printKnowledge(b, "Know", linesKnowledge, spaces);
-					if (i!=0) {printKnowledge(b, "Mess", linesKnowledge, spaces);}
-					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
-						b.write("			  		  endpar \n");
+					spaces = "					";
+					if (reversOperation(operation).equals("symEnc")) {
+						b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+								+ levelEncField1EncField2 + "):="
+								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+					} else {
+						b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+								+ levelEncField1EncField2 + "):="
+								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
 					}
-					if (i!=0) {
-						b.write("				    else \n");
-						if (countMsgFieldDet(msgFieldDet) > 1) {
-							b.write("			  		  par \n");
-						}
-						printKnowledge(b, "Mes3", linesKnowledge, spaces);
-						if (countMsgFieldDet(msgFieldDet) > 1) {
-							b.write("			  		  endpar \n");
-						}
-					}
-					b.write("					endif \n");
+
+					b.write("	   			 endpar \n");
+					b.write("			        endif \n");
 					
 				}
 			}
@@ -969,6 +962,8 @@ public class WriteASM {
 			}
 			b.write("			endif \n");
 		}
+		b.write("		          endpar \n");
+		b.write("			endif \n");
 
 	}
 	// Scrittura delle informazioni legate ai messaggi scambiati prendendo in
@@ -987,7 +982,7 @@ public class WriteASM {
 
 		String spaces = "                            ";
 		printKnowledge(b, "Prot", linesKnowledge, spaces);
-		if (i==0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
+		printKnowledge(b, "Mes2", linesKnowledge, spaces);
 		//
 		// si divide il payload in messaggi separati (se necessario)
 		String[] listSubPayload = findMsg(message);
@@ -1002,7 +997,7 @@ public class WriteASM {
 			String operation = "";
 			if (keyUsed != null) {
 				totOpz++;
-				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+/*				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
 				String[] msgEncField1EncField2 = new String[15];
 				String[] msgField = new String[15];
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
@@ -1017,6 +1012,7 @@ public class WriteASM {
 							+ levelEncField1EncField2 + "):="
 							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
 				}
+*/
 			} else {
 				// se nel sottomessaggio non c'è una funzione di crittografia si scrive la konw
 				String[] msgEncField1EncField2 = new String[15];
@@ -1030,11 +1026,10 @@ public class WriteASM {
 				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
 				spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
-				if (i!=0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
+				printKnowledge(b, "Mes4", linesKnowledge, spaces);
 			}
 		}
-		b.write("		          endpar \n");
-		b.write("			endif \n");
+
 		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
 		// decodificarli e in questo caso si aggiorna la knowlege
 		boolean firstOp = true;
@@ -1052,46 +1047,44 @@ public class WriteASM {
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
 				String[] msgFieldDet = detField(msgField, msgFieldTot);
-				if (operation != null && !operation.isEmpty()) {
-					if (firstOp) {
-						b.write("			if(protocolMessage($a,self)=" + changNumMSG[i]
-								+ " and protocolMessage(self,$b)!=" + changNumMSG[i] + " and mode=ACTIVE)then\n");
-						firstOp = false;
-						if(totOpz>1) {b.write("			  par \n");}
-					}
-					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
-							+ ",self)=true)then\n");
-					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
-					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+				b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+						+ ",self)=true)then\n");
+				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a", true);
+				b.write("	   			 par \n");
+				spaces = " 				";
+				printKnowledge(b, "Know", linesKnowledge, spaces);
+				printKnowledge(b, "Mes4", linesKnowledge, spaces);
+				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
+				if (reversOperation(operation).equals("symEnc")) {
+					b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+				} else {
+					b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "):="
+							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
+				}
+				b.write("	   			 endpar \n");
+				int totCountLinesKnowledgeMes5 = countLinesKnowledge("Mes5", linesKnowledge);
+				if (totCountLinesKnowledgeMes5 > 0) {
+					b.write("				else \n");
+					if (totCountLinesKnowledgeMes5 > 1) {
 						b.write("			  		  par \n");
 					}
-					spaces = "                            ";
-					printKnowledge(b, "Know", linesKnowledge, spaces);
-					if (i!=0) {printKnowledge(b, "Mes2", linesKnowledge, spaces);}
-					if (countMsgFieldDet(msgFieldDet) > 1 || i!=0) {
+					spaces = " 				";
+					printKnowledge(b, "Mes5", linesKnowledge, spaces);
+					if (totCountLinesKnowledgeMes5 > 1) {
 						b.write("			  		  endpar \n");
 					}
-					if (i!=0) {
-						b.write("				    else \n");
-						if (countMsgFieldDet(msgFieldDet) > 1) {
-							b.write("			  		  par \n");
-						}
-						printKnowledge(b, "Mes3", linesKnowledge, spaces);
-						if (countMsgFieldDet(msgFieldDet) > 1) {
-							b.write("			  		  endpar \n");
-						}
-					}					
-					b.write("					endif \n");
 				}
+				b.write("			        endif \n");
 			}
+			
+		}
 
-		}
-		if (!firstOp ) {
-			if(totOpz>1) {
-				b.write("			  endpar \n");
-			}
-			b.write("			endif \n");
-		}
+
+		b.write("		          endpar \n");
+		b.write("			endif \n");
 	}
 	// determina l'elenco dei messaggi che compongono il payload
 	private String[] findMsg(Message message) {
@@ -1625,10 +1618,12 @@ public class WriteASM {
 				numRighe++;
 				if (debug) System.out.println("writeKnowledge eleEve " + eleEve);
 				if (eleEve != null) {
-					linesKnowledge[numRighe] = "Mes2	messageField(self,$b," + i + ","
+					linesKnowledge[numRighe] = "Mes4	messageField(self,$b," + i + ","
 							+ changNumMSG[numMessage] + "):=" + eleEve + "\n";
 					numRighe++;
 					linesKnowledge[numRighe] = "Mes3	messageField(self,$b," + i + "," + changNumMSG[0]
+							+ "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")\n";
+					linesKnowledge[numRighe] = "Mes5	messageField(self,$b," + i + "," + changNumMSG[numMessage]
 							+ "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")\n";
 					numRighe++;
 				} else {
@@ -1646,6 +1641,14 @@ public class WriteASM {
 
 		return linesKnowledge;
 	}
+	// conta quanti campi contiene il sottomessaggio
+	private int countLinesKnowledge(String val, String[] linesKnowledge) {
+		int tot = 0; 
+		for (String e : linesKnowledge) {
+			if (e !=null && e.contains(val)) { tot++;}
+		}
+		return tot;
+	}	
 	// conta quanti campi contiene il sottomessaggio
 	private int countMsgFieldDet( String[] msgField) {
 		int tot = 0;

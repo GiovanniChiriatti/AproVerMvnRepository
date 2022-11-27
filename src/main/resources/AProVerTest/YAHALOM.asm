@@ -55,55 +55,39 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=ENCKBS
-                            	knowsIdentityCertificate(self,messageField($a,self,1,ENCKBS)):=true
                             	messageField(self,$b,1,ENCKBS):=messageField($a,self,1,ENCKBS)
-                            	symEnc(ENCKBS,1,2,4):=KES
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=ENCKBS and protocolMessage(self,$b)!=ENCKBS and mode=PASSIVE)then
-			        if(symDec(ENCKBS,1,2,4,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
-                            	knowsOther(self,messageField($a,self,3,ENCKBS)):=true
-                            	knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
                             	messageField(self,$b,2,ENCKBS):=messageField($a,self,2,ENCKBS)
                             	messageField(self,$b,3,ENCKBS):=messageField($a,self,3,ENCKBS)
                             	messageField(self,$b,4,ENCKBS):=messageField($a,self,4,ENCKBS)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,ENCKBS)
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,ENCKBS)
-                            	messageField(self,$b,4,REQCOM):=messageField($a,self,4,ENCKBS)
-			  		  endpar 
-					endif 
+                            	knowsIdentityCertificate(self,messageField($a,self,1,ENCKBS)):=true
+			        if(symDec(ENCKBS,1,2,4,self)=true)then
+	   			 par 
+					knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
+					knowsOther(self,messageField($a,self,3,ENCKBS)):=true
+					knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
+					symEnc(ENCKBS,1,2,4):=KES
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=ENCKBS and protocolMessage(self,$b)!=ENCKBS and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=ENCKBS
-                            	knowsIdentityCertificate(self,messageField($a,self,1,ENCKBS)):=true
                             	messageField(self,$b,1,ENCKBS):=messageField($a,self,1,ENCKBS)
-                            	symEnc(ENCKBS,1,2,4):=KES
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=ENCKBS and protocolMessage(self,$b)!=ENCKBS and mode=ACTIVE)then
-			        if(symDec(ENCKBS,1,2,4,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
-                            	knowsOther(self,messageField($a,self,3,ENCKBS)):=true
-                            	knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
                             	messageField(self,$b,2,ENCKBS):=messageField($a,self,2,ENCKBS)
                             	messageField(self,$b,3,ENCKBS):=messageField($a,self,3,ENCKBS)
                             	messageField(self,$b,4,ENCKBS):=messageField($a,self,4,ENCKBS)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,ENCKBS)
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,ENCKBS)
-                            	messageField(self,$b,4,REQCOM):=messageField($a,self,4,ENCKBS)
-			  		  endpar 
-					endif 
+                            	knowsIdentityCertificate(self,messageField($a,self,1,ENCKBS)):=true
+			        if(symDec(ENCKBS,1,2,4,self)=true)then
+	   			 par 
+ 					knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
+ 					knowsOther(self,messageField($a,self,3,ENCKBS)):=true
+ 					knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
+					symEnc(ENCKBS,1,2,4):=KES
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -117,89 +101,61 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=GENKEYSES
-                            	symEnc(GENKEYSES,1,1,4):=KES
-                            	symEnc(GENKEYSES,1,5,6):=KES
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=GENKEYSES and protocolMessage(self,$b)!=GENKEYSES and mode=PASSIVE)then
-			  par 
-			        if(symDec(GENKEYSES,1,1,4,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
-                            	knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
-                            	knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
-                            	knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
                             	messageField(self,$b,1,GENKEYSES):=messageField($a,self,1,GENKEYSES)
                             	messageField(self,$b,2,GENKEYSES):=messageField($a,self,2,GENKEYSES)
                             	messageField(self,$b,3,GENKEYSES):=messageField($a,self,3,GENKEYSES)
                             	messageField(self,$b,4,GENKEYSES):=messageField($a,self,4,GENKEYSES)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,REQCOM):=messageField($a,self,1,GENKEYSES)
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,GENKEYSES)
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,GENKEYSES)
-                            	messageField(self,$b,4,REQCOM):=messageField($a,self,4,GENKEYSES)
-			  		  endpar 
-					endif 
-			        if(symDec(GENKEYSES,1,5,6,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
-                            	knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
                             	messageField(self,$b,5,GENKEYSES):=messageField($a,self,5,GENKEYSES)
                             	messageField(self,$b,6,GENKEYSES):=messageField($a,self,6,GENKEYSES)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,5,REQCOM):=messageField($a,self,5,GENKEYSES)
-                            	messageField(self,$b,6,REQCOM):=messageField($a,self,6,GENKEYSES)
-			  		  endpar 
-					endif 
-			  endpar 
+			        if(symDec(GENKEYSES,1,1,4,self)=true)then
+	   			 par 
+					knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
+					knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
+					knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
+					knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
+					symEnc(GENKEYSES,1,1,4):=KES
+	   			 endpar 
+			        endif 
+			        if(symDec(GENKEYSES,1,5,6,self)=true)then
+	   			 par 
+					knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
+					knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
+					symEnc(GENKEYSES,1,5,6):=KES
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=GENKEYSES and protocolMessage(self,$b)!=GENKEYSES and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=GENKEYSES
-                            	symEnc(GENKEYSES,1,1,4):=KES
-                            	symEnc(GENKEYSES,1,5,6):=KES
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=GENKEYSES and protocolMessage(self,$b)!=GENKEYSES and mode=ACTIVE)then
-			  par 
-			        if(symDec(GENKEYSES,1,1,4,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
-                            	knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
-                            	knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
-                            	knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
                             	messageField(self,$b,1,GENKEYSES):=messageField($a,self,1,GENKEYSES)
-                            	messageField(self,$b,2,GENKEYSES):=KES
                             	messageField(self,$b,3,GENKEYSES):=messageField($a,self,3,GENKEYSES)
                             	messageField(self,$b,4,GENKEYSES):=messageField($a,self,4,GENKEYSES)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,REQCOM):=messageField($a,self,1,GENKEYSES)
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,GENKEYSES)
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,GENKEYSES)
-                            	messageField(self,$b,4,REQCOM):=messageField($a,self,4,GENKEYSES)
-			  		  endpar 
-					endif 
-			        if(symDec(GENKEYSES,1,5,6,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
-                            	knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
                             	messageField(self,$b,5,GENKEYSES):=messageField($a,self,5,GENKEYSES)
-                            	messageField(self,$b,6,GENKEYSES):=KES
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,5,REQCOM):=messageField($a,self,5,GENKEYSES)
-                            	messageField(self,$b,6,REQCOM):=messageField($a,self,6,GENKEYSES)
-			  		  endpar 
-					endif 
-			  endpar 
+			        if(symDec(GENKEYSES,1,1,4,self)=true)then
+	   			 par 
+ 					knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
+ 					knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
+ 					knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
+ 					knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
+ 					messageField(self,$b,2,GENKEYSES):=KES
+					symEnc(GENKEYSES,1,1,4):=KES
+	   			 endpar 
+				else 
+ 					messageField(self,$b,2,GENKEYSES):=messageField($a,self,2,GENKEYSES)
+			        endif 
+			        if(symDec(GENKEYSES,1,5,6,self)=true)then
+	   			 par 
+ 					knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
+ 					knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
+ 					messageField(self,$b,6,GENKEYSES):=KES
+					symEnc(GENKEYSES,1,5,6):=KES
+	   			 endpar 
+				else 
+ 					messageField(self,$b,6,GENKEYSES):=messageField($a,self,6,GENKEYSES)
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -213,67 +169,47 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=FRWVRNB
-                            	symEnc(FRWVRNB,1,1,2):=KES
-                            	symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=FRWVRNB and protocolMessage(self,$b)!=FRWVRNB and mode=PASSIVE)then
-			  par 
-			        if(symDec(FRWVRNB,1,1,2,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
-                            	knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
                             	messageField(self,$b,1,FRWVRNB):=messageField($a,self,1,FRWVRNB)
                             	messageField(self,$b,2,FRWVRNB):=messageField($a,self,2,FRWVRNB)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,REQCOM):=messageField($a,self,1,FRWVRNB)
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,FRWVRNB)
-			  		  endpar 
-					endif 
-			        if(symDec(FRWVRNB,1,3,3,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
                             	messageField(self,$b,3,FRWVRNB):=messageField($a,self,3,FRWVRNB)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,FRWVRNB)
-					endif 
-			  endpar 
+			        if(symDec(FRWVRNB,1,1,2,self)=true)then
+	   			 par 
+					knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
+					knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
+					symEnc(FRWVRNB,1,1,2):=KES
+	   			 endpar 
+			        endif 
+			        if(symDec(FRWVRNB,1,3,3,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
+					symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=FRWVRNB and protocolMessage(self,$b)!=FRWVRNB and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=FRWVRNB
-                            	symEnc(FRWVRNB,1,1,2):=KES
-                            	symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=FRWVRNB and protocolMessage(self,$b)!=FRWVRNB and mode=ACTIVE)then
-			  par 
-			        if(symDec(FRWVRNB,1,1,2,self)=true)then
-			  		  par 
-                            	knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
-                            	knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
                             	messageField(self,$b,1,FRWVRNB):=messageField($a,self,1,FRWVRNB)
-                            	messageField(self,$b,2,FRWVRNB):=KES
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,REQCOM):=messageField($a,self,1,FRWVRNB)
-                            	messageField(self,$b,2,REQCOM):=messageField($a,self,2,FRWVRNB)
-			  		  endpar 
-					endif 
-			        if(symDec(FRWVRNB,1,3,3,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
                             	messageField(self,$b,3,FRWVRNB):=messageField($a,self,3,FRWVRNB)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,3,REQCOM):=messageField($a,self,3,FRWVRNB)
-					endif 
-			  endpar 
+			        if(symDec(FRWVRNB,1,1,2,self)=true)then
+	   			 par 
+ 					knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
+ 					knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
+ 					messageField(self,$b,2,FRWVRNB):=KES
+					symEnc(FRWVRNB,1,1,2):=KES
+	   			 endpar 
+				else 
+ 					messageField(self,$b,2,FRWVRNB):=messageField($a,self,2,FRWVRNB)
+			        endif 
+			        if(symDec(FRWVRNB,1,3,3,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
+					symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -432,8 +368,8 @@ default init s0:
 	function internalStateA($a in Alice)=IDLE_REQCOM
 	function internalStateB($b in Bob)=WAITING_REQCOM
 	function receiver=chosenReceiver
-	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) or ($a=agentA and $n=NB) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NA) then true else if($a=agentS and $n=NA) or ($a=agentS and $n=NB) then true else false endif endif endif
-	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) or ($a=agentA and $i=CB) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) then true else if($a=agentS and $i=CB) or ($a=agentS and $i=CA) then true else false endif endif endif
+	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
+	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) then true else if($a=agentS and $i=CB) then true else false endif endif endif
 	function knowsOther($a in Agent, $ho in KnowledgeOther)=if($a=agentB and $ho=NA) then true else if($a=agentS and $ho=NB) then true else false endif endif
 	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentE and $sk=KES) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
 	function knowsSignPubKey($a in Agent ,$spu in KnowledgeSignPubKey)=if(($a=agentA and $spu=KAS) or ($a=agentB and $spu=KBS) or ($a=agentE and $spu=KES) or ($a=agentS and $spu=KAB) or ($a=agentS and $spu=KBS) or ($a=agentS and $spu=KAS)) then true else false endif

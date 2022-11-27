@@ -1,6 +1,3 @@
-simulating Needham_SchroederNSSYM.asm
-INFO - parsing file C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\Needham_SchroederNSSYM.asm
-INFO - file successfully parsed for asm Needham_SchroederNSSYM
 Running interactively Needham_SchroederNSSYM.asm
 INITIAL STATE:Alice={agentA}
 Bob={agentB}

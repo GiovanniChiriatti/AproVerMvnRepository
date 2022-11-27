@@ -59,63 +59,48 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=MB
-                            	symEnc(MB,2,1,5):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=PASSIVE)then
-			        if(symDec(MB,2,1,5,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,MB)):=true
-                            	knowsSymKey(self,messageField($a,self,2,MB)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
-                            	knowsSymKey(self,messageField($a,self,4,MB)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
                             	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
                             	messageField(self,$b,2,MB):=messageField($a,self,2,MB)
                             	messageField(self,$b,3,MB):=messageField($a,self,3,MB)
                             	messageField(self,$b,4,MB):=messageField($a,self,4,MB)
                             	messageField(self,$b,5,MB):=messageField($a,self,5,MB)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MB)
-                            	messageField(self,$b,2,MA):=messageField($a,self,2,MB)
-                            	messageField(self,$b,3,MA):=messageField($a,self,3,MB)
-                            	messageField(self,$b,4,MA):=messageField($a,self,4,MB)
-                            	messageField(self,$b,5,MA):=messageField($a,self,5,MB)
-			  		  endpar 
-					endif 
+			        if(symDec(MB,2,1,5,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,MB)):=true
+					knowsSymKey(self,messageField($a,self,2,MB)):=true
+					knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
+					knowsSymKey(self,messageField($a,self,4,MB)):=true
+					knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
+					symEnc(MB,2,1,5):=KEA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=MB
-                            	symEnc(MB,2,1,5):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MB and protocolMessage(self,$b)!=MB and mode=ACTIVE)then
-			        if(symDec(MB,2,1,5,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,MB)):=true
-                            	knowsSymKey(self,messageField($a,self,2,MB)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
-                            	knowsSymKey(self,messageField($a,self,4,MB)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
                             	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
-                            	messageField(self,$b,2,MB):=KEA
                             	messageField(self,$b,3,MB):=messageField($a,self,3,MB)
-                            	messageField(self,$b,4,MB):=KEA
                             	messageField(self,$b,5,MB):=messageField($a,self,5,MB)
-			  		  endpar 
-				    else 
+			        if(symDec(MB,2,1,5,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,MB)):=true
+ 					knowsSymKey(self,messageField($a,self,2,MB)):=true
+ 					knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
+ 					knowsSymKey(self,messageField($a,self,4,MB)):=true
+ 					knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
+ 					messageField(self,$b,2,MB):=KEA
+ 					messageField(self,$b,4,MB):=KEA
+					symEnc(MB,2,1,5):=KEA
+	   			 endpar 
+				else 
 			  		  par 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MB)
-                            	messageField(self,$b,2,MA):=messageField($a,self,2,MB)
-                            	messageField(self,$b,3,MA):=messageField($a,self,3,MB)
-                            	messageField(self,$b,4,MA):=messageField($a,self,4,MB)
-                            	messageField(self,$b,5,MA):=messageField($a,self,5,MB)
+ 					messageField(self,$b,2,MB):=messageField($a,self,2,MB)
+ 					messageField(self,$b,4,MB):=messageField($a,self,4,MB)
 			  		  endpar 
-					endif 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -129,45 +114,33 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=MC
-                            	symEnc(MC,1,1,2):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=PASSIVE)then
-			        if(symDec(MC,1,1,2,self)=true)then
-			  		  par 
-                            	knowsSymKey(self,messageField($a,self,1,MC)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
                             	messageField(self,$b,1,MC):=messageField($a,self,1,MC)
                             	messageField(self,$b,2,MC):=messageField($a,self,2,MC)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MC)
-                            	messageField(self,$b,2,MA):=messageField($a,self,2,MC)
-			  		  endpar 
-					endif 
+			        if(symDec(MC,1,1,2,self)=true)then
+	   			 par 
+					knowsSymKey(self,messageField($a,self,1,MC)):=true
+					knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
+					symEnc(MC,1,1,2):=KEA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=MC
-                            	symEnc(MC,1,1,2):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MC and protocolMessage(self,$b)!=MC and mode=ACTIVE)then
-			        if(symDec(MC,1,1,2,self)=true)then
-			  		  par 
-                            	knowsSymKey(self,messageField($a,self,1,MC)):=true
-                            	knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
-                            	messageField(self,$b,1,MC):=KEA
                             	messageField(self,$b,2,MC):=messageField($a,self,2,MC)
-			  		  endpar 
-				    else 
-			  		  par 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MC)
-                            	messageField(self,$b,2,MA):=messageField($a,self,2,MC)
-			  		  endpar 
-					endif 
+			        if(symDec(MC,1,1,2,self)=true)then
+	   			 par 
+ 					knowsSymKey(self,messageField($a,self,1,MC)):=true
+ 					knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
+ 					messageField(self,$b,1,MC):=KEA
+					symEnc(MC,1,1,2):=KEA
+	   			 endpar 
+				else 
+ 					messageField(self,$b,1,MC):=messageField($a,self,1,MC)
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -181,35 +154,27 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=MD
-                            	symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=PASSIVE)then
-			        if(symDec(MD,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,MD)):=true
                             	messageField(self,$b,1,MD):=messageField($a,self,1,MD)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MD)
-					endif 
+			        if(symDec(MD,1,1,1,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,MD)):=true
+					symEnc(MD,1,1,1):=messageField($b,self,1,MC)
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=MD
-                            	symEnc(MD,1,1,1):=messageField($b,self,1,MC)
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=MD and protocolMessage(self,$b)!=MD and mode=ACTIVE)then
-			        if(symDec(MD,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,MD)):=true
                             	messageField(self,$b,1,MD):=messageField($a,self,1,MD)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,MD)
-					endif 
+			        if(symDec(MD,1,1,1,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,MD)):=true
+					symEnc(MD,1,1,1):=messageField($b,self,1,MC)
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
@@ -223,35 +188,27 @@ definitions:
 			        // the message must be sent unaltered
 		          par 
                             	protocolMessage(self,$b):=ME
-                            	symEnc(ME,1,1,1):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=PASSIVE)then
-			        if(symDec(ME,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,ME)):=true
                             	messageField(self,$b,1,ME):=messageField($a,self,1,ME)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,ME)
-					endif 
+			        if(symDec(ME,1,1,1,self)=true)then
+	   			 par 
+					knowsNonce(self,messageField($a,self,1,ME)):=true
+					symEnc(ME,1,1,1):=KEA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=ACTIVE)then
 		          par 
                             	protocolMessage(self,$b):=ME
-                            	symEnc(ME,1,1,1):=KEA
-		          endpar 
-			endif 
-			if(protocolMessage($a,self)=ME and protocolMessage(self,$b)!=ME and mode=ACTIVE)then
-			        if(symDec(ME,1,1,1,self)=true)then
-			  		  par 
-                            	knowsNonce(self,messageField($a,self,1,ME)):=true
                             	messageField(self,$b,1,ME):=messageField($a,self,1,ME)
-			  		  endpar 
-				    else 
-                            	messageField(self,$b,1,MA):=messageField($a,self,1,ME)
-					endif 
+			        if(symDec(ME,1,1,1,self)=true)then
+	   			 par 
+ 					knowsNonce(self,messageField($a,self,1,ME)):=true
+					symEnc(ME,1,1,1):=KEA
+	   			 endpar 
+			        endif 
+		          endpar 
 			endif 
 		  endpar 
 		endlet 
