@@ -16,6 +16,7 @@ public class WriteASM {
 	private Map<String, String> otherElement = new HashMap<String, String>();
 	private Map<String, String> attackerElement = new HashMap<String, String>();
 	private Map<String, String> honestElement = new HashMap<String, String>();
+	private Map<String, String> keychangEve = new HashMap<String, String>();
 	private Map<String, Integer> honestLevelElement;
 	private int  levelTot;
 	private int fieldPosition;
@@ -864,7 +865,7 @@ public class WriteASM {
 		// dal payload si estraggono tutti i filed e si scrivono a prescindere
 		findActorFromTo(message.getActorfrom(), message.getActorTo());
 		String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());
-		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a",true);
+		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a",false);
 
 		String spaces = "                            ";
 		printKnowledge(b, "Prot", linesKnowledge, spaces);
@@ -909,7 +910,7 @@ public class WriteASM {
 				// determino i campi del messaggio e la posizione
 				String[] msgFieldDet = detField(msgField, msgFieldTot);
 				findActorFromTo(message.getActorfrom(), message.getActorTo());
-				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
+				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",false);
 				spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
 			}
@@ -934,20 +935,20 @@ public class WriteASM {
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
-					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
+					linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",false);
 					b.write("	   			 par \n");
 					spaces = "				";
 					printKnowledge(b, "Know", linesKnowledge, spaces);
 					spaces = "					";
-					if (reversOperation(operation).equals("symEnc")) {
-						b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
-								+ levelEncField1EncField2 + "):="
-								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
-					} else {
+//---				if (reversOperation(operation).equals("symEnc")) {
+//---							b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
+//---							+ levelEncField1EncField2 + "):="
+//---							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+//---				} else {
 						b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
 								+ levelEncField1EncField2 + "):="
 								+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), false) + "\n");
-					}
+//---				}
 
 					b.write("	   			 endpar \n");
 					b.write("			        endif \n");
@@ -978,7 +979,7 @@ public class WriteASM {
 		// dal payload si estraggono tutti i filed e si scrivono a prescindere
 		findActorFromTo(message.getActorfrom(), message.getActorTo());
 		String[] msgFieldTot = FindField(messages.getMessage(i).getPayload());
-		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a",true);
+		String[] linesKnowledge = writeKnowledge(message, i, msgFieldTot, "$a",false);
 
 		String spaces = "                            ";
 		printKnowledge(b, "Prot", linesKnowledge, spaces);
@@ -1023,7 +1024,7 @@ public class WriteASM {
 				// determino i campi del messaggio e la posizione
 				String[] msgFieldDet = detField(msgField, msgFieldTot);
 				findActorFromTo(message.getActorfrom(), message.getActorTo());
-				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",true);
+				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a",false);
 				spaces = "                            ";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
 				printKnowledge(b, "Mes4", linesKnowledge, spaces);
@@ -1049,16 +1050,31 @@ public class WriteASM {
 				String[] msgFieldDet = detField(msgField, msgFieldTot);
 				b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 						+ ",self)=true)then\n");
-				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a", true);
+				
 				b.write("	   			 par \n");
+				String eleEve = findKeyEve(keyUsed);
+				debug=true;
+				if (debug && eleEve !=null) {System.out.println("eleEve " + eleEve + " parte finale " + eleEve.substring(eleEve.indexOf(" - ")+3) +
+						" Parte iniziale  " + eleEve.substring(0,eleEve.indexOf(" - ")) + " actor To " + message.getActorTo());
+				}
+				debug=false;
+				if (eleEve != null) {
+					if (eleEve.substring(eleEve.indexOf(" - ")+3).contains(message.getActorTo())) {
+						eleEve = null;
+					} else {
+						eleEve = eleEve.substring(0,eleEve.indexOf(" - "));
+					}
+				}
+					
+				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a", true);
 				spaces = " 				";
 				printKnowledge(b, "Know", linesKnowledge, spaces);
 				printKnowledge(b, "Mes4", linesKnowledge, spaces);
 				operation = findOperation(keyUsed, message.getActorfrom(), message.getActorTo());
-				if (reversOperation(operation).equals("symEnc")) {
+				if (eleEve != null) {
 					b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
 							+ levelEncField1EncField2 + "):="
-							+ findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) + "\n");
+							+ eleEve + "\n");
 				} else {
 					b.write("					" + reversOperation(operation) + "(" + changNumMSG[i] + ","
 							+ levelEncField1EncField2 + "):="
@@ -1605,11 +1621,7 @@ public class WriteASM {
 				numRighe++;
 				if (debug) System.out.println("writeKnowledge add " + add);
 
-				if (add) {
-					linesKnowledge[numRighe] = "Kno2	" + typeFieldActorFrom + "(self,messageField(" + typeActor
-							+ ",self," + i + "," + changNumMSG[numMessagePrec] + ")):=true\n";
-					numRighe++;
-				}
+
 				if (debug) System.out.println("writeKnowledge endadd " + add);
 
 				linesKnowledge[numRighe] = "Mess	messageField(self,$b," + i + ","
@@ -1621,6 +1633,9 @@ public class WriteASM {
 					linesKnowledge[numRighe] = "Mes4	messageField(self,$b," + i + ","
 							+ changNumMSG[numMessage] + "):=" + eleEve + "\n";
 					numRighe++;
+					if (add) {
+						keychangEve.put(msgField[i].toUpperCase(), eleEve+ " - " +message.getActorfrom());
+ 					}
 					linesKnowledge[numRighe] = "Mes3	messageField(self,$b," + i + "," + changNumMSG[0]
 							+ "):=messageField(" + typeActor + ",self," + i + "," + changNumMSG[numMessage] + ")\n";
 					linesKnowledge[numRighe] = "Mes5	messageField(self,$b," + i + "," + changNumMSG[numMessage]
@@ -1692,6 +1707,16 @@ public class WriteASM {
 		}
 		return null;
 	}
+	// Ricerca eventuali chiavi modificate da eve 
+	private String findKeyEve(String keyUsed) { 
+		for (Map.Entry<String, String> entry : keychangEve.entrySet()) {
+			if (entry.getKey().equals(keyUsed.toUpperCase())) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+
 
 	private String findKeyEle(String keyUsed, String actorfrom, String actorTo, boolean reverse) {
 		for (Map.Entry<String, String> entry : attackerElement.entrySet()) {
@@ -1950,7 +1975,7 @@ public class WriteASM {
 					String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
 					b.write("			                par\n");
 					if (debug) {System.out.println(" 4 writeKnowledge ");}
-					String[] linesKnowledgePrev = writeKnowledge(messagePrev,z,msgFieldTotPrev,"$e",true);
+					String[] linesKnowledgePrev = writeKnowledge(messagePrev,z,msgFieldTotPrev,"$e",false);
 					String spaces= "					";
 					if (debug) {System.out.println(" 5 printKnowledge ");}
 					printKnowledge(b,"Kno3",linesKnowledgePrev,spaces);
@@ -2162,7 +2187,7 @@ public class WriteASM {
 							System.out.println("z5 ------> " +e+ " <-------------");
 						}
 					}
-					String[] linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldTotPrev,"$e",true);
+					String[] linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldTotPrev,"$e",false);
 					if (debug) { 
 						System.out.println("z5 ------> linesKnowledgePrev <----------");
 						for (String e: linesKnowledgePrev) {
@@ -2316,7 +2341,7 @@ public class WriteASM {
 						b.write(" and receiver=AG_E) then\n");
 					}
 					b.write("			                par\n");
-					linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldTotPrev,"$e",true);
+					linesKnowledgePrev = writeKnowledge(messagePrev,(i-1),msgFieldTotPrev,"$e",false);
 					spaces="                            	        ";
 					printKnowledge(b,"Kno3",linesKnowledgePrev,spaces);
 					b.write("			                      protocolMessage(self,$e):="+ changNumMSG[i] +"\n");

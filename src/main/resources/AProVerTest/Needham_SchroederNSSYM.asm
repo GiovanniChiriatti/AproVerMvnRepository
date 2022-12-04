@@ -71,7 +71,7 @@ definitions:
 					knowsIdentityCertificate(self,messageField($a,self,3,MB)):=true
 					knowsSymKey(self,messageField($a,self,4,MB)):=true
 					knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
-					symEnc(MB,2,1,5):=KEA
+					symEnc(MB,2,1,5):=KAS
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -92,7 +92,7 @@ definitions:
  					knowsIdentityCertificate(self,messageField($a,self,5,MB)):=true
  					messageField(self,$b,2,MB):=KEA
  					messageField(self,$b,4,MB):=KEA
-					symEnc(MB,2,1,5):=KEA
+					symEnc(MB,2,1,5):=KAS
 	   			 endpar 
 				else 
 			  		  par 
@@ -120,7 +120,7 @@ definitions:
 	   			 par 
 					knowsSymKey(self,messageField($a,self,1,MC)):=true
 					knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
-					symEnc(MC,1,1,2):=KEA
+					symEnc(MC,1,1,2):=KBS
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -135,7 +135,7 @@ definitions:
  					knowsSymKey(self,messageField($a,self,1,MC)):=true
  					knowsIdentityCertificate(self,messageField($a,self,2,MC)):=true
  					messageField(self,$b,1,MC):=KEA
-					symEnc(MC,1,1,2):=KEA
+					symEnc(MC,1,1,2):=KBS
 	   			 endpar 
 				else 
  					messageField(self,$b,1,MC):=messageField($a,self,1,MC)
@@ -192,7 +192,7 @@ definitions:
 			        if(symDec(ME,1,1,1,self)=true)then
 	   			 par 
 					knowsNonce(self,messageField($a,self,1,ME)):=true
-					symEnc(ME,1,1,1):=KEA
+					symEnc(ME,1,1,1):=KAB
 	   			 endpar 
 			        endif 
 		          endpar 

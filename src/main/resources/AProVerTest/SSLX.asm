@@ -119,7 +119,7 @@ definitions:
 	   			 par 
 					knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
 					knowsNonce(self,messageField($a,self,2,CSNK)):=true
-					symEnc(CSNK,2,1,2):=SKEB
+					symEnc(CSNK,2,1,2):=SKAB
 	   			 endpar 
 			        endif 
 		          endpar 

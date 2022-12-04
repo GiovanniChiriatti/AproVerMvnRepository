@@ -212,7 +212,7 @@ definitions:
 						endpar
 					endif	
 				else
-					if(symDec(NK,1,1,1,self)=true)then
+					if(symDec(NK,1,1,1,self)=true and receiver=AG_E)then
 						par
 //------------------- non manca :knowsNonce(self,messageField($e,self,1,M1)):=true
 							protocolMessage(self,$e ):=CSNK

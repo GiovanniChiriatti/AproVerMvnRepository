@@ -162,7 +162,7 @@ knowsNonce(agentE,NB)=true
 messageField(agentE,agentB,1,CSNK)=CA
 messageField(agentE,agentB,2,CSNK)=NB
 protocolMessage(agentE,agentB)=CSNK
-symEnc(CSNK,2,1,2)=SKEB
+symEnc(CSNK,2,1,2)=SKAB
 </UpdateSet>
 <State 6 (controlled)>
 Alice={agentA}
@@ -194,7 +194,7 @@ protocolMessage(agentE,agentA)=NK
 protocolMessage(agentE,agentB)=CSNK
 receiver=AG_E
 sign(CSNK,1,2,2)=SIGNPRIVKA
-symEnc(CSNK,2,1,2)=SKEB
+symEnc(CSNK,2,1,2)=SKAB
 symEnc(NK,1,1,1)=SKAE
 </State 6 (controlled)>
 <UpdateSet - 6>
@@ -213,8 +213,8 @@ knowsNonce(agentA,NB)=true
 knowsNonce(agentE,NB)=true
 knowsSignPubKey(agentB,SIGNPUBKA)=false
 knowsSymKey(agentA,SKAE)=true
+knowsSymKey(agentB,SKAB)=true
 knowsSymKey(agentB,SKAE)=true
-knowsSymKey(agentB,SKEB)=true
 knowsSymKey(agentE,SKAE)=true
 messageField(agentA,agentE,1,CSNK)=CA
 messageField(agentA,agentE,1,KK)=SKAE
@@ -231,7 +231,7 @@ protocolMessage(agentE,agentA)=NK
 protocolMessage(agentE,agentB)=CSNK
 receiver=AG_E
 sign(CSNK,1,2,2)=SIGNPRIVKA
-symEnc(CSNK,2,1,2)=SKEB
+symEnc(CSNK,2,1,2)=SKAB
 symEnc(NK,1,1,1)=SKAE
 </State 7 (controlled)>
 FINAL STATE: Alice={agentA}
@@ -247,8 +247,8 @@ knowsNonce(agentA,NB)=true
 knowsNonce(agentE,NB)=true
 knowsSignPubKey(agentB,SIGNPUBKA)=false
 knowsSymKey(agentA,SKAE)=true
+knowsSymKey(agentB,SKAB)=true
 knowsSymKey(agentB,SKAE)=true
-knowsSymKey(agentB,SKEB)=true
 knowsSymKey(agentE,SKAE)=true
 messageField(agentA,agentE,1,CSNK)=CA
 messageField(agentA,agentE,1,KK)=SKAE
@@ -266,6 +266,6 @@ protocolMessage(agentE,agentB)=CSNK
 receiver=AG_E
 self=agentE
 sign(CSNK,1,2,2)=SIGNPRIVKA
-symEnc(CSNK,2,1,2)=SKEB
+symEnc(CSNK,2,1,2)=SKAB
 symEnc(NK,1,1,1)=SKAE
 run terminated

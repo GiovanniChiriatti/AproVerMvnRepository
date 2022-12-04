@@ -65,7 +65,7 @@ definitions:
 					knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
 					knowsOther(self,messageField($a,self,3,ENCKBS)):=true
 					knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
-					symEnc(ENCKBS,1,2,4):=KES
+					symEnc(ENCKBS,1,2,4):=KBS
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -84,7 +84,7 @@ definitions:
  					knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
  					knowsOther(self,messageField($a,self,3,ENCKBS)):=true
  					knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
-					symEnc(ENCKBS,1,2,4):=KES
+					symEnc(ENCKBS,1,2,4):=KBS
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -113,14 +113,14 @@ definitions:
 					knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
 					knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
 					knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
-					symEnc(GENKEYSES,1,1,4):=KES
+					symEnc(GENKEYSES,1,1,4):=KAS
 	   			 endpar 
 			        endif 
 			        if(symDec(GENKEYSES,1,5,6,self)=true)then
 	   			 par 
 					knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
 					knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
-					symEnc(GENKEYSES,1,5,6):=KES
+					symEnc(GENKEYSES,1,5,6):=KBS
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -140,7 +140,7 @@ definitions:
  					knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
  					knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
  					messageField(self,$b,2,GENKEYSES):=KES
-					symEnc(GENKEYSES,1,1,4):=KES
+					symEnc(GENKEYSES,1,1,4):=KAS
 	   			 endpar 
 				else 
  					messageField(self,$b,2,GENKEYSES):=messageField($a,self,2,GENKEYSES)
@@ -150,7 +150,7 @@ definitions:
  					knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
  					knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
  					messageField(self,$b,6,GENKEYSES):=KES
-					symEnc(GENKEYSES,1,5,6):=KES
+					symEnc(GENKEYSES,1,5,6):=KBS
 	   			 endpar 
 				else 
  					messageField(self,$b,6,GENKEYSES):=messageField($a,self,6,GENKEYSES)
@@ -176,7 +176,7 @@ definitions:
 	   			 par 
 					knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
 					knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
-					symEnc(FRWVRNB,1,1,2):=KES
+					symEnc(FRWVRNB,1,1,2):=KBS
 	   			 endpar 
 			        endif 
 			        if(symDec(FRWVRNB,1,3,3,self)=true)then
@@ -198,7 +198,7 @@ definitions:
  					knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
  					knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
  					messageField(self,$b,2,FRWVRNB):=KES
-					symEnc(FRWVRNB,1,1,2):=KES
+					symEnc(FRWVRNB,1,1,2):=KBS
 	   			 endpar 
 				else 
  					messageField(self,$b,2,FRWVRNB):=messageField($a,self,2,FRWVRNB)
@@ -206,7 +206,7 @@ definitions:
 			        if(symDec(FRWVRNB,1,3,3,self)=true)then
 	   			 par 
  					knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
-					symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
+					symEnc(FRWVRNB,1,3,3):=KES
 	   			 endpar 
 			        endif 
 		          endpar 
