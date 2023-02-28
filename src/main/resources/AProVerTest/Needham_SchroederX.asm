@@ -40,7 +40,7 @@ definitions:
 	   			 par 
 					knowsNonce(self,messageField($a,self,1,NAK)):=true
 					knowsIdentityCertificate(self,messageField($a,self,2,NAK)):=true
-					asymEnc(NAK,1,1,2):=PUBKB
+ 					asymEnc(NAK,1,1,2):=PUBKB
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -78,7 +78,7 @@ definitions:
 	   			 par 
 					knowsNonce(self,messageField($a,self,1,NNK)):=true
 					knowsNonce(self,messageField($a,self,2,NNK)):=true
-					asymEnc(NNK,1,1,2):=PUBKA
+ 					asymEnc(NNK,1,1,2):=PUBKA
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -114,7 +114,7 @@ definitions:
 			        if(asymDec(NK,1,1,1,self)=true)then
 	   			 par 
 					knowsNonce(self,messageField($a,self,1,NK)):=true
-					asymEnc(NK,1,1,1):=PUBKB
+ 					asymEnc(NK,1,1,1):=PUBKB
 	   			 endpar 
 			        endif 
 		          endpar 
@@ -139,7 +139,7 @@ definitions:
 	rule r_message_NAK =
 		let ($e=agentE) in
 			if(internalStateA(self)=IDLE_NAK)then 
-			        if(receiver=AG_B)then
+			        if(receiver!=AG_E)then
 			                par
 			                       protocolMessage(self,$e):=NAK
 			                       messageField(self,$e,1,NAK):=NA
@@ -163,41 +163,55 @@ definitions:
 	rule r_message_NNK =
 		let ($e=agentE) in
 			if(internalStateB(self)=WAITING_NAK and protocolMessage($e,self)=NAK)then
+			     if(receiver!=AG_E)then
  			        if(asymDec(NAK,1,1,2,self)=true ) then
 			                par
-						knowsNonce(self,messageField($e,self,1,NAK)):=true
-						knowsIdentityCertificate(self,messageField($e,self,2,NAK)):=true
-	 		                      protocolMessage(self,$e):=NNK
-			                      messageField(self,$e,1,NNK):=messageField($e,self,1,NAK)
+                            	        	knowsNonce(self,messageField($e,self,1,NAK)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,2,NAK)):=true
+			                      protocolMessage(self,$e):=NNK
+			                      messageField(self,$e,1,NNK):=NA
 			                      messageField(self,$e,2,NNK):=NB
-  			                      asymEnc(NNK,1,1,2):=PUBKA
+   			                      asymEnc(NNK,1,1,2):=PUBKA
 			                      internalStateB(agentB):=WAITING_NK
 			                endpar
 			        endif
+			else
+ 			        if(asymDec(NAK,1,1,2,self)=true  and receiver=AG_E) then
+			                par
+                            	        	knowsNonce(self,messageField($e,self,1,NAK)):=true
+                            	        	knowsIdentityCertificate(self,messageField($e,self,2,NAK)):=true
+			                      protocolMessage(self,$e):=NNK
+			                      messageField(self,$e,1,NNK):=messageField($e,self,1,NAK)
+			                      messageField(self,$e,2,NNK):=NB
+   			                      asymEnc(NNK,1,1,2):=PUBKA
+			                      internalStateB(agentB):=WAITING_NK
+			                endpar
+			        endif
+				endif
 			endif
 		endlet
 	rule r_message_NK =
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_NNK and protocolMessage($e,self)=NNK)then
-			     if(receiver=AG_B)then
+			     if(receiver!=AG_E)then
  			        if(asymDec(NNK,1,1,2,self)=true ) then
 			                par
                             	        	knowsNonce(self,messageField($e,self,1,NNK)):=true
                             	        	knowsNonce(self,messageField($e,self,2,NNK)):=true
 			                      protocolMessage(self,$e):=NK
-			                      messageField(self,$e,1,NK):=messageField($e,self,2,NNK)
-			                      asymEnc(NK,1,1,1):=PUBKB
+			                      messageField(self,$e,1,NK):=NB
+   			                      asymEnc(NK,1,1,1):=PUBKB
 			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif
 			else
- 			        if(asymDec(NNK,1,1,2,self)=true and receiver=AG_E) then
+ 			        if(asymDec(NNK,1,1,2,self)=true  and receiver=AG_E) then
 			                par
                             	        	knowsNonce(self,messageField($e,self,1,NNK)):=true
                             	        	knowsNonce(self,messageField($e,self,2,NNK)):=true
 			                      protocolMessage(self,$e):=NK
 			                      messageField(self,$e,1,NK):=messageField($e,self,2,NNK)
-			                      asymEnc(NK,1,1,1):=PUBKE
+   			                      asymEnc(NK,1,1,1):=PUBKE
 			                      internalStateA(agentA):=END_A
 			                endpar
 			        endif

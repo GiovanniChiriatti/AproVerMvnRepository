@@ -66,6 +66,7 @@ public class CreateProperties {
 	String operazione =" ";
 	int defaultSelRadioButton = 99;
 	private Stage dialogStage;
+	private boolean protectProptype;
 	ObservableList<String> comboBoxListActor; 
 	ObservableList<String> comboBoxListOther = FXCollections.observableArrayList(); 
 	ObservableList<String>  data = FXCollections.observableArrayList();
@@ -76,10 +77,12 @@ public class CreateProperties {
 	SecurityKey alice, bob, eve, server;
 	
 	ArrayList<String> wordsNotAllowed=new ArrayList<String>();
+	private String[] expressionEle = new String[50];
+	private int numExpressionEle = 0;
 
 	Boolean checkWords;
     @FXML
-    private Button closeButton, deleteButton, doneButton, addExpression;
+    private Button closeButton, deleteButton, doneButton, addExpression, delExpression;
 
     @FXML
     private ImageView exclamationPoint;
@@ -184,12 +187,13 @@ public class CreateProperties {
 	}
 	
 	// prima di essere creata la Scene il controller precedente inizializza le informazioni di questo controller
-    public void setDialogStage(Stage dialogStage,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server, String cntrWords) {
+    public void setDialogStage(Stage dialogStage,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server, String cntrWords, boolean protectProptype) {
         this.dialogStage = dialogStage;
         this.alice=alice;
         this.bob=bob;
         this.eve=eve;
         this.server=server;
+        this.protectProptype = protectProptype;
         if (cntrWords.equals("Don't check Words")) {
 			checkWords = true;
 		} else {
@@ -440,14 +444,14 @@ public class CreateProperties {
 		
 	 @FXML 
 	 public void finishWithoutSaving(ActionEvent e){
-		 operazione = "NotSalving";
+		 operazione = "NotSaving";
 		 properyName.setText("");
 		 dialogStage.close();
 	 }
 	 @FXML 
 		public void finishSaving(ActionEvent e) {
 			if (verifyString() && !properyName.getText().toString().isEmpty() && !properyName.getText().toString().contains("Insert Name")) {
-				operazione = "Salving";
+				operazione = "Saving";
 				dialogStage.close();
 				return;
 			}
@@ -473,7 +477,12 @@ public class CreateProperties {
 	public void setTxtProperties(String propType, String expression) {
 		properyName.setText(propType);
 		expressionValue.setText(expression);
+		properyName.setEditable(protectProptype);		
+		numExpressionEle++;
+		expressionEle[numExpressionEle] = expressionValue.getText();
+		if (expression == null || expression.isEmpty() || expression.isBlank()) {return;}
 		deleteButton.setVisible(true);
+		
 	}
 	public String getProperyName() {
 		return properyName.getText();
@@ -537,6 +546,8 @@ public class CreateProperties {
 			}				
 
 			expressionValue.setText( expressionValue.getText() + expression);
+			numExpressionEle++;
+			expressionEle[numExpressionEle] = expressionValue.getText();
 			ctlSel.setValue(null);
 			actorKnow.setValue(null);
 			otherComboBox.setValue(null);
@@ -544,7 +555,21 @@ public class CreateProperties {
 			verifyString();
 	    }
 	
-
+		// metodo attivato quando si preme il button che permette di eliminare l'ultimo inserimento
+		    @FXML 
+			public void delExpression() {
+		    	System.out.println(" delExpression " + numExpressionEle );
+		    	if (numExpressionEle > 1) {
+		    		expressionEle[numExpressionEle]="";
+		    		numExpressionEle--;
+		    		expressionValue.setText(expressionEle[numExpressionEle]);
+		    	} else {
+		    		expressionEle[numExpressionEle]="";
+		    		numExpressionEle--;
+		    		expressionValue.clear();
+		    	}
+		    	verifyString();	
+		    }
 	public boolean verifyString() {
 	
 		int numOpen =0;

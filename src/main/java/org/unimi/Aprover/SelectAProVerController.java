@@ -87,7 +87,7 @@ public class SelectAProVerController {
 	final String symmetricKnow = "Symmetric Key";
 	final String hashKnow = "Hash";
 	final String bitstringKnow = "Bitstring";
-	final String idCertificateKnow = "Id Certificate";
+	final String idCertificateKnow = "Id Certificate														  Actor Proprity";
 	final String nonceKnow = "Nonce";
 	final String signatureKnow = "Signature Public Key                                                        Signature Private Key";
 	final String tagKnow = "Tag";
@@ -1000,7 +1000,46 @@ public class SelectAProVerController {
 		    	alert.showAndWait();
 				return;
 			}
-			
+			if (knowPage.getText() == "01" || knowPage.getText() == "07" ) {
+			    if (verifyPubPriv()!=null) {
+			    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+			    	Alert.AlertType type =  Alert.AlertType.ERROR;
+			    	Alert alert = new Alert(type, "");
+			    	alert.initModality(Modality.APPLICATION_MODAL);
+			    	alert.initOwner(stage);
+			    	alert.getDialogPane().setContentText("Insert key Private and Public in the same row");
+			    	alert.getDialogPane().setHeaderText("There must be a public key pair and a private key : " +verifyPubPriv());
+			    	alert.showAndWait();
+			    	return;
+			   }
+			}
+
+			if (knowPage.getText() == "05" ) {
+			    if (verifyPubPriv()!=null) {
+			    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+			    	Alert.AlertType type =  Alert.AlertType.ERROR;
+			    	Alert alert = new Alert(type, "");
+			    	alert.initModality(Modality.APPLICATION_MODAL);
+			    	alert.initOwner(stage);
+			    	alert.getDialogPane().setContentText("Insert Id Certificate and Propriety in the same row");
+			    	alert.getDialogPane().setHeaderText("There must be a Id Certificate pair and a her proprietary : " +verifyPubPriv());
+			    	alert.showAndWait();
+			    	return;
+			   }
+			}
+			if (knowPage.getText() == "05" ) {
+			    if (verifyPropId()!=null) {
+			    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+			    	Alert.AlertType type =  Alert.AlertType.ERROR;
+			    	Alert alert = new Alert(type, "");
+			    	alert.initModality(Modality.APPLICATION_MODAL);
+			    	alert.initOwner(stage);
+			    	alert.getDialogPane().setContentText("Enter the Correct Actor");
+			    	alert.getDialogPane().setHeaderText("Actor value must be Alice or Bob or Eve or Server " +verifyPropId() );
+			    	alert.showAndWait();
+			    	return;
+			   }
+			}			
 			piuKnowledge();	
 			chiudiKnowledge();	
 
@@ -1032,6 +1071,33 @@ public class SelectAProVerController {
 		    	alert.initOwner(stage);
 		    	alert.getDialogPane().setContentText("Insert key Private and Public in the same row");
 		    	alert.getDialogPane().setHeaderText("There must be a public key pair and a private key : " +verifyPubPriv());
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
+
+		if (knowPage.getText() == "05" ) {
+		    if (verifyPubPriv()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Insert Id Certificate and Propriety in the same row");
+		    	alert.getDialogPane().setHeaderText("There must be a Id Certificate pair and a her proprietary : " +verifyPubPriv());
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
+		if (knowPage.getText() == "05" ) {
+		    if (verifyPropId()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Enter the Correct Actor");
+		    	alert.getDialogPane().setHeaderText("Actor value must be Alice or Bob or Eve or Server " +verifyPropId() );
 		    	alert.showAndWait();
 		    	return;
 		   }
@@ -1173,7 +1239,7 @@ public class SelectAProVerController {
 				appColumn = 0;
 			}
 			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty() && appColumn==1) {
-				elencoKnowledge[indice] = ((TextField) node).getText().trim(); 
+				elencoKnowledge[indice] = ((TextField) node).getText().trim().replaceAll("\\s", ""); 
 				if (!elencoKnowledge[indice].isEmpty()) {
 					indice ++;
 				}
@@ -1194,9 +1260,11 @@ public class SelectAProVerController {
 				appColumn = 0;
 			}
 			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty() && appColumn==2) {
-				elencoKnowledge2[indice] = ((TextField) node).getText().trim(); 
+				elencoKnowledge2[indice] = ((TextField) node).getText().trim().replaceAll("\\s", ""); 
 				if (!elencoKnowledge2[indice].isEmpty()) {
-					indice ++;
+					elencoKnowledge2[indice] = elencoKnowledge2[indice].substring(0, 1).toUpperCase()
+							+ elencoKnowledge2[indice].substring(1).toLowerCase();
+					indice++;
 				}
 			}
 		}
@@ -1328,6 +1396,22 @@ public class SelectAProVerController {
 		}
 		return null;
 	}
+	
+	// La routin verifica che siano state inserite coppie chiave pubblica e chiave privata 	
+		private String verifyPropId(){
+			for (int i = 0; i < 15; i++) {
+				if (elencoKnowledge2[i] != null && !elencoKnowledge2[i].isEmpty()) {
+					   if (!(elencoKnowledge2[i].toUpperCase().equals("ALICE") ||
+						    elencoKnowledge2[i].toUpperCase().equals("BOB") || 
+						    elencoKnowledge2[i].toUpperCase().equals("EVE") || 
+						    elencoKnowledge2[i].toUpperCase().equals("SERVER"))){
+						   
+						return elencoKnowledge2[i];
+					}		
+				}
+			}
+			return null;
+		}
 //quando nella form di knowledge si preme prev si abilitano/disabilitano alcuni pulsanti e si modifica il tipo di kyavi da inserire (es: hash,symmetric,asymmetric etc)	
 	
 	@FXML
@@ -1344,6 +1428,47 @@ public class SelectAProVerController {
 			return;
 		}
 		
+		if (knowPage.getText() == "01" || knowPage.getText() == "07" ) {
+		    if (verifyPubPriv()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Insert key Private and Public in the same row");
+		    	alert.getDialogPane().setHeaderText("There must be a public key pair and a private key : " +verifyPubPriv());
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
+
+		if (knowPage.getText() == "05" ) {
+		    if (verifyPubPriv()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Insert Id Certificate and Propriety in the same row");
+		    	alert.getDialogPane().setHeaderText("There must be a Id Certificate pair and a her proprietary : " +verifyPubPriv());
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
+		
+		if (knowPage.getText() == "05" ) {
+		    if (verifyPropId()!=null) {
+		    	final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		    	Alert.AlertType type =  Alert.AlertType.ERROR;
+		    	Alert alert = new Alert(type, "");
+		    	alert.initModality(Modality.APPLICATION_MODAL);
+		    	alert.initOwner(stage);
+		    	alert.getDialogPane().setContentText("Enter the Correct Actor ");
+		    	alert.getDialogPane().setHeaderText("Actor value must be Alice or Bob or Eve or Server " + verifyPropId() );
+		    	alert.showAndWait();
+		    	return;
+		   }
+		}
 		
 		piuKnowledge();
 
@@ -1516,42 +1641,46 @@ public class SelectAProVerController {
 						switch (tipo) {
 						case "01":
 							if (appColumn == 1) {
-								oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString());
+								oggetto.addAsymmetricPublicKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							} else {
-								oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString());
+								oggetto.addAsymmetricPrivateKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							}
 							break;
 						case "02":
-							oggetto.addSymmetricKey(((TextField) node).getText().toString());
+							oggetto.addSymmetricKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "03":
-							oggetto.addHashKey(((TextField) node).getText().toString());
+							oggetto.addHashKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "04":
-							oggetto.addBitstring(((TextField) node).getText().toString());
+							oggetto.addBitstring(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "05":
-							oggetto.addIdCertificate(((TextField) node).getText().toString());
+							if (appColumn == 1) {
+								oggetto.addIdCertificate(((TextField) node).getText().toString().replaceAll("\\s", ""));
+							} else {
+								oggetto.addIdCertificateProp(((TextField) node).getText().toString().replaceAll("\\s", ""));								
+							}
 							break;
 						case "06":
-							oggetto.addNonce(((TextField) node).getText().toString());
+							oggetto.addNonce(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "07":
 							if (appColumn == 1) {
-								oggetto.addSignaturePubKey(((TextField) node).getText().toString());
+								oggetto.addSignaturePubKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							} else {
-								oggetto.addSignaturePrivKey(((TextField) node).getText().toString());
+								oggetto.addSignaturePrivKey(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							}
 							break;
 
 						case "08":
-							oggetto.addTag(((TextField) node).getText().toString());
+							oggetto.addTag(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "09":
-							oggetto.addTimestamp(((TextField) node).getText().toString());
+							oggetto.addTimestamp(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 						case "10":
-							oggetto.addDigest(((TextField) node).getText().toString());
+							oggetto.addDigest(((TextField) node).getText().toString().replaceAll("\\s", ""));
 							break;
 							
 						}
@@ -1578,7 +1707,7 @@ public class SelectAProVerController {
 			} else {
 				appColumn = 0;
 			}
-			if (node !=null && node instanceof TextField && tipo != "01" && tipo != "07" && appColumn==2) {
+			if (node !=null && node instanceof TextField && tipo != "01" && tipo != "05" && tipo != "07" && appColumn==2) {
 				node.setVisible(false);
 			}
 			if (node !=null && node instanceof TextField) {
@@ -1605,6 +1734,7 @@ public class SelectAProVerController {
 			break;
 		case "05":
 			appoList = oggetto.getIdCertificate();
+			appoList2 = oggetto.getIdCertificateProp();
 			break;
 		case "06":
 			appoList = oggetto.getNonce();
@@ -2204,7 +2334,15 @@ public class SelectAProVerController {
 			if (actorFrom.equals("Bob")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
 				coordinateMsg = 605;
-				if (!actorTo.equals("Server") || eveIntercept) {
+				if (actorTo.equals("Alice")) {
+					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.LEFT);
+					coordinateMsg = 90;
+				}
+				if (actorTo.equals("Eve")) {
+					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsg = 335;
+				}
+				if (actorTo.equals("Server") && eveIntercept) {
 					((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsg = 335;
 				}
@@ -2260,7 +2398,7 @@ public class SelectAProVerController {
 				}
 			}
 			if (actorFrom.equals("Server")) {
-				if (actorTo == "Alice") {
+				if (actorTo.equals("Alice")) {
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.LEFT);
 					coordinateMsf = 90;
 				}
@@ -3038,7 +3176,7 @@ public class SelectAProVerController {
         dialogStage.setScene(scene);
         
         CreateProperties controller = loader.getController();
-        controller.setDialogStage(dialogStage,alice,bob,eve,server,toolCheck.getText());
+        controller.setDialogStage(dialogStage,alice,bob,eve,server,toolCheck.getText(),true);
         if (numTab != 8){
         	controller.setTxtProperties(confProp.getListNameTab(numTab), confProp.getProprietiesValue(numTab,0));
         }
@@ -3178,7 +3316,7 @@ public class SelectAProVerController {
 	}
 	
     private void showAddProperties(int tab,String operation,int row) throws Exception {
-
+   /*
 		FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/AddProperties.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
@@ -3319,7 +3457,159 @@ public class SelectAProVerController {
 				break;
 			}
         }
+*/
 
+    	FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/CreateProperties.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+     
+        Stage dialogStage = new Stage();
+                
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        
+        CreateProperties controller = loader.getController();
+        controller.setDialogStage(dialogStage,alice,bob,eve,server,toolCheck.getText(),false);
+        if (tab != 8){
+         	controller.setTxtProperties(confProp.getListNameTab(tab), "");
+        }
+        
+		if (tool.getText().contains("Disable")) {
+			controller.setActorList(true);
+		} else {
+			controller.setActorList(false);
+		}
+		if (operation.contains("UPD")) {
+			Node node = null;
+			switch (tab) {
+			case 0:
+				node = selecttEleProperties(listProprieties00, row);
+				break;
+			case 1:
+				node = selecttEleProperties(listProprieties01, row);
+				break;
+			case 2:
+				node = selecttEleProperties(listProprieties02, row);
+				break;
+			case 3:
+				node = selecttEleProperties(listProprieties03, row);
+				break;
+			case 4:
+				node = selecttEleProperties(listProprieties04, row);
+				break;
+			case 5:
+				node = selecttEleProperties(listProprieties05, row);
+				break;
+			case 6:
+				node = selecttEleProperties(listProprieties06, row);
+				break;
+			case 7:
+				node = selecttEleProperties(listProprieties07, row);
+				break;
+			case 8:
+				node = selecttEleProperties(listProprieties08, row);
+				break;
+			}
+			if (node != null) {
+				controller.setTxtProperties(confProp.getListNameTab(tab),((TextField) node).getText());
+			}
+		}
+        
+        
+        
+		if (tool.getText().contains("Disable")) {
+			controller.setActorList(true);
+		} else {
+			controller.setActorList(false);
+		}
+		controller.setCtlList(ctlEle);
+		
+		
+		
+		dialogStage.showAndWait();
+		
+		System.out.println("controller.getOperation() " + controller.getOperation());
+		System.out.println("controller.getExpressionValue() " + controller.getExpressionValue());
+		System.out.println("operation " + operation);
+		System.out.println("tab " + tab + " row " + row);
+
+		
+		
+		if (controller.getOperation().equals("Saving")) {
+        	int column;
+        	if (operation.contains("UPD")) {
+        		column = row;
+        		confProp.setElePropertisValue(controller.getExpressionValue(),tab,column);
+        	} else {
+        		column = confProp.setNextPropertisValue(controller.getExpressionValue(),tab);
+        	}
+        	System.out.println("tab " + tab + " column " + column);
+           	switch (tab) {
+			case 0:
+				insertEleProperties(listProprieties00, controller.getExpressionValue(), column,0);
+				break;
+			case 1:
+				insertEleProperties(listProprieties01, controller.getExpressionValue(), column,1);
+				break;
+			case 2:
+				insertEleProperties(listProprieties02, controller.getExpressionValue(), column,2);
+				break;
+			case 3:
+				insertEleProperties(listProprieties03, controller.getExpressionValue(), column,3);
+				break;
+			case 4:
+				insertEleProperties(listProprieties04, controller.getExpressionValue(), column,4);
+				break;
+			case 5:
+				insertEleProperties(listProprieties05, controller.getExpressionValue(), column,5);
+				break;
+			case 6:
+				insertEleProperties(listProprieties06, controller.getExpressionValue(), column,6);
+				break;
+			case 7:
+				insertEleProperties(listProprieties07, controller.getExpressionValue(), column,7);
+				break;
+			case 8:
+				insertEleProperties(listProprieties08, controller.getExpressionValue(), column,8);
+				break;
+			}
+        }
+		
+        if (controller.getOperation().equals("Delete")) {
+        	confProp.delPropertiesTab(tab,row);    
+           	switch (tab) {
+			case 0:
+				rewriteEleProperties(listProprieties00,0);
+				break;
+			case 1:
+				rewriteEleProperties(listProprieties01,1);
+				break;
+			case 2:
+				rewriteEleProperties(listProprieties02,2);
+				break;
+			case 3:
+				rewriteEleProperties(listProprieties03,3);
+				break;
+			case 4:
+				rewriteEleProperties(listProprieties04,4);
+				break;
+			case 5:
+				rewriteEleProperties(listProprieties05,5);
+				break;
+			case 6:
+				rewriteEleProperties(listProprieties06,6);
+				break;
+			case 7:
+				rewriteEleProperties(listProprieties07,7);
+				break;
+			case 8:
+				rewriteEleProperties(listProprieties08,8);
+				break;
+			}
+        }
+		
     }
 // se si � deciso di aprire un vecchio file si leggono le info dentro il file e si caricano i dati negli oggetti
 	public void setFileStart(String oldFileName) {
@@ -3362,6 +3652,7 @@ public class SelectAProVerController {
 			line.equals("dati Alice Hash ") ||
 			line.equals("dati Alice Bitstring ") ||
 			line.equals("dati Alice IdCertificate ") ||
+			line.equals("dati Alice IdCertificatProp ") ||
 			line.equals("dati Alice Nonce ") ||
 			line.equals("dati Alice Signature Priv Key ") ||
 			line.equals("dati Alice Signature Pub Key ") ||
@@ -3375,6 +3666,7 @@ public class SelectAProVerController {
 			line.equals("dati Bob Hash ") ||
 			line.equals("dati Bob Bitstring ") ||
 			line.equals("dati Bob IdCertificate ") ||
+			line.equals("dati Bob IdCertificatProp ") ||
 			line.equals("dati Bob Nonce ") ||
 			line.equals("dati Bob Signature Pub Key ") ||
 			line.equals("dati Bob Signature Priv Key ") ||
@@ -3388,6 +3680,7 @@ public class SelectAProVerController {
 			line.equals("dati Eve Hash ") ||
 			line.equals("dati Eve Bitstring ") ||
 			line.equals("dati Eve IdCertificate ") ||
+			line.equals("dati Eve IdCertificatProp ") ||
 			line.equals("dati Eve Nonce ") ||
 			line.equals("dati Eve Signature Pub Key ") ||
 			line.equals("dati Eve Signature Priv Key ") ||
@@ -3401,6 +3694,7 @@ public class SelectAProVerController {
 			line.equals("dati Server Hash ") ||
 			line.equals("dati Server Bitstring ") ||
 			line.equals("dati Server IdCertificate ") ||
+			line.equals("dati Server IdCertificatProp ") ||
 			line.equals("dati Server Nonce ") ||
 			line.equals("dati Server Signature Pub Key ") ||
 			line.equals("dati Server Signature Priv Key ") ||
@@ -3456,6 +3750,11 @@ public class SelectAProVerController {
 			faceAlice.setOpacity(1);
 			lineaAlice.setOpacity(1);
 			alice.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Alice IdCertificatProp ")) {
+			faceAlice.setOpacity(1);
+			lineaAlice.setOpacity(1);
+			alice.addIdCertificateProp(line);
 		}
 		if (typeInfo.equals("dati Alice Nonce ")) {
 			faceAlice.setOpacity(1);
@@ -3522,6 +3821,11 @@ public class SelectAProVerController {
 			faceBob.setOpacity(1);
 			lineaBob.setOpacity(1);
 			bob.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Bob IdCertificatProp ")) {
+			faceBob.setOpacity(1);
+			lineaBob.setOpacity(1);
+			bob.addIdCertificateProp(line);
 		}
 		if (typeInfo.equals("dati Bob Nonce ")) {
 			faceBob.setOpacity(1);
@@ -3590,6 +3894,11 @@ public class SelectAProVerController {
 			lineaEve.setOpacity(1);
 			eve.addIdCertificate(line);
 		}
+		if (typeInfo.equals("dati Eve IdCertificatProp ")) {
+			faceEve.setOpacity(1);
+			lineaEve.setOpacity(1);
+			eve.addIdCertificateProp(line);
+		}
 		if (typeInfo.equals("dati Eve Nonce ")) {
 			faceEve.setOpacity(1);
 			lineaEve.setOpacity(1);
@@ -3654,6 +3963,11 @@ public class SelectAProVerController {
 			faceServer.setOpacity(1);
 			lineaServer.setOpacity(1);
 			server.addIdCertificate(line);
+		}
+		if (typeInfo.equals("dati Server IdCertificatProp ")) {
+			faceServer.setOpacity(1);
+			lineaServer.setOpacity(1);
+			server.addIdCertificateProp(line);
 		}
 		if (typeInfo.equals("dati Server Nonce ")) {
 			faceServer.setOpacity(1);
@@ -3949,6 +4263,11 @@ public class SelectAProVerController {
 			for (int i = 0; i < alice.getIdCertificate().size(); i++) {
 				bw.write(alice.getIdCertificate().get(i) + "\n");
 			}
+			bw.write("dati Alice IdCertificatProp \n");
+
+			for (int i = 0; i < alice.getIdCertificateProp().size(); i++) {
+				bw.write(alice.getIdCertificateProp().get(i) + "\n");
+			}
 			bw.write("dati Alice Nonce \n");
 
 			for (int i = 0; i < alice.getNonce().size(); i++) {
@@ -4018,6 +4337,11 @@ public class SelectAProVerController {
 			for (int i = 0; i < bob.getIdCertificate().size(); i++) {
 				bw.write(bob.getIdCertificate().get(i) + "\n");
 			}
+			bw.write("dati Bob IdCertificatProp \n");
+
+			for (int i = 0; i < bob.getIdCertificateProp().size(); i++) {
+				bw.write(bob.getIdCertificateProp().get(i) + "\n");
+			}
 			bw.write("dati Bob Nonce \n");
 
 			for (int i = 0; i < bob.getNonce().size(); i++) {
@@ -4085,6 +4409,11 @@ public class SelectAProVerController {
 
 			for (int i = 0; i < eve.getIdCertificate().size(); i++) {
 				bw.write(eve.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Eve IdCertificatProp \n");
+
+			for (int i = 0; i < eve.getIdCertificateProp().size(); i++) {
+				bw.write(eve.getIdCertificateProp().get(i) + "\n");
 			}
 			bw.write("dati Eve Nonce \n");
 
@@ -4154,6 +4483,11 @@ public class SelectAProVerController {
 
 			for (int i = 0; i < server.getIdCertificate().size(); i++) {
 				bw.write(server.getIdCertificate().get(i) + "\n");
+			}
+			bw.write("dati Server IdCertificatProp \n");
+
+			for (int i = 0; i < server.getIdCertificateProp().size(); i++) {
+				bw.write(server.getIdCertificateProp().get(i) + "\n");
 			}
 			bw.write("dati Server Nonce \n");
 

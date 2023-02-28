@@ -1,4 +1,4 @@
-module CryptoLibraryNSSYM
+module CryptoLibraryxx
 
 import ../StandardLibrary
 export *
@@ -8,19 +8,17 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
-	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MC | WAITING_MD | END_A}
-	enum domain StateBob = {WAITING_MC | SEND_MD | END_B}
-	enum domain StateServer = {WAITING_MA | SEND_MB | END_S}
+	enum domain StateAlice = {IDLE_KK | WAITING_NK | SEND_CSNK | END_A}
+	enum domain StateBob = {WAITING_KK | SEND_NK | WAITING_CSNK | END_B}
 
-	enum domain Message = {MA | MB | MC | MD} 
+	enum domain Message = {KK | NK | CSNK} 
 
-	enum domain Knowledge ={CA|CB|CE|KAB|KAS|KBS|KEA|KEB|KES|NA|NB}
+	enum domain Knowledge ={CA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE|SIGNPRIVKA|SIGNPRIVKB|SIGNPRIVKE|SIGNPUBKA|SIGNPUBKB|SIGNPUBKE|SKAB|SKAE|SKEB}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
+	enum domain Receiver={AG_A|AG_B|AG_E}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -51,7 +49,6 @@ signature:
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
-	controlled internalStateS: Server -> StateServer
 
 	//name of the message
 	controlled protocolMessage: Prod(Agent,Agent)-> Message
@@ -127,7 +124,6 @@ signature:
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
-	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
@@ -135,7 +131,6 @@ definitions:
 				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
-				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=

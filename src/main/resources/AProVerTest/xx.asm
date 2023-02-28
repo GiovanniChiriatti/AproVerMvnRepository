@@ -1,6 +1,6 @@
-asm SSLX
+asm xx
 
-import CryptoLibrarySSLX
+import CryptoLibraryxx
 
 
 signature:
@@ -42,28 +42,28 @@ definitions:
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                            	protocolMessage(self,$b):=KK
-                            	messageField(self,$b,1,KK):=messageField($a,self,1,KK)
+                 	protocolMessage(self,$b):=KK
+                 	messageField(self,$b,1,KK):=messageField($a,self,1,KK)
 			        if(asymDec(KK,1,1,1,self)=true)then
-	   			 par 
-					knowsSymKey(self,messageField($a,self,1,KK)):=true
- 					asymEnc(KK,1,1,1):=PUBKB
-	   			 endpar 
+                      par 
+                    	knowsSymKey(self,messageField($a,self,1,KK)):=true
+			            asymEnc(KK,1,1,1):=PUBKB
+                      endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=KK and protocolMessage(self,$b)!=KK and mode=ACTIVE)then
 		          par 
-                            	protocolMessage(self,$b):=KK
+                 	protocolMessage(self,$b):=KK
 			        if(asymDec(KK,1,1,1,self)=true)then
-	   			 par 
- 					knowsSymKey(self,messageField($a,self,1,KK)):=true
- 					messageField(self,$b,1,KK):=SKEB
-					asymEnc(KK,1,1,1):=PUBKB
-	   			 endpar 
-				else 
- 					messageField(self,$b,1,KK):=messageField($a,self,1,KK)
+	   			     par 
+			         	messageField(self,$b,1,KK):=SKEB
+                    	knowsSymKey(self,messageField($a,self,1,KK)):=true
+			        	asymEnc(KK,1,1,1):=PUBKB
+	   			     endpar 
+			        else 
+			         	messageField(self,$b,1,KK):=messageField($a,self,1,KK)
 			        endif 
 		          endpar 
 			endif 
@@ -78,26 +78,26 @@ definitions:
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                            	protocolMessage(self,$b):=NK
-                            	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
+                 	protocolMessage(self,$b):=NK
+                 	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
 			        if(symDec(NK,1,1,1,self)=true)then
-	   			 par 
-					knowsNonce(self,messageField($a,self,1,NK)):=true
- 					symEnc(NK,1,1,1):=messageField($b,self,1,KK)
-	   			 endpar 
+                      par 
+                    	knowsNonce(self,messageField($a,self,1,NK)):=true
+			            symEnc(NK,1,1,1):=messageField($b,self,1,KK)
+                      endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=NK and protocolMessage(self,$b)!=NK and mode=ACTIVE)then
 		          par 
-                            	protocolMessage(self,$b):=NK
-                            	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
+                 	protocolMessage(self,$b):=NK
+                 	messageField(self,$b,1,NK):=messageField($a,self,1,NK)
 			        if(symDec(NK,1,1,1,self)=true)then
-	   			 par 
- 					knowsNonce(self,messageField($a,self,1,NK)):=true
-					symEnc(NK,1,1,1):=messageField($b,self,1,KK)
-	   			 endpar 
+	   			     par 
+                    	knowsNonce(self,messageField($a,self,1,NK)):=true
+			        	symEnc(NK,1,1,1):=messageField($b,self,1,KK)
+	   			     endpar 
 			        endif 
 		          endpar 
 			endif 
@@ -112,30 +112,38 @@ definitions:
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                            	protocolMessage(self,$b):=CSNK
-                            	messageField(self,$b,1,CSNK):=messageField($a,self,1,CSNK)
-                            	messageField(self,$b,2,CSNK):=messageField($a,self,2,CSNK)
+                 	protocolMessage(self,$b):=CSNK
+                 	messageField(self,$b,1,CSNK):=messageField($a,self,1,CSNK)
+                 	messageField(self,$b,2,CSNK):=messageField($a,self,2,CSNK)
 			        if(symDec(CSNK,2,1,2,self)=true)then
-	   			 par 
-					knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
-					knowsNonce(self,messageField($a,self,2,CSNK)):=true
- 					symEnc(CSNK,2,1,2):=SKEB
-	   			 endpar 
+                      par 
+			        	knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
+			            if(verifySign(CSNK,1,2,2,self)=true)then
+	   			 	       par 
+	   			 	          	knowsNonce(self,messageField($a,self,2,CSNK)):=true
+	   			 	       endpar 
+			            endif 
+			            symEnc(CSNK,2,1,2):=SKEB
+                      endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage($a,self)=CSNK and protocolMessage(self,$b)!=CSNK and mode=ACTIVE)then
 		          par 
-                            	protocolMessage(self,$b):=CSNK
-                            	messageField(self,$b,1,CSNK):=messageField($a,self,1,CSNK)
-                            	messageField(self,$b,2,CSNK):=messageField($a,self,2,CSNK)
+                 	protocolMessage(self,$b):=CSNK
+                 	messageField(self,$b,1,CSNK):=messageField($a,self,1,CSNK)
+                 	messageField(self,$b,2,CSNK):=messageField($a,self,2,CSNK)
 			        if(symDec(CSNK,2,1,2,self)=true)then
-	   			 par 
- 					knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
- 					knowsNonce(self,messageField($a,self,2,CSNK)):=true
-					symEnc(CSNK,2,1,2):=SKEB
-	   			 endpar 
+	   			     par 
+			        	knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
+			            if(sign(CSNK,1,2,2,self)=true)then
+	   			 	       par 
+	   			 	          	knowsNonce(self,messageField($a,self,2,CSNK)):=true
+	   			 	       endpar 
+			            endif 
+			        	symEnc(CSNK,2,1,2):=SKEB
+	   			     endpar 
 			        endif 
 		          endpar 
 			endif 
@@ -146,79 +154,79 @@ definitions:
 	rule r_message_KK =
 		let ($e=agentE) in
 			if(internalStateA(self)=IDLE_KK)then 
-			        if(receiver!=AG_E)then
-			                par
-			                       protocolMessage(self,$e):=KK
-			                       messageField(self,$e,1,KK):=SKAB
-			                       asymEnc(KK,1,1,1):=PUBKB
-			                       internalStateA(agentA):=WAITING_NK
-			                endpar
-			        else
-			                if(receiver=AG_E)then
-			                        par
-			                              protocolMessage(self,$e):=KK
-			                              messageField(self,$e,1,KK):=SKAE
-			                              asymEnc(KK,1,1,1):=PUBKE
-			                              internalStateA(agentA):=WAITING_NK
-			                        endpar
-			                endif
-			        endif
+			   if(receiver!=AG_E)then
+			     par
+			         protocolMessage(self,$e):=KK
+			         messageField(self,$e,1,KK):=SKAB
+			         asymEnc(KK,1,1,1):=PUBKB
+			         internalStateA(agentA):=WAITING_NK
+			     endpar
+			   else
+			       if(receiver=AG_E)then
+			         par
+			            protocolMessage(self,$e):=KK
+			            messageField(self,$e,1,KK):=SKAE
+			            asymEnc(KK,1,1,1):=PUBKE
+			            internalStateA(agentA):=WAITING_NK
+			         endpar
+			       endif
+			   endif
 			endif
 		endlet
 	rule r_message_NK =
 		let ($e=agentE) in
 			if(internalStateB(self)=WAITING_KK and protocolMessage($e,self)=KK)then
-			     if(receiver!=AG_E)then
+			   if(receiver!=AG_E)then
  			        if(asymDec(KK,1,1,1,self)=true ) then
-			                par
-                            	        	knowsSymKey(self,messageField($e,self,1,KK)):=true
-			                      protocolMessage(self,$e):=NK
-			                      messageField(self,$e,1,NK):=NB
-   			                      symEnc(NK,1,1,1):=messageField($e,self,1,KK)
-			                      internalStateB(agentB):=WAITING_CSNK
-			                endpar
+			          par
+			            knowsSymKey(self,messageField($e,self,1,KK)):=true
+			            protocolMessage(self,$e):=NK
+			            messageField(self,$e,1,NK):=NB
+			            symEnc(NK,1,1,1):=messageField($e,self,1,KK)
+			            internalStateB(agentB):=WAITING_CSNK
+			          endpar
 			        endif
-			else
+			   else
  			        if(asymDec(KK,1,1,1,self)=true  and receiver=AG_E) then
-			                par
-                            	        	knowsSymKey(self,messageField($e,self,1,KK)):=true
-			                      protocolMessage(self,$e):=NK
-			                      messageField(self,$e,1,NK):=NB
-   			                      symEnc(NK,1,1,1):=messageField($e,self,1,KK)
-			                      internalStateB(agentB):=WAITING_CSNK
-			                endpar
+			          par
+			            knowsSymKey(self,messageField($e,self,1,KK)):=true
+			            protocolMessage(self,$e):=NK
+			            messageField(self,$e,1,NK):=NB
+			            symEnc(NK,1,1,1):=messageField($e,self,1,KK)
+			            internalStateB(agentB):=WAITING_CSNK
+			         endpar
 			        endif
-				endif
+			   endif
 			endif
 		endlet
 	rule r_message_CSNK =
 		let ($e=agentE) in
 			if(internalStateA(self)=WAITING_NK and protocolMessage($e,self)=NK)then
-			     if(receiver!=AG_E)then
+			   if(receiver!=AG_E)then
  			        if(symDec(NK,1,1,1,self)=true ) then
-			                par
-                            	        	knowsNonce(self,messageField($e,self,1,NK)):=true
-			                      protocolMessage(self,$e):=CSNK
-			                      messageField(self,$e,1,CSNK):=CA
-			                      messageField(self,$e,2,CSNK):=NB
- 			                      sign(CSNK,1,2,2):=SIGNPRIVKA
-   			                      symEnc(CSNK,2,1,2):=SKAB
-			                      internalStateA(agentA):=END_A
-			                endpar
+			          par
+			            knowsNonce(self,messageField($e,self,1,NK)):=true
+			            protocolMessage(self,$e):=CSNK
+			            messageField(self,$e,1,CSNK):=CA
+			            messageField(self,$e,2,CSNK):=NB
+			            sign(CSNK,1,2,2):=SIGNPRIVKA
+			            symEnc(CSNK,2,1,2):=SKAB
+			            internalStateA(agentA):=END_A
+			          endpar
 			        endif
-			else
+			   else
  			        if(symDec(NK,1,1,1,self)=true  and receiver=AG_E) then
-			                par
-                            	        	knowsNonce(self,messageField($e,self,1,NK)):=true
-			                      protocolMessage(self,$e):=CSNK
-			                      messageField(self,$e,1,CSNK):=CA
-			                      messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
- 			                      sign(CSNK,1,2,2):=SIGNPRIVKA
-   			                      symEnc(CSNK,2,1,2):=SKAE
-			                      internalStateA(agentA):=END_A
-			                endpar
+			          par
+			            knowsNonce(self,messageField($e,self,1,NK)):=true
+			            protocolMessage(self,$e):=CSNK
+			            messageField(self,$e,1,CSNK):=CA
+			            messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
+			            sign(CSNK,1,2,2):=SIGNPRIVKA
+			            symEnc(CSNK,2,1,2):=SKAE
+			            internalStateA(agentA):=END_A
+			         endpar
 			        endif
-				endif
+			   endif
 			endif
 		endlet
 	rule r_check_CSNK =

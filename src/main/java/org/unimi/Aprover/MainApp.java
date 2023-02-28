@@ -2,7 +2,7 @@ package org.unimi.Aprover;
 
 import java.io.IOException;
 
-import javafx.application.Application;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,11 +11,7 @@ import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.unimi.model.*;
-
-
-
-
-
+import javafx.application.Application;
 
 public class MainApp extends Application {
 

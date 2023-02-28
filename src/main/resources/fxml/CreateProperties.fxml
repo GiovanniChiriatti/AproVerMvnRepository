@@ -84,6 +84,7 @@
                               <Image url="@../styles/images/escl.jpg" />
                            </image>
                         </ImageView>
+                        <Button fx:id="delExpression" layoutX="32.0" layoutY="202.0" mnemonicParsing="false" onAction="#delExpression" prefHeight="25.0" prefWidth="125.0" text="Delete Last Entry" />
       					</children>
       				</AnchorPane>
                   <Button fx:id="addExpression" layoutX="49.0" layoutY="126.0" mnemonicParsing="false" onAction="#addExpression" onMouseEntered="#helpFinishMessage" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="414.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #83ED90; -fx-border-color: #548f60;" text="Add Expression" />

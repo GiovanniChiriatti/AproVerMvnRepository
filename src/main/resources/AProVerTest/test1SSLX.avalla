@@ -1,0 +1,28 @@
+scenario test1SSLX
+
+load SSL.asm
+
+//controllo che nello stato inziale:
+//  stato iniziale di Alice sia IDLE_A
+//  stato iniziale di Bob sia Waiting_KAB 
+set chosenMode:=PASSIVE;
+set chosenReceiver:=AG_E;
+check 	internalStateA(agentA)=IDLE_A and
+		internalStateB(agentB)=WAITING_KAB and
+		knowsNonce(agentB,NB)=true and
+		knowsNonce(agentA,NB)=false and
+		knowsAsymPubKey(agentA, PUBKB)=true and
+		knowsAsymPubKey(agentB, PUBKB)=true and
+		knowsSymKey(agentB, SKAB)=true and
+		knowsSymKey(agentA, SKAB)=true and
+		knowsSymKey(agentE, SKAB)=false;
+
+check mode=PASSIVE;
+check receiver=AG_E;
+
+step
+check internalStateA(agentA)=WAITING_NK;
+
+
+
+

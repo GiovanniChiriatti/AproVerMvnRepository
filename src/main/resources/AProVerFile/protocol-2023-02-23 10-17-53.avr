@@ -3,18 +3,13 @@ Enable Server
 toolEve value 
 Eve Create Messages
 dati Alice AsymmetricPublicKey 
-PUBKA
 dati Alice AsymmetricPrivateKey 
-PRIVKA
 dati Alice SymmetricKey 
 dati Alice Hash 
 dati Alice Bitstring 
 dati Alice IdCertificate 
-ID_A
-dati Alice IdCertificatProp 
-Alice
+pppppppp
 dati Alice Nonce 
-NA
 dati Alice Signature Pub Key 
 dati Alice Signature Priv Key 
 dati Alice Tag 
@@ -22,19 +17,12 @@ dati Alice Timestamp
 dati Alice Digest 
 dati Alice KnowAcq 
 dati Bob AsymmetricPublicKey 
-PUBKB
 dati Bob AsymmetricPrivateKey 
-PRIVKB
 dati Bob SymmetricKey 
 dati Bob Hash 
 dati Bob Bitstring 
 dati Bob IdCertificate 
-ID_B
-dati Bob IdCertificatProp 
-Bob
 dati Bob Nonce 
-NB
-NA
 dati Bob Signature Pub Key 
 dati Bob Signature Priv Key 
 dati Bob Tag 
@@ -42,18 +30,12 @@ dati Bob Timestamp
 dati Bob Digest 
 dati Bob KnowAcq 
 dati Eve AsymmetricPublicKey 
-PUBKE
 dati Eve AsymmetricPrivateKey 
-PRIVKE
 dati Eve SymmetricKey 
 dati Eve Hash 
 dati Eve Bitstring 
 dati Eve IdCertificate 
-ID_E
-dati Eve IdCertificatProp 
-Eve
 dati Eve Nonce 
-NE
 dati Eve Signature Pub Key 
 dati Eve Signature Priv Key 
 dati Eve Tag 
@@ -66,7 +48,6 @@ dati Server SymmetricKey
 dati Server Hash 
 dati Server Bitstring 
 dati Server IdCertificate 
-dati Server IdCertificatProp 
 dati Server Nonce 
 dati Server Signature Pub Key 
 dati Server Signature Priv Key 
@@ -75,42 +56,6 @@ dati Server Timestamp
 dati Server Digest 
 dati Server KnowAcq 
 dati Messaggi 
-dati Messaggio 0
-NameMess NAK
-ActorFrom Alice
-ActorTo Bob
-Eve Intercept true
-Messages {NA,ID_A}-PUBKB-
-dati SecurityFunctionsPartMessage j=0
-{NA,ID_A}  - PUBKB - 
-dati listPartMessage j=0 k=0
-NA
-dati listPartMessage j=0 k=1
-ID_A
-dati Messaggio 1
-NameMess NNK
-ActorFrom Bob
-ActorTo Alice
-Eve Intercept true
-Messages {NA,NB}-PUBKA-
-dati SecurityFunctionsPartMessage j=0
-{NA,NB}  - PUBKA - 
-dati listPartMessage j=0 k=0
-NA
-dati listPartMessage j=0 k=1
-NB
-dati SecurityFunctionsPartMessage j=1
-
-dati Messaggio 2
-NameMess NK
-ActorFrom Alice
-ActorTo Bob
-Eve Intercept true
-Messages {NB}-PUBKB-
-dati SecurityFunctionsPartMessage j=0
-{NB}  - PUBKB - 
-dati listPartMessage j=0 k=0
-NB
 dati Properties 
 TAB =0 Confidentiality
 TAB =1 Integrity

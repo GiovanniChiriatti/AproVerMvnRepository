@@ -382,7 +382,7 @@ public class CreateMessageAProVer {
 		} else {
 			loadEleOther(messages, actorFrom.getText());
 		}
-    	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo);
+    	LoadMenuSecurityFunction(securityKey,  message,securityKeyActorTo, server);
        	nameMess.setText(message.getNameMess());
        	
 		txtPreview.getChildren().clear();
@@ -529,7 +529,7 @@ public class CreateMessageAProVer {
     } 
 
 
-    private void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo) {
+    private void LoadMenuSecurityFunction(SecurityKey securityKey, Message message,SecurityKey securityKeyActorTo,SecurityKey securityServer) {
 
     	this.securityKey = securityKey;
     	this.message = message;
@@ -702,6 +702,27 @@ public class CreateMessageAProVer {
             menuSecurityFunction.getItems().addAll(menu);
     	}
        //	System.out.println(" numEleMenuButton xx " +numEleMenuButton);
+       	if (securityServer !=null) {
+       		if(!securityServer.equals(securityKey)) {
+       	       	if ((securityServer.getSymmetricKey() !=null && !securityServer.getSymmetricKey().isEmpty()&& symDecEnc)) {
+       	    		Menu menu = new Menu();
+       	            prepareMenuItem(menu, "Server Symmetric Encryption", menuSecurityFunction);
+       	            MenuItem subMenuItem;
+       	            for (int i=0; i< securityServer.getSymmetricKey().size(); i++) {
+       	            	subMenuItem = new MenuItem(securityServer.getSymmetricKey().get(i));
+       	            	String a = securityServer.getSymmetricKey().get(i);
+       	            	subMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+       	            		public void handle(ActionEvent t) {
+       	            			AddPartSecurityMessage(a);
+       	                    }
+       	                });
+       	            	menu.getItems().add(subMenuItem); 	
+       	            }
+       	            numEleMenuButton++;
+       	            menuSecurityFunction.getItems().addAll(menu);
+       	    	}
+       		}
+    	}
     }
 	private void AddPartSecurityMessage(String messaggioSecurity) {
 		
@@ -784,7 +805,7 @@ public class CreateMessageAProVer {
         if (numEleMenuButton>0) {
         	menuSecurityFunction.getItems().remove(0,numEleMenuButton);
         }
-    	LoadMenuSecurityFunction(securityKey,  message,appoFrom);
+    	LoadMenuSecurityFunction(securityKey,  message,appoFrom, server);
     }
     
 // metodo attivato quando si preme il button "+" presente nel "message Payload Filed

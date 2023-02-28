@@ -12,6 +12,7 @@ public class SecurityKey {
 	ArrayList<String> hashKey=new ArrayList<String>();
 	ArrayList<String> bitstring=new ArrayList<String>();
 	ArrayList<String> idCertificate=new ArrayList<String>();
+	ArrayList<String> idCertificateProp=new ArrayList<String>();
 	ArrayList<String> nonce=new ArrayList<String>();
 	ArrayList<String> signaturePubKey=new ArrayList<String>();
 	ArrayList<String> signaturePrivKey=new ArrayList<String>();
@@ -187,13 +188,35 @@ public class SecurityKey {
 	public void addIdCertificate(String nuovoValore) {
 		idCertificate.add(nuovoValore);
 	}
+	
+	public void addIdCertificateProp(String nuovoValoreProp) {
+		idCertificateProp.add(nuovoValoreProp);
+	}
+	
+	public void addIdCertificate(String nuovoValore,String nuovoValoreProp) {
+		idCertificate.add(nuovoValore);
+		idCertificateProp.add(nuovoValoreProp);
+	}
 
 	public void remIdCertificate(String vecchioValore) {
 		idCertificate.remove(vecchioValore);
 	}
-
+	
+	public void remIdCertificateProp(String vecchioValoreProp) {
+		idCertificateProp.remove(vecchioValoreProp);
+	}
+	
+	public void remIdCertificate(String vecchioValore,String nuovoValoreProp) {
+		idCertificate.remove(vecchioValore);
+		idCertificateProp.remove(nuovoValoreProp);
+	}
+	
 	public void remAllIdCertificate() {
 		for (Iterator<String> i = idCertificate.iterator(); i.hasNext();) {
+			String str = i.next();
+			i.remove();
+		}
+		for (Iterator<String> i = idCertificateProp.iterator(); i.hasNext();) {
 			String str = i.next();
 			i.remove();
 		}
@@ -202,7 +225,9 @@ public class SecurityKey {
 	public ArrayList<String> getIdCertificate() {
 		return idCertificate;
 	}
-
+	public ArrayList<String> getIdCertificateProp() {
+		return idCertificateProp;
+	}
 	public String getStringIdCertificate() {
 		String stringIdCertificate = "IdCertificate = {";
 		for (int i = 0; i < idCertificate.size(); i++) {
@@ -215,9 +240,30 @@ public class SecurityKey {
 		stringIdCertificate += "}";
 		return stringIdCertificate;
 	}
+	public String getStringIdCertificateProp() {
+		String stringIdCertificate = "IdCertificateProp = {";
+		for (int i = 0; i < idCertificateProp.size(); i++) {
+			if (i < idCertificateProp.size() - 1) {
+				stringIdCertificate += idCertificateProp.get(i) + ",";
+			} else {
+				stringIdCertificate += idCertificateProp.get(i);
+			}
+		}
+		stringIdCertificate += "}";
+		return stringIdCertificate;
+	}
 
 	public void setIdCertificate(ArrayList<String> idCertificate) {
 		this.idCertificate = idCertificate;
+	}
+	
+	public void setIdCertificateProp(ArrayList<String> idCertificate) {
+		this.idCertificateProp = idCertificate;
+	}
+	
+	public void setIdCertificate(ArrayList<String> idCertificate,ArrayList<String> idCertificateProp) {
+		this.idCertificate = idCertificate;
+		this.idCertificateProp = idCertificateProp;
 	}
 
 // ---------------- nonce

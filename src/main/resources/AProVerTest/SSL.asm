@@ -255,6 +255,7 @@ rule r_agentERule  =
 		
 	rule r_agentBRule  =
 		par
+			
 			r_message_NK[]
 			r_check_CSNK[]
 		endpar
@@ -277,6 +278,7 @@ default init s0:
 	function knowsAsymPubKey($a in Agent ,$pk in KnowledgeAsymPubKey)=true
 	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if((($a=agentA or $a=agentE) and $sk=SKAE) or (($a=agentA or $a=agentB) and $sk=SKAB) or (($a=agentB or $a=agentE) and $sk=SKEB)) then true else false endif
 	function mode=chosenMode
+
 	
 	agent Alice:
 		r_agentARule[]

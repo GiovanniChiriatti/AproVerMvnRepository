@@ -13,6 +13,8 @@ dati Alice Hash
 dati Alice Bitstring 
 dati Alice IdCertificate 
 CA
+dati Alice IdCertificatProp 
+Alice
 dati Alice Nonce 
 dati Alice Signature Pub Key 
 SIGNPUBKA
@@ -32,6 +34,7 @@ SKEB
 dati Bob Hash 
 dati Bob Bitstring 
 dati Bob IdCertificate 
+dati Bob IdCertificatProp 
 dati Bob Nonce 
 NB
 dati Bob Signature Pub Key 
@@ -53,6 +56,7 @@ SKAE
 dati Eve Hash 
 dati Eve Bitstring 
 dati Eve IdCertificate 
+dati Eve IdCertificatProp 
 dati Eve Nonce 
 dati Eve Signature Pub Key 
 SIGNPUBKE
@@ -68,6 +72,7 @@ dati Server SymmetricKey
 dati Server Hash 
 dati Server Bitstring 
 dati Server IdCertificate 
+dati Server IdCertificatProp 
 dati Server Nonce 
 dati Server Signature Pub Key 
 dati Server Signature Priv Key 
