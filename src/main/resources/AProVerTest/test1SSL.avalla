@@ -1,16 +1,17 @@
-scenario test1SSLX
+scenario test1SSL
 
 //Test di receiver Eve in modalità Passiva
 
-load SSLX.asm
+load SSL.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
-//  stato iniziale di Bob sia Waiting_KK 
+//  stato iniziale di Bob sia Waiting_KAB 
+// si impostano quindi le conoscenze per i singoli attori
 set chosenMode:=PASSIVE;
 set chosenReceiver:=AG_E;
-check 	internalStateA(agentA)=IDLE_KK;
-check	internalStateB(agentB)=WAITING_NK;
+check 	internalStateA(agentA)=IDLE_A;
+check	internalStateB(agentB)=WAITING_KAB;
 check	knowsNonce(agentB,NB)=true;
 check	knowsNonce(agentA,NB)=false;
 check	knowsAsymPubKey(agentA, PUBKB)=true;
@@ -22,26 +23,30 @@ check	knowsSymKey(agentE, SKAB)=false;
 check mode=PASSIVE;
 check receiver=AG_E;
 
-//step1  Alice-->Eve  {SKAE}PUBKE
+//step1  Alice-->Bob  {SKAB}PUBKB   
+// il messaggio viene inviato a Eve (il receiver) : Alice-->Eve  {SKAE}PUBKE  
+// si usa la chiave pubblica di E per cifrare la chiave symmetrica di scambio SKAE
 step
 		//check informazioni base
 check mode=PASSIVE;
 		//check informazioni aggiornate
-check protocolMessage(0,agentA,agentE)= KK;
+check protocolMessage(agentA,agentE)= KK;
 check messageField(agentA,agentE,1,KK)= SKAE;	
-check internalStateA(agentA)=WAITING_CSNK;
+check internalStateA(agentA)=WAITING_NK;
 check asymEnc(KK,1,1,1)=PUBKE;
         // Informazioni in input step 2	
-check protocolMessage(0,agentA,agentE)= KK;		
-check protocolMessage(0,agentB,agentE)!= KK;
+check protocolMessage(agentA,agentE)= KK;		
+check protocolMessage(agentB,agentE)!= KK;
 check asymDec(KK,1,1,1,agentE)=true;
 
 
-//step2  Eve-->Bob  {SKAB}PUBKB
+//step2   Alice-->Bob  {SKAB}PUBKB 
+// il messaggio viene inviato a Bob da Eve (il receiver) : Eve-->Bob  {SKAE}PUBKB 
+// si usa la chiave pubblica di B per cifrare la chiave symmetrica di scambio SKAE
 step
 check mode=PASSIVE;
 		//check informazioni aggiornate
-check protocolMessage(0,agentE,agentB)= KK;
+check protocolMessage(agentE,agentB)= KK;
 check messageField(agentE,agentB,1,KK)=messageField(agentA,agentE,1,KK);
 check messageField(agentE,agentB,1,KK)=SKAE;
 check knowsSymKey(agentE,messageField(agentA,agentE,1,KK))=true;
@@ -49,81 +54,91 @@ check asymEnc(KK,1,1,1) = PUBKB;
 
         // Informazioni in input step 3	
 
-check internalStateB(agentB)=WAITING_NK;
-check protocolMessage(0,agentE ,agentB)=KK;						
+check internalStateB(agentB)=WAITING_KAB;
+check protocolMessage(agentE ,agentB)=KK;						
 check asymDec(KK,1,1,1,agentB)=true;						
 						
 
 
 
-//step 3 Bob-->Eve {NB}SKAB
+//step 3 Bob-->Alice {NB}SKAB
+// il messaggio viene inviato a Eve (il receiver) : Bob-->Eve  {NB}SKAE  
+// si usa la chiave symmetrica di scambio SKAE per cifrare NB
 step
 check mode=PASSIVE;
 		//check informazioni aggiornate
 check knowsSymKey(agentB,messageField(agentE,agentB,1,KK))=true;
-check protocolMessage(1,agentB,agentE)=NK;
+check protocolMessage(agentB,agentE)=NK;
 check messageField(agentB,agentE,1,NK)= NB;	
 check symEnc(NK,1,1,1)= messageField(agentE,agentB,1,KK);	
 check messageField(agentE,agentB,1,KK)=SKAE;
-check internalStateB(agentB)= CHECK_END_B;
+check internalStateB(agentB)= WAITING_CSNK;
 
         // Informazioni in input step 4	
-check protocolMessage(1,agentB ,agentE)=NK;
-check protocolMessage(1,agentE,agentA )!=NK;
+check protocolMessage(agentB ,agentE)=NK;
+check protocolMessage(agentE,agentA )!=NK;
 check symDec(NK,1,1,1,agentE)=true;
 
 
 
 
-//step 4 Eve-->Alice {NB}SKAB
+//step 4 Bob-->Alice {NB}SKAB
+// il messaggio viene inviato a Bob da Eve (il receiver) : Eve-->Alice  {NB}SKAE 
+/// si usa la chiave symmetrica di scambio SKAE per cifrare NB
 step
 check mode=PASSIVE;
 
 		//check informazioni aggiornate
 check knowsNonce(agentE,messageField(agentB,agentE,1,NK))=true;
 check messageField(agentB,agentE,1,NK)=NB;
-check protocolMessage(1,agentE ,agentA)= NK;
-check messageField(agentE,agentA,1,NK)= messageField(agentB,agentE,1,NK);
-check messageField(agentE,agentA,1,NK)= NB;
+check protocolMessage(agentE ,agentA)= NK;
+check messageField(agentE,agentA,1,KK)= messageField(agentB,agentE,1,NK);
+check messageField(agentE,agentA,1,KK)= NB;
+check messageField(agentE,agentA,1,KK)= messageField(agentB,agentE,1,NK);
 check symEnc(NK,1,1,1)= messageField(agentA,agentE,1,KK);
 check messageField(agentA,agentE,1,KK)=SKAE;
 
 
         // Informazioni in input step 5
- check internalStateA(agentA)=WAITING_CSNK; 
- check protocolMessage(1,agentE ,agentA)=NK;
+ check internalStateA(agentA)=WAITING_NK; 
+ check protocolMessage(agentE ,agentA)=NK;
  check symDec(NK,1,1,1,agentA)=true;      
 
 
 
-//step 5  Alice-->Eve {CA,{NB}SIGNPRIVKA}SKAB
+//step 5  Alice-->Bob {CA,{NB}SIGNPRIVKA}SKAB
+// il messaggio viene inviato da Alice a Eve (il receiver) : Alice-->Eve  {CA,{NB}SIGNPRIVKA}SKAE 
+/// si usa la chiave symmetrica di scambio SKAE per cifrare ca + NB (NB firmato con chiave privata di Alice)
 step
 check mode=PASSIVE;
  
 		//check informazioni aggiornate
-check protocolMessage(2,agentA,agentE)=CSNK;
+check protocolMessage(agentA,agentE)=CSNK;
 check messageField(agentA,agentE,1,CSNK)=CA;
-check messageField(agentA,agentE,2,CSNK)=messageField(agentE,agentA,1,NK);
-check messageField(agentE,agentA,1,NK)=NB;
+check messageField(agentA,agentE,2,CSNK)=messageField(agentE,agentA,1,KK);
+check messageField(agentE,agentA,1,KK)=NB;
 check sign(CSNK,1,2,2)= SIGNPRIVKA;
 check symEnc(CSNK,2,1,2)= messageField(agentA,agentE,1,KK);
 check messageField(agentA,agentE,1,KK)=SKAE;
 check internalStateA(agentA)= END_A;
 
         // Informazioni in input step 6
-check protocolMessage(2,agentA,agentE)=CSNK;
-check protocolMessage(2,agentE,agentB)!=CSNK;
+check protocolMessage(agentA,agentE)=CSNK;
+check protocolMessage(agentE,agentB)!=CSNK;
 check symDec(CSNK,2,1,2,agentE)=true;
 
 
-//step 6  Eve-->Bob {CA,{NB}SIGNPRIVKA}SKAB
+//step 6  Alice-->Bob {CA,{NB}SIGNPRIVKA}SKAB
+// il messaggio viene inviato da Eve (il receiver) a Bob : Eve-->Bob  {CA,{NB}SIGNPRIVKA}SKAE 
+/// si usa la chiave symmetrica di scambio SKAE per cifrare ca + NB (NB firmato con chiave privata di Alice)
+
 step
 check mode=PASSIVE;
 
 	//check informazioni aggiornate
 
-check knowsNonce(agentE,messageField(agentA,agentE,2,CSNK))=true;
-check protocolMessage(2,agentE,agentB )= CSNK;
+check knowsNonce(agentE,messageField(agentA,agentE,1,CSNK))=true;
+check protocolMessage(agentE,agentB )= CSNK;
 check messageField(agentE,agentB,1,CSNK)= messageField(agentA,agentE,1,CSNK);
 check messageField(agentE,agentB,2,CSNK)= messageField(agentA,agentE,2,CSNK);
 check messageField(agentA,agentE,1,CSNK)=CA;
@@ -131,8 +146,8 @@ check messageField(agentA,agentE,2,CSNK)=NB;
 
 
 // Informazioni in input step 7
-check internalStateB(agentB)=CHECK_END_B;
-check protocolMessage(2,agentE ,agentB)=CSNK;
+check internalStateB(agentB)=WAITING_CSNK;
+check protocolMessage(agentE ,agentB)=CSNK;
 //check symDec(CSNK,2,1,2,agentB)=true;
 //check verifySign(CSNK,1,2,2,agentB)=true;
 

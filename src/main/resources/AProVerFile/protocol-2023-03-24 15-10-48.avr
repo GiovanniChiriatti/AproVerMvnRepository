@@ -1,19 +1,17 @@
 tool value 
 Disable Server
 toolEve value 
-Eve Doesn't Create Messages
+Eve Create Messages
 dati Alice AsymmetricPublicKey 
 dati Alice AsymmetricPrivateKey 
 dati Alice SymmetricKey 
-KBS
 KAS
-KAB
 dati Alice Hash 
 dati Alice Bitstring 
 dati Alice IdCertificate 
 CA
-CB
-CE
+dati Alice IdCertificatProp 
+Alice
 dati Alice Nonce 
 NA
 dati Alice Signature Pub Key 
@@ -22,21 +20,19 @@ dati Alice Tag
 dati Alice Timestamp 
 dati Alice Digest 
 dati Alice KnowAcq 
-KAB - Symmetric Key
+KAB - Symmetric Key = 2
 dati Bob AsymmetricPublicKey 
 dati Bob AsymmetricPrivateKey 
 dati Bob SymmetricKey 
-KAB
 KBS
-KAS
-KES
 dati Bob Hash 
 dati Bob Bitstring 
 dati Bob IdCertificate 
-CB
 CA
-CE
-CS
+CB
+dati Bob IdCertificatProp 
+Alice
+Bob
 dati Bob Nonce 
 NB
 dati Bob Signature Pub Key 
@@ -45,38 +41,33 @@ dati Bob Tag
 dati Bob Timestamp 
 dati Bob Digest 
 dati Bob KnowAcq 
-KAB - Symmetric Key
 dati Eve AsymmetricPublicKey 
 dati Eve AsymmetricPrivateKey 
 dati Eve SymmetricKey 
 KES
-KEA
-KBS
 dati Eve Hash 
 dati Eve Bitstring 
 dati Eve IdCertificate 
-CB
-CA
+dati Eve IdCertificatProp 
 dati Eve Nonce 
-NB
 dati Eve Signature Pub Key 
 dati Eve Signature Priv Key 
 dati Eve Tag 
 dati Eve Timestamp 
 dati Eve Digest 
 dati Eve KnowAcq 
-KAB - Symmetric Key
 dati Server AsymmetricPublicKey 
 dati Server AsymmetricPrivateKey 
 dati Server SymmetricKey 
-KAS
-KBS
-KES
 KAB
-KEB
+KBS
+KAS
 dati Server Hash 
 dati Server Bitstring 
 dati Server IdCertificate 
+CB
+dati Server IdCertificatProp 
+Bob
 dati Server Nonce 
 dati Server Signature Pub Key 
 dati Server Signature Priv Key 
@@ -86,134 +77,72 @@ dati Server Digest
 dati Server KnowAcq 
 dati Messaggi 
 dati Messaggio 0
-NameMess MA
+NameMess REQCOM
 ActorFrom Alice
-ActorTo Eve
+ActorTo Bob
 Eve Intercept true
-Messages {CA,CE,NA}
+Messages {CA,NA}
 dati SecurityFunctionsPartMessage j=0
-{CA,CE,NA} 
+{CA,NA} 
 dati listPartMessage j=0 k=0
 CA
 dati listPartMessage j=0 k=1
-CE
-dati listPartMessage j=0 k=2
 NA
 dati Messaggio 1
-NameMess MB
-ActorFrom Eve
+NameMess ENCKBS
+ActorFrom Bob
 ActorTo Server
 Eve Intercept true
-Messages {CA,CB,NA}
+Messages {CB},{CA,NA,NB}-KBS-
 dati SecurityFunctionsPartMessage j=0
-{CA,CB,NA} 
+{CB} 
 dati listPartMessage j=0 k=0
-CA
-dati listPartMessage j=0 k=1
 CB
-dati listPartMessage j=0 k=2
+dati SecurityFunctionsPartMessage j=1
+{CA,NA,NB}  - KBS - 
+dati listPartMessage j=1 k=0
+CA
+dati listPartMessage j=1 k=1
 NA
+dati listPartMessage j=1 k=2
+NB
 dati Messaggio 2
-NameMess MC
+NameMess GENKEYSES
 ActorFrom Server
-ActorTo Eve
+ActorTo Alice
 Eve Intercept true
-Messages {{NA,KAB,CB},{KAB,CA}-KBS-}-KES-
+Messages {CB,KAB,NA,NB}-KAS-,{CA,KAB}-KBS-
 dati SecurityFunctionsPartMessage j=0
-{NA,KAB,CB} 
+{CB,KAB,NA,NB}  - KAS - 
 dati listPartMessage j=0 k=0
-NA
+CB
 dati listPartMessage j=0 k=1
 KAB
 dati listPartMessage j=0 k=2
-CB
+NA
+dati listPartMessage j=0 k=3
+NB
 dati SecurityFunctionsPartMessage j=1
-{KAB,CA}  - KBS - 
+{CA,KAB}  - KBS - 
 dati listPartMessage j=1 k=0
-KAB
-dati listPartMessage j=1 k=1
 CA
-dati SecurityFunctionsPartMessage j=2
-{{NA,KAB,CB},{KAB,CA} - KBS - }  - KES - 
-dati listPartMessage j=2 k=0
-(payloadField2){NA,KAB,CB},{KAB,CA} - KBS - 
+dati listPartMessage j=1 k=1
+KAB
 dati Messaggio 3
-NameMess MD
-ActorFrom Eve
-ActorTo Alice
+NameMess FRWVRNB
+ActorFrom Alice
+ActorTo Bob
 Eve Intercept true
-Messages {{NA,KAB,CB},{KAB,CA}-KBS-}-KEA-
+Messages {CA,KAB}-KBS-,{NB}-KAB-
 dati SecurityFunctionsPartMessage j=0
-{NA,KAB,CB} 
+{CA,KAB}  - KBS - 
 dati listPartMessage j=0 k=0
-NA
+CA
 dati listPartMessage j=0 k=1
 KAB
-dati listPartMessage j=0 k=2
-CB
 dati SecurityFunctionsPartMessage j=1
-{KAB,CA}  - KBS - 
+{NB}  - KAB - 
 dati listPartMessage j=1 k=0
-KAB
-dati listPartMessage j=1 k=1
-CA
-dati SecurityFunctionsPartMessage j=2
-{{NA,KAB,CB},{KAB,CA} - KBS - }  - KEA - 
-dati listPartMessage j=2 k=0
-(payloadField2){NA,KAB,CB},{KAB,CA} - KBS - 
-dati Messaggio 4
-NameMess ME
-ActorFrom Alice
-ActorTo Eve
-Eve Intercept true
-Messages {KAB,CA}-KBS-
-dati SecurityFunctionsPartMessage j=0
-{KAB,CA}  - KBS - 
-dati listPartMessage j=0 k=0
-KAB
-dati listPartMessage j=0 k=1
-CA
-dati Messaggio 5
-NameMess MF
-ActorFrom Eve
-ActorTo Bob
-Eve Intercept true
-Messages {KAB,CA}-KBS-
-dati SecurityFunctionsPartMessage j=0
-{KAB,CA}  - KBS - 
-dati listPartMessage j=0 k=0
-KAB
-dati listPartMessage j=0 k=1
-CA
-dati Messaggio 6
-NameMess MG
-ActorFrom Bob
-ActorTo Eve
-Eve Intercept true
-Messages {NB}-KAB-
-dati SecurityFunctionsPartMessage j=0
-{NB}  - KAB - 
-dati listPartMessage j=0 k=0
-NB
-dati Messaggio 7
-NameMess MH
-ActorFrom Eve
-ActorTo Alice
-Eve Intercept true
-Messages {NB}-KAB-
-dati SecurityFunctionsPartMessage j=0
-{NB}  - KAB - 
-dati listPartMessage j=0 k=0
-NB
-dati Messaggio 8
-NameMess MI
-ActorFrom Alice
-ActorTo Bob
-Eve Intercept false
-Messages {NB}-KAB-
-dati SecurityFunctionsPartMessage j=0
-{NB}  - KAB - 
-dati listPartMessage j=0 k=0
 NB
 dati Properties 
 TAB =0 Confidentiality

@@ -1,14 +1,14 @@
-scenario test1SSLX
+scenario test3SSLX
 
-//Test di receiver Eve in modalità Passiva
+//Test di receiver Bob in modalità Active
 
 load SSLX.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
-//  stato iniziale di Bob sia Waiting_KK 
-set chosenMode:=PASSIVE;
-set chosenReceiver:=AG_E;
+//  stato iniziale di Bob sia WAITING_KK 
+set chosenMode:=ACTIVE;
+set chosenReceiver:=AG_B;
 check 	internalStateA(agentA)=IDLE_KK;
 check	internalStateB(agentB)=WAITING_NK;
 check	knowsNonce(agentB,NB)=true;
@@ -19,32 +19,32 @@ check	knowsSymKey(agentB, SKAB)=true;
 check	knowsSymKey(agentA, SKAB)=true;
 check	knowsSymKey(agentE, SKAB)=false;
 
-check mode=PASSIVE;
-check receiver=AG_E;
+check mode=ACTIVE;
+check receiver=AG_B;
 
-//step1  Alice-->Eve  {SKAE}PUBKE
+//step1  Alice-->Eve  {SKAB}PUBKB
 step
 		//check informazioni base
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check protocolMessage(0,agentA,agentE)= KK;
-check messageField(agentA,agentE,1,KK)= SKAE;	
+check messageField(agentA,agentE,1,KK)= SKAB;	
 check internalStateA(agentA)=WAITING_CSNK;
-check asymEnc(KK,1,1,1)=PUBKE;
+check asymEnc(KK,1,1,1)=PUBKB;
         // Informazioni in input step 2	
 check protocolMessage(0,agentA,agentE)= KK;		
 check protocolMessage(0,agentB,agentE)!= KK;
-check asymDec(KK,1,1,1,agentE)=true;
+check asymDec(KK,1,1,1,agentE)=false;
 
 
 //step2  Eve-->Bob  {SKAB}PUBKB
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
+check knowsSymKey(agentE,messageField(agentA,agentE,1,KK))=false;
 check protocolMessage(0,agentE,agentB)= KK;
-check messageField(agentE,agentB,1,KK)=messageField(agentA,agentE,1,KK);
-check messageField(agentE,agentB,1,KK)=SKAE;
-check knowsSymKey(agentE,messageField(agentA,agentE,1,KK))=true;
+check messageField(agentE,agentB,1,KK)= messageField(agentA,agentE,1,KK);
+check messageField(agentE,agentB,1,KK)=SKAB;
 check asymEnc(KK,1,1,1) = PUBKB;
 
         // Informazioni in input step 3	
@@ -58,35 +58,35 @@ check asymDec(KK,1,1,1,agentB)=true;
 
 //step 3 Bob-->Eve {NB}SKAB
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check knowsSymKey(agentB,messageField(agentE,agentB,1,KK))=true;
 check protocolMessage(1,agentB,agentE)=NK;
 check messageField(agentB,agentE,1,NK)= NB;	
 check symEnc(NK,1,1,1)= messageField(agentE,agentB,1,KK);	
-check messageField(agentE,agentB,1,KK)=SKAE;
+check messageField(agentE,agentB,1,KK) = SKAB;
 check internalStateB(agentB)= CHECK_END_B;
 
         // Informazioni in input step 4	
 check protocolMessage(1,agentB ,agentE)=NK;
 check protocolMessage(1,agentE,agentA )!=NK;
-check symDec(NK,1,1,1,agentE)=true;
+check symDec(NK,1,1,1,agentE)=false;
 
 
 
 
 //step 4 Eve-->Alice {NB}SKAB
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 
 		//check informazioni aggiornate
-check knowsNonce(agentE,messageField(agentB,agentE,1,NK))=true;
+check knowsNonce(agentE,messageField(agentB,agentE,1,NK))=false;
 check messageField(agentB,agentE,1,NK)=NB;
 check protocolMessage(1,agentE ,agentA)= NK;
 check messageField(agentE,agentA,1,NK)= messageField(agentB,agentE,1,NK);
 check messageField(agentE,agentA,1,NK)= NB;
 check symEnc(NK,1,1,1)= messageField(agentA,agentE,1,KK);
-check messageField(agentA,agentE,1,KK)=SKAE;
+check messageField(agentA,agentE,1,KK)=SKAB;
 
 
         // Informazioni in input step 5
@@ -98,7 +98,7 @@ check messageField(agentA,agentE,1,KK)=SKAE;
 
 //step 5  Alice-->Eve {CA,{NB}SIGNPRIVKA}SKAB
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
  
 		//check informazioni aggiornate
 check protocolMessage(2,agentA,agentE)=CSNK;
@@ -107,22 +107,22 @@ check messageField(agentA,agentE,2,CSNK)=messageField(agentE,agentA,1,NK);
 check messageField(agentE,agentA,1,NK)=NB;
 check sign(CSNK,1,2,2)= SIGNPRIVKA;
 check symEnc(CSNK,2,1,2)= messageField(agentA,agentE,1,KK);
-check messageField(agentA,agentE,1,KK)=SKAE;
+check messageField(agentA,agentE,1,KK)=SKAB;
 check internalStateA(agentA)= END_A;
 
         // Informazioni in input step 6
 check protocolMessage(2,agentA,agentE)=CSNK;
 check protocolMessage(2,agentE,agentB)!=CSNK;
-check symDec(CSNK,2,1,2,agentE)=true;
+check symDec(CSNK,2,1,2,agentE)=false;
 
 
 //step 6  Eve-->Bob {CA,{NB}SIGNPRIVKA}SKAB
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 
 	//check informazioni aggiornate
 
-check knowsNonce(agentE,messageField(agentA,agentE,2,CSNK))=true;
+check knowsNonce(agentE,messageField(agentA,agentE,1,CSNK))=false;
 check protocolMessage(2,agentE,agentB )= CSNK;
 check messageField(agentE,agentB,1,CSNK)= messageField(agentA,agentE,1,CSNK);
 check messageField(agentE,agentB,2,CSNK)= messageField(agentA,agentE,2,CSNK);
@@ -140,11 +140,11 @@ check protocolMessage(2,agentE ,agentB)=CSNK;
 
 //step 7 fine
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 
 	//check informazioni aggiornate
 
-check symEnc(CSNK,2,1,2)=SKEB;
+check symEnc(CSNK,2,1,2)=SKAB;
 check sign(CSNK,1,2,2)=SIGNPRIVKA;
 check sign_keyAssociation(sign(CSNK,1,2,2))=SIGNPUBKA;
 check symDec(CSNK,2,1,2,agentB)=true;

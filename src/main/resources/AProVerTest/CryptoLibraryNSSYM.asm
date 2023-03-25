@@ -11,9 +11,9 @@ signature:
 	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | WAITING_MB | SEND_MC | WAITING_MD | END_A}
-	enum domain StateBob = {WAITING_MC | SEND_MD | END_B}
-	enum domain StateServer = {WAITING_MA | SEND_MB | END_S}
+	enum domain StateAlice = {IDLE_MA | WAITING_MC | CHECK_END_A | END_A}
+	enum domain StateBob = {WAITING_MD | CHECK_END_B | END_B}
+	enum domain StateServer = {WAITING_MB | CHECK_END_S | END_S}
 
 	enum domain Message = {MA | MB | MC | MD} 
 
@@ -47,6 +47,7 @@ signature:
 	domain  SignField2 subsetof Integer
 	domain  HashField1 subsetof Integer
 	domain  HashField2 subsetof Integer
+	domain  NumMsg subsetof Integer
 
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
@@ -54,7 +55,7 @@ signature:
 	controlled internalStateS: Server -> StateServer
 
 	//name of the message
-	controlled protocolMessage: Prod(Agent,Agent)-> Message
+	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
 	// content of the message and in which field it goes
 	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
 

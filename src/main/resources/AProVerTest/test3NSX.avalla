@@ -1,0 +1,152 @@
+scenario test1NSX
+
+//Test di receiver Eve in modalità Passiva
+
+load Needham_SchroederX.asm
+
+//controllo che nello stato inziale:
+//  stato iniziale di Alice sia IDLE_A
+//  stato iniziale di Bob sia Waiting_NAK 
+// si impostano quindi le conoscenze per i singoli attori
+set chosenMode:=ACTIVE;
+set chosenReceiver:=AG_B;
+check 	internalStateA(agentA)=IDLE_NAK;
+check	internalStateB(agentB)=WAITING_NNK;
+check	knowsNonce(agentA,NA)=true;
+check	knowsNonce(agentB,NB)=true;
+check	knowsIdentityCertificate(agentA, ID_A)=true;
+check	knowsIdentityCertificate(agentB, ID_B)=true;
+check	knowsAsymPrivKey(agentA, PRIVKA)=true;
+check	knowsAsymPrivKey(agentB, PRIVKB)=true;
+check	knowsAsymPrivKey(agentE, PRIVKE)=true;
+check	knowsAsymPubKey(agentB, PUBKA)=true;
+check	knowsAsymPubKey(agentE, PUBKA)=true;
+check	knowsAsymPubKey(agentA, PUBKB)=true;
+check	knowsAsymPubKey(agentE, PUBKB)=true;
+check	knowsAsymPubKey(agentA, PUBKE)=true;
+check	knowsAsymPubKey(agentB, PUBKE)=true;
+
+check mode=ACTIVE;
+check receiver=AG_B;
+
+// step 1 -  Alice->Bob:{NA,A}PUBKB --trasformato --- Alice -> Eve {NA,A}PUBKE 
+
+
+// 
+// A->B:{NB}PKB
+		//check informazioni base
+		
+step
+check mode=ACTIVE;
+		//check informazioni aggiornate
+check protocolMessage(0,agentA,agentE)= NAK;
+check messageField(agentA,agentE,1,NAK)=NA;
+check messageField(agentA,agentE,2,NAK)=ID_A;
+check asymEnc(NAK,1,1,2 )=PUBKB;
+check internalStateA(agentA)= WAITING_NK;
+        // Informazioni in input step 2	
+check protocolMessage(0,agentE,agentA)!= NAK;
+
+//step 2   Alice->Bob:{NA,A}PUBKB --trasformato ---  Eve -->Bob {NA,A}PUBKB 
+step
+
+check mode=ACTIVE;
+		//check informazioni aggiornate
+check 	knowsNonce(agentE,messageField(agentA,agentE,1,NAK))=false;
+check	knowsIdentityCertificate(agentE,messageField(agentA,agentE,2,NAK))=false;
+check	protocolMessage(0,agentE,agentB )= NAK;
+check	messageField(agentE,agentB,1,NAK)=messageField(agentA,agentE,1,NAK);
+check	messageField(agentE,agentB,2,NAK)=messageField(agentA,agentE,2,NAK);
+check 	asymEnc(NAK,1,1,2)=PUBKB;
+        // Informazioni in input step 3	
+check internalStateB(agentB)=WAITING_NNK; 
+check protocolMessage(0,agentE ,agentB)=NAK;
+check asymDec(NAK,1,1,2,agentB)=true;
+
+//step 3   Bob->Alice:{NA,NB}PUBKA --trasformato ---  Bob->Eve:{NA,NB}PUBKA 
+
+step
+
+check mode=ACTIVE;
+		//check informazioni aggiornate
+		
+		//check informazioni aggiornate
+check 	knowsNonce(agentB,messageField(agentE,agentB,1,NAK))=true;
+check	knowsIdentityCertificate(agentB,messageField(agentE,agentB,2,NAK))=true;
+check	protocolMessage(1,agentB,agentE)=NNK;
+check	messageField(agentB,agentE,1,NNK)=NA;
+check	messageField(agentB,agentE,2,NNK)=NB;
+check	asymEnc(NNK,1,1,2)=PUBKA;
+check	internalStateB(agentB)= CHECK_END_B;
+        // Informazioni in input step 4	
+check protocolMessage(1,agentB ,agentE)=NNK;
+check protocolMessage(1,agentE ,agentA)!=NNK;
+check asymDec(NNK,1,1,2,agentE)=false;
+
+//step 4   Bob->Alice:{NA,NB}PUBKA --trasformato ---  Eve->Alice:{NA,NB}PUBKA 
+// Eve non riesce a decodificare il messaggio e lo trasmette così com'è a Alice
+step
+
+check mode=ACTIVE;
+
+		//check informazioni aggiornate
+// il campo con valore NA è già conosciuto da Eve dal messaggio precedente e quindi il check deve avere risultato true
+check 	knowsNonce(agentE,messageField(agentB,agentE,1,NNK))=false;
+check	knowsNonce(agentE,messageField(agentB,agentE,2,NNK))=false;
+check   protocolMessage(1,agentE,agentA)= NNK;
+check	messageField(agentE,agentA,1,NNK)=messageField(agentB,agentE,1,NNK);
+check	messageField(agentE,agentA,2,NNK)=messageField(agentB,agentE,2,NNK);
+check 	messageField(agentB,agentE,1,NNK)=NA;
+check	messageField(agentB,agentE,2,NNK)=NB;
+
+        // Informazioni in input step 5	
+check 	internalStateA(agentA)=WAITING_NK;
+check 	protocolMessage(1,agentE ,agentA) =NNK;
+check 	asymDec(NNK,1,1,2,agentA)=true;
+
+//step 5    Alice->Bob:{NB}PUBKB --trasformato ---  Alice-->Eve:{NB}PUBKE 
+
+step
+
+check 	mode=ACTIVE;
+
+		//check informazioni aggiornate
+
+check 	knowsNonce(agentA,messageField(agentE,agentA,1,NNK))=true;
+check 	knowsNonce(agentA,messageField(agentE,agentA,2,NNK))=true;
+check 	protocolMessage(2,agentA,agentE)=NK;
+check 	messageField(agentA,agentE,1,NK)=NB;	
+check 	asymEnc(NK,1,1,1)=PUBKB;
+check 	internalStateA(agentA)= END_A;
+
+        // Informazioni in input step 6	
+check protocolMessage(2,agentA,agentE)=NK ;
+check protocolMessage(2,agentE, agentB )!=NK;
+check asymDec(NK,1,1,1,agentE)=false;
+
+//step 6    Alice->Bob:{NB}PUBKB --trasformato ---  Eve-->Bob:{NB}PUBKE 
+
+step
+
+check 	mode=ACTIVE;
+
+		//check informazioni aggiornate
+check 	knowsNonce(agentE,messageField(agentA,agentE,1,NK))=false;
+check	messageField(agentA,agentE,1,NK)=NB;
+check	protocolMessage(2,agentE,agentB)= NK;	
+
+        // Informazioni in input step 6	
+check internalStateB(agentB)=CHECK_END_B;
+check protocolMessage(2,agentE,agentB)=NK;
+check asymDec(NK,1,1,1,agentB)=true;
+
+
+//step 7     
+
+step
+
+check 	mode=ACTIVE;
+
+		//check informazioni aggiornate
+		
+check internalStateB(agentB)=END_B;

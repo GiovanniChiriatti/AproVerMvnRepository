@@ -1,6 +1,7 @@
 asm SSL
 
-import CryptoLibrarySSL
+import StandardLibrary 
+//import CryptoLibrarySSL
 
 // A->B:{SKAB}PUBKB
 // B->A:{NB}SKAB
@@ -8,9 +9,112 @@ import CryptoLibrarySSL
 
 signature:
 
+	domain Alice subsetof Agent
+	domain Bob subsetof Agent
+	domain Eve subsetof Agent
+	
+	enum domain StateAlice = {IDLE_A | WAITING_NK | END_A}
+	enum domain StateBob = {WAITING_KAB | WAITING_CSNK | END_B}
+	
+	enum domain Message = {KK | NK | CSNK}
+	
+	enum domain Knowledge ={ NB | CA |
+							 PRIVKA | PRIVKB | PRIVKE |
+							 PUBKA | PUBKB | PUBKE |
+							 SKAB | SKAE | SKEB | 
+							 SIGNPRIVKA | SIGNPRIVKB | SIGNPRIVKE |
+							 SIGNPUBKA | SIGNPUBKB | SIGNPUBKE}
+	
+	//DOMAIN OF POSSIBLE RECEIVER 
+	enum domain Receiver={AG_B|AG_E|AG_S}
+	//DOMAIN OF THE ATTACKER MODE
+	enum domain Modality = {ACTIVE | PASSIVE}
+	
+	domain KnowledgeNonce subsetof Any 
+	domain KnowledgeIdentityCertificate subsetof Any
+	domain KnowledgeBitString subsetof Any
+	domain KnowledgeSymKey subsetof Any
+	domain KnowledgeAsymPrivKey subsetof Any
+	domain KnowledgeAsymPubKey subsetof Any
+	domain KnowledgeSignPrivKey subsetof Any
+	domain KnowledgeSignPubKey subsetof Any
+	domain KnowledgeTag subsetof Any
+	
+	domain FieldPosition subsetof Integer
+	domain Level subsetof Integer
+	domain EncField1 subsetof Integer
+	domain EncField2 subsetof Integer
+	domain SignField1 subsetof Integer
+	domain SignField2 subsetof Integer
+	domain HashField1 subsetof Integer
+	domain HashField2 subsetof Integer
+	
+	controlled internalStateA: Alice -> StateAlice
+	controlled internalStateB: Bob -> StateBob
+	
+	controlled protocolMessage: Prod(Agent,Agent)-> Message
+	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
+	
+	monitored chosenMode: Modality
+	controlled mode: Modality
+	
+	// FUNCTIONS SELECT THE RECEIVER
+	static name:Receiver -> Agent
+	//Receiver chosen
+	controlled receiver:Receiver
+	//Receiver chosen by user
+	monitored chosenReceiver:Receiver	
+	
+	/*------------------------------------------------------------------- */
+	//            Knowledge  management of the principals 
+	/*------------------------------------------------------------------- */
+	controlled knowsNonce:Prod(Agent,KnowledgeNonce)->Boolean
+	
+	controlled knowsIdentityCertificate:Prod(Agent,KnowledgeIdentityCertificate)->Boolean
+	
+	controlled knowsBitString:Prod(Agent,KnowledgeBitString)->Boolean
+	
+	controlled knowsSymKey:Prod(Agent,KnowledgeSymKey)->Boolean
+	
+	controlled knowsAsymPubKey:Prod(Agent,KnowledgeAsymPubKey)->Boolean
+	
+	controlled knowsAsymPrivKey:Prod(Agent,KnowledgeAsymPrivKey)->Boolean
+	
+	controlled knowsSignPubKey:Prod(Agent,KnowledgeSignPubKey)->Boolean
+	
+	controlled knowsSignPrivKey:Prod(Agent,KnowledgeSignPrivKey)->Boolean
+	
+	controlled knowsHash:Prod(Agent,KnowledgeTag)->Boolean
+	
+	
+	/*------------------------------------------------------------------- */
+	//                  Cryptographic functions
+	/*------------------------------------------------------------------- */
+	static hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeTag
+	static verifyHash: Prod(Message,Level,HashField1,HashField2,KnowledgeTag)-> Boolean
+	
+	controlled sign: Prod(Message,Level,SignField1,SignField2)-> KnowledgeSignPrivKey
+	static verifySign: Prod(Message,Level,SignField1,SignField2,Agent)-> Boolean
+	static sign_keyAssociation: KnowledgeSignPrivKey -> KnowledgeSignPubKey
+	
+	controlled asymEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeAsymPubKey
+	static asymDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+	static asim_keyAssociation: KnowledgeAsymPubKey -> KnowledgeAsymPrivKey
+	
+	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeSymKey
+	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+	
+	static diffieHellman:Prod(KnowledgeAsymPubKey,KnowledgeAsymPrivKey)->KnowledgeSymKey
+	
+	static agentA: Alice
+	static agentB: Bob
+	static agentE: Eve
 
 
 definitions:
+
+	
+
 	domain Level = {1}
 	domain FieldPosition = {1:2}
 	domain EncField1={1}
@@ -37,6 +141,33 @@ definitions:
 			case SIGNPRIVKB: SIGNPUBKB
 			case SIGNPRIVKE: SIGNPUBKE
 		endswitch
+		
+			function name($a in Receiver)=
+		switch( $a )
+			case AG_E:agentE
+			case AG_B:agentB
+		endswitch
+	
+	function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=
+		if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
+			true
+		else
+			false
+		endif
+	
+	function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
+		if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
+			true
+		else
+			false
+		endif
+		
+	function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
+		if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
+			true
+		else
+			false
+		endif
 	
 	/*ATTACKER RULES*/
 	rule r_message_replay_KK =
@@ -47,7 +178,7 @@ definitions:
 						knowsSymKey(self,messageField($a,self,1,KK)):=true
 						protocolMessage(self,$b):=KK
 						messageField(self,$b,1,KK):=messageField($a,self,1,KK)
-						//asymEnc(KK,1,1,1):= PUBKB 	
+						asymEnc(KK,1,1,1):= PUBKB 	
 					endpar
 				else
 					par
@@ -82,13 +213,12 @@ definitions:
 						knowsNonce(self,messageField($b,self,1,NK)):=true
 						protocolMessage(self,$a ):= NK
 						messageField(self,$a,1,KK):= messageField($b,self,1,NK)
-	//-------------------------------------------- Questo sotto è giusto (nel messaggio precedente è asteriscato
 						symEnc(NK,1,1,1):= messageField($a,self,1,KK)
 					endpar
 				else
 					par
 						protocolMessage(self,$a ):= NK
-						messageField(self,$a,1,KK):= messageField($b,self,1,NK)
+						messageField(self,$a,1,NK):= messageField($b,self,1,NK)
 					endpar
 				endif
 			else
@@ -97,16 +227,13 @@ definitions:
 						par
 							knowsNonce(self,messageField($b,self,1,NK)):=true
 							protocolMessage(self,$a ):= NK
-//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
 							messageField(self,$a,1,KK):= messageField($b,self,1,NK)
-//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
 							symEnc(NK,1,1,1):= messageField($a,self,1,KK)
 						endpar
 					else
 						par
 							protocolMessage(self,$a ):= NK
-//------------------------------------------       Come mai si fa riferimento al messaggio rpecedente (KK)?
-							messageField(self,$a,1,KK):= messageField($b,self,1,NK)
+							messageField(self,$a,1,NK):= messageField($b,self,1,NK)
 						endpar
 					endif
 				endif
@@ -118,13 +245,12 @@ definitions:
 			if(protocolMessage($a ,self)=CSNK and protocolMessage(self,$b )!=CSNK and mode=PASSIVE)then				
 				if(symDec(CSNK,2,1,2,self)=true)then
 					par
-//------------------- non manca :knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
-// ------------------------------ è sicuro che il sia il field 1 e non il 2 se si perchè?
 						knowsNonce(self,messageField($a,self,1,CSNK)):=true
 						protocolMessage(self,$b ):= CSNK
 						messageField(self,$b,1,CSNK):= messageField($a,self,1,CSNK)
 						messageField(self,$b,2,CSNK):= messageField($a,self,2,CSNK)
-						//symEnc(CSNK,2,1,2):=SKEB
+						symEnc(CSNK,2,1,2):=SKEB
+						sign(CSNK,1,2,2):=SIGNPRIVKA
 					endpar
 				else
 					par
@@ -137,8 +263,6 @@ definitions:
 				if(protocolMessage($a ,self)=CSNK and protocolMessage(self,$b )!=CSNK and mode=ACTIVE)then				
 					if(symDec(CSNK,2,1,2,self)=true)then
 						par
-//------------------- non manca :knowsIdentityCertificate(self,messageField($a,self,1,CSNK)):=true
-// ------------------------------ è sicuro che il sia il field 1 e non il 2, se si perchè??
 							knowsNonce(self,messageField($a,self,1,CSNK)):=true
 							protocolMessage(self,$b ):= CSNK
 							messageField(self,$b,1,CSNK):= messageField($a,self,1,CSNK)
@@ -202,7 +326,6 @@ definitions:
 				if(receiver=AG_B)then
 					if(symDec(NK,1,1,1,self)=true)then
 						par
-//------------------- non manca :knowsNonce(self,messageField($e,self,1,M1)):=true
 							protocolMessage(self,$e ):=CSNK
 							messageField(self,$e,1,CSNK):=CA
 							messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
@@ -212,12 +335,11 @@ definitions:
 						endpar
 					endif	
 				else
-					if(symDec(NK,1,1,1,self)=true and receiver=AG_E)then
+					if(symDec(NK,1,1,1,self)=true)then
 						par
-//------------------- non manca :knowsNonce(self,messageField($e,self,1,M1)):=true
 							protocolMessage(self,$e ):=CSNK
 							messageField(self,$e,1,CSNK):=CA
-							messageField(self,$e,2,CSNK):=messageField($e,self,1,NK)
+							messageField(self,$e,2,CSNK):=messageField($e,self,1,KK)
 							sign(CSNK,1,2,2):= SIGNPRIVKA
 							symEnc(CSNK,2,1,2):= messageField(self,$e,1,KK)
 							internalStateA(self):= END_A
@@ -255,7 +377,6 @@ rule r_agentERule  =
 		
 	rule r_agentBRule  =
 		par
-			
 			r_message_NK[]
 			r_check_CSNK[]
 		endpar
@@ -277,8 +398,11 @@ default init s0:
 	function knowsAsymPrivKey($a in Agent ,$k in KnowledgeAsymPrivKey)=if(($a=agentA and $k=PRIVKA) or ($a=agentB and $k=PRIVKB) or ($a=agentE and $k=PRIVKE)) then true else false endif
 	function knowsAsymPubKey($a in Agent ,$pk in KnowledgeAsymPubKey)=true
 	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if((($a=agentA or $a=agentE) and $sk=SKAE) or (($a=agentA or $a=agentB) and $sk=SKAB) or (($a=agentB or $a=agentE) and $sk=SKEB)) then true else false endif
+// Aggiunto..................
+//	function knowsSignPubKey($a in Agent ,$sk in KnowledgeSignPubKey)=if((($a=agentA or $a=agentB or $a=agentE) and ($sk=SIGNPUBKA or $sk=SIGNPUBKB or $sk=SIGNPUBKE))) then true else false endif
+	function knowsSignPubKey($a in Agent ,$sk in KnowledgeSignPubKey)=true
+	
 	function mode=chosenMode
-
 	
 	agent Alice:
 		r_agentARule[]

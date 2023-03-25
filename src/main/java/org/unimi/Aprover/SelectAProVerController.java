@@ -1261,10 +1261,15 @@ public class SelectAProVerController {
 			}
 			if (node !=null && node instanceof TextField && !((TextField) node).getText().isEmpty() && appColumn==2) {
 				elencoKnowledge2[indice] = ((TextField) node).getText().trim().replaceAll("\\s", ""); 
-				if (!elencoKnowledge2[indice].isEmpty()) {
+				if (!elencoKnowledge2[indice].isEmpty() ) {
+					if (knowPage.getText() == "05" ) {
 					elencoKnowledge2[indice] = elencoKnowledge2[indice].substring(0, 1).toUpperCase()
 							+ elencoKnowledge2[indice].substring(1).toLowerCase();
 					indice++;
+					} else {
+						elencoKnowledge2[indice] = elencoKnowledge2[indice].toUpperCase();
+						indice++;						
+					}
 				}
 			}
 		}
@@ -2323,6 +2328,8 @@ public class SelectAProVerController {
 				break;
 			}
 		}
+		System.out.println(" oggetmsg " + oggetmsg+  " -> " + tool.getText() + " --> " + actorFrom + " --> " + actorTo);
+
 		if (tool.getText().contains("Disable")) {
 			if (actorFrom.equals("Eve")) {
 				((TextFlow) oggetmsg).setTextAlignment(TextAlignment.RIGHT);
@@ -2442,10 +2449,18 @@ public class SelectAProVerController {
 					System.out.println("B2 " + actorTo);
 					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
 					coordinateMsf = 605;
+					
 				}
 			}
 			if (actorFrom.equals("Eve")) {
 				coordinateMsf = 0;
+				if (actorTo.equals("Bob")) {
+					System.out.println("B2 " + actorTo);
+					((TextFlow) oggetmsf).setTextAlignment(TextAlignment.RIGHT);
+					coordinateMsg = 0;
+					coordinateMsf = 605;
+					
+				}
 			}
 			if (actorFrom.equals("Bob")) {
 				if (actorTo.equals("Alice")) {
@@ -2453,7 +2468,8 @@ public class SelectAProVerController {
 					coordinateMsf = 90;
 				}
 				if (actorTo.equals("Eve")) {
-					coordinateMsf = 0;
+					coordinateMsf = 605;
+					coordinateMsg = 0;
 				}
 			}
 		}
@@ -2477,13 +2493,18 @@ public class SelectAProVerController {
 		}
 		writeMsgLine(messages.getMessage(riga - 1).getPayload(),oggetmsg);
 		writeMsgLine(messages.getMessage(riga - 1).getPayload(),oggetmsf);
-
-		((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
-		((TextFlow) oggetmsg).setVisible(true);
+		
+		System.out.println("((TextFlow) oggetmsg).setLayoutX(coordinateMsg);" + oggetmsg+  " -> " + coordinateMsg);
+		//((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
+		((TextFlow) oggetmsg).setVisible(false);
 		((TextFlow) oggetmsf).setVisible(false);
 		if (coordinateMsf !=0) {
 			((TextFlow) oggetmsf).setLayoutX(coordinateMsf);
 			((TextFlow) oggetmsf).setVisible(true);
+		}
+		if (coordinateMsg !=0) {
+			((TextFlow) oggetmsg).setLayoutX(coordinateMsg);
+			((TextFlow) oggetmsg).setVisible(true);
 		}
 		
 	}
@@ -2581,8 +2602,12 @@ public class SelectAProVerController {
 		
 		String data = (String) node.getId();
 		int riga = Integer.parseInt(data.substring(data.length() - 2));
-		showModifyMessage(messages.getMessage(riga - 1).getActorfrom().toString(),riga,messages.getMessage(riga - 1).getActorTo().toString());
+		String actorTo = showModifyMessage(messages.getMessage(riga - 1).getActorfrom().toString(),riga,messages.getMessage(riga - 1).getActorTo().toString());
 		
+		
+		if(actorTo == null || actorTo.isEmpty()) {
+			return;
+		}
 		
 		for (Node nodeAppo : ancorPulsanti.getChildren()) {
 			if (nodeAppo != null && nodeAppo instanceof TextFlow) {
@@ -2666,7 +2691,7 @@ public class SelectAProVerController {
 		msgPayloadAncorPane.setVisible(false);
 	}
 
-	private void showModifyMessage(String actorFrom, int messageNumber,String actorTo) throws Exception {
+	private String showModifyMessage(String actorFrom, int messageNumber,String actorTo) throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/CreateMessageAProVer.fxml"));
@@ -2719,7 +2744,7 @@ public class SelectAProVerController {
 		dialogStage.showAndWait();
         eveIntercept = controller.getEvesIntercept();
 
-		return;
+        return controller.getActorTo();
 
 	}
 
@@ -3787,8 +3812,8 @@ public class SelectAProVerController {
 			alice.addDigest(line);
 		}
 		if (typeInfo.equals("dati Alice KnowAcq ")) {
-			alice.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
-			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+			alice.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.indexOf("=")-1),Integer.parseInt(line.substring(line.indexOf("=")+2,line.length())));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ": -- :" +Integer.parseInt(line.substring(line.indexOf("=")+2,line.length()))+ ":");
 		}
 		
 		if (typeInfo.equals("dati Bob AsymmetricPublicKey ")) {
@@ -3858,8 +3883,8 @@ public class SelectAProVerController {
 			bob.addDigest(line);
 		}
 		if (typeInfo.equals("dati Bob KnowAcq ")) {
-			bob.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
-			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+			bob.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.indexOf("=")-1),Integer.parseInt(line.substring(line.indexOf("=")+2,line.length())));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ": -- :" +Integer.parseInt(line.substring(line.indexOf("=")+2,line.length()))+ ":");
 		}
 
 
@@ -3930,8 +3955,8 @@ public class SelectAProVerController {
 			eve.addDigest(line);
 		}
 		if (typeInfo.equals("dati Eve KnowAcq ")) {
-			eve.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
-			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+			eve.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.indexOf("=")-1),Integer.parseInt(line.substring(line.indexOf("=")+2,line.length())));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ": -- :" +Integer.parseInt(line.substring(line.indexOf("=")+2,line.length()))+ ":");
 		}
 
 		if (typeInfo.equals("dati Server AsymmetricPublicKey ")) {
@@ -4000,8 +4025,8 @@ public class SelectAProVerController {
 			server.addDigest(line);
 		}
 		if (typeInfo.equals("dati Server KnowAcq ")) {
-			server.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.length() ));
-			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ":");
+			server.addKnowAcq(line.substring(0,line.indexOf("-")-1),line.substring(line.indexOf("-")+2,line.indexOf("=")-1),Integer.parseInt(line.substring(line.indexOf("=")+2,line.length())));
+			System.out.println("------------> know acq :" + (line.substring(0,line.indexOf("-")-1) + ": -- :" + line.substring(line.indexOf("-")+2,line.length() ))+ ": -- :" +Integer.parseInt(line.substring(line.indexOf("=")+2,line.length()))+ ":");
 		}
 
 		

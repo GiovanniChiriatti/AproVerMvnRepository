@@ -70,13 +70,17 @@ public class Message {
 	}
 
 	public void setPayload(String payload) {
+		System.out.println("setPayload" + payload);
 		this.payload = payload;
 	}
 
 	public String[][] getListPartMessage() {
 		return listPartMessage;
 	}
-
+	public void setListPartMessage(String[][] listPartMessage) {
+		System.out.println("setListPartMessage"+ listPartMessage[0][0]);
+		this.listPartMessage = listPartMessage;
+	}
 	public void  addListPartMessage(String listPartMessage, int riga) {
 		if (numRow1 < 16) {
 	//		System.out.println("listPartMessage " + numRow1 + " - "+ riga + " Valore " + listPartMessage);
@@ -104,6 +108,14 @@ public class Message {
 		}
 		return securityFunctionsPartMessage[row];
 	}
+	public String[] getSecurityFunctionsPartMessage() {
+		return securityFunctionsPartMessage;
+	}
+	public void setSecurityFunctionsPartMessage(String[] securityFunctionsPartMessage) {
+		System.out.println("securityFunctionsPartMessage"+securityFunctionsPartMessage[0]);
+		this.securityFunctionsPartMessage = securityFunctionsPartMessage;
+	}
+	
 	public void addSecurityFunctionsPartMessage(String securityFunctionsPartMessage) {
 		
 		if (numRow1 < 16) {

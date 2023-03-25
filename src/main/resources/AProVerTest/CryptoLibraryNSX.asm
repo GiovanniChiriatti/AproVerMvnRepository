@@ -10,8 +10,8 @@ signature:
 	domain Eve subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_NK | END_A}
-	enum domain StateBob = {WAITING_NAK | SEND_NNK | WAITING_NK | END_B}
+	enum domain StateAlice = {IDLE_NAK | WAITING_NK | CHECK_END_A | END_A}
+	enum domain StateBob = {WAITING_NNK | CHECK_END_B | END_B}
 
 	enum domain Message = {NAK | NNK | NK} 
 
@@ -45,13 +45,14 @@ signature:
 	domain  SignField2 subsetof Integer
 	domain  HashField1 subsetof Integer
 	domain  HashField2 subsetof Integer
+	domain  NumMsg subsetof Integer
 
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
 
 	//name of the message
-	controlled protocolMessage: Prod(Agent,Agent)-> Message
+	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
 	// content of the message and in which field it goes
 	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
 

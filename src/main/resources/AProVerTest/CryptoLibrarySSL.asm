@@ -1,6 +1,6 @@
 module CryptoLibrarySSL
  
-import ../StandardLibrary 
+import StandardLibrary 
 export *
 
 // A->B:{SKAB}PUBKB

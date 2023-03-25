@@ -489,8 +489,8 @@ public class SecurityKey {
 		this.digest = digest;
 	}
 // ------- conoscenze acquisite durante lo scambio di messaggi
-	public void addKnowAcq(String nuovoValore, String typeKnow) {
-		knowAcquired.put(nuovoValore,typeKnow);
+	public void addKnowAcq(String nuovoValore, String typeKnow, int numMsg) {
+		knowAcquired.put(nuovoValore,typeKnow+ " = "+ numMsg);
 	}
 	public ArrayList<String> getKnowAcq() {
 		ArrayList<String> eleKnowAcq=new ArrayList<String>();
@@ -600,7 +600,7 @@ public class SecurityKey {
 		return false;
 	}
 // ---------------- trova un elemento in tutte le tabelle
-	public String  searchEle(String Valore) {
+	public String  searchEle(String Valore, int numMsg) {
 
 		for (int i = 0; i < AsymmetricPublicKey.size(); i++) {
 			if (AsymmetricPublicKey.get(i).equals(Valore) || AsymmetricPublicKey.get(i).toUpperCase().equals(Valore)) {
@@ -676,7 +676,8 @@ public class SecurityKey {
 		
 	    for (Map.Entry<String, String> entry : knowAcquired.entrySet()) {
 	        if (entry.getKey().equals(Valore)) {
-	        	return entry.getValue();
+	        	if (numMsg >= Integer.parseInt( entry.getValue().substring( entry.getValue().indexOf("=")+2, entry.getValue().length())))
+	        		return entry.getValue().substring(0,entry.getValue().indexOf("=")-1);
 	        }
 	    }
 		return null;

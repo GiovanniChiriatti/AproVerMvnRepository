@@ -91,17 +91,19 @@ public class CreateFilesASM {
 				resultOperation.setText("Create Files Error");
 				return;
 			} 
+			System.out.println("Verifica WriteASM-  ");
 			WriteASM writeASM = new WriteASM(false, messages, alice, bob, eve, null, toolEve,
 					writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(), writeCrypto.getNumEncField(),
 					writeCrypto.getNumSignField(), writeCrypto.getNumSymField(), 
 					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());
-			System.out.println("---");
-			System.out.println("Verifica WriteCryptoLibrary  ");
+			System.out.println(">---<");
+			System.out.println("Verifica WriteCryptoLibrary-  ");
 			if (!writeASM.writeFile()) {
 				resultOperation.setText("Create Files Error");
 				return;
 			}
 		} else {
+				System.out.println("Verifica WriteASM--  ");
 				WriteCryptoLibrary writeCrypto1 = new WriteCryptoLibrary(true, messages, alice, bob, eve, server,
 						toolEve, acronymProcolASM.getText());
 				System.out.println("---");

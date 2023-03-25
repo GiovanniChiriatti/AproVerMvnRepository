@@ -205,20 +205,20 @@ public class AddProperties {
 			}
 			if (propertyMod.contains("Server")) {
 				actorKnow.getSelectionModel().select(3);
-			    knowSelect = server.searchEle(propertyMod.substring(propertyMod.indexOf("Server,")+7 , propertyMod.indexOf(")=true")));
+			    knowSelect = server.searchEle(propertyMod.substring(propertyMod.indexOf("Server,")+7 , propertyMod.indexOf(")=true")),0);
 			    eleSelect = propertyMod.substring(propertyMod.indexOf("Server,")+7 , propertyMod.indexOf(")=true"));
 			}
 		    if (knowSelect == null || knowSelect.isEmpty()) {
-				knowSelect = alice.searchEle(eleSelect);
+				knowSelect = alice.searchEle(eleSelect,0);
 		    }
 		    if (knowSelect == null || knowSelect.isEmpty()) {
-				knowSelect = bob.searchEle(eleSelect);
+				knowSelect = bob.searchEle(eleSelect,0);
 		    }
 		    if (knowSelect == null || knowSelect.isEmpty()) {
-				knowSelect = eve.searchEle(eleSelect);
+				knowSelect = eve.searchEle(eleSelect,0);
 		    }
 		    if (knowSelect == null || knowSelect.isEmpty()) {
-				knowSelect = server.searchEle(eleSelect);
+				knowSelect = server.searchEle(eleSelect,0);
 		    }
 			
 			if (!(knowSelect ==null || knowSelect.isEmpty())) {

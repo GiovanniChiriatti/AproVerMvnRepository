@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class WriteCryptoLibrary {
-	private Boolean actorServer,actorAlice,actorBob;
+	private Boolean actorServer,actorAlice,actorBob,flgAlice,flgBob,flgEve,flgServer;
 	private SecurityKey securityKey;
 	private String[] signature = new String[50];
 	private String[] stateActor = new String[4];
@@ -25,6 +25,7 @@ public class WriteCryptoLibrary {
 	private String acronym;
 	String[] changNumMSG = new String[15];
 
+
 	private String toolEve;
 	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve,String acronym) 
 			  throws IOException {
@@ -36,6 +37,10 @@ public class WriteCryptoLibrary {
 				this.eve = eve;
 				this.server = server;
 				this.toolEve = toolEve;
+				flgAlice=false;
+				flgEve=false;
+				flgBob=false;
+				flgServer=false;
 				indSignature=0;
 				changNumMSG[0]="MA";
 				changNumMSG[1]="MB";
@@ -293,19 +298,35 @@ public class WriteCryptoLibrary {
 			b.write("\n");
 	//		System.out.println("loadStateActor -0- " + stateActor[0] );
 			if (stateActor[0] !=null) {
-				b.write("	enum domain StateAlice = {"+stateActor[0]+" | END_A}\n");
+				b.write("	enum domain StateAlice = {"+stateActor[0]+" | CHECK_END_A | END_A}\n");
+			} else {
+				if (flgAlice) {
+					b.write("	enum domain StateAlice = {CHECK_END_A | END_A}\n");
+				}
 			}
 	//		System.out.println("loadStateActor -1- " + stateActor[0] );
 			if (stateActor[1] !=null) {
-				b.write("	enum domain StateBob = {"+stateActor[1]+" | END_B}\n");
+				b.write("	enum domain StateBob = {"+stateActor[1]+" | CHECK_END_B | END_B}\n");
+			} else {
+				if (flgBob) {
+					b.write("	enum domain StateBob = {CHECK_END_B | END_B}\n");
+				}
 			}
 	//		System.out.println("loadStateActor -2- " + stateActor[2] );
 			if (stateActor[2] !=null) {
-				b.write("	enum domain StateEve = {"+stateActor[2]+" | END_E}\n");
+				b.write("	enum domain StateEve = {"+stateActor[2]+" | CHECK_END_E | END_E}\n");
+			} else {
+				if (flgEve) {
+					b.write("	enum domain StateEve = {CHECK_END_E | END_E}\n");
+				}
 			}
 	//		System.out.println("loadStateActor -3- " + stateActor[3] );
 			if (stateActor[3] !=null) {
-				b.write("	enum domain StateServer = {"+stateActor[3]+" | END_S}\n");
+				b.write("	enum domain StateServer = {"+stateActor[3]+" | CHECK_END_S | END_S}\n");
+			} else {
+				if (flgServer) {
+					b.write("	enum domain StateServer = {CHECK_END_S | END_S}\n");
+				}
 			}
 			
 		    b.write("\n");
@@ -372,6 +393,7 @@ public class WriteCryptoLibrary {
 	    b.write("	domain  SignField2 subsetof Integer\n");
 	    b.write("	domain  HashField1 subsetof Integer\n");
 	    b.write("	domain  HashField2 subsetof Integer\n");
+	    b.write("	domain  NumMsg subsetof Integer\n");
 	    
 	    b.write("\n");
 	    b.write("	//state of the actor\n");
@@ -386,7 +408,7 @@ public class WriteCryptoLibrary {
 	    
 	    b.write("\n");
 	    b.write("	//name of the message\n");
-	    b.write("	controlled protocolMessage: Prod(Agent,Agent)-> Message\n");
+	    b.write("	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message\n");
 	    b.write("	// content of the message and in which field it goes\n");
 	    b.write("	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge\n");
 	    b.write("\n");
@@ -524,18 +546,20 @@ public class WriteCryptoLibrary {
 			  break;
 		}
 		
+		
+		
 		switch(actorTo) {
 		  case "Alice":
-			  indActorTo=0;
+			  flgAlice=true;
 			  break;
 		  case "Bob":
-			  indActorTo=1;
+			  flgBob=true;
 			  break;
 		  case "Eve":
-			  indActorTo=2;
+			  flgEve=true;
 			  break;
 		  case "Server":
-			  indActorTo=3;
+			  flgServer=true;
 			  break;
 		}
 		
@@ -544,16 +568,18 @@ public class WriteCryptoLibrary {
 			stateActor[indActorFrom]="IDLE_"+changNumMSG[i];
 		} else {
 			if (stateActor[indActorFrom] == null) {
-				stateActor[indActorFrom]="SEND_"+changNumMSG[i];
+				stateActor[indActorFrom]="WAITING_"+changNumMSG[i];
 			} else {
-				stateActor[indActorFrom]=stateActor[indActorFrom] + " | SEND_"+changNumMSG[i];
+				stateActor[indActorFrom]=stateActor[indActorFrom] + " | WAITING_"+changNumMSG[i];
 			}
 		}
+		/*
 		if (stateActor[indActorTo] == null) {
 			stateActor[indActorTo]="WAITING_"+changNumMSG[i];
 		} else {
 			stateActor[indActorTo]=stateActor[indActorTo] + " | WAITING_"+changNumMSG[i];
 		}
+		*/
 		
 	}
 	
@@ -643,7 +669,7 @@ public class WriteCryptoLibrary {
 			KeyActorTo = null;
 		}
 		if (KeyActorFrom !=null) {
-			operation= KeyActorFrom.searchEle(keyUsed);
+			operation= KeyActorFrom.searchEle(keyUsed,numMsg);
 			System.out.println("cerco operation per actorFrom"+ operation + " numMsg " + numMsg + " KayUsed " + keyUsed );
 
 //			System.out.println("operation " + operation);
@@ -651,7 +677,7 @@ public class WriteCryptoLibrary {
 				if (KeyActorTo !=null) {
 					System.out.println("cerco operation per actorTo numMsg " + numMsg + " KayUsed " + keyUsed );
 
-					operation= KeyActorTo.searchEle(keyUsed);
+					operation= KeyActorTo.searchEle(keyUsed,numMsg);
 					System.out.println("operation to " + operation);
 				}
 			}

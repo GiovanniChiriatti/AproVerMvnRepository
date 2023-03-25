@@ -1,4 +1,4 @@
-module CryptoLibraryxx
+module CryptoLibraryxxxx
 
 import ../StandardLibrary
 export *
@@ -8,19 +8,17 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
-	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_REQCOM | WAITING_FRWVRNB | CHECK_END_A | END_A}
-	enum domain StateBob = {WAITING_ENCKBS | CHECK_END_B | END_B}
-	enum domain StateServer = {WAITING_GENKEYSES | CHECK_END_S | END_S}
+	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_NK | END_A}
+	enum domain StateBob = {WAITING_NAK | SEND_NNK | WAITING_NK | END_B}
 
-	enum domain Message = {REQCOM | ENCKBS | GENKEYSES | FRWVRNB} 
+	enum domain Message = {NAK | NNK | NK} 
 
-	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KEB|KES|NA|NB}
+	enum domain Knowledge ={ID_A|ID_B|ID_E|NA|NB|NE|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
+	enum domain Receiver={AG_A|AG_B|AG_E}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -47,15 +45,13 @@ signature:
 	domain  SignField2 subsetof Integer
 	domain  HashField1 subsetof Integer
 	domain  HashField2 subsetof Integer
-	domain  NumMsg subsetof Integer
 
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
-	controlled internalStateS: Server -> StateServer
 
 	//name of the message
-	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
+	controlled protocolMessage: Prod(Agent,Agent)-> Message
 	// content of the message and in which field it goes
 	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
 
@@ -128,7 +124,6 @@ signature:
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
-	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
@@ -136,7 +131,6 @@ definitions:
 				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
-				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=
