@@ -1,4 +1,4 @@
-module CryptoLibraryBANYAHALOM
+module CryptoLibraryBYA
 
 import ../StandardLibrary
 export *
@@ -13,12 +13,12 @@ signature:
 
 	enum domain StateAlice = {IDLE_MA | CHECK_END_A | END_A}
 	enum domain StateBob = {WAITING_MB | WAITING_MD | CHECK_END_B | END_B}
-	enum domain StateEve = {WAITING_MC | WAITING_ME | CHECK_END_E | END_E}
-	enum domain StateServer = {CHECK_END_S | END_S}
+	enum domain StateEve = {WAITING_MC | WAITING_MF | CHECK_END_E | END_E}
+	enum domain StateServer = {WAITING_ME | CHECK_END_S | END_S}
 
-	enum domain Message = {MA | MB | MC | MD | ME} 
+	enum domain Message = {MA | MB | MC | MD | ME | MF} 
 
-	enum domain Knowledge ={CA|CB|KAB|KBS|KNA|NA|NB|NB2}
+	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KNA|NA|NB|NB2}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
@@ -48,6 +48,7 @@ signature:
 	domain  SignField2 subsetof Integer
 	domain  HashField1 subsetof Integer
 	domain  HashField2 subsetof Integer
+	domain  NumMsg subsetof Integer
 
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
@@ -56,7 +57,7 @@ signature:
 	controlled internalStateS: Server -> StateServer
 
 	//name of the message
-	controlled protocolMessage: Prod(Agent,Agent)-> Message
+	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
 	// content of the message and in which field it goes
 	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
 

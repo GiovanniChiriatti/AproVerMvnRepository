@@ -17,7 +17,7 @@ signature:
 
 	enum domain Message = {REQCOM | ENCKBS | GENKEYSES | FRWVRNB} 
 
-	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KEB|KES|NA|NB}
+	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KES|NA|NB}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}

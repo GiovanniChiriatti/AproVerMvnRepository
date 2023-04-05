@@ -11,13 +11,14 @@ signature:
 	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_REQCOM | WAITING_FRWVRNB | CHECK_END_A | END_A}
-	enum domain StateBob = {WAITING_ENCKBS | CHECK_END_B | END_B}
-	enum domain StateServer = {WAITING_GENKEYSES | CHECK_END_S | END_S}
+	enum domain StateAlice = {IDLE_MA | CHECK_END_A | END_A}
+	enum domain StateBob = {WAITING_MB | WAITING_MD | CHECK_END_B | END_B}
+	enum domain StateEve = {WAITING_MC | WAITING_MF | CHECK_END_E | END_E}
+	enum domain StateServer = {WAITING_ME | CHECK_END_S | END_S}
 
-	enum domain Message = {REQCOM | ENCKBS | GENKEYSES | FRWVRNB} 
+	enum domain Message = {MA | MB | MC | MD | ME | MF} 
 
-	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KES|NA|NB}
+	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KNA|NA|NB|NB2}
 
 	//DOMAIN OF POSSIBLE RECEIVER
 	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
@@ -52,6 +53,7 @@ signature:
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
+	controlled internalStateE: Eve -> StateEve
 	controlled internalStateS: Server -> StateServer
 
 	//name of the message

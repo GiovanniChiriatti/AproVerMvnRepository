@@ -1,4 +1,4 @@
-scenario test1YAHALOM
+scenario test2YAHALOM
 
 //Test di receiver Eve in modalità Passiva
 
@@ -16,7 +16,7 @@ load YAHATest.asm
 //  stato iniziale di Bob sia WAITING_ENCKBS
 //  stato iniziale di Bob sia WAITING_GENKEYSES
 // si impostano quindi le conoscenze per i singoli attori
-set chosenMode:=PASSIVE;
+set chosenMode:=ACTIVE;
 set chosenReceiver:=AG_E;
 check 	internalStateA(agentA)=IDLE_REQCOM;
 check	internalStateB(agentB)=WAITING_ENCKBS;
@@ -37,7 +37,7 @@ check	knowsSymKey(agentS, KAB)=true;
 
 
 
-check mode=PASSIVE;
+check mode=ACTIVE;
 check receiver=AG_E;
 
 // step 1 -  Alice->Bob:{CA,NA} --trasformato --- Alice -> Eve {CA,NA} 
@@ -48,7 +48,7 @@ check receiver=AG_E;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check protocolMessage(0,agentA,agentE)=REQCOM;
 check messageField(agentA,agentE,1,REQCOM)=CA;
@@ -68,7 +68,7 @@ check protocolMessage(0,agentE,agentB)!=REQCOM;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check protocolMessage(0,agentE,agentB)=REQCOM;
 check messageField(agentE,agentB,1,REQCOM)=messageField(agentA,agentE,1,REQCOM);
@@ -97,7 +97,7 @@ check protocolMessage(0,agentE,agentB)=REQCOM;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check knowsIdentityCertificate(agentB,messageField(agentE,agentB,1,REQCOM))=true;
 check messageField(agentE,agentB,1,REQCOM)=CA;
@@ -132,7 +132,7 @@ check symEnc(ENCKBS,1,2,4)=KBS;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate		
 
 check protocolMessage(1,agentE,agentS)=ENCKBS;
@@ -179,7 +179,7 @@ check symDec(ENCKBS,1,2,4,agentS)=true;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 check  knowsIdentityCertificate(agentS,messageField(agentE,agentS,1,ENCKBS))=true;
 check  knowsIdentityCertificate(agentS,CB)=true;
@@ -234,7 +234,7 @@ check symEnc(GENKEYSES,1,5,6)=KBS;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate		
 		
 check protocolMessage(2,agentE,agentA)=GENKEYSES;
@@ -293,7 +293,7 @@ check symDec(GENKEYSES,1,1,4,agentA)=true;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 
 check  knowsIdentityCertificate(agentA,messageField(agentE,agentA,1,GENKEYSES))=true;
@@ -346,7 +346,7 @@ check symDec(FRWVRNB,1,3,3,agentE)=false;
 		//check informazioni base
 		
 step
-check mode=PASSIVE;
+check mode=ACTIVE;
 		//check informazioni aggiornate
 
 check protocolMessage(3,agentE,agentB)=FRWVRNB;

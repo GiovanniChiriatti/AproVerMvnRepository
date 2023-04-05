@@ -45,7 +45,7 @@ dati Bob Tag
 dati Bob Timestamp 
 dati Bob Digest 
 dati Bob KnowAcq 
-SKAB - Symmetric Key
+SKAB - Symmetric Key = 1
 dati Eve AsymmetricPublicKey 
 PUBKE
 dati Eve AsymmetricPrivateKey 

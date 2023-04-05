@@ -14,7 +14,7 @@ definitions:
 
 	domain KnowledgeNonce = {NA,NB}
 	domain KnowledgeIdentityCertificate = {CA,CB}
-	domain KnowledgeSymKey = {KAB,KAS,KBS,KEB,KES}
+	domain KnowledgeSymKey = {KAB,KAS,KBS,KES}
 
 
 	/*ATTACKER RULES*/
@@ -64,9 +64,9 @@ definitions:
 			        if(symDec(ENCKBS,1,2,4,self)=true)then
                       par 
                     	knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
-                    	knowsOther(self,messageField($a,self,3,ENCKBS)):=true
+                    	knowsNonce(self,messageField($a,self,3,ENCKBS)):=true
                     	knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
-			            symEnc(ENCKBS,1,2,4):=KES
+			            symEnc(ENCKBS,1,2,4):=KBS
                       endpar 
 			        endif 
 		          endpar 
@@ -83,7 +83,7 @@ definitions:
 			        if(symDec(ENCKBS,1,2,4,self)=true)then
 	   			     par 
                     	knowsIdentityCertificate(self,messageField($a,self,2,ENCKBS)):=true
-                    	knowsOther(self,messageField($a,self,3,ENCKBS)):=true
+                    	knowsNonce(self,messageField($a,self,3,ENCKBS)):=true
                     	knowsNonce(self,messageField($a,self,4,ENCKBS)):=true
 			        	symEnc(ENCKBS,1,2,4):=KBS
 	   			     endpar 
@@ -113,15 +113,15 @@ definitions:
                     	knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
                     	knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
                     	knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
-                    	knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
-			            symEnc(GENKEYSES,1,1,4):=KES
+                    	knowsNonce(self,messageField($a,self,4,GENKEYSES)):=true
+			            symEnc(GENKEYSES,1,1,4):=KAS
                       endpar 
 			        endif 
 			        if(symDec(GENKEYSES,1,5,6,self)=true)then
                       par 
                     	knowsIdentityCertificate(self,messageField($a,self,5,GENKEYSES)):=true
                     	knowsSymKey(self,messageField($a,self,6,GENKEYSES)):=true
-			            symEnc(GENKEYSES,1,5,6):=KES
+			            symEnc(GENKEYSES,1,5,6):=KBS
                       endpar 
 			        endif 
 		          endpar 
@@ -140,7 +140,7 @@ definitions:
                     	knowsIdentityCertificate(self,messageField($a,self,1,GENKEYSES)):=true
                     	knowsSymKey(self,messageField($a,self,2,GENKEYSES)):=true
                     	knowsNonce(self,messageField($a,self,3,GENKEYSES)):=true
-                    	knowsOther(self,messageField($a,self,4,GENKEYSES)):=true
+                    	knowsNonce(self,messageField($a,self,4,GENKEYSES)):=true
 			        	symEnc(GENKEYSES,1,1,4):=KAS
 	   			     endpar 
 			        else 
@@ -177,13 +177,13 @@ definitions:
                       par 
                     	knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
                     	knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
-			            symEnc(FRWVRNB,1,1,2):=KEB
+			            symEnc(FRWVRNB,1,1,2):=KBS
                       endpar 
 			        endif 
 			        if(symDec(FRWVRNB,1,3,3,self)=true)then
                       par 
                     	knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
-			            symEnc(FRWVRNB,1,3,3):=messageField($b,self,2,GENKEYSES)
+			            symEnc(FRWVRNB,1,3,3):=messageField($b,self,6,GENKEYSES)
                       endpar 
 			        endif 
 		          endpar 
@@ -196,7 +196,7 @@ definitions:
                  	messageField(self,$b,3,FRWVRNB):=messageField($a,self,3,FRWVRNB)
 			        if(symDec(FRWVRNB,1,1,2,self)=true)then
 	   			     par 
-			         	messageField(self,$b,2,FRWVRNB):=KEB
+			         	messageField(self,$b,2,FRWVRNB):=KES
                     	knowsIdentityCertificate(self,messageField($a,self,1,FRWVRNB)):=true
                     	knowsSymKey(self,messageField($a,self,2,FRWVRNB)):=true
 			        	symEnc(FRWVRNB,1,1,2):=KBS
@@ -207,7 +207,7 @@ definitions:
 			        if(symDec(FRWVRNB,1,3,3,self)=true)then
 	   			     par 
                     	knowsNonce(self,messageField($a,self,3,FRWVRNB)):=true
-			        	symEnc(FRWVRNB,1,3,3):=KEB
+			        	symEnc(FRWVRNB,1,3,3):=KES
 	   			     endpar 
 			        endif 
 		          endpar 
@@ -247,8 +247,8 @@ definitions:
 			            knowsNonce(self,messageField($e,self,2,REQCOM)):=true
 			            protocolMessage(1,self,$e):=ENCKBS
 			            messageField(self,$e,1,ENCKBS):=CB
-			            messageField(self,$e,2,ENCKBS):=CA
-			            messageField(self,$e,3,ENCKBS):=NA
+			            messageField(self,$e,2,ENCKBS):=messageField($e,self,1,REQCOM)
+			            messageField(self,$e,3,ENCKBS):=messageField($e,self,2,REQCOM)
 			            messageField(self,$e,4,ENCKBS):=NB
 			            symEnc(ENCKBS,1,2,4):=KBS
 			            internalStateB(self):=CHECK_END_B
@@ -262,7 +262,7 @@ definitions:
 			            messageField(self,$e,2,ENCKBS):=messageField($e,self,1,REQCOM)
 			            messageField(self,$e,3,ENCKBS):=messageField($e,self,2,REQCOM)
 			            messageField(self,$e,4,ENCKBS):=NB
-			            symEnc(ENCKBS,1,2,4):=KEB
+			            symEnc(ENCKBS,1,2,4):=KBS
 			            internalStateB(self):=CHECK_END_B
 			         endpar
 			   endif
@@ -272,41 +272,47 @@ definitions:
 		let ($e=agentE) in
 			if(internalStateS(self)=WAITING_GENKEYSES and protocolMessage(1,$e,self)=ENCKBS)then
 			   if(receiver!=AG_E)then
+			    par
+			            knowsIdentityCertificate(self,messageField($e,self,1,ENCKBS)):=true
  			        if(symDec(ENCKBS,1,2,4,self)=true ) then
 			          par
-			            knowsIdentityCertificate(self,messageField($e,self,1,ENCKBS)):=true
-			            knowsNonce(self,messageField($e,self,2,ENCKBS)):=true
+			            knowsIdentityCertificate(self,messageField($e,self,2,ENCKBS)):=true
 			            knowsNonce(self,messageField($e,self,3,ENCKBS)):=true
+			            knowsNonce(self,messageField($e,self,4,ENCKBS)):=true
 			            protocolMessage(2,self,$e):=GENKEYSES
-			            messageField(self,$e,1,GENKEYSES):=CB
+			            messageField(self,$e,1,GENKEYSES):=messageField($e,self,1,ENCKBS)
 			            messageField(self,$e,2,GENKEYSES):=KAB
-			            messageField(self,$e,3,GENKEYSES):=NA
-			            messageField(self,$e,4,GENKEYSES):=NB
+			            messageField(self,$e,3,GENKEYSES):=messageField($e,self,3,ENCKBS)
+			            messageField(self,$e,4,GENKEYSES):=messageField($e,self,4,ENCKBS)
 			            symEnc(GENKEYSES,1,1,4):=KAS
-			            messageField(self,$e,5,GENKEYSES):=CA
+			            messageField(self,$e,5,GENKEYSES):=messageField($e,self,2,ENCKBS)
 			            messageField(self,$e,6,GENKEYSES):=KAB
 			            symEnc(GENKEYSES,1,5,6):=KBS
 			            internalStateS(self):=END_S
 			          endpar
 			        endif
+			    endpar
 			   else
+			    par
+			            knowsIdentityCertificate(self,messageField($e,self,1,ENCKBS)):=true
  			        if(symDec(ENCKBS,1,2,4,self)=true  and receiver=AG_E) then
 			          par
-			            knowsIdentityCertificate(self,messageField($e,self,1,ENCKBS)):=true
-			            knowsNonce(self,messageField($e,self,2,ENCKBS)):=true
+			            knowsIdentityCertificate(self,messageField($e,self,2,ENCKBS)):=true
 			            knowsNonce(self,messageField($e,self,3,ENCKBS)):=true
+			            knowsNonce(self,messageField($e,self,4,ENCKBS)):=true
 			            protocolMessage(2,self,$e):=GENKEYSES
 			            messageField(self,$e,1,GENKEYSES):=messageField($e,self,1,ENCKBS)
 			            messageField(self,$e,2,GENKEYSES):=KAB
-			            messageField(self,$e,3,GENKEYSES):=messageField($e,self,2,ENCKBS)
-			            messageField(self,$e,4,GENKEYSES):=messageField($e,self,3,ENCKBS)
+			            messageField(self,$e,3,GENKEYSES):=messageField($e,self,3,ENCKBS)
+			            messageField(self,$e,4,GENKEYSES):=messageField($e,self,4,ENCKBS)
 			            symEnc(GENKEYSES,1,1,4):=KAS
-			            messageField(self,$e,5,GENKEYSES):=messageField($e,self,1,ENCKBS)
+			            messageField(self,$e,5,GENKEYSES):=messageField($e,self,2,ENCKBS)
 			            messageField(self,$e,6,GENKEYSES):=KAB
 			            symEnc(GENKEYSES,1,5,6):=KBS
 			            internalStateS(self):=END_S
 			         endpar
 			        endif
+			    endpar
 			   endif
 			endif
 		endlet
@@ -321,11 +327,11 @@ definitions:
 			            knowsNonce(self,messageField($e,self,3,GENKEYSES)):=true
 			            knowsNonce(self,messageField($e,self,4,GENKEYSES)):=true
 			            protocolMessage(3,self,$e):=FRWVRNB
-			            messageField(self,$e,1,FRWVRNB):=CA
-			            messageField(self,$e,2,FRWVRNB):=KAB
+			            messageField(self,$e,1,FRWVRNB):=messageField($e,self,5,GENKEYSES)
+			            messageField(self,$e,2,FRWVRNB):=messageField($e,self,6,GENKEYSES)
 			            symEnc(FRWVRNB,1,1,2):=KBS
-			            messageField(self,$e,3,FRWVRNB):=NB
-			            symEnc(FRWVRNB,1,3,3):=messageField(self,$e,2,GENKEYSES)
+			            messageField(self,$e,3,FRWVRNB):=messageField($e,self,4,GENKEYSES)
+			            symEnc(FRWVRNB,1,3,3):=messageField($e,self,6,GENKEYSES)
 			            internalStateA(self):=END_A
 			          endpar
 			        endif
@@ -341,7 +347,7 @@ definitions:
 			            messageField(self,$e,2,FRWVRNB):=messageField($e,self,6,GENKEYSES)
 			            symEnc(FRWVRNB,1,1,2):=KBS
 			            messageField(self,$e,3,FRWVRNB):=messageField($e,self,4,GENKEYSES)
-			            symEnc(FRWVRNB,1,3,3):=messageField(self,$e,6,GENKEYSES)
+			            symEnc(FRWVRNB,1,3,3):=messageField($e,self,6,GENKEYSES)
 			            internalStateA(self):=END_A
 			         endpar
 			        endif
@@ -351,13 +357,18 @@ definitions:
 	rule r_check_FRWVRNB =
 		let ($e=agentE) in
 			if(internalStateB(self)=CHECK_END_B and protocolMessage(3,$e,self)=FRWVRNB)then
-			        if(symDec(FRWVRNB,1,1,2,self)= true and symDec(FRWVRNB,1,3,3,self)= true) then
-			          par
-			            knowsNonce(self,messageField($e,self,1,FRWVRNB)):=true
-			            knowsSymKey(self,messageField($e,self,2,FRWVRNB)):=true
-			            internalStateB(self):=END_B
-			          endpar
-			        endif
+			  par
+			        internalStateB(self):=END_B
+			        if(symDec(FRWVRNB,1,1,2,self)=true)then
+                      par 
+                    	knowsIdentityCertificate(self,messageField($e,self,1,FRWVRNB)):=true
+                    	knowsSymKey(self,messageField($e,self,2,FRWVRNB)):=true
+                      endpar 
+			        endif 
+			        if(symDec(FRWVRNB,1,3,3,self)=true)then
+                    	knowsNonce(self,messageField($e,self,3,FRWVRNB)):=true
+			        endif 
+			  endpar
 			endif
 		endlet
 
@@ -398,8 +409,7 @@ default init s0:
 	function receiver=chosenReceiver
 	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
 	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) then true else if($a=agentS and $i=CB) then true else false endif endif endif
-	function knowsOther($a in Agent, $ho in KnowledgeOther)=if($a=agentB and $ho=NA) then true else if($a=agentS and $ho=NB) then true else false endif endif
-	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KEB) or ($a=agentE and $sk=KES) or ($a=agentE and $sk=KEB) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS) or ($a=agentS and $sk=KES)) then true else false endif
+	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentE and $sk=KES) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
 	function mode=chosenMode
 
 	agent Alice:

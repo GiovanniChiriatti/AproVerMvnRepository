@@ -17,7 +17,7 @@ load YAHATest.asm
 //  stato iniziale di Bob sia WAITING_GENKEYSES
 // si impostano quindi le conoscenze per i singoli attori
 set chosenMode:=PASSIVE;
-set chosenReceiver:=AG_E;
+set chosenReceiver:=AG_B;
 check 	internalStateA(agentA)=IDLE_REQCOM;
 check	internalStateB(agentB)=WAITING_ENCKBS;
 check	internalStateS(agentS)=WAITING_GENKEYSES;
@@ -38,7 +38,7 @@ check	knowsSymKey(agentS, KAB)=true;
 
 
 check mode=PASSIVE;
-check receiver=AG_E;
+check receiver=AG_B;
 
 // step 1 -  Alice->Bob:{CA,NA} --trasformato --- Alice -> Eve {CA,NA} 
 

@@ -2,7 +2,7 @@ scenario test4SSLX
 
 //Test di receiver Bob in modalità Passiva
 
-load SSLX.asm
+load SSLXTest.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A

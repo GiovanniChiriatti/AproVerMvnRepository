@@ -2,7 +2,7 @@ scenario test1NSX
 
 //Test di receiver Eve in modalità Passiva
 
-load Needham_SchroederX.asm
+load Needham_SchroederXTest.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A

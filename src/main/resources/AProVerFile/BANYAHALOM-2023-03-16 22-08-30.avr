@@ -5,6 +5,7 @@ Eve Doesn't Create Messages
 dati Alice AsymmetricPublicKey 
 dati Alice AsymmetricPrivateKey 
 dati Alice SymmetricKey 
+KAS
 dati Alice Hash 
 dati Alice Bitstring 
 dati Alice IdCertificate 
@@ -38,7 +39,7 @@ dati Bob Tag
 dati Bob Timestamp 
 dati Bob Digest 
 dati Bob KnowAcq 
-KNA - Symmetric Key
+KNA - Symmetric Key = 0
 dati Eve AsymmetricPublicKey 
 dati Eve AsymmetricPrivateKey 
 dati Eve SymmetricKey 
@@ -54,12 +55,13 @@ dati Eve Tag
 dati Eve Timestamp 
 dati Eve Digest 
 dati Eve KnowAcq 
-KNA - Symmetric Key
+KNA - Symmetric Key = 3
 dati Server AsymmetricPublicKey 
 dati Server AsymmetricPrivateKey 
 dati Server SymmetricKey 
 KAB
 KBS
+KAS
 dati Server Hash 
 dati Server Bitstring 
 dati Server IdCertificate 
@@ -107,13 +109,13 @@ NameMess MC
 ActorFrom Eve
 ActorTo Bob
 Eve Intercept true
-Messages {CA},{KNA,NB}-KBS-
+Messages {CA},{KNA,NB}
 dati SecurityFunctionsPartMessage j=0
 {CA} 
 dati listPartMessage j=0 k=0
 CA
 dati SecurityFunctionsPartMessage j=1
-{KNA,NB}  - KBS - 
+{KNA,NB} 
 dati listPartMessage j=1 k=0
 KNA
 dati listPartMessage j=1 k=1
@@ -140,17 +142,41 @@ dati listPartMessage j=1 k=2
 NB
 dati Messaggio 4
 NameMess ME
+ActorFrom Server
+ActorTo Alice
+Eve Intercept true
+Messages {NB},{CB,KAB,NA}-KAS-,{CA,KAB,NB}-KBS-
+dati SecurityFunctionsPartMessage j=0
+{NB} 
+dati listPartMessage j=0 k=0
+NB
+dati SecurityFunctionsPartMessage j=1
+{CB,KAB,NA}  - KAS - 
+dati listPartMessage j=1 k=0
+CB
+dati listPartMessage j=1 k=1
+KAB
+dati listPartMessage j=1 k=2
+NA
+dati SecurityFunctionsPartMessage j=2
+{CA,KAB,NB}  - KBS - 
+dati listPartMessage j=2 k=0
+CA
+dati listPartMessage j=2 k=1
+KAB
+dati listPartMessage j=2 k=2
+NB
+dati Messaggio 5
+NameMess MF
 ActorFrom Eve
 ActorTo Bob
 Eve Intercept true
-Messages {CA,KNA,NB}-KBS-,{NB}-KNA-
+Messages {KNA,NB}-KBS-,{NB}-KNA-
 dati SecurityFunctionsPartMessage j=0
-{CA,KNA,NB}  - KBS - 
+{KNA,NB}  - KBS - 
 dati listPartMessage j=0 k=0
-CA
-dati listPartMessage j=0 k=1
 KNA
-dati listPartMessage j=0 k=2
+dati listPartMessage j=0 k=1
 NB
 dati SecurityFunctionsPartMessage j=1
 {NB}  - KNA - 

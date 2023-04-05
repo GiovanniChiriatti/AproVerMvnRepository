@@ -2,7 +2,7 @@ scenario test4NSSYM
 
 //Test di receiver Eve in modalità Passiva
 
-load Needham_SchroederNSSYM.asm
+load Needham_SchroederNSSYMTest.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A

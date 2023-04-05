@@ -24,7 +24,7 @@ dati Alice Tag
 dati Alice Timestamp 
 dati Alice Digest 
 dati Alice KnowAcq 
-KAB - Symmetric Key
+KAB - Symmetric Key = 0
 dati Bob AsymmetricPublicKey 
 dati Bob AsymmetricPrivateKey 
 dati Bob SymmetricKey 
@@ -48,7 +48,7 @@ dati Bob Tag
 dati Bob Timestamp 
 dati Bob Digest 
 dati Bob KnowAcq 
-KAB - Symmetric Key
+KAB - Symmetric Key = 0
 dati Eve AsymmetricPublicKey 
 dati Eve AsymmetricPrivateKey 
 dati Eve SymmetricKey 
