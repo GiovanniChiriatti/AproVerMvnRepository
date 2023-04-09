@@ -8,20 +8,17 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
-	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_MA | CHECK_END_A | END_A}
-	enum domain StateBob = {WAITING_MB | WAITING_MD | CHECK_END_B | END_B}
-	enum domain StateEve = {WAITING_MC | WAITING_MF | CHECK_END_E | END_E}
-	enum domain StateServer = {WAITING_ME | CHECK_END_S | END_S}
+	enum domain StateAlice = {IDLE_KK | WAITING_CSNK | CHECK_END_A | END_A}
+	enum domain StateBob = {WAITING_NK | CHECK_END_B | END_B}
 
-	enum domain Message = {MA | MB | MC | MD | ME | MF} 
+	enum domain Message = {KK | NK | CSNK} 
 
-	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KNA|NA|NB|NB2}
+	enum domain Knowledge ={CA|NB|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE|SIGNPRIVKA|SIGNPRIVKB|SIGNPRIVKE|SIGNPUBKA|SIGNPUBKB|SIGNPUBKE|SKAB|SKAE|SKEB}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
+	enum domain Receiver={AG_A|AG_B|AG_E}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -53,8 +50,6 @@ signature:
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
-	controlled internalStateE: Eve -> StateEve
-	controlled internalStateS: Server -> StateServer
 
 	//name of the message
 	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
@@ -130,7 +125,6 @@ signature:
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
-	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
@@ -138,7 +132,6 @@ definitions:
 				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
-				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=

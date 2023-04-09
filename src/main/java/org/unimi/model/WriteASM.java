@@ -1097,7 +1097,10 @@ public class WriteASM {
 				+ changNumMSG[i] + " and mode=PASSIVE)then\n");
 		b.write("			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge\n");
 		b.write("			        // the message must be sent unaltered\n");
-		b.write("		          par \n");
+		//b.write("		          par \n");
+		//
+		
+		writePrevMessageAttackerPassive( b, message,  i);
 		//
 		// per ogni messaggio
 		// dal payload si estraggono tutti i filed e si scrivono a prescindere
@@ -1132,6 +1135,7 @@ public class WriteASM {
 		}
 		// per ogni messaggio si estraggono le operazioni
 		int totOpz = 0;
+		int endMsgDet = 1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -1164,7 +1168,8 @@ public class WriteASM {
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
 				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				findActorFromTo(message.getActorfrom(), message.getActorTo());
 				if (debug) {System.out.println("writeKnowledge 2");}
 				linesKnowledge = writeKnowledge(message, i, msgFieldDet, "$a", true);
@@ -1179,7 +1184,7 @@ public class WriteASM {
 		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
 		// decodificarli e in questo caso si aggiorna la knowlege
 		
-		
+		endMsgDet=1;
 		boolean firstOp = true;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
@@ -1194,7 +1199,8 @@ public class WriteASM {
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
@@ -1233,6 +1239,110 @@ public class WriteASM {
 		b.write("		          endpar \n");
 		b.write("			endif \n");
 
+	}
+	// Scrittura delle conoscenze acquisite in messaggi precedenti
+	private void writePrevMessageAttackerPassive(BufferedWriter b, Message message, int i) throws IOException {
+//---------------------------------------------------------
+		int[] listMsgPrev = findMessagePrev("Eve", message.getActorTo(), i);
+		int z = i - 1;
+		int endMsgDet = 1;
+		boolean flgPar = false;
+		if (listMsgPrev == null) {
+			b.write("		     par \n");
+		} else {
+			for (int k = 0; k < 15; k++) {
+				if (listMsgPrev[k] > 90)
+					break;
+				z = listMsgPrev[k];
+
+				// la prima parte delle istruzioni da scrivere riguardano quelle che permettono
+				// di aggiornare le conoscenze dell'attore
+				// che riceve il messaggio. per fare questo si deve vedere cosa riceve nel
+				// messaggio precedente
+				Message messagePrev = messages.getMessage(z);
+				String actorFromPrev = "agent" +messagePrev.getActorfrom().substring(0, 1).toUpperCase();
+				if (messagePrev.getActorfrom().equals(message.getActorfrom())) {
+					actorFromPrev = "$a";
+				}
+				if (messagePrev.getActorfrom().equals(message.getActorTo())) {
+					actorFromPrev = "$b";
+				}	
+				// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
+				String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
+				String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
+
+
+				// si impostano le classi dell'attore che trasmette il messaggio e quello che lo
+				// riceve
+				findActorFromTo(messagePrev.getActorfrom(), messagePrev.getActorTo());
+
+				// Si verifica se la parte del messaggio è decodificabile altrimenti si leva
+				// dall'elenco
+				// del messaggio precedente
+
+				String[] NewListSubPayloadPrev = new String[15];
+				int indList = 0;
+				// determino quali sono i campi del payload che possono essere letti
+				// dall''attore che riceve il messaggio
+				String newPayloadPrev = findNewPayloadPrev(indList, listSubPayloadPrev, msgFieldTotPrev,
+						NewListSubPayloadPrev, z);
+
+				// Si stabilisce l'elenco dei campi che sono conosciuti dall'attore che riceve
+				// il messaggio
+				msgFieldTotPrev = FindField(newPayloadPrev);
+
+				// si memorizzano l'elenco dei sotto-payload che l'attore che riceve il
+				// messaggio puo decodificare
+				listSubPayloadPrev = NewListSubPayloadPrev;
+
+
+				flgPar = false;
+				// cerca tutti i field che sono in chiaro nel payload per poi scrive il
+				// Knowledge
+				String[] msgFieldPrevFree = finfFreeFieldPrev(listSubPayloadPrev, msgFieldTotPrev);
+				for (String e : msgFieldPrevFree) {
+					if (e != null) {
+						flgPar = true;
+						break;
+					}
+				}
+
+				if (flgPar) {
+					String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree,
+							actorFromPrev, false);
+					b.write("		     par\n");
+					String spaces = "			      ";
+					printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev,
+							(z), actorFromPrev, false, "Kno3", true);
+				}
+
+				// Si richiama la routine per scrivere le if delle operazioni di ogni singolo
+				// sotto-payload
+				//
+				String[] msgFieldPrev = writeIfPayloadPrev(b, messagePrev, message, i, z, listSubPayloadPrev,
+						msgFieldTotPrev, "");
+
+				String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev, 1);
+				endMsgDet = contMsgFielDet(msgFieldDetPrev);
+
+
+				//
+				// si inseriscono nell'array linesKnowledgePrev tutte le istruzioni per la
+				// memorizzazione delle informazioni
+				// Wnowledge , mesfielf etc.
+				//
+
+				String[] linesKnowledgePrev = writeKnowledge(messagePrev, (z), msgFieldTotPrev, actorFromPrev,
+						false);
+
+				String spaces = "			      ";
+				//
+				// Si scrivono le istruzioni sulle conoscenze
+				//
+				printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
+						actorFromPrev, false, "Kno3", true);
+			}
+		}
 	}
 
 	// si scrivono le conoscenze in base ai sotto peyload del messaggio
@@ -1291,7 +1401,7 @@ public class WriteASM {
 			}
 		}
 
-		
+		int endMsgDet = 1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -1315,7 +1425,8 @@ public class WriteASM {
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
-				String[] msgFieldDet2 = detField(msgField, msgFieldTot);
+				String[] msgFieldDet2 = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet2);
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			            if(" + reversOperation(operation,"decod") + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
@@ -1375,7 +1486,8 @@ public class WriteASM {
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
 				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet2 = detField(msgField, msgFieldTot);
+				String[] msgFieldDet2 = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet2);
 				findActorFromTo(message.getActorfrom(), message.getActorTo());
 				if (debug) {System.out.println("writeKnowledge 4-");}
 				String[] linesKnowledge2 = writeKnowledge(message, i, msgFieldDet2, type, action);
@@ -1398,7 +1510,8 @@ public class WriteASM {
 		b.write("			        //check the reception of the message and the modality of the attack\n");
 		b.write("			if(protocolMessage("+i+",$a,self)=" + changNumMSG[i] + " and protocolMessage("+i+",self,$b)!="
 				+ changNumMSG[i] + " and mode=ACTIVE)then\n");
-		b.write("		          par \n");
+		
+		writePrevMessageAttackerPassive( b, message,  i);
 		//
 		// per ogni messaggio
 		// dal payload si estraggono tutti i filed e si scrivono a prescindere
@@ -1418,6 +1531,7 @@ public class WriteASM {
 		String[] listSubPayload = findMsg(message.getPayload());
 		// per ogni messaggio si estraggono le operazioni
 		int totOpz = 0;
+		int endMsgDet=1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -1455,7 +1569,8 @@ public class WriteASM {
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
 				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				if (debug) {
 					System.out.println("*---- writeMessageAttackerActive msgField ---*");
 					for (String e : msgField) {
@@ -1489,6 +1604,7 @@ public class WriteASM {
 		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
 		// decodificarli e in questo caso si aggiorna la knowlege
 		boolean firstOp = true;
+		int endMseDet=1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -1502,7 +1618,8 @@ public class WriteASM {
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 						+ ",self)=true)then\n");
 
@@ -1745,13 +1862,13 @@ public class WriteASM {
 
 	// determina i campi di output del sottomessaggio (si dividono i messaggi del
 	// payload)
-	private String[] detField(String[] msgField, String[] msgFieldTot) {
+	private String[] detField(String[] msgField, String[] msgFieldTot, int init) {
 		String[] msgFieldDet = new String[15];
 		int i = 1;
 		int start = 0;
 		int end = 0;
 		boolean find = false;
-		for (int j = 1; j < 15; j++) {
+		for (int j = init; j < 15; j++) {
 			if (msgField[i] == null) {
 				break;
 			}
@@ -1778,6 +1895,18 @@ public class WriteASM {
 		}
 
 		return msgFieldDet;
+	}
+	
+	private int contMsgFielDet(String [] msgFieldDet) {
+		int endMsgDet=1;
+		int i=0;
+		for (String e : msgFieldDet) {
+			i++;
+			if (e != null && !e.isEmpty()) {
+				endMsgDet=i;
+			}
+		}
+		return endMsgDet;
 	}
 
 	// routin che server per determinare di quanti field si compone il messaggio e
@@ -2586,6 +2715,7 @@ public class WriteASM {
 		if (debug) {
 			System.out.println("eveFirstMessager leggo il messaggio numero " + i);
 		}
+		int endMsgDet=1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -2602,7 +2732,8 @@ public class WriteASM {
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 					msgField, msgFieldTot);
-			String[] msgFieldDet = detField(msgField, msgFieldTot);
+			String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+			endMsgDet = contMsgFielDet(msgFieldDet);
 			actorStartProtocol = message.getActorfrom();
 			actorReceiveProtocol = message.getActorTo();
 			b.write("			if(internalState" + message.getActorfrom().substring(0, 1) + "(self)=IDLE_"
@@ -2664,7 +2795,7 @@ public class WriteASM {
 	// Si scrivono le informazioni del primo messaggio
 	private void firstMessageHonest(BufferedWriter b, String[] listSubPayload, String[] msgFieldTot, Message message,
 			int i) throws IOException {
-
+		int endMsgDet=1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -2681,7 +2812,8 @@ public class WriteASM {
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 					msgField, msgFieldTot);
-			String[] msgFieldDet = detField(msgField, msgFieldTot);
+			String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+			endMsgDet = contMsgFielDet(msgFieldDet);
 			actorStartProtocol = message.getActorfrom();
 			actorReceiveProtocol = message.getActorTo();
 			b.write("			if(internalState" + message.getActorfrom().substring(0, 1) + "(self)=IDLE_"
@@ -2815,151 +2947,172 @@ public class WriteASM {
 				actorFromPrev = sigleActTo;
 			}
 			b.write("			if(internalState" + message.getActorfrom().substring(0, 1) + "(self)=WAITING_"
-					+ changNumMSG[i] + " and protocolMessage("+i+","+ actorFromPrev+ "," + actorToPrev +")=" + changNumMSG[i - 1] + ")then\n");
+					+ changNumMSG[i] + " and protocolMessage("+(i-1)+","+ actorFromPrev+ "," + actorToPrev +")=" + changNumMSG[i - 1] + ")then\n");
 //---------------------------------------------------------
 			int[] listMsgPrev = findMessagePrev(message.getActorfrom(), message.getActorTo(), i);
-			int z= i - 1;
-			if (debug) {System.out.println ("findMessagePrev sono uscito con " + listMsgPrev);}
+			int z = i - 1;
+			int endMsgDet = 1;
+			if (debug) {
+				System.out.println("findMessagePrev sono uscito con " + listMsgPrev);
+			}
 			if (listMsgPrev == null) {
-				if (debug) {System.out.println ("findMessagePrev ramo null");}
-				b.write("			     par\n");
-			} else {
-				if (debug) {System.out.println ("findMessagePrev ramo non null " + listMsgPrev[0]);}
-				z = listMsgPrev[0];
-
-				// la prima parte delle istruzioni da scrivere riguardano quelle che permettono
-				// di aggiornare le conoscenze dell'attore
-				// che riceve il messaggio. per fare questo si deve vedere cosa riceve nel
-				// messaggio precedente
-				Message messagePrev = messages.getMessage(z);
-				// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
-				String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
-				String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
-
 				if (debug) {
-					System.out.println("2 payload prev z" + (z) + " " + messages.getMessage(z).getPayload());
-				}
-				// si impostano le classi dell'attore che trasmette il messaggio e quello che lo
-				// riceve
-				findActorFromTo(messagePrev.getActorfrom(), messagePrev.getActorTo());
-
-				// Si verifica se la parte del messaggio è decodificabile altrimenti si leva
-				// dall'elenco
-				// del messaggio precedente
-
-				String[] NewListSubPayloadPrev = new String[15];
-				int indList = 0;
-				// determino quali sono i campi del payload che possono essere letti
-				// dall''attore che riceve il messaggio
-				String newPayloadPrev = findNewPayloadPrev(indList, listSubPayloadPrev, msgFieldTotPrev,
-						NewListSubPayloadPrev,z);
-				if (debug) {
-					System.out.println("2 NewPayloadPrev " + newPayloadPrev);
-				}
-				if (debug) {
-					System.out.println("2 ------> NewListSubPayloadPrev <----------");
-					for (String e : NewListSubPayloadPrev) {
-						System.out.println("2 ------> " + e + " <-------------");
-					}
-				}
-
-
-				// Si stabilisce l'elenco dei campi che sono conosciuti dall'attore che riceve
-				// il messaggio
-				msgFieldTotPrev = FindField(newPayloadPrev);
-				if (debug) {
-					System.out.println("2 ------> msgFieldTotPrev <----------");
-					for (String e : msgFieldTotPrev) {
-						System.out.println("2 ------> " + e + " <-------------");
-					}
-				}
-				// si memorizzano l'elenco dei sotto-payload che l'attore che riceve il
-				// messaggio puo decodificare
-				listSubPayloadPrev = NewListSubPayloadPrev;
-				if (debug) {
-					System.out.println("2 ------> NewListSubPayloadPrev <----------");
-					for (String e : listSubPayloadPrev) {
-						System.out.println("2 ------> " + e + " <-------------");
-					}
-				}
-
-				flgPar = false;
-	  			// cerca tutti i field che sono in chiaro nel payload per poi scrive il Knowledge
-				String[] msgFieldPrevFree = finfFreeFieldPrev(listSubPayloadPrev,msgFieldTotPrev);
-				for (String e : msgFieldPrevFree) {
-					if (e != null) {
-						flgPar = true;
-						break;
-					}
-				}
-				if (debug) {
-					System.out.println("z5 ------> msgFieldPrevFree <----------");
-					for (String e : msgFieldPrevFree) {
-						System.out.println("z5 ------> " + e + " <-------------");
-					}
+					System.out.println("findMessagePrev ramo null");
 				}
 				
-		 		if (flgPar){
-					String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree, actorFromPrev,
-							false);
+				b.write("			     par\n");
+			} else {
+				if (debug) {
+					System.out.println("findMessagePrev ramo non null " + listMsgPrev[0]);
+				}
+				for (int k = 0; k < 15; k++) {
+					if (listMsgPrev[k] > 90)
+						break;
+					z = listMsgPrev[k];
 					if (debug) {
-						System.out.println("z5 ------> linesKnowledgePrevFree <----------");
-						for (String e : linesKnowledgePrevFree) {
+						System.out.println("findMessagePrev k " + k + " " + listMsgPrev[k]);
+					}
+
+					// la prima parte delle istruzioni da scrivere riguardano quelle che permettono
+					// di aggiornare le conoscenze dell'attore
+					// che riceve il messaggio. per fare questo si deve vedere cosa riceve nel
+					// messaggio precedente
+					Message messagePrev = messages.getMessage(z);
+					// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
+					String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
+					String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
+
+					if (debug) {
+						System.out.println("2 payload prev z" + (z) + " " + messages.getMessage(z).getPayload());
+					}
+					// si impostano le classi dell'attore che trasmette il messaggio e quello che lo
+					// riceve
+					findActorFromTo(messagePrev.getActorfrom(), messagePrev.getActorTo());
+
+					// Si verifica se la parte del messaggio è decodificabile altrimenti si leva
+					// dall'elenco
+					// del messaggio precedente
+
+					String[] NewListSubPayloadPrev = new String[15];
+					int indList = 0;
+					// determino quali sono i campi del payload che possono essere letti
+					// dall''attore che riceve il messaggio
+					String newPayloadPrev = findNewPayloadPrev(indList, listSubPayloadPrev, msgFieldTotPrev,
+							NewListSubPayloadPrev, z);
+					if (debug) {
+						System.out.println("2 NewPayloadPrev " + newPayloadPrev);
+					}
+					if (debug) {
+						System.out.println("2 ------> NewListSubPayloadPrev <----------");
+						for (String e : NewListSubPayloadPrev) {
+							System.out.println("2 ------> " + e + " <-------------");
+						}
+					}
+
+					// Si stabilisce l'elenco dei campi che sono conosciuti dall'attore che riceve
+					// il messaggio
+					msgFieldTotPrev = FindField(newPayloadPrev);
+					if (debug) {
+						System.out.println("2 ------> msgFieldTotPrev <----------");
+						for (String e : msgFieldTotPrev) {
+							System.out.println("2 ------> " + e + " <-------------");
+						}
+					}
+					// si memorizzano l'elenco dei sotto-payload che l'attore che riceve il
+					// messaggio puo decodificare
+					listSubPayloadPrev = NewListSubPayloadPrev;
+					if (debug) {
+						System.out.println("2 ------> NewListSubPayloadPrev <----------");
+						for (String e : listSubPayloadPrev) {
+							System.out.println("2 ------> " + e + " <-------------");
+						}
+					}
+
+					flgPar = false;
+					// cerca tutti i field che sono in chiaro nel payload per poi scrive il
+					// Knowledge
+					String[] msgFieldPrevFree = finfFreeFieldPrev(listSubPayloadPrev, msgFieldTotPrev);
+					for (String e : msgFieldPrevFree) {
+						if (e != null) {
+							flgPar = true;
+							break;
+						}
+					}
+					if (debug) {
+						System.out.println("z5 ------> msgFieldPrevFree <----------");
+						for (String e : msgFieldPrevFree) {
 							System.out.println("z5 ------> " + e + " <-------------");
 						}
 					}
-		 			b.write("			    par\n");
-					printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-							actorFromPrev, false, "Kno3",true);
-		 		}
-			 
-				
-				// Si richiama la routine per scrivere le if delle operazioni di ogni singolo
-				// sotto-payload
-				//
-				String[] msgFieldPrev = writeIfPayloadPrev(b, messagePrev, message, i,z, listSubPayloadPrev, msgFieldTotPrev,
-						"");
-				if (debug) {
-					System.out.println("z5 ------> msgFieldPrev <----------");
-					for (String e : msgFieldPrev) {
-						System.out.println("z5 ------> " + e + " <-------------");
-					}
-				}
-				String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev);
-				if (debug) {
-					System.out.println("z5 ------> msgFieldTotPrev <----------");
-					for (String e : msgFieldTotPrev) {
-						System.out.println("z5 ------> " + e + " <-------------");
-					}
-				}
 
-				//
-				// si inseriscono nell'array linesKnowledgePrev tutte le istruzioni per la
-				// memorizzazione delle informazioni
-				// Wnowledge , mesfielf etc.
-				//
-				if (debug) {System.out.println("writeKnowledge 10");}
-				String[] linesKnowledgePrev = writeKnowledge(messagePrev, (z), msgFieldTotPrev, actorFromPrev, false);
-				if (debug) {
-					System.out.println("z5 ------> linesKnowledgePrev <----------");
-					for (String e : linesKnowledgePrev) {
-						System.out.println("z5 ------> " + e + " <-------------");
+					if (flgPar) {
+						String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree,
+								actorFromPrev, false);
+						if (debug) {
+							System.out.println("z5 ------> linesKnowledgePrevFree <----------");
+							for (String e : linesKnowledgePrevFree) {
+								System.out.println("z5 ------> " + e + " <-------------");
+							}
+						}
+						b.write("			    par\n");
+						printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev,
+								(z), actorFromPrev, false, "Kno3", true);
 					}
-				}
 
-				String spaces = "			                      ";
-				if (debug) {
-					System.out.println("z5 printKnowledge ");
+					// Si richiama la routine per scrivere le if delle operazioni di ogni singolo
+					// sotto-payload
+					//
+					String[] msgFieldPrev = writeIfPayloadPrev(b, messagePrev, message, i, z, listSubPayloadPrev,
+							msgFieldTotPrev, "");
+					if (debug) {
+						System.out.println("z5 ------> msgFieldPrev <----------");
+						for (String e : msgFieldPrev) {
+							System.out.println("z5 ------> " + e + " <-------------");
+						}
+					}
+					String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev, 1);
+					endMsgDet = contMsgFielDet(msgFieldDetPrev);
+					if (debug) {
+						System.out.println("z5 ------> msgFieldTotPrev <----------");
+						for (String e : msgFieldTotPrev) {
+							System.out.println("z5 ------> " + e + " <-------------");
+						}
+					}
+
+					//
+					// si inseriscono nell'array linesKnowledgePrev tutte le istruzioni per la
+					// memorizzazione delle informazioni
+					// Wnowledge , mesfielf etc.
+					//
+					if (debug) {
+						System.out.println("writeKnowledge 10");
+					}
+					String[] linesKnowledgePrev = writeKnowledge(messagePrev, (z), msgFieldTotPrev, actorFromPrev,
+							false);
+					if (debug) {
+						System.out.println("z5 ------> linesKnowledgePrev <----------");
+						for (String e : linesKnowledgePrev) {
+							System.out.println("z5 ------> " + e + " <-------------");
+						}
+					}
+
+					String spaces = "			                      ";
+					if (debug) {
+						System.out.println("z5 printKnowledge ");
+					}
+					//
+					// Si scrivono le istruzioni sulle conoscenze
+					//
+					if (debug) {
+						System.out.println("printKnowSubPayload -->4");
+					}
+					printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
+							actorFromPrev, false, "Kno3", true);
 				}
-				//
-				// Si scrivono le istruzioni sulle conoscenze
-				//
-				if(debug) {System.out.println("printKnowSubPayload -->4");}
-				printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-						actorFromPrev, false, "Kno3",true);
 			}
-			//printKnowledge(b, "Kno3", linesKnowledgePrev, spaces);
-			b.write("			            protocolMessage("+i+",self,"+sigleActTo+"):=" + changNumMSG[i] + "\n");
+			// printKnowledge(b, "Kno3", linesKnowledgePrev, spaces);
+			b.write("			            protocolMessage(" + i + ",self," + sigleActTo + "):=" + changNumMSG[i]
+					+ "\n");
 			if (debug) {
 				System.out.println("z6 findMsg ");
 			}
@@ -2969,10 +3122,11 @@ public class WriteASM {
 			//
 			listSubPayload = findMsg(message.getPayload());
 			if (debug) {
-				System.out.println("lista payload del messaggio numero "+ i +" message.getPayload() " +message.getPayload() );
-				for(int k=0;k<listSubPayload.length;k++) {
-					if (listSubPayload[k] !=null && !listSubPayload[k].isEmpty()) {
-						System.out.println("otherMessagerHonest listSubPayload["+k+"]="+listSubPayload[k]);
+				System.out.println(
+						"lista payload del messaggio numero " + i + " message.getPayload() " + message.getPayload());
+				for (int k = 0; k < listSubPayload.length; k++) {
+					if (listSubPayload[k] != null && !listSubPayload[k].isEmpty()) {
+						System.out.println("otherMessagerHonest listSubPayload[" + k + "]=" + listSubPayload[k]);
 					}
 				}
 			}
@@ -3004,10 +3158,10 @@ public class WriteASM {
 			b.write("		endlet\n");
 			
 			if (endMessage) {
-				ruleRCheck(b,lastMsgAlice);
-				ruleRCheck(b,lastMsgBob);
-				ruleRCheck(b, lastMsgEve);
-				ruleRCheck(b,lastMsgServer);
+				ruleRCheck(b,lastMsgAlice,i);
+				ruleRCheck(b,lastMsgBob,i);
+				ruleRCheck(b, lastMsgEve,i);
+				ruleRCheck(b,lastMsgServer,i);
 			}
 			
 			
@@ -3023,22 +3177,31 @@ public class WriteASM {
 				+ changNumMSG[i] + " and protocolMessage("+ (i-1)+","+ actorFromPrev+ "," + actorToPrev +")=" + changNumMSG[i - 1] + ")then\n");
 		// si scrivono le istruzioni quando il receiver non è l'agent Eve
 		b.write("			   if(receiver!=AG_E)then\n");
-
+		String actorFromPrevDet = actorToPrev;
 		int[] listMsgPrev = findMessagePrev(message.getActorfrom(), message.getActorTo(), i);
 		int z= i - 1;
+		int endMsgDet=1;
 		if (debug) {System.out.println ("findMessagePrev sono uscito con " + listMsgPrev);}
 		if (listMsgPrev == null) {
 			if (debug) {System.out.println ("findMessagePrev ramo null");}
 			b.write("			     par\n");
 		} else {
 			if (debug) {System.out.println ("findMessagePrev ramo non null " + listMsgPrev[0]);}
-			z = listMsgPrev[0];
+			for (int k = 0; k < 15; k++) {
+				if (listMsgPrev[k]>90) break;
+				z = listMsgPrev[k];
 
 			// la prima parte delle istruzioni da scrivere riguardano quelle che permettono
 			// di aggiornare le conoscenze dell'attore
 			// che riceve il messaggio. per fare questo si deve vedere cosa riceve nel
 			// messaggio precedente
 			Message messagePrev = messages.getMessage(z);
+			if (!message.getActorTo().equals("Eve") && !message.getActorfrom().equals("Eve")) {
+				actorFromPrevDet = "$e";
+			}
+			
+			
+			
 			// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
 			String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
 			String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
@@ -3107,7 +3270,7 @@ public class WriteASM {
 			}
 			
 	 		if (flgPar){
-				String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree, actorFromPrev,
+				String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree, actorFromPrevDet,
 						false);
 				if (debug) {
 					System.out.println("z5 ------> linesKnowledgePrevFree <----------");
@@ -3117,7 +3280,7 @@ public class WriteASM {
 				}
 	 			b.write("			    par\n");
 				printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-						actorFromPrev, false, "Kno3",true);
+						actorFromPrevDet, false, "Kno3",true);
 	 		}
 		 
 			
@@ -3132,7 +3295,8 @@ public class WriteASM {
 					System.out.println("z5 ------> " + e + " <-------------");
 				}
 			}
-			String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev);
+			String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev, 1);
+			endMsgDet = contMsgFielDet(msgFieldDetPrev);
 			if (debug) {
 				System.out.println("z5 ------> msgFieldTotPrev <----------");
 				for (String e : msgFieldTotPrev) {
@@ -3146,7 +3310,7 @@ public class WriteASM {
 			// Wnowledge , mesfielf etc.
 			//
 			if (debug) {System.out.println("writeKnowledge 10");}
-			String[] linesKnowledgePrev = writeKnowledge(messagePrev, (z), msgFieldTotPrev, actorFromPrev, false);
+			String[] linesKnowledgePrev = writeKnowledge(messagePrev, (z), msgFieldTotPrev, actorFromPrevDet, false);
 			if (debug) {
 				System.out.println("z5 ------> linesKnowledgePrev <----------");
 				for (String e : linesKnowledgePrev) {
@@ -3163,7 +3327,8 @@ public class WriteASM {
 			//
 			if(debug) {System.out.println("printKnowSubPayload -->4");}
 			printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-					actorFromPrev, false, "Kno3",true);
+					actorFromPrevDet, false, "Kno3",true);
+		}
 		}
 		//printKnowledge(b, "Kno3", linesKnowledgePrev, spaces);
 		b.write("			            protocolMessage("+i+",self,$e):=" + changNumMSG[i] + "\n");
@@ -3212,90 +3377,99 @@ public class WriteASM {
 		if (listMsgPrev == null) {
 			b.write("			     par\n");
 		} else {
-			z = listMsgPrev[0];
-			Message messagePrev = messages.getMessage(z);
-			// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
-			String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
-			String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
-			if (debug) {
-				System.out.println("sono nel messaggio numero" + i + " e nel ramo AG_E");
-			}
-			if (debug) {
-				System.out.println("3 payload prev z" + (z) + " " + messages.getMessage(z).getPayload());
-			}
-			// Si verifica se la parte del messaggio è decodificabile altrimenti si leva
-			// dall'elenco
-			// del messaggio precedente
-			findActorFromTo(messagePrev.getActorfrom(), messagePrev.getActorTo());
-
-			String[] NewListSubPayloadPrev = new String[15];
-			String newPayloadPrev = new String();
-			int indList = 0;
-
-			newPayloadPrev = findNewPayloadPrev(indList, listSubPayloadPrev, msgFieldTotPrev, NewListSubPayloadPrev,z);
-
-			if (debug) {
-				System.out.println("2 NewPayloadPrev " + newPayloadPrev);
-			}
-
-			// Si stabiliscono l'elenco dei campi che sono conosciuti dall'attore che riceve
-			// il messaggio
-			msgFieldTotPrev = FindField(newPayloadPrev);
-			// si memorizzano l'elenco dei sotto-payload che l'attore che riceve il
-			// messaggio puo decodificare
-			listSubPayloadPrev = NewListSubPayloadPrev;
-			if (debug) {
-				System.out.println("3 ------> NewListSubPayloadPrev <----------");
-				for (String e : listSubPayloadPrev) {
-					System.out.println("3 ------> " + e + " <-------------");
-				}
-			}
-			flgPar = false;
-			// cerca tutti i field che sono in chiaro nel payload per poi scrive il Knowledge
-			String[] msgFieldPrevFree = finfFreeFieldPrev(listSubPayloadPrev,msgFieldTotPrev);
-			for (String e : msgFieldPrevFree) {
-				if (e != null) {
-					flgPar = true;
+			for (int k = 0; k < 15; k++) {
+				if (listMsgPrev[k] > 90)
 					break;
-				}
-			}
-			if (debug) {
-				System.out.println("z5 ------> msgFieldPrevFree <----------");
-				for (String e : msgFieldPrevFree) {
-					System.out.println("z5 ------> " + e + " <-------------");
-				}
-			}
-			
-	 		if (flgPar){
-				String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree, actorFromPrev, false);
+				z = listMsgPrev[k];
+				Message messagePrev = messages.getMessage(z);
+				// dal messaggio precedente si estraggono i sott-ayload e l'elenco dei campi
+				String[] listSubPayloadPrev = findMsg(messagePrev.getPayload());
+				String[] msgFieldTotPrev = FindField(messages.getMessage(z).getPayload());
 				if (debug) {
-					System.out.println("z5 ------> linesKnowledgePrevFree <----------");
-					for (String e : linesKnowledgePrevFree) {
+					System.out.println("sono nel messaggio numero" + i + " e nel ramo AG_E");
+				}
+				if (debug) {
+					System.out.println("3 payload prev z" + (z) + " " + messages.getMessage(z).getPayload());
+				}
+				// Si verifica se la parte del messaggio è decodificabile altrimenti si leva
+				// dall'elenco
+				// del messaggio precedente
+				findActorFromTo(messagePrev.getActorfrom(), messagePrev.getActorTo());
+
+				String[] NewListSubPayloadPrev = new String[15];
+				String newPayloadPrev = new String();
+				int indList = 0;
+
+				newPayloadPrev = findNewPayloadPrev(indList, listSubPayloadPrev, msgFieldTotPrev, NewListSubPayloadPrev,
+						z);
+
+				if (debug) {
+					System.out.println("2 NewPayloadPrev " + newPayloadPrev);
+				}
+
+				// Si stabiliscono l'elenco dei campi che sono conosciuti dall'attore che riceve
+				// il messaggio
+				msgFieldTotPrev = FindField(newPayloadPrev);
+				// si memorizzano l'elenco dei sotto-payload che l'attore che riceve il
+				// messaggio puo decodificare
+				listSubPayloadPrev = NewListSubPayloadPrev;
+				if (debug) {
+					System.out.println("3 ------> NewListSubPayloadPrev <----------");
+					for (String e : listSubPayloadPrev) {
+						System.out.println("3 ------> " + e + " <-------------");
+					}
+				}
+				flgPar = false;
+				// cerca tutti i field che sono in chiaro nel payload per poi scrive il
+				// Knowledge
+				String[] msgFieldPrevFree = finfFreeFieldPrev(listSubPayloadPrev, msgFieldTotPrev);
+				for (String e : msgFieldPrevFree) {
+					if (e != null) {
+						flgPar = true;
+						break;
+					}
+				}
+				if (debug) {
+					System.out.println("z5 ------> msgFieldPrevFree <----------");
+					for (String e : msgFieldPrevFree) {
 						System.out.println("z5 ------> " + e + " <-------------");
 					}
 				}
-	 			b.write("			    par\n");
-				printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-						actorFromPrev, false, "Kno3",true);
-	 		}
-			
-			// Si richiama la routine per scrivere le if delle operazioni di ogni singolo
-			// sotto-payload
-			//
-			fistOperation = true;
-			actorNoDecode = false;
 
-			String[] msgFieldPrev = writeIfPayloadPrev(b, messagePrev, message, i,z, listSubPayloadPrev, msgFieldTotPrev,
-					" and receiver=AG_E");
+				if (flgPar) {
+					String[] linesKnowledgePrevFree = writeKnowledge(messagePrev, (z), msgFieldPrevFree,
+							actorFromPrevDet, false);
+					if (debug) {
+						System.out.println("z5 ------> linesKnowledgePrevFree <----------");
+						for (String e : linesKnowledgePrevFree) {
+							System.out.println("z5 ------> " + e + " <-------------");
+						}
+					}
+					b.write("			    par\n");
+					printKnowSubPayload(b, msgFieldPrevFree, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
+							actorFromPrevDet, false, "Kno3", true);
+				}
 
-			// msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+				// Si richiama la routine per scrivere le if delle operazioni di ogni singolo
+				// sotto-payload
+				//
+				fistOperation = true;
+				actorNoDecode = false;
 
-			// linesKnowledgePrev = writeKnowledge(messagePrev, (i - 1), msgFieldTotPrev,
-			// "$e", false);
-			// spaces = " ";
-			if(debug) {System.out.println("printKnowSubPayload -->5");}
-			printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
-					actorFromPrev, false, "Kno3",true);
+				String[] msgFieldPrev = writeIfPayloadPrev(b, messagePrev, message, i, z, listSubPayloadPrev,
+						msgFieldTotPrev, " and receiver=AG_E");
+
+				// msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+
+				// linesKnowledgePrev = writeKnowledge(messagePrev, (i - 1), msgFieldTotPrev,
+				// "$e", false);
+				// spaces = " ";
+				if (debug) {
+					System.out.println("printKnowSubPayload -->5");
+				}
+				printKnowSubPayload(b, msgFieldPrev, msgFieldTotPrev, listSubPayloadPrev[0], messagePrev, (z),
+						actorFromPrevDet, false, "Kno3", true);
+			}
 		}
 		//printKnowledge(b, "Kno3", linesKnowledgePrev, spaces);
 		b.write("			            protocolMessage("+i+",self,$e):=" + changNumMSG[i] + "\n");
@@ -3345,10 +3519,10 @@ public class WriteASM {
 		
 		debug = false;
 		if (endMessage) {
-			ruleRCheck(b,lastMsgAlice);
-			ruleRCheck(b,lastMsgBob);
-			ruleRCheck(b, lastMsgEve);
-			ruleRCheck(b,lastMsgServer);
+			ruleRCheck(b,lastMsgAlice,i);
+			ruleRCheck(b,lastMsgBob,i);
+			ruleRCheck(b, lastMsgEve,i);
+			ruleRCheck(b,lastMsgServer,i);
 		}
 	}
 	//
@@ -3405,12 +3579,15 @@ public class WriteASM {
 	private int[] findMessagePrev(String actorFrom, String actorTo, int i) {
 		int[] listPrev = new int[15];
 		int x = 0;
+		if (i==5) {System.out.println ("findMessagePrev leggo actorFrom " + actorFrom );}
 		for (int z = i - 1; z >= 0 ; z--) {
 			// se il messaggi precedente è stato inviato dall'attore che sta inviando 
 			// il messaggio corrente la ricerca si conclude
-			if (debug) {System.out.println ("findMessagePrev leggo messaggio n " + z );}
-			if (messages.getMessage(z).getActorfrom().equals(actorFrom)) {
-				if (debug) {System.out.println ("findMessagePrev esco dal loop " + messages.getMessage(z).getActorfrom() + " = " + actorFrom);}
+			if (i==5) {System.out.println ("findMessagePrev leggo messaggio n " + z );}
+			if (messages.getMessage(z).getActorfrom().equals(actorFrom)||
+					(actorFrom.equals("Eve") && !messages.getMessage(z).getActorfrom().equals(actorFrom))
+					&& !messages.getMessage(z).getActorTo().equals(actorFrom)) {
+				if (i==5) {System.out.println ("findMessagePrev esco dal loop " + messages.getMessage(z).getActorfrom() + " = " + actorFrom);}
 				break;
 			}
 			// si memorizza il numero di messaggio precedente non ancora analizzato dall'attore che 
@@ -3421,10 +3598,12 @@ public class WriteASM {
             	x++;
 			}
         }
-		if (debug) { System.out.println ("findMessagePrev esco con null" );return null;}
+		if (i==5) { System.out.println ("findMessagePrev esco con null?" + x );}
 		if (x==0) {
+			fistOperation = true;
 			return null;
 		}
+		listPrev[x] = 99;
 		return listPrev;
 	}
 	// si ricerca nella tabella i field precedentemente scambiati e ricevuti dall'attore che sta inviando il emssaggio
@@ -3707,7 +3886,7 @@ public class WriteASM {
 			}
 			System.out.println("* -------------- -------------------------------- -------*");
 		}
-		
+		int endMsgDet=1;
 		
 		for (int f = 0; f < 15; f++) {
 			if (listSubPayloadPrev[f] == null || listSubPayloadPrev[f].isEmpty()) {
@@ -3719,7 +3898,8 @@ public class WriteASM {
 			String[] msgEncField1EncField2Prev = new String[15];
 			levelEncField1EncField2Prev = calcLevelEncField1EncField2(listSubPayloadPrev[f], msgEncField1EncField2Prev,
 					msgFieldPrev, msgFieldTotPrev);
-			String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev);
+			String[] msgFieldDetPrev = detField(msgFieldPrev, msgFieldTotPrev, 1);
+			endMsgDet = contMsgFielDet(msgFieldDetPrev);
 			if (debug) {
 				System.out.println("* -------------- writeIfPayloadPrev msgFieldDetPrev -------*");
 				for (String e : msgFieldDetPrev) {
@@ -3747,11 +3927,11 @@ public class WriteASM {
 			}
 			if (operationPrev != null && !operationPrev.isEmpty() && messagePrev != message) {
 				if (fistOperation) {
-					b.write(" 			        if(" + operationPrev + "(" + changNumMSG[i - 1] + ","
+					b.write(" 			        if(" + operationPrev + "(" + changNumMSG[z] + ","
 							+ levelEncField1EncField2Prev + ",self)=true ");
 					fistOperation = false;
 				} else {
-					b.write(" and " + operationPrev + "(" + changNumMSG[i - 1] + "," + levelEncField1EncField2Prev
+					b.write(" and " + operationPrev + "(" + changNumMSG[z] + "," + levelEncField1EncField2Prev
 							+ ",self)=true ");
 				}
 			}
@@ -3763,7 +3943,8 @@ public class WriteASM {
 		if (!fistOperation && messagePrev != message) {
 			b.write(addVal+") then\n");
 		}
-		String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev);
+		String[] msgFieldDetPrev = detField(msgFieldPrev,msgFieldTotPrev, 1);
+		endMsgDet = contMsgFielDet(msgFieldDetPrev);
 		b.write("			          par\n");
 		if (debug) {
 			System.out.println("z5 detField ");
@@ -3816,7 +3997,7 @@ public class WriteASM {
 
 	// si legge il messaggio attuale e si determinano le operazioni crittografiche usate
 	private int writeInfoPayloadAct(BufferedWriter b, Message message,int i,String[] listSubPayload, String[] msgFieldTot,String agReceiver) throws IOException {
-		if (i==4) {
+		if (debug) {
 			System.out.println("writeInfoPayloadAct " + " i " + i );
 		}
 
@@ -3826,6 +4007,7 @@ public class WriteASM {
 			eleOperationMessage = "";
 		}
 		int delJ = 0;
+		int endMsgDet =1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -3836,7 +4018,8 @@ public class WriteASM {
 			String[] msgField = new String[15];
 			String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 					msgField, msgFieldTot);
-			String[] msgFieldDet = detField(msgField, msgFieldTot);
+			String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+			endMsgDet = contMsgFielDet(msgFieldDet);
 			
 			String keyUsed = findKey(listSubPayload[j]);
 			String operation = "";
@@ -3901,7 +4084,7 @@ public class WriteASM {
 
 						}
 					}
-					if (i==4) {System.out.println("writeInfoPayloadAct ramo xx listSubPayload["+j+"]="+listSubPayload[j]);}					
+					if (debug) {System.out.println("writeInfoPayloadAct ramo xx listSubPayload["+j+"]="+listSubPayload[j]);}					
 					determinesOperation(b, i, j - delJ, message, listSubPayload[j], message.getActorfrom(), "", true);
 				//}
 			} else {
@@ -4000,10 +4183,10 @@ public class WriteASM {
 					}
 					
 					if (actorStartProtocol.equals(message.getActorTo())|| actorNoDecode) {
-						if (i==4) {System.out.println("writeInfoPayloadAct ramo true listSubPayload["+j+"]="+listSubPayload[j]);}					
+						if (debug) {System.out.println("writeInfoPayloadAct ramo true listSubPayload["+j+"]="+listSubPayload[j]);}					
 						determinesOperation(b, i, j - delJ, message, listSubPayload[j], message.getActorfrom(), "", true);
 					} else {
-						if (i==4) {System.out.println("writeInfoPayloadAct ramo false listSubPayload["+j+"]="+listSubPayload[j]);}					
+						if (debug) {System.out.println("writeInfoPayloadAct ramo false listSubPayload["+j+"]="+listSubPayload[j]);}					
 						determinesOperation(b, i, j - delJ, message, listSubPayload[j], message.getActorfrom(), "", false);
 					}
 					
@@ -4339,7 +4522,7 @@ public class WriteASM {
 	}
 
 	
-	private void ruleRCheck(BufferedWriter b, int i) throws IOException {
+	private void ruleRCheck(BufferedWriter b, int i,int lastMsg) throws IOException {
 		if (i >90) { return; }
 		boolean flgPar = false;
 		Message messageCheck = messages.getMessage(i);
@@ -4347,15 +4530,24 @@ public class WriteASM {
 		ruleR_Agent[indRuleR_Agent] = messageCheck.getActorTo().toUpperCase().substring(0, 1) + " r_check_" + changNumMSG[i]
 				+ "[]";
 		indRuleR_Agent++;
-		if (messageCheck.getActorTo().equals("Eve")) {
-			b.write("		let ($e=agent"+ messageCheck.getActorfrom().toUpperCase().substring(0, 1) + ") in\n");
-		} else {
-			b.write("		let ($e=agentE) in\n");
+		String andLet ="";
+		if (i!=lastMsg) {
+			andLet = " ,$t=agent"+messages.getMessage(lastMsg).getActorTo().substring(0, 1).toUpperCase();
 		}
+
+		if (messageCheck.getActorTo().equals("Eve")) {
+			b.write("		let ($e=agent"+ messageCheck.getActorfrom().toUpperCase().substring(0, 1) + andLet +") in\n");
+		} else {
+			b.write("		let ($e=agentE"+andLet+") in\n");
+		}
+		String andProtocol ="";
+		if (i!=lastMsg) {
+			andProtocol = " and protocolMessage("+lastMsg+",$e,$t)=" + changNumMSG[lastMsg];
+		}
+			
 		b.write("			if(internalState" + messageCheck.getActorTo().substring(0, 1) + "(self)=CHECK_END_"
 				+ messageCheck.getActorTo().toUpperCase().substring(0, 1) + " and protocolMessage("+i+",$e,self)=" + changNumMSG[i]
-				+ ")then\n");
-	
+				+andProtocol +")then\n");
 		b.write("			  par\n");	
 		b.write("			        internalState" + messageCheck.getActorTo().substring(0, 1) + "(self):=END_"
 		+ messageCheck.getActorTo().substring(0, 1) + "\n");
@@ -4385,6 +4577,7 @@ public class WriteASM {
 		}
 		// per ogni messaggio si estraggono le operazioni
 		int totOpz = 0;
+		int endMsgDet=1;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
 				break;
@@ -4417,7 +4610,8 @@ public class WriteASM {
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
 				// determino i campi del messaggio e la posizione
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				findActorFromTo(messageCheck.getActorfrom(), messageCheck.getActorTo());
 				if (debug) {System.out.println("writeKnowledge 2");}
 				linesKnowledge = writeKnowledge(messageCheck, i, msgFieldDet, "$e", false);
@@ -4432,7 +4626,7 @@ public class WriteASM {
 		// Si rileggono i sottomessaggi per verificare se l'attore riesce a
 		// decodificarli e in questo caso si aggiorna la knowlege
 		
-		
+		endMsgDet=1;
 		boolean firstOp = true;
 		for (int j = 0; j < 15; j++) {
 			if (listSubPayload[j] == null || listSubPayload[j].isEmpty()) {
@@ -4447,7 +4641,8 @@ public class WriteASM {
 				// determino i dati per la scrittura del tipo di crittografia ha il messaggio
 				String levelEncField1EncField2 = calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
 						msgField, msgFieldTot);
-				String[] msgFieldDet = detField(msgField, msgFieldTot);
+				String[] msgFieldDet = detField(msgField, msgFieldTot, endMsgDet);
+				endMsgDet = contMsgFielDet(msgFieldDet);
 				if (operation != null && !operation.isEmpty()) {
 					b.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
