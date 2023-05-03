@@ -7,36 +7,55 @@ import org.unimi.model.SecurityKey;
 import org.unimi.model.WriteASM;
 import org.unimi.model.WriteCryptoLibrary;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CreateFilesASM {
+	
 	Messages messages;
 	SecurityKey alice, bob, eve, server;
 	String toolEve, toolServer;
+	ObservableList<String> comboBoxList;
+	String[][] properties = new String[10][10];
+	
 	private Stage dialogStage;
 	@FXML
 	private TextField acronymProcolASM;
 
 	@FXML
 	private TextField nameProcolASM;
-
+    
+	@FXML
+    private ComboBox modality;
+    
+	@FXML
+    private ComboBox receiver;
+	
 	@FXML
 	private Text resultOperation;
 
 	@FXML
 	public void initialize() {
 		resultOperation.setText("");
+        comboBoxList = FXCollections.observableArrayList("PASSIVE","ACTIVE");
+        modality.setItems(comboBoxList);
+        modality.getSelectionModel().selectFirst();
+        comboBoxList = FXCollections.observableArrayList("AG_E","AG_B");
+        receiver.setItems(comboBoxList);
+        receiver.getSelectionModel().selectFirst();
 	}
 	
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
 	public void receivInfo(Messages messages, SecurityKey alice, SecurityKey bob, SecurityKey eve, SecurityKey server,
-			String toolEve, String toolServer) {
+			String toolEve, String toolServer,String[][] properties) {
 		
 		this.messages = messages;
 		this.alice = alice;
@@ -45,6 +64,7 @@ public class CreateFilesASM {
 		this.server = server;
 		this.toolEve = toolEve;
 		this.toolServer = toolServer;
+		this.properties = properties;
 	}
 	@FXML
 	void buttonCreateFiles(MouseEvent event) throws IOException {
@@ -95,7 +115,8 @@ public class CreateFilesASM {
 			WriteASM writeASM = new WriteASM(false, messages, alice, bob, eve, null, toolEve,
 					writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(), writeCrypto.getNumEncField(),
 					writeCrypto.getNumSignField(), writeCrypto.getNumSymField(), 
-					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());
+					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText()
+					,receiver.getValue().toString(), modality.getValue().toString(), properties);
 			System.out.println(">---<");
 			System.out.println("Verifica WriteCryptoLibrary-  ");
 			if (!writeASM.writeFile()) {
@@ -115,7 +136,8 @@ public class CreateFilesASM {
 				WriteASM writeASM1 = new WriteASM(true, messages, alice, bob, eve, server, toolEve,
 						writeCrypto1.getNumEleMsg(), writeCrypto1.getLevelTot(), writeCrypto1.getNumEncField(),
 						writeCrypto1.getNumSignField(), writeCrypto1.getNumSymField(), 
-						writeCrypto1.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText());
+						writeCrypto1.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText()
+						,receiver.getValue().toString(), modality.getValue().toString(),properties);
 				if (!writeASM1.writeFile()) {
 					resultOperation.setText("Create Files Error");
 					return;

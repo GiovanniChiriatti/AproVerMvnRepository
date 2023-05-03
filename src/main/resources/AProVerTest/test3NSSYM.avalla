@@ -10,9 +10,9 @@ load Needham_SchroederNSSYMTest.asm
 // si impostano quindi le conoscenze per i singoli attori
 set chosenMode:=PASSIVE;
 set chosenReceiver:=AG_B;
-check 	internalStateA(agentA)=IDLE_MA;
-check	internalStateS(agentS)=WAITING_MB;
-check	internalStateB(agentB)=WAITING_MD;
+check 	internalStateA=IDLE_MA;
+check	internalStateS=WAITING_MB;
+check	internalStateB=WAITING_MD;
 
 check	knowsNonce(agentA,NA)=true;
 check	knowsNonce(agentB,NB)=true;
@@ -51,7 +51,7 @@ check 	protocolMessage(0,agentA,agentE)=MA;
 check	messageField(agentA,agentE,1,MA)=CA;
 check	messageField(agentA,agentE,2,MA)=CB;
 check	messageField(agentA,agentE,3,MA)=NA;
-check	internalStateA(agentA)=WAITING_MC;
+check	internalStateA=WAITING_MC;
 
         // Informazioni in input step 2	
 check protocolMessage(0,agentA,agentE)=MA;
@@ -80,7 +80,7 @@ check	messageField(agentE,agentS,2,MA)=CB;
 check	messageField(agentE,agentS,3,MA)=NA;
 
   // Informazioni in input step 3
-check 	internalStateS(agentS)=WAITING_MB;
+check 	internalStateS=WAITING_MB;
 check	protocolMessage(0,agentE,agentS)=MA;
 
 
@@ -109,8 +109,8 @@ check	messageField(agentS,agentE,4,MB)=KAB;
 check	messageField(agentS,agentE,5,MB)=messageField(agentE,agentS,1,MA);
 check 	symEnc(MB,1,4,5)=KBS;
 check 	symEnc(MB,2,1,5)=KAS;
-check	internalStateB(agentB)=WAITING_MD ;
-check   internalStateS(agentS)=END_S;
+check	internalStateB=WAITING_MD ;
+check   internalStateS=END_S;
 
 // verifico il contenuto dei campi
 check	messageField(agentE,agentS,1,MA)=CA;
@@ -158,8 +158,8 @@ check   messageField(agentE,agentA,5,MB)=CA;
   // Informazioni in input step 5
     
 check symDec(MB,2,1,5,agentA)=true;
-check symDec(MB,1,4,5,self)=false;
-check internalStateA(agentA)=WAITING_MC;
+check symDec(MB,1,4,5,agentA)=false;
+check internalStateA=WAITING_MC;
 check protocolMessage(1,agentE,agentA)=MB;
   
   // step 5 -  Alice --> Bob:{KAB,CA}KBS --trasformato --- Alice --> Eve {KAB,CA}KBS 
@@ -181,7 +181,7 @@ check 	messageField(agentA,agentE,1,MC)=KAB;
 check 	messageField(agentA,agentE,2,MC)=messageField(agentE,agentA,5,MB);
 check 	messageField(agentA,agentE,2,MC)=CA;
 check 	symEnc(MC,1,1,2)=KBS;
-check	internalStateA(agentA)=CHECK_END_A;
+check	internalStateA=CHECK_END_A;
 
   // Informazioni in input step 6
   
@@ -203,7 +203,7 @@ check   messageField(agentE,agentB,1,MC)=messageField(agentA,agentE,1,MC);
 check   messageField(agentE,agentB,2,MC)=messageField(agentA,agentE,2,MC);
 check	messageField(agentA,agentE,2,MC)=CA;
 check   messageField(agentA,agentE,1,MC)=KAB;
-check   symDec(MC,1,1,2,self)=false;
+check   symDec(MC,1,1,2,agentE)=true;
 check   knowsSymKey(agentE,messageField(agentA,agentE,1,MC))=true;
 check   knowsSymKey(agentE,KAB)=true;
 check   knowsIdentityCertificate(agentE,messageField(agentA,agentE,2,MC))=true;
@@ -213,7 +213,7 @@ check   knowsIdentityCertificate(agentE,CA)=true;
 
     
 check 	symDec(MC,1,1,2,agentB)=true;
-check 	internalStateB(agentB)=WAITING_MD;
+check 	internalStateB=WAITING_MD;
 check 	protocolMessage(2,agentE,agentB)=MC;
 
 
@@ -260,7 +260,7 @@ check	knowsNonce(agentE,NB)=true;
 
     
 check 	symDec(MD,1,1,1,agentA)=true;
-check 	internalStateA(agentA)=CHECK_END_A;
+check 	internalStateA=CHECK_END_A;
 check 	protocolMessage(3,agentE,agentA)=MD;
 
 
@@ -270,7 +270,7 @@ check 	protocolMessage(3,agentE,agentA)=MD;
 step
 check 	mode=PASSIVE;
 
-check	internalStateA(agentA)=END_A;
-check	internalStateS(agentS)=END_S;
-check	internalStateB(agentB)=END_B;
+check	internalStateA=END_A;
+check	internalStateS=END_S;
+check	internalStateB=END_B;
 

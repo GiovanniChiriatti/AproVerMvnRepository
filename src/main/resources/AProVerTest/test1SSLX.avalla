@@ -2,14 +2,16 @@ scenario test1SSLX
 
 //Test di receiver Eve in modalità Passiva
 
-load SSLXTest.asm
+load TestSSLX.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
 //  stato iniziale di Bob sia Waiting_KK 
 set chosenMode:=PASSIVE;
 set chosenReceiver:=AG_E;
+
 check 	internalStateA(agentA)=IDLE_KK;
+
 check	internalStateB(agentB)=WAITING_NK;
 check	knowsNonce(agentB,NB)=true;
 check	knowsNonce(agentA,NB)=false;

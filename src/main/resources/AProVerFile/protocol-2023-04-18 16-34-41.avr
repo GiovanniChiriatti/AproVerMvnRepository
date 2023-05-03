@@ -1,67 +1,54 @@
 tool value 
 Enable Server
 toolEve value 
-Eve Create Messages
+Eve Doesn't Create Messages
 dati Alice AsymmetricPublicKey 
-PUBKA
+KAU
 dati Alice AsymmetricPrivateKey 
-PRIVKA
+KAP
 dati Alice SymmetricKey 
-SKAB
-SKAE
+KAB
+KAE
 dati Alice Hash 
 dati Alice Bitstring 
 dati Alice IdCertificate 
-CA
 dati Alice IdCertificatProp 
-Alice
 dati Alice Nonce 
+NA
 dati Alice Signature Pub Key 
-SIGNPUBKA
 dati Alice Signature Priv Key 
-SIGNPRIVKA
 dati Alice Tag 
 dati Alice Timestamp 
 dati Alice Digest 
 dati Alice KnowAcq 
 dati Bob AsymmetricPublicKey 
-PUBKB
 dati Bob AsymmetricPrivateKey 
-PRIVKB
 dati Bob SymmetricKey 
-SKAB
-SKEB
+KAB
 dati Bob Hash 
 dati Bob Bitstring 
 dati Bob IdCertificate 
 dati Bob IdCertificatProp 
 dati Bob Nonce 
-NB
 dati Bob Signature Pub Key 
-SIGNPUBKB
 dati Bob Signature Priv Key 
-SIGNPRIVKB
 dati Bob Tag 
 dati Bob Timestamp 
 dati Bob Digest 
 dati Bob KnowAcq 
-SKAB - Symmetric Key = 1
 dati Eve AsymmetricPublicKey 
-PUBKE
+KEU
 dati Eve AsymmetricPrivateKey 
-PRIVKE
+KEP
 dati Eve SymmetricKey 
-SKEB
-SKAE
+KAE
 dati Eve Hash 
 dati Eve Bitstring 
 dati Eve IdCertificate 
 dati Eve IdCertificatProp 
 dati Eve Nonce 
 dati Eve Signature Pub Key 
-SIGNPUBKE
 dati Eve Signature Priv Key 
-SIGNPRIVKE
 dati Eve Tag 
 dati Eve Timestamp 
 dati Eve Digest 
@@ -82,45 +69,36 @@ dati Server Digest
 dati Server KnowAcq 
 dati Messaggi 
 dati Messaggio 0
-NameMess KK
+NameMess MA
+ActorFrom Alice
+ActorTo Eve
+Eve Intercept true
+Messages {NA}-KAU-
+dati SecurityFunctionsPartMessage j=0
+{NA}  - KAU - 
+dati listPartMessage j=0 k=0
+NA
+dati Messaggio 1
+NameMess MB
 ActorFrom Alice
 ActorTo Bob
 Eve Intercept true
-Messages {SKAB}-PUBKB-
+Messages {NA}-KAB-
 dati SecurityFunctionsPartMessage j=0
-{SKAB}  - PUBKB - 
+{NA}  - KAB - 
 dati listPartMessage j=0 k=0
-SKAB
-dati Messaggio 1
-NameMess NK
+NA
+dati Messaggio 2
+NameMess MC
 ActorFrom Bob
 ActorTo Alice
 Eve Intercept true
-Messages {NB}-SKAB-
+Messages {NA}-KAB-
 dati SecurityFunctionsPartMessage j=0
-{NB}  - SKAB - 
+{NA}  - KAB - 
 dati listPartMessage j=0 k=0
-NB
-dati Messaggio 2
-NameMess CSNK
-ActorFrom Alice
-ActorTo Bob
-Eve Intercept true
-Messages {{CA},{NB}-SIGNPRIVKA-}-SKAB-
-dati SecurityFunctionsPartMessage j=0
-{CA} 
-dati listPartMessage j=0 k=0
-CA
-dati SecurityFunctionsPartMessage j=1
-{NB}  - SIGNPRIVKA - 
-dati listPartMessage j=1 k=0
-NB
-dati SecurityFunctionsPartMessage j=2
-{{CA},{NB} - SIGNPRIVKA - }  - SKAB - 
-dati listPartMessage j=2 k=0
-(payloadField2){CA},{NB} - SIGNPRIVKA - 
+NA
 dati Properties 
 TAB =0 Confidentiality
-COL =00 ¬EF(knowsNonce(Bob,NB)=true)
 TAB =1 Integrity
 TAB =2 Authentication

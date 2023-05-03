@@ -1,4 +1,4 @@
-asm Needham_SchroederNSSYMTest
+asm Needham_SchroederNSSYMKASTest
 
 import StandardLibrary
 import CTLlibrary
@@ -273,8 +273,8 @@ definitions:
                  	messageField($x,$b,5,MB):=messageField($a,$x,5,MB)
 			        if(symDec(MB,2,1,5,$x)=true)then
 	   			     par 
-			         	messageField($x,$b,2,MB):=KEA
-			         	messageField($x,$b,4,MB):=KEA
+			         	messageField($x,$b,2,MB):=KAS
+			         	messageField($x,$b,4,MB):=KAS
 			        	knowsNonce($x,messageField($a,$x,1,MB)):=true
 			        	knowsSymKey($x,messageField($a,$x,2,MB)):=true
 			        	knowsIdentityCertificate($x,messageField($a,$x,3,MB)):=true
@@ -540,6 +540,6 @@ default init s0:
 	function receiver=chosenReceiver
 	function knowsNonce($a in Agenti, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
 	function knowsIdentityCertificate($a in Agenti, $i in Knowledge)=if($a=agentA and $i=CA) or ($a=agentA and $i=CB) or ($a=agentA and $i=CE) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) or ($a=agentB and $i=CE) then true else if($a=agentE and $i=CE) then true else false endif endif endif
-	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KEB) or ($a=agentB and $sk=KAB) or ($a=agentE and $sk=KEA) or ($a=agentE and $sk=KEB) or ($a=agentE and $sk=KES) or ($a=agentE and $sk=KBS) or ($a=agentS and $sk=KAS) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAB)) then true else false endif
+	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KEB) or ($a=agentB and $sk=KAB) or ($a=agentE and $sk=KEA) or ($a=agentE and $sk=KEB) or ($a=agentE and $sk=KES) or ($a=agentE and $sk=KBS) or ($a=agentE and $sk=KAS) or ($a=agentS and $sk=KAS) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAB)) then true else false endif
 	function mode=chosenMode
 

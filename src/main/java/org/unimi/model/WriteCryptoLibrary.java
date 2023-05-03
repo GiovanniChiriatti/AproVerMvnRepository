@@ -460,8 +460,8 @@ public class WriteCryptoLibrary {
 		b.write("	//                  Cryptographic functions\n");
 		b.write("	/*------------------------------------------------------------------- */\n");
 		b.write("	//hash function applied from the field HashField1 to HashField2, the nesting level is Level\n");
-		b.write("	static hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeTag\n");
-		b.write("	static verifyHash: Prod(Message,Level,HashField1,HashField2,KnowledgeTag)-> Boolean\n");
+		b.write("	controlled hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeHash\n");
+		b.write("	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean\n");
 		b.write("\n");
 		b.write("	//sign function applied from the field SignField1 to SignField2, the nesting level is Level\n");
 		b.write("	controlled sign: Prod(Message,Level,SignField1,SignField2)-> KnowledgeSignPrivKey\n");
@@ -478,8 +478,6 @@ public class WriteCryptoLibrary {
 		b.write("	//the nesting level is Level\n");
 		b.write("	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeSymKey\n");
 		b.write("	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean\n");
-		b.write("\n");
-		b.write("	static diffieHellman:Prod(KnowledgeAsymPubKey,KnowledgeAsymPrivKey)->KnowledgeSymKey\n");
 		b.write("\n");
 		b.write("	static agentA: Alice\n");
 		b.write("	static agentB: Bob\n");
@@ -518,6 +516,13 @@ public class WriteCryptoLibrary {
 		b.write("\n");		
 		b.write("		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=\n");
 		b.write("			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then\n");
+		b.write("				true\n");
+		b.write("			else\n");
+		b.write("				false\n");
+		b.write("			endif\n");
+		b.write("\n");	
+		b.write("		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agent)=\n");
+		b.write("			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then\n");
 		b.write("				true\n");
 		b.write("			else\n");
 		b.write("				false\n");

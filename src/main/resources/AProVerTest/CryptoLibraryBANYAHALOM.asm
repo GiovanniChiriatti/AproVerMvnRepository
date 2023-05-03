@@ -1,4 +1,4 @@
-module CryptoLibraryxxxx
+module CryptoLibraryBANYAHALOM
 
 import ../StandardLibrary
 export *
@@ -8,17 +8,20 @@ signature:
 	domain Alice subsetof Agent
 	domain Bob subsetof Agent
 	domain Eve subsetof Agent
+	domain Server subsetof Agent
 
 
-	enum domain StateAlice = {IDLE_NAK | WAITING_NNK | SEND_NK | END_A}
-	enum domain StateBob = {WAITING_NAK | SEND_NNK | WAITING_NK | END_B}
+	enum domain StateAlice = {IDLE_MA | CHECK_END_A | END_A}
+	enum domain StateBob = {WAITING_MB | WAITING_MD | CHECK_END_B | END_B}
+	enum domain StateEve = {WAITING_MC | WAITING_MF | CHECK_END_E | END_E}
+	enum domain StateServer = {WAITING_ME | CHECK_END_S | END_S}
 
-	enum domain Message = {NAK | NNK | NK} 
+	enum domain Message = {MA | MB | MC | MD | ME | MF} 
 
-	enum domain Knowledge ={ID_A|ID_B|ID_E|NA|NB|NE|PRIVKA|PRIVKB|PRIVKE|PUBKA|PUBKB|PUBKE}
+	enum domain Knowledge ={CA|CB|KAB|KAS|KBS|KNA|NA|NB|NB2}
 
 	//DOMAIN OF POSSIBLE RECEIVER
-	enum domain Receiver={AG_A|AG_B|AG_E}
+	enum domain Receiver={AG_A|AG_B|AG_E|AG_S}
 	///DOMAIN OF THE ATTACKER MODE
 	enum domain Modality = {ACTIVE | PASSIVE}
 
@@ -45,13 +48,16 @@ signature:
 	domain  SignField2 subsetof Integer
 	domain  HashField1 subsetof Integer
 	domain  HashField2 subsetof Integer
+	domain  NumMsg subsetof Integer
 
 	//state of the actor
 	controlled internalStateA: Alice -> StateAlice
 	controlled internalStateB: Bob -> StateBob
+	controlled internalStateE: Eve -> StateEve
+	controlled internalStateS: Server -> StateServer
 
 	//name of the message
-	controlled protocolMessage: Prod(Agent,Agent)-> Message
+	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
 	// content of the message and in which field it goes
 	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
 
@@ -100,8 +106,8 @@ signature:
 	//                  Cryptographic functions
 	/*------------------------------------------------------------------- */
 	//hash function applied from the field HashField1 to HashField2, the nesting level is Level
-	static hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeTag
-	static verifyHash: Prod(Message,Level,HashField1,HashField2,KnowledgeTag)-> Boolean
+	controlled hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeHash
+	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean
 
 	//sign function applied from the field SignField1 to SignField2, the nesting level is Level
 	controlled sign: Prod(Message,Level,SignField1,SignField2)-> KnowledgeSignPrivKey
@@ -119,11 +125,10 @@ signature:
 	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeSymKey
 	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
 
-	static diffieHellman:Prod(KnowledgeAsymPubKey,KnowledgeAsymPrivKey)->KnowledgeSymKey
-
 	static agentA: Alice
 	static agentB: Bob
 	static agentE: Eve
+	static agentS: Server
 
 definitions:
 	function name($a in Receiver)=
@@ -131,6 +136,7 @@ definitions:
 				case AG_A:agentA
 				case AG_E:agentE
 				case AG_B:agentB
+				case AG_S:agentS
 			endswitch
 
 		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=
@@ -149,6 +155,13 @@ definitions:
 
 		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
 			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
+				true
+			else
+				false
+			endif
+
+		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agent)=
+			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
 				true
 			else
 				false

@@ -2,7 +2,9 @@ true
 false
 and
 or
-knows
+knowsNonce
+knowsAsymPubKey
+knowsSymKey
 not
 U
 =

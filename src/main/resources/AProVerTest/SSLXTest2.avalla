@@ -1,16 +1,16 @@
-scenario test2SSLX
+scenario SSLXtest2
 
 //Test di receiver Eve in modalità Active
 
-load TestSSLX.asm
+load SSLXTest.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
 //  stato iniziale di Bob sia Waiting_KK 
 set chosenMode:=ACTIVE;
 set chosenReceiver:=AG_E;
-check 	internalStateA(agentA)=IDLE_KK;
-check	internalStateB(agentB)=WAITING_NK;
+check 	internalStateA=IDLE_KK;
+check	internalStateB=WAITING_NK;
 check	knowsNonce(agentB,NB)=true;
 check	knowsNonce(agentA,NB)=false;
 check	knowsAsymPubKey(agentA, PUBKB)=true;
@@ -29,7 +29,7 @@ check mode=ACTIVE;
 		//check informazioni aggiornate
 check protocolMessage(0,agentA,agentE)= KK;
 check messageField(agentA,agentE,1,KK)= SKAE;	
-check internalStateA(agentA)=WAITING_CSNK;
+check internalStateA=WAITING_CSNK;
 check asymEnc(KK,1,1,1)=PUBKE;
         // Informazioni in input step 2	
 check protocolMessage(0,agentA,agentE)= KK;		
@@ -48,7 +48,7 @@ check asymEnc(KK,1,1,1) = PUBKB;
 
         // Informazioni in input step 3	
 
-check internalStateB(agentB)=WAITING_NK;
+check internalStateB=WAITING_NK;
 check protocolMessage(0,agentE ,agentB)=KK;						
 check asymDec(KK,1,1,1,agentB)=true;
 
@@ -62,7 +62,7 @@ check knowsSymKey(agentB,messageField(agentE,agentB,1,KK))=true;
 check protocolMessage(1,agentB,agentE)=NK;
 check messageField(agentB,agentE,1,NK)= NB;	
 check symEnc(NK,1,1,1)= messageField(agentE,agentB,1,KK);	
-check internalStateB(agentB)= CHECK_END_B;
+check internalStateB= CHECK_END_B;
 
         // Informazioni in input step 4	
 check protocolMessage(1,agentB ,agentE)=NK;
@@ -87,7 +87,7 @@ check messageField(agentA,agentE,1,KK)=SKAE;
 
 
         // Informazioni in input step 5
- check internalStateA(agentA)=WAITING_CSNK; 
+ check internalStateA=WAITING_CSNK; 
  check protocolMessage(1,agentE ,agentA)=NK;
  check symDec(NK,1,1,1,agentA)=true;      
 
@@ -105,7 +105,7 @@ check messageField(agentE,agentA,1,NK)=NB;
 check sign(CSNK,1,2,2)= SIGNPRIVKA;
 check symEnc(CSNK,2,1,2)= messageField(agentA,agentE,1,KK);
 check messageField(agentA,agentE,1,KK)=SKAE;
-check internalStateA(agentA)= END_A;
+check internalStateA= END_A;
 
         // Informazioni in input step 6
 check protocolMessage(2,agentA,agentE)=CSNK;
@@ -128,7 +128,7 @@ check messageField(agentA,agentE,2,CSNK)=NB;
 
 
 // Informazioni in input step 7
-check internalStateB(agentB)=CHECK_END_B;
+check internalStateB=CHECK_END_B;
 check protocolMessage(2,agentE ,agentB)=CSNK;
 //check symDec(CSNK,2,1,2,agentB)=true;
 //check verifySign(CSNK,1,2,2,agentB)=true;
@@ -146,5 +146,5 @@ check sign(CSNK,1,2,2)=SIGNPRIVKA;
 check sign_keyAssociation(sign(CSNK,1,2,2))=SIGNPUBKA;
 check symDec(CSNK,2,1,2,agentB)=true;
 check verifySign(CSNK,1,2,2,agentB)=true;
-check internalStateB(agentB)= END_B;
+check internalStateB= END_B;
 

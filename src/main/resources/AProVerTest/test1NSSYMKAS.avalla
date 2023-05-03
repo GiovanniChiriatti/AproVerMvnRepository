@@ -1,14 +1,14 @@
-scenario test2NSSYM
+scenario test1NSSYM
 
 //Test di receiver Eve in modalità Passiva
 
-load Needham_SchroederNSSYMTest.asm
+load Needham_SchroederNSSYMKASTest.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
 //  stato iniziale di Bob sia Waiting_NAK 
 // si impostano quindi le conoscenze per i singoli attori
-set chosenMode:=ACTIVE;
+set chosenMode:=PASSIVE;
 set chosenReceiver:=AG_E;
 check 	internalStateA=IDLE_MA;
 check	internalStateS=WAITING_MB;
@@ -36,7 +36,7 @@ check	knowsSymKey(agentS, KAS)=true;
 check	knowsSymKey(agentS, KBS)=true;
 check	knowsSymKey(agentS, KAB)=true;
 
-check mode=ACTIVE;
+check mode=PASSIVE;
 check receiver=AG_E;
 
 // step 1 -  Alice->Server:{CA,CB,NA} --trasformato --- Alice -> Eve {CA,CB,NA}
@@ -45,7 +45,7 @@ check receiver=AG_E;
 		//check informazioni base
 	
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 
 check 	protocolMessage(0,agentA,agentE)=MA;
 check	messageField(agentA,agentE,1,MA)=CA;
@@ -62,7 +62,7 @@ check protocolMessage(0,agentE,agentS)!=MA;
 		//Eve alimenta le prprie conoscenze con i dati ricevuti in chiaro da Alice
 	
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 
 // Eve memorizza le proprie conoscenze
 check   knowsIdentityCertificate(agentE,messageField(agentA,agentE,1,MA))=true;
@@ -90,7 +90,7 @@ check	protocolMessage(0,agentE,agentS)=MA;
 		//check informazioni base
 		
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 // Server memorizza le proprie conoscenze
 check 	knowsIdentityCertificate(agentS,messageField(agentE,agentS,1,MA))=true;
 check 	knowsIdentityCertificate(agentS,messageField(agentE,agentS,2,MA))=true;
@@ -121,7 +121,7 @@ check	messageField(agentE,agentS,3,MA)=NA;
   
 check 	protocolMessage(1,agentS,agentE)=MB; 
 check	protocolMessage(1,agentE,agentA)!=MB;
-check 	symDec(MB,2,1,5,agentE)=false;
+check 	symDec(MB,2,1,5,agentE)=true;
 check   symDec(MB,1,4,5,agentE)=true;
 
 // step 4 -  Server --> Alice:{{NA,KAB,CB}{KAB,CA}KBS}KAS --trasformato --- Eve --> Alice {{NA,KAB,CE}{KAB,CA}KBS}KAS  
@@ -130,16 +130,16 @@ check   symDec(MB,1,4,5,agentE)=true;
 		//check informazioni base
 		
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 // Server memorizza le proprie conoscenze
 //nessuna
 check 	knowsNonce(agentE,messageField(agentS,agentE,1,MB))=true;
-check	knowsSymKey(agentE,messageField(agentS,agentE,2,MB))=false;
+check	knowsSymKey(agentE,messageField(agentS,agentE,2,MB))=true;
 check	knowsIdentityCertificate(agentE,messageField(agentS,agentE,3,MB))=true;
-check	knowsSymKey(agentE,messageField(agentS,agentE,4,MB))=false;
+check	knowsSymKey(agentE,messageField(agentS,agentE,4,MB))=true;
 check 	knowsIdentityCertificate(agentE,messageField(agentS,agentE,5,MB))=true;
 check 	knowsNonce(agentE,NA)=true;
-check	knowsSymKey(agentE,KAB)=false;
+check	knowsSymKey(agentE,KAB)=true;
 check	knowsIdentityCertificate(agentE,CA)=true;
 
 // Eve prepara i campi del messaggio da inviare ad Alice
@@ -168,7 +168,7 @@ check protocolMessage(1,agentE,agentA)=MB;
 		//check informazioni base
 		
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 // Alice memorizza le proprie conoscenze
 
 check 	knowsNonce(agentA,messageField(agentE,agentA,1,MB))=true;
@@ -189,17 +189,17 @@ check 	protocolMessage(2,agentA,agentE)=MC;
 check	protocolMessage(2,agentE,agentB)!=MC;
 check 	symDec(MC,1,1,2,agentE)=true;
 
-  // step 6 -  Alice --> Bob:{KAB,CA}KBS --trasformato --- Eve --> Bob {KEB,CA}KBS 
+  // step 6 -  Alice --> Bob:{KAB,CA}KBS --trasformato --- Eve --> Bob {KAB,CA}KBS 
 
 
 		//check informazioni base
 		
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 
 // Eve prepara i campi del messaggio da inviare a Bob
 check   protocolMessage(2,agentE,agentB)=MC;
-check   messageField(agentE,agentB,1,MC)=KEB;
+check   messageField(agentE,agentB,1,MC)=messageField(agentA,agentE,1,MC);
 check   messageField(agentE,agentB,2,MC)=messageField(agentA,agentE,2,MC);
 check	messageField(agentA,agentE,2,MC)=CA;
 check   messageField(agentA,agentE,1,MC)=KAB;
@@ -221,7 +221,7 @@ check 	protocolMessage(2,agentE,agentB)=MC;
 
 
 step
-check 	mode=ACTIVE;
+check 	mode=PASSIVE;
 // Bob memorizza le proprie conoscenze
 
 check 	knowsSymKey(agentB,messageField(agentE,agentB,1,MC))=true;
@@ -245,7 +245,7 @@ check 	symDec(MD,1,1,1,agentE)=true;
 		//check informazioni base
 		
 step
-check mode=ACTIVE;
+check mode=PASSIVE;
 
 // Eve prepara i campi del messaggio da inviare a Alice
 
@@ -268,7 +268,7 @@ check 	protocolMessage(3,agentE,agentA)=MD;
 
 
 step
-check 	mode=ACTIVE;
+check 	mode=PASSIVE;
 
 check	internalStateA=END_A;
 check	internalStateS=END_S;

@@ -4621,9 +4621,12 @@ public class SelectAProVerController {
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
         
+        String[][] properties = getProperties();
+        		
+        
         CreateFilesASM controller = loader.getController();
         controller.setDialogStage(dialogStage);
-        controller.receivInfo(messages,alice,bob,eve,server,toolEve.getText(),tool.getText());
+        controller.receivInfo(messages,alice,bob,eve,server,toolEve.getText(),tool.getText(),properties);
         dialogStage.showAndWait();
         
 /*		if (tool.getText().contains("Enable")) {
@@ -4638,7 +4641,27 @@ public class SelectAProVerController {
 		}
 */
 	}
-
+	private String[][] getProperties(){
+		System.out.println("1>>>>>>>>>> getProperties");
+		String[][] properties = new String[10][10];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				properties[i][j]="";
+			}
+		}
+		System.out.println("2>>>>>>>>>> getProperties");
+		for (int i = 0; i < 10; i++) {
+			if (!(confProp.getListNameTab(i)== null || confProp.getListNameTab(i).isEmpty())) {	
+				for (int j = 0; j < 10; j++) {
+					if (!(confProp.getProprietiesValue(i, j)== null || confProp.getProprietiesValue(i, j).isEmpty())) {
+						properties[i][j]=confProp.getProprietiesValue(i, j);
+					}
+				}
+			}
+		}
+		System.out.println("3>>>>>>>>>> getProperties");
+		return properties;
+	}
 	// se viene cliccato dal menu l'opzione about si visualizza il file PdF 
 	@FXML
 	private void about() throws IOException {

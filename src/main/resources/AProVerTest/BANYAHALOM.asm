@@ -1,6 +1,6 @@
 asm BANYAHALOM
 
-import CryptoLibraryBYA
+import CryptoLibraryBANYAHALOM
 
 
 signature:
@@ -26,7 +26,7 @@ definitions:
 			if(protocolMessage(0,$a,self)=MA and protocolMessage(0,self,$b)!=MA and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
-		     par 
+		          par 
                  	protocolMessage(0,self,$b):=MA
                  	messageField(self,$b,1,MA):=messageField($a,self,1,MA)
                  	messageField(self,$b,2,MA):=messageField($a,self,2,MA)
@@ -36,7 +36,7 @@ definitions:
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage(0,$a,self)=MA and protocolMessage(0,self,$b)!=MA and mode=ACTIVE)then
-		     par 
+		          par 
                  	protocolMessage(0,self,$b):=MA
                  	messageField(self,$b,1,MA):=messageField($a,self,1,MA)
                  	messageField(self,$b,2,MA):=messageField($a,self,2,MA)
@@ -54,7 +54,7 @@ definitions:
 			if(protocolMessage(1,$a,self)=MB and protocolMessage(1,self,$b)!=MB and mode=PASSIVE)then
 			        //in passsive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
-		     par 
+		          par 
                  	protocolMessage(1,self,$b):=MB
                  	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
                  	messageField(self,$b,2,MB):=messageField($a,self,2,MB)
@@ -73,7 +73,7 @@ definitions:
 			endif 
 			        //check the reception of the message and the modality of the attack
 			if(protocolMessage(1,$a,self)=MB and protocolMessage(1,self,$b)!=MB and mode=ACTIVE)then
-		     par 
+		          par 
                  	protocolMessage(1,self,$b):=MB
                  	messageField(self,$b,1,MB):=messageField($a,self,1,MB)
                  	messageField(self,$b,2,MB):=messageField($a,self,2,MB)

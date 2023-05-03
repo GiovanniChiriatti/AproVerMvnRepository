@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -35,6 +36,8 @@
             </Text>
             <Button layoutX="448.0" layoutY="272.0" mnemonicParsing="false" onMouseClicked="#buttonFinish" prefHeight="25.0" prefWidth="65.0" text="Finish" />
             <Button layoutX="296.0" layoutY="272.0" mnemonicParsing="false" onMouseClicked="#buttonCreateFiles" prefHeight="25.0" prefWidth="137.0" text="Start Creation Files" />
+            <ComboBox fx:id="modality" layoutX="344.0" layoutY="88.0" prefWidth="150.0" promptText="modality" visible="false" />
+            <ComboBox fx:id="receiver" layoutX="344.0" layoutY="41.0" prefWidth="150.0" promptText="receiver" visible="false" />
          </children>
       </AnchorPane>
    </children>

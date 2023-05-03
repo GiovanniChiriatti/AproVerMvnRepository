@@ -15,10 +15,10 @@ set chosenReceiver:=AG_E;
 //     aspettare il 5 messaggio (Waiting_MB) in quanto Eve avvia il suo attacco con il metodo dell'interleavings 
 // si impostano quindi le conoscenze per i singoli attori
 
-check  internalStateA(agentA)=IDLE_MA;
-check  internalStateB(agentB)=WAITING_MB;
-check  internalStateS(agentS)=WAITING_ME;
-check  internalStateE(agentE)=WAITING_MC;
+check  internalStateA=IDLE_MA;
+check  internalStateB=WAITING_MB;
+check  internalStateS=WAITING_ME;
+check  internalStateE=WAITING_MC;
 
 check  knowsSymKey(agentA, KAS)=true;
 check  knowsSymKey(agentB, KBS)=true;
@@ -53,7 +53,7 @@ check mode=PASSIVE;
 check protocolMessage(0,agentA,agentE)= MA;
 check messageField(agentA,agentE,1,MA)=CA;
 check messageField(agentA,agentE,2,MA)=NA;
-check internalStateA(agentA)= CHECK_END_A;
+check internalStateA= CHECK_END_A;
 
         // Informazioni in input step 2	
 check protocolMessage(0,agentA,agentE)= MA;
@@ -75,7 +75,7 @@ check messageField(agentE,agentB,2,MA)=messageField(agentA,agentE,2,MA);
 check messageField(agentE,agentB,2,MA)=NA;
 
         // Informazioni in input step 3	
-check internalStateB(agentB)=WAITING_MB; 
+check internalStateB=WAITING_MB; 
 check protocolMessage(0,agentE,agentB)=MA;
 
 // step 3 -  Bob->Server:{CB,NB}{CA,NA}KBS --trasformato --- Bob -> Eve {CB,NB}{CA,NA}KBS 
@@ -99,7 +99,7 @@ check  messageField(agentB,agentE,3,MB)=CA;
 check  messageField(agentB,agentE,4,MB)=messageField(agentE,agentB,2,MA);
 check  messageField(agentB,agentE,4,MB)=NA;
 check  symEnc(MB,1,3,4)=KBS;
-check  internalStateB(agentB)=WAITING_MD;
+check  internalStateB=WAITING_MD;
 
         // Informazioni in input step 4	
 check protocolMessage(1,agentB,agentE)= MB;
@@ -126,7 +126,7 @@ check  messageField(agentE,agentS,4,MB)=messageField(agentB,agentE,4,MB);
 check  symDec(MB,1,3,4,agentE)=false;
 
         // Informazioni in input step 5	
-check internalStateE(agentE)=WAITING_MC; 
+check internalStateE=WAITING_MC; 
 check protocolMessage(1,agentE,agentS)=MB;
 
 // step 5 -  Eve->Bob:{CA}{KNA,NB} 
@@ -141,10 +141,10 @@ check  messageField(agentE,agentB,2,MC)=KNA;
 check  messageField(agentE,agentB,3,MC)=messageField(agentB,agentE,2,MB);	
 check  messageField(agentE,agentB,3,MC)=NB;		
 check  protocolMessage(2,agentE,agentB)=MC;
-check  internalStateE(agentE)=WAITING_MF;
+check  internalStateE=WAITING_MF;
 	
 	        // Informazioni in input step 6	
-check internalStateB(agentB)=WAITING_MD; 
+check internalStateB=WAITING_MD; 
 check protocolMessage(2,agentE,agentB)=MC;
 		
 // step 6 -  Bob->Eve:{CB,NB2}{CA,KNA,NB}KBS 
@@ -166,10 +166,10 @@ check  messageField(agentB,agentE,5,MD)=messageField(agentE,agentB,3,MC);
 check  messageField(agentB,agentE,5,MD)=NB;
 check  symEnc(MD,1,3,5)=KBS;
 check  protocolMessage(3,agentB,agentE)=MD;
-check  internalStateB(agentB)=CHECK_END_B;
+check  internalStateB=CHECK_END_B;
 
 	        // Informazioni in input step 7	
-check internalStateS(agentS)=WAITING_ME; 
+check internalStateS=WAITING_ME; 
 check protocolMessage(3,agentB,agentE)=MD;
 check  symDec(MB,1,3,4,agentS)=true;
 		
@@ -208,7 +208,7 @@ check  messageField(agentS,agentE,6,ME)=KAB;
 check  messageField(agentS,agentE,7,ME)=NB;
 check  symEnc(ME,1,5,7)=KBS;  
 check  protocolMessage(4,agentS,agentE)=ME;
-check  internalStateS(agentS)=END_S;
+check  internalStateS=END_S;
 
 	        // Informazioni in input step 8	
 check protocolMessage(4,agentE,agentA)!=ME;
@@ -257,7 +257,7 @@ check  messageField(agentE,agentA,7,ME)=messageField(agentS,agentE,7,ME);
 
 
 	        // Informazioni in input step 9	
-check internalStateE(agentE)=WAITING_MF; 
+check internalStateE=WAITING_MF; 
 check protocolMessage(4,agentE,agentA)=ME;
 
 // step 9 -  Eve->Bob:{KNA,NB}KBS{NB}KNA
@@ -273,12 +273,12 @@ check  messageField(agentE,agentB,3,MF)=NB;
 check symEnc(MF,1,3,3)=KNA;
 check symEnc(MF,1,1,2)=KBS;
 
-check  internalStateE(agentE)=END_E;
+check  internalStateE=END_E;
 
 	        // Informazioni in input step 10	
-check internalStateA(agentA)=CHECK_END_A; 
+check internalStateA=CHECK_END_A; 
 check protocolMessage(4,agentE,agentA)=ME;
-check internalStateB(agentB)=CHECK_END_B;
+check internalStateB=CHECK_END_B;
 check protocolMessage(5,agentE,agentB)=MF;
 
 
@@ -294,7 +294,7 @@ check mode=PASSIVE;
 
 
 		//check informazioni aggiornate Alice
-check internalStateA(agentA)=END_A;
+check internalStateA=END_A;
 check  symDec(ME,1,2,4,agentA)=true;
 
 check knowsNonce(agentA,messageField(agentE,agentA,1,ME))=true;
@@ -311,7 +311,7 @@ check knowsNonce(agentA,NA)=true;
 check  symDec(ME,1,5,7,agentA)=false;
 
 		//check informazioni aggiornate Bob
-check internalStateB(agentB)=END_B;
+check internalStateB=END_B;
 
 check  symDec(MF,1,1,2,agentB)=true;
 check  symDec(MF,1,3,3,agentB)=true;
