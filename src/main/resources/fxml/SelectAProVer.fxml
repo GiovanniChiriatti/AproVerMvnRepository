@@ -10,6 +10,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
@@ -1155,8 +1156,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties00" alignment="CENTER" layoutX="4.0" layoutY="2.0" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="412.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -1216,12 +1217,26 @@
                                                                                     <Insets left="30.0" />
                                                                                  </GridPane.margin>
                                                                               </TextField>
+                                                                              <Button fx:id="buttonProp10" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp11" layoutX="436.0" layoutY="15.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp12" layoutX="436.0" layoutY="48.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp13" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp14" layoutX="436.0" layoutY="114.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp15" layoutX="436.0" layoutY="147.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp16" layoutX="436.0" layoutY="180.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Button fx:id="buttonProp17" layoutX="436.0" layoutY="213.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Button fx:id="buttonProp18" layoutX="436.0" layoutY="246.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Button fx:id="buttonProp19" layoutX="436.0" layoutY="279.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
 																										<Text layoutX="471.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Text layoutX="484.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                                                               <Button fx:id="modProp00" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
                                                                                  <opaqueInsets>
                                                                                     <Insets />
@@ -1342,19 +1357,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" onMouseClicked="#writeFileAsm" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -1414,8 +1416,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties01" alignment="CENTER" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="417.0" minWidth="10.0" prefWidth="412.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -1480,6 +1482,20 @@
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Text layoutX="484.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Text layoutX="484.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Text layoutX="484.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Text layoutX="484.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                                                              <Button fx:id="buttonProp20" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp21" layoutX="436.0" layoutY="15.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp22" layoutX="436.0" layoutY="48.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp23" layoutX="436.0" layoutY="81.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp24" layoutX="436.0" layoutY="114.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp25" layoutX="436.0" layoutY="147.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp26" layoutX="436.0" layoutY="180.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Button fx:id="buttonProp27" layoutX="436.0" layoutY="213.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Button fx:id="buttonProp28" layoutX="436.0" layoutY="246.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Button fx:id="buttonProp29" layoutX="436.0" layoutY="279.0" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                                                               <Button fx:id="modProp10" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
                                                                                  <opaqueInsets>
                                                                                     <Insets />
@@ -1600,19 +1616,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -1672,8 +1675,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties02" alignment="CENTER" prefHeight="330.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="412.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -1738,6 +1741,10 @@
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Text layoutX="484.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Text layoutX="484.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Text layoutX="484.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Text layoutX="484.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                                                               <Button fx:id="modProp20" mnemonicParsing="false" onAction="#selButtonModProperties" prefHeight="14.0" prefWidth="13.0" style="-fx-background-radius: 15; -fx-background-color: #83ED90;" text="x" textAlignment="CENTER" visible="false">
                                                                                  <opaqueInsets>
                                                                                     <Insets />
@@ -1848,6 +1855,16 @@
                                                                                     <Insets left="5.0" />
                                                                                  </GridPane.margin>
                                                                               </Button>
+                                                                              <Button fx:id="buttonProp30" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp31" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp32" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp33" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp34" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp35" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp36" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <Button fx:id="buttonProp37" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <Button fx:id="buttonProp38" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                              <Button fx:id="buttonProp39" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 																									</children>
 																								</GridPane>
 																							</children>
@@ -1858,19 +1875,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -1919,8 +1923,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties03" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="419.0" minWidth="10.0" prefWidth="411.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="123.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -1931,7 +1935,7 @@
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 																									</rowConstraints>
 																									<children>
-																										<TextField editable="false" />
+																										<TextField editable="false" prefHeight="25.0" prefWidth="412.0" />
 																										<TextField editable="false" layoutX="11.0" layoutY="11.0" GridPane.rowIndex="1" />
 																										<TextField editable="false" layoutX="11.0" layoutY="36.0" GridPane.rowIndex="2" />
 																										<TextField editable="false" layoutX="419.0" layoutY="11.0" GridPane.rowIndex="3" />
@@ -1943,6 +1947,12 @@
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp40" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp41" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp42" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp43" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp44" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp45" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 																									</children>
 																								</GridPane>
 																							</children>
@@ -1953,19 +1963,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -2021,8 +2018,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties04" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="412.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -2045,6 +2042,12 @@
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp50" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp51" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp52" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp53" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp54" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp55" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 																									</children>
 																								</GridPane>
 																							</children>
@@ -2055,19 +2058,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -2122,8 +2112,8 @@
 																							<children>
 																								<GridPane fx:id="listProprieties05" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
 																									<columnConstraints>
-																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+																										<ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="412.0" />
+																										<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
 																									</columnConstraints>
 																									<rowConstraints>
 																										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -2146,6 +2136,12 @@
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 																										<Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp60" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp61" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp62" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp63" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp64" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp65" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 																									</children>
 																								</GridPane>
 																							</children>
@@ -2156,19 +2152,6 @@
 																		</ScrollPane>
 																	</children>
 																</VBox>
-																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-																	<HBox.margin>
-																		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-																	</HBox.margin>
-																</Rectangle>
-																<Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-																	<HBox.margin>
-																		<Insets left="10.0" right="10.0" top="130.0" />
-																	</HBox.margin>
-																	<font>
-																		<Font name="System Bold" size="12.0" />
-																	</font>
-																</Button>
 															</children>
 														</HBox>
 													</children>
@@ -2224,8 +2207,8 @@
                                                                      <children>
                                                                         <GridPane fx:id="listProprieties06" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
                                                                            <columnConstraints>
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="417.0" minWidth="10.0" prefWidth="412.0" />
+                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
                                                                            </columnConstraints>
                                                                            <rowConstraints>
                                                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -2248,6 +2231,12 @@
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp70" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp71" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp72" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp73" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp74" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp75" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                            </children>
                                                                         </GridPane>
                                                                      </children>
@@ -2258,19 +2247,6 @@
                                                       </ScrollPane>
                                                    </children>
                                                 </VBox>
-                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-                                                   <HBox.margin>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </HBox.margin>
-                                                </Rectangle>
-                                                <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" right="10.0" top="130.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Button>
                                              </children>
                                           </HBox>
                                        </children>
@@ -2326,8 +2302,8 @@
                                                                      <children>
                                                                         <GridPane fx:id="listProprieties07" alignment="CENTER" prefHeight="154.0" prefWidth="536.0" style="-fx-border-color: grey; -fx-border-radius: 5; -fx-grid-lines-visible: true;" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="33.0">
                                                                            <columnConstraints>
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="408.0" />
-                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="126.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="412.0" />
+                                                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="122.0" />
                                                                            </columnConstraints>
                                                                            <rowConstraints>
                                                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -2350,6 +2326,12 @@
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                               <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <Button fx:id="buttonProp80" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="buttonProp81" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                              <Button fx:id="buttonProp82" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                              <Button fx:id="buttonProp83" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                              <Button fx:id="buttonProp84" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <Button fx:id="buttonProp85" mnemonicParsing="false" onAction="#selProperties" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: transparent;" text="Button" textFill="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                            </children>
                                                                         </GridPane>
                                                                      </children>
@@ -2360,19 +2342,6 @@
                                                       </ScrollPane>
                                                    </children>
                                                 </VBox>
-                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" HBox.hgrow="ALWAYS">
-                                                   <HBox.margin>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </HBox.margin>
-                                                </Rectangle>
-                                                <Button contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" right="10.0" top="130.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Button>
                                              </children>
                                           </HBox>
                                        </children>
@@ -2483,6 +2452,26 @@
                               </Tab>
 									</tabs>
 								</TabPane>
+																<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="160.0" layoutX="569.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 30; -fx-arc-height: 30;" width="422.0" />
+                        <ScrollPane layoutX="576.0" layoutY="36.0" prefHeight="152.0" prefWidth="411.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="4000.0" prefWidth="700.0">
+                                 <children>
+                                    <TextArea fx:id="areaConsole" layoutY="1.0" prefHeight="4000.0" prefWidth="708.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+																<Button contentDisplay="BOTTOM" layoutX="996.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#writeFileAsm" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="CHECK" textFill="WHITE">
+																	<font>
+																		<Font name="System Bold" size="12.0" />
+																	</font>
+																</Button>
+                        <Button fx:id="result" contentDisplay="BOTTOM" layoutX="996.0" layoutY="138.0" mnemonicParsing="false" onMouseClicked="#loadResutTest" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: blue;" text="RESULT" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
 							</children>
 						</AnchorPane>
 					</children>

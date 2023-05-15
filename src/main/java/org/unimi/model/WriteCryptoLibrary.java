@@ -694,20 +694,21 @@ public class WriteCryptoLibrary {
 			System.out.println(" Operatio " + operation);
 			switch (operation) {
 			case "Asymmetric Public Key":
-				System.out.println("Asymmetric Public Key -  numEncSignHashMsg " + numEncSignHashMsg + " numEncField "+ numEncField );
+				System.out.println("--> Asymmetric Public Key -  numEncSignHashMsg " + numEncSignHashMsg + " numEncField "+ numEncField );
 				if (numEncSignHashMsg>numEncField) {
 					System.out.println("numEncField = numEncSignHashMsg");
 					numEncField = numEncSignHashMsg;
 				}
 				break;
 			case "Symmetric Key":
-				System.out.println("Symmetric Key -  numEncSignHashMsg " + numEncSignHashMsg + " numSymField "+ numSymField );
+				System.out.println("--> Symmetric Key -  numEncSignHashMsg " + numEncSignHashMsg + " numSymField "+ numSymField );
 				if (numEncSignHashMsg>numSymField) {
 					System.out.println("numSymField = numEncSignHashMsg");
 					numSymField = numEncSignHashMsg;
 				}
 				break;	
-			case "Signature Pub Key":
+			case "Signature Priv Key":
+				System.out.println("--> Signature Pub Key -  numEncSignHashMsg " + numEncSignHashMsg + " numSymField "+ numSymField );
 				if (numEncSignHashMsg>numSignField) {
 					numSignField = numEncSignHashMsg;
 				}

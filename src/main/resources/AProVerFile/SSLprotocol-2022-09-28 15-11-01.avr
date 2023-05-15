@@ -121,6 +121,7 @@ dati listPartMessage j=2 k=0
 (payloadField2){CA},{NB} - SIGNPRIVKA - 
 dati Properties 
 TAB =0 Confidentiality
-COL =00 ¬EF(knowsNonce(Bob,NB)=true)
+COL =00 !ef(!(knowsNonce(Alice,NB)))
 TAB =1 Integrity
+COL =10 ef(knowsNonce(Alice,NB) or !ef(!(knowsNonce(Eve,NB))))
 TAB =2 Authentication

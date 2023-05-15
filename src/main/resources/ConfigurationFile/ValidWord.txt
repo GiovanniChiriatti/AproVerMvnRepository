@@ -1,16 +1,20 @@
-true
-false
-and
-or
+ and 
+ or 
 knowsNonce
 knowsAsymPubKey
 knowsSymKey
-not
-U
+knowsIdentityCertificate
+knowsBitString
+knowsAsymPrivKey
+knowsSignPubKey
+knowsSignPrivKey
+knowsTag
+knowsDigest
+knowsHash
+knowsTimestamp
+knowsOther
 =
 ,
 (
 )
-¬
-→
-↔
+!

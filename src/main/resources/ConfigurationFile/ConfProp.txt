@@ -1,16 +1,16 @@
-Confidentiality ¬EF 
-Integrity ¬EF AG
-Authentication ¬EF
+Confidentiality !ef 
+Integrity !ef ag
+Authentication !ef
 Altre
-AF all future
-AG all global
-AX all next
-EF exists future
-EG exists global
-EX exists next
-¬AF not all future
-¬AG not all global
-¬AX not all next
-¬EF not exists future
-¬EG not exists global
-¬EX not exists next
+ef all future
+ag all global
+ax all next
+ef exists future
+eg exists global
+ex exists next
+!af not all future
+!ag not all global
+!ax not all next
+!ef not exists future
+!eg not exists global
+!ex not exists next

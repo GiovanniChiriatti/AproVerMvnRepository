@@ -510,20 +510,37 @@ public class CreateProperties {
 				expression=actorKnow.getValue();
 			}
 			if (otherComboBox.getValue() != null && !otherComboBox.getValue().isEmpty()
-					&& !otherComboBox.getValue().equals(" ")) {
+					&& !otherComboBox.getValue().equals(" ") && !otherComboBox.getValue().equals("!")) {
 				numSelect++;
 		//		System.out.println("otherComboBox.getValue() "+ otherComboBox.getValue());
 
 				expression=otherComboBox.getValue();
 			}
+			if (otherComboBox.getValue() != null && !otherComboBox.getValue().isEmpty()
+					&& otherComboBox.getValue().equals("!")) {
+				numSelect++;
+		//		System.out.println("otherComboBox.getValue() "+ otherComboBox.getValue());
+
+				expression=otherComboBox.getValue()+"(";
+			}
 			
 			if(listview.getSelectionModel().getSelectedItem() !=null) {
 				numSelect++;
+				if (listview.getSelectionModel().getSelectedItem().toString().equals("!")) {
+					expression = listview.getSelectionModel().getSelectedItem().toString()+ "(";
+				} else {
+					// System.out.println("listview.getSelectionModel().getSelectedItem() "+
+					// listview.getSelectionModel().getSelectedItem());
+
+					expression = listview.getSelectionModel().getSelectedItem().toString();
+				}
+			}
+		//	if(listview.getSelectionModel().getSelectedItem() !=null) {
+		//		numSelect++;
 		//		System.out.println("listview.getSelectionModel().getSelectedItem() "+ listview.getSelectionModel().getSelectedItem());
 
-				expression=listview.getSelectionModel().getSelectedItem().toString();					
-			}
-			
+		//		expression=listview.getSelectionModel().getSelectedItem().toString();					
+		//	}
 			if (numSelect == 0) {
 				errorMessage("Adding Invalid expression", "Please Selected an Information");
 			    return;

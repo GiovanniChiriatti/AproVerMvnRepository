@@ -44,6 +44,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
@@ -62,6 +63,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.control.TextField;
@@ -108,6 +110,7 @@ public class SelectAProVerController {
 	boolean toolFlag = false;
 	boolean helpFlag = false;
 	boolean eveIntercept=false;
+	boolean debug = false;
 	String fileName;
 	int numMessage, numMessagePrec, numCtlEle;
 	private String[] ctlEle = new String[16];
@@ -115,6 +118,7 @@ public class SelectAProVerController {
 	Node node,node1,node2,node3,node4, line,liey,msg,msf,livy, nodeNext1, nodeNext2,nodeNext3,nodeNext4;
 	String[] elencoKnowledge = new String[15];
 	String[] elencoKnowledge2 = new String[15];
+	ArrayList<String>  consoleNuSMV = new ArrayList<String>();
 	
 	@FXML
 	private AnchorPane initialKnowledge,msgPayloadAncorPane,msgPayloadAncorPane1, TotalAnchorPane,ancorTabe08;
@@ -171,7 +175,22 @@ public class SelectAProVerController {
 	private Button Server01, Server02, Server03, Server04, Server05, Server06, Server07, Server08, Server09, Server10 , Server11, Server12;
 	@FXML
 	private Button nextButton, prevButton, finishButton;
-	
+	@FXML
+	private Button buttonProp10, buttonProp11, buttonProp12, buttonProp13, buttonProp14, buttonProp15, buttonProp16, buttonProp17, buttonProp18,buttonProp19;
+	@FXML
+	private Button buttonProp20, buttonProp21, buttonProp22, buttonProp23, buttonProp24, buttonProp25, buttonProp26, buttonProp27, buttonProp28,buttonProp29;
+	@FXML
+	private Button buttonProp30, buttonProp31, buttonProp32, buttonProp33, buttonProp34, buttonProp35, buttonProp36, buttonProp37, buttonProp38,buttonProp39;
+	@FXML
+	private Button buttonProp40, buttonProp41, buttonProp42, buttonProp43, buttonProp44, buttonProp45;
+	@FXML
+	private Button buttonProp50, buttonProp51, buttonProp52, buttonProp53, buttonProp54, buttonProp55;
+	@FXML
+	private Button buttonProp60, buttonProp61, buttonProp62, buttonProp63, buttonProp64, buttonProp65;
+	@FXML
+	private Button buttonProp70, buttonProp71, buttonProp72, buttonProp73, buttonProp74, buttonProp75;
+	@FXML
+	private Button buttonProp80, buttonProp81, buttonProp82, buttonProp83, buttonProp84, buttonProp85;
 	@FXML
 	private Button aliceButton01, bobButton01, eveButton01, serverButton01;
 	
@@ -208,7 +227,7 @@ public class SelectAProVerController {
 	@FXML
 	private Button aliceButton15, bobButton15, eveButton15, serverButton15;
 	@FXML
-	private Button propriertiesButton;
+	private Button propriertiesButton,result;
 	
 	@FXML
 	private Button insertSelect00,insertSelect01,insertSelect02,insertSelect03,insertSelect04,insertSelect05;
@@ -251,7 +270,8 @@ public class SelectAProVerController {
 
 	@FXML
 	private MenuButton choices;
-	
+	@FXML
+	private TextArea areaConsole;	
 	@FXML
 	private MenuItem tool,toolEve,toolCheck;
 	
@@ -439,7 +459,7 @@ public class SelectAProVerController {
 		bobButton15.setVisible(false);
 		eveButton15.setVisible(false);
 		serverButton15.setVisible(false);
-		
+		result.setVisible(false);
 
 	}
 	
@@ -2920,6 +2940,7 @@ public class SelectAProVerController {
 			count=0;
 			String line1 = in.nextLine();
 			Scanner t = new Scanner(line1);
+			System.out.println("=======================================>"+line1);
 			while (t.hasNext()) {
 				if (count == 0) {
 					confProp.setListNameTab(t.next(),"");
@@ -3153,6 +3174,11 @@ public class SelectAProVerController {
 			} else {
 				appRow = 0;
 			}
+			if (node != null && node instanceof Text) {
+				if (appRow == row) {
+					((Text) node).setText("---");
+				}
+			}
 			if (node != null && node instanceof TextField) {
 				if (appRow == row) {
 					((TextField) node).setText(properties);
@@ -3337,6 +3363,7 @@ public class SelectAProVerController {
 		String data = (String) node.getId();
 		int tab = Integer.parseInt(data.substring(data.length() - 2));
 		showAddProperties(tab,"ADD",0);
+
 		
 	}
 	
@@ -4079,6 +4106,7 @@ public class SelectAProVerController {
 			int k= Integer.parseInt(typeInfo.substring(26, typeInfo.length()).replace("k=", "").replace("=", "").replace(" ",""));
 			messages.getListMessages()[numMessage].addListPartMessage(line, k);		
 		}
+		
 		if (typeInfo.equals("dati Properties ")) {
 			if (line.contains("TAB =")) {
 				int tab=Integer.valueOf(line.substring(5, 6));
@@ -4628,6 +4656,7 @@ public class SelectAProVerController {
         controller.setDialogStage(dialogStage);
         controller.receivInfo(messages,alice,bob,eve,server,toolEve.getText(),tool.getText(),properties);
         dialogStage.showAndWait();
+        result.setVisible(true);
         
 /*		if (tool.getText().contains("Enable")) {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(false,messages,alice,bob,eve,null,toolEve.getText());
@@ -4678,6 +4707,176 @@ public class SelectAProVerController {
 		int tab= Integer.parseInt(data.substring(data.length() - 2,data.length()-1));
 		showAddProperties(tab,"UPD",col);
 		
+	}
+
+	//Legge la console risultato dell'elaborazione NuSvm, i dati sono contenuti in un file di tipo .txt 
+	// prima verifica che il formato sia giusto e successivamente cerca la stringa "-- specification" che
+	// rappresenta il risultato della CLTSPEC della asm
+	@FXML
+	private void loadResutTest() throws IOException {
+		FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().add(new ExtensionFilter("Txt Files", "*.txt"));
+		File f = fc.showOpenDialog(null);
+		//singleFile.setText("xxxxxxxxxxxxxxxxxxxx");
+
+		if (f == null) {
+			return;
+		}
+		
+		System.out.println("File Scaricato " + f.getAbsolutePath());
+		FileReader reader = new FileReader(f.getAbsolutePath());
+		Scanner fileTestNuSmv = new Scanner(reader);
+		String line;
+		int numRiga=0;
+		boolean firstProperties = true;
+		consoleNuSMV.clear();
+		
+		Properties propertiesIn=null;
+		while (fileTestNuSmv.hasNextLine()) {
+			line = fileTestNuSmv.nextLine();
+			numRiga++;
+			if (numRiga==1 && !line.equals("Execution of NuSMV code ...")) {
+				loadResutTest("Error File Selected");
+				return;
+			}
+			if (numRiga==2 && !line.equals("------------------------------------------------------------")) {
+				loadResutTest("Error File Selected");
+				return;
+			}
+			if (numRiga==3 && !line.contains("> NuSMV")) {
+				loadResutTest("Error File Selected");
+				return;
+			}
+			if (numRiga==4) {
+				propertiesIn =  insProperties();
+			}
+			if (numRiga>3 && line.contains("-- specification")) {
+				if (propertiesIn.findProperties(line) !=null) {
+					Node node = propertiesIn.getNodeResult(propertiesIn.getRowFound(),propertiesIn.getColFound());
+					consoleNuSMV.add("Col="+propertiesIn.getRowFound()+"Row="+propertiesIn.getColFound()+"- "+ line);
+					if (line.contains(" is false")) {
+						((Text) node).setText("False");
+						//((Text) node).setStyle("-fx-text-inner-color: red; -fx-font-size: 16px;");
+						((Text) node).setFill(Color.RED);
+					} else {
+						((Text) node).setText("True");
+						//((Text) node).setStyle("-fx-text-fill: green; -fx-font-size: 16px;");
+						((Text) node).setFill(Color.GREEN);
+					}
+				} else {
+					consoleNuSMV.add(line);
+				}
+			} else {
+				consoleNuSMV.add(line);
+			}
+		
+		}
+	}
+	
+	//inizializza la classe Proprieties
+	public Properties insProperties() {
+
+		Properties properties = new Properties();
+		GridPane listProprieties0x=null;
+
+		System.out.println("2>>>>>>>>>> insProperties");
+		for (int i = 0; i < 9; i++) {
+			if (!(confProp.getListNameTab(i) == null || confProp.getListNameTab(i).isEmpty())) {
+				System.out.println(" confProp.getListNameTab(i) " + confProp.getListNameTab(i) + " i " +i);
+				switch (i) {
+				case 0:
+					listProprieties0x = listProprieties00;
+					break;
+				case 1:
+					listProprieties0x = listProprieties01;
+					break;
+				case 2:
+					listProprieties0x = listProprieties02;
+					break;
+				case 3:
+					listProprieties0x = listProprieties03;
+					break;
+				case 4:
+					listProprieties0x = listProprieties04;
+					break;
+				case 5:
+					listProprieties0x = listProprieties05;
+					break;
+				case 6:
+					listProprieties0x = listProprieties06;
+					break;
+				case 7:
+					listProprieties0x = listProprieties07;
+					break;
+				case 8:
+					listProprieties0x = listProprieties08;
+					break;
+				}
+				
+				int appRow = 0;
+				for (Node node : listProprieties0x.getChildren()) {
+					if (GridPane.getRowIndex(node) != null) {
+						appRow = GridPane.getRowIndex(node);
+					} else {
+						appRow = 0;
+					}
+					if (node != null && node instanceof TextField) {
+						if (!((TextField) node).getText().isEmpty()) {
+							properties.setProperties(((TextField) node).getText(), node, i, appRow);
+						}
+					}
+					if (node != null && node instanceof Text) {
+						properties.setNodeResult(node, i, appRow);
+					}
+				}
+				
+				
+			}
+		}
+		return properties;
+	}
+	
+	
+	
+	private void loadResutTest(String messaggio) {
+		
+		final Stage stage = (Stage) aliceButton01.getScene().getWindow();
+		Alert.AlertType type = Alert.AlertType.WARNING;
+		Alert alert = new Alert(type, "");
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(stage);
+		alert.getDialogPane()
+				.setHeaderText(messaggio);
+		alert.showAndWait();
+	}
+	@FXML
+	private void selProperties(ActionEvent e) throws Exception {
+		System.out.println("-----------------------"+e);
+		
+		node = (Node) e.getSource();
+		System.out.println("-----------------------"+node);
+		areaConsole.setText("");
+		String data = (String) node.getId();
+		int riga = Integer.parseInt(data.substring(data.length() - 1));
+		int tab = Integer.parseInt(data.substring(data.length() - 2,data.length() - 1))-1;
+		System.out.println(" selezionato riga:" + riga + " Tab:"+ tab);
+		boolean trovato=false;
+		for (String eList: consoleNuSMV) {
+
+			if (eList.contains("Col=") && eList.contains("Row=")) {
+				if (eList.contains("Col=" + tab) && eList.contains("Row=" + riga)) {
+					areaConsole.appendText(eList.substring(10)+"\n");
+					trovato = true;
+				} else {
+					trovato = false;
+				}
+			} else {
+				if (trovato) {
+					areaConsole.appendText(eList+"\n");
+				}
+			}
+			    
+		}
 	}
 
 }
