@@ -181,4 +181,14 @@ public class Properties {
 	public int getColFound() {
 		return colFound;
 	}
+	public boolean verifyPropEmpty() {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (stringSpecification[i][j] != null && !stringSpecification[i][j].isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

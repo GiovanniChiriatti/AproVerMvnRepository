@@ -3161,6 +3161,14 @@ public class SelectAProVerController {
 					((Button) node).setVisible(true);
 				}
 			}
+			if (node != null && node instanceof Text && tab < 3) {
+				if (confProp.getProprietiesValue(tab, appRow) == null
+						|| confProp.getProprietiesValue(tab, appRow).isEmpty()) {
+					((Text) node).setText("");
+				} else {
+					((Text) node).setText("---");
+				}
+			}
 
 		}
 	}
@@ -4730,8 +4738,12 @@ public class SelectAProVerController {
 		int numRiga=0;
 		boolean firstProperties = true;
 		consoleNuSMV.clear();
+		Node[] nodeTrue = new Node[15];
+		Node[] nodeFalse = new Node[30];
+		int indTrue=0;
+		int indFalse=0;
 		
-		Properties propertiesIn=null;
+		Properties propertiesIn= insProperties();
 		while (fileTestNuSmv.hasNextLine()) {
 			line = fileTestNuSmv.nextLine();
 			numRiga++;
@@ -4747,29 +4759,50 @@ public class SelectAProVerController {
 				loadResutTest("Error File Selected");
 				return;
 			}
-			if (numRiga==4) {
-				propertiesIn =  insProperties();
-			}
 			if (numRiga>3 && line.contains("-- specification")) {
 				if (propertiesIn.findProperties(line) !=null) {
 					Node node = propertiesIn.getNodeResult(propertiesIn.getRowFound(),propertiesIn.getColFound());
 					consoleNuSMV.add("Col="+propertiesIn.getRowFound()+"Row="+propertiesIn.getColFound()+"- "+ line);
 					if (line.contains(" is false")) {
-						((Text) node).setText("False");
+						nodeFalse[indTrue] = node;
+						indFalse++;
+				//		((Text) node).setText("False");
 						//((Text) node).setStyle("-fx-text-inner-color: red; -fx-font-size: 16px;");
-						((Text) node).setFill(Color.RED);
+				//		((Text) node).setFill(Color.RED);
 					} else {
-						((Text) node).setText("True");
+						nodeTrue[indFalse] = node;
+						indTrue++;
+				//		((Text) node).setText("True");
 						//((Text) node).setStyle("-fx-text-fill: green; -fx-font-size: 16px;");
-						((Text) node).setFill(Color.GREEN);
+				//		((Text) node).setFill(Color.GREEN);
 					}
 				} else {
-					consoleNuSMV.add(line);
+					consoleNuSMV.clear();
+					loadResutTest("Error File Selected");
+					return;
 				}
 			} else {
 				consoleNuSMV.add(line);
 			}
 		
+		}
+		if (propertiesIn.verifyPropEmpty()) {
+			for (Node nTrue: nodeTrue) {
+				if (nTrue !=null) {
+					((Text) nTrue).setText("True");
+					((Text) nTrue).setFill(Color.GREEN);
+				}
+			}
+			for (Node nFalse: nodeFalse) {
+				if (nFalse !=null) {
+					((Text) nFalse).setText("False");
+					((Text) nFalse).setFill(Color.RED);
+				}
+			}
+		} else {
+			consoleNuSMV.clear();
+			loadResutTest("Error File Selected");
+			return;
 		}
 	}
 	
@@ -4827,6 +4860,10 @@ public class SelectAProVerController {
 					}
 					if (node != null && node instanceof Text) {
 						properties.setNodeResult(node, i, appRow);
+						if (!((Text) node).getText().equals("")) {
+							((Text) node).setText("---");
+							((Text) node).setFill(Color.BLACK);
+						}
 					}
 				}
 				
