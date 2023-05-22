@@ -146,5 +146,6 @@ dati listPartMessage j=1 k=0
 NB
 dati Properties 
 TAB =0 Confidentiality
+COL =00 ef(knowsNonce(Bob,NB))
 TAB =1 Integrity
 TAB =2 Authentication

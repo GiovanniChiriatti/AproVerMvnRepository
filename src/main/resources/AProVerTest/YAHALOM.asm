@@ -9,7 +9,7 @@ definitions:
 	domain Level = {1}
 	domain FieldPosition = {1:6}
 	domain EncField1={1:6}
-	domain EncField2={2:6}
+	domain EncField2={1:6}
 	domain NumMsg={0:15}
 
 	domain KnowledgeNonce = {NA,NB}

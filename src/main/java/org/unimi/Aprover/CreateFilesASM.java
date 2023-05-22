@@ -38,6 +38,9 @@ public class CreateFilesASM {
     private ComboBox receiver;
 	
 	@FXML
+    private ComboBox typeConvert;
+		
+	@FXML
 	private Text resultOperation;
 
 	@FXML
@@ -49,6 +52,10 @@ public class CreateFilesASM {
         comboBoxList = FXCollections.observableArrayList("AG_E","AG_B");
         receiver.setItems(comboBoxList);
         receiver.getSelectionModel().selectFirst();
+        comboBoxList = FXCollections.observableArrayList("IF(Knows...","IF(...Dec");
+        typeConvert.setItems(comboBoxList);
+        typeConvert.getSelectionModel().selectFirst();
+        
 	}
 	
 	public void setDialogStage(Stage dialogStage) {
@@ -106,7 +113,7 @@ public class CreateFilesASM {
 
 		if (toolServer.contains("Enable")) {
 			WriteCryptoLibrary writeCrypto = new WriteCryptoLibrary(false, messages, alice, bob, eve, null, toolEve,
-					acronymProcolASM.getText());
+					acronymProcolASM.getText(),typeConvert.getValue().toString());
 			if (!writeCrypto.writeFile()) {
 				resultOperation.setText("Create Files Error");
 				return;
@@ -116,7 +123,7 @@ public class CreateFilesASM {
 					writeCrypto.getNumEleMsg(), writeCrypto.getLevelTot(), writeCrypto.getNumEncField(),
 					writeCrypto.getNumSignField(), writeCrypto.getNumSymField(), 
 					writeCrypto.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText()
-					,receiver.getValue().toString(), modality.getValue().toString(), properties);
+					,receiver.getValue().toString(), modality.getValue().toString(),typeConvert.getValue().toString(), properties);
 			System.out.println(">---<");
 			System.out.println("Verifica WriteCryptoLibrary-  ");
 			if (!writeASM.writeFile()) {
@@ -126,7 +133,7 @@ public class CreateFilesASM {
 		} else {
 				System.out.println("Verifica WriteASM--  ");
 				WriteCryptoLibrary writeCrypto1 = new WriteCryptoLibrary(true, messages, alice, bob, eve, server,
-						toolEve, acronymProcolASM.getText());
+						toolEve, acronymProcolASM.getText(),typeConvert.getValue().toString());
 				System.out.println("---");
 				System.out.println("Verifica WriteCryptoLibrary: ");
 				if (!writeCrypto1.writeFile()) {
@@ -137,7 +144,7 @@ public class CreateFilesASM {
 						writeCrypto1.getNumEleMsg(), writeCrypto1.getLevelTot(), writeCrypto1.getNumEncField(),
 						writeCrypto1.getNumSignField(), writeCrypto1.getNumSymField(), 
 						writeCrypto1.getNumHashField(),nameProcolASM.getText(),acronymProcolASM.getText()
-						,receiver.getValue().toString(), modality.getValue().toString(),properties);
+						,receiver.getValue().toString(), modality.getValue().toString(),typeConvert.getValue().toString(),properties);
 				if (!writeASM1.writeFile()) {
 					resultOperation.setText("Create Files Error");
 					return;

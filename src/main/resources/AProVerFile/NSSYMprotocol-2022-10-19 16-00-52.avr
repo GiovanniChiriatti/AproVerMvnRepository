@@ -55,7 +55,6 @@ dati Eve SymmetricKey
 KEA
 KEB
 KES
-KBS
 dati Eve Hash 
 dati Eve Bitstring 
 dati Eve IdCertificate 
@@ -149,5 +148,6 @@ dati listPartMessage j=0 k=0
 NB
 dati Properties 
 TAB =0 Confidentiality
+COL =00 ef(knowsNonce(Eve,NB))
 TAB =1 Integrity
 TAB =2 Authentication

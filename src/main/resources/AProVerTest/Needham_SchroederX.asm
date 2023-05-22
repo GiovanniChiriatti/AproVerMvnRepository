@@ -8,8 +8,8 @@ signature:
 definitions:
 	domain Level = {1}
 	domain FieldPosition = {1:2}
-	domain EncField1={1}
-	domain EncField2={2}
+	domain EncField1={1:2}
+	domain EncField2={1:2}
 	domain NumMsg={0:15}
 
 	domain KnowledgeNonce = {NA,NB,NE}

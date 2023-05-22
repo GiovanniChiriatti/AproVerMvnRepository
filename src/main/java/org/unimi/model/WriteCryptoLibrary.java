@@ -27,7 +27,7 @@ public class WriteCryptoLibrary {
 
 
 	private String toolEve;
-	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve,String acronym) 
+	public WriteCryptoLibrary(Boolean actorServer, Messages messages,SecurityKey alice,SecurityKey bob,SecurityKey eve,SecurityKey server,String toolEve,String acronym, String typeConvert) 
 			  throws IOException {
 		 		this.acronym=acronym;
 				this.actorServer = actorServer;

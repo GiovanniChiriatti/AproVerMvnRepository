@@ -1,0 +1,4 @@
+Execution of NuSMV code ...
+------------------------------------------------------------
+> NuSMV -dynamic -coi -quiet C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\Needham_SchroederNSSYMKASTest.smv
+-- specification EF knowsNonce(EVE,NB)  is true

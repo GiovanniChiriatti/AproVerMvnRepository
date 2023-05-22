@@ -71,7 +71,7 @@ signature:
 	controlled messageField: Prod(Agenti,Agenti,FieldPosition,Message)->Knowledge
 
 	//attaker mode
-	monitored chosenMode: Modality
+	controlled chosenMode: Modality
 	//controlled for saving the attacker modality choice
 	controlled mode: Modality
 
@@ -80,7 +80,7 @@ signature:
 	//Receiver chosen
 	controlled receiver:Receiver
 	//Receiver chosen by user
-	monitored chosenReceiver:Receiver
+	controlled chosenReceiver:Receiver
 
 	/*------------------------------------------------------------------- */
 	//            Knowledge  management of the principals 
@@ -116,23 +116,29 @@ signature:
 	/*------------------------------------------------------------------- */
 	//hash function applied from the field HashField1 to HashField2, the nesting level is Level
 	controlled hash: Prod(Message,Level,HashField1,HashField2)-> Knowledge
-	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agenti)-> Boolean
+// 	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean
+
 
 	//sign function applied from the field SignField1 to SignField2, the nesting level is Level
 	controlled sign: Prod(Message,Level,SignField1,SignField2)-> Knowledge
-	static verifySign: Prod(Message,Level,SignField1,SignField2,Agenti)-> Boolean
-	static sign_keyAssociation: Knowledge -> Knowledge
+// 	static verifySign: Prod(Message,Level,SignField1,SignField2,Agent)-> Boolean
+
+// 	static sign_keyAssociation: KnowledgeSignPrivKey -> KnowledgeSignPubKey
+
 
 	//asymmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled asymEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-	static asymDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
-	static asim_keyAssociation: Knowledge -> Knowledge
+// 	static asymDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+
+// 	static asim_keyAssociation: KnowledgeAsymPubKey -> KnowledgeAsymPrivKey
+
 
 	//symmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-	static symDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
+// 	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+
 // 	static agentA: Alice
 // 	static agentB: Bob
 // 	static agentE: Eve
@@ -148,23 +154,23 @@ definitions:
 	domain Level = {1}
 	domain FieldPosition = {1:7}
 	domain EncField1={1:7}
-	domain EncField2={2:7}
+	domain EncField2={1:7}
 	domain NumMsg={0:15}
 	domain SignField1={1}
-	domain SignField2={2}
+	domain SignField2={1}
 	domain HashField1={1}
-	domain HashField2={2}
+	domain HashField2={1}
 
-	function asim_keyAssociation($a in Knowledge)=
-	       switch( $a )
-	              case NULL: NULL
-	              otherwise NULL 
-	       endswitch
-	function sign_keyAssociation($b in Knowledge)=
-	       switch( $b )
-	              case NULL: NULL
-	              otherwise NULL 
-	       endswitch
+//function asim_keyAssociation($a in Knowledge)=
+//       switch( $a )
+//              case NULL: NULL
+//              otherwise NULL 
+//       endswitch
+//function sign_keyAssociation($b in Knowledge)=
+//       switch( $b )
+//              case NULL: NULL
+//              otherwise NULL 
+//       endswitch
 
 	function name($a in Receiver)=
 			switch( $a )
@@ -173,35 +179,35 @@ definitions:
 				case AG_B:agentB
 				case AG_S:agentS
 			endswitch
-
-		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agenti)=
-			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
-				true
-			else
-				false
-			endif
-
-		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
-			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
-				true
-			else
-				false
-			endif
-
-		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
-			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
-				true
-			else
-				false
-			endif
-
-		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agenti)=
-			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
-				true
-			else
-				false
-			endif
-
+//
+//		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agenti)=
+//			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
+//			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
+//			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agenti)=
+//			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
 
 	/*ATTACKER RULES*/
 	rule r_message_replay_MA =
@@ -209,25 +215,25 @@ definitions:
 		let ($x=agentE,$b=agentB,$a=agentA) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(0,$a,$x)=MA and protocolMessage(0,$x,$b)!=MA and mode=PASSIVE)then
+			if(protocolMessage(0,ALICE,EVE)=MA and protocolMessage(0,EVE,BOB)!=MA and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                 	protocolMessage(0,$x,$b):=MA
-                 	messageField($x,$b,1,MA):=messageField($a,$x,1,MA)
-                 	messageField($x,$b,2,MA):=messageField($a,$x,2,MA)
-                 	knowsIdentityCertificate($x,messageField($a,$x,1,MA)):=true
-                 	knowsNonce($x,messageField($a,$x,2,MA)):=true
+                 	protocolMessage(0,EVE,BOB):=MA
+                 	messageField(EVE,BOB,1,MA):=messageField(ALICE,EVE,1,MA)
+                 	messageField(EVE,BOB,2,MA):=messageField(ALICE,EVE,2,MA)
+                 	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,1,MA)):=true
+                 	knowsNonce(EVE,messageField(ALICE,EVE,2,MA)):=true
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(0,$a,$x)=MA and protocolMessage(0,$x,$b)!=MA and mode=ACTIVE)then
+			if(protocolMessage(0,ALICE,EVE)=MA and protocolMessage(0,EVE,BOB)!=MA and mode=ACTIVE)then
 		          par 
-                 	protocolMessage(0,$x,$b):=MA
-                 	messageField($x,$b,1,MA):=messageField($a,$x,1,MA)
-                 	messageField($x,$b,2,MA):=messageField($a,$x,2,MA)
-                 	knowsIdentityCertificate($x,messageField($a,$x,1,MA)):=true
-                 	knowsNonce($x,messageField($a,$x,2,MA)):=true
+                 	protocolMessage(0,EVE,BOB):=MA
+                 	messageField(EVE,BOB,1,MA):=messageField(ALICE,EVE,1,MA)
+                 	messageField(EVE,BOB,2,MA):=messageField(ALICE,EVE,2,MA)
+                 	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,1,MA)):=true
+                 	knowsNonce(EVE,messageField(ALICE,EVE,2,MA)):=true
 		          endpar 
 			endif 
 		  endpar 
@@ -237,40 +243,42 @@ definitions:
 		let ($x=agentE,$b=agentS,$a=agentB) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(1,$a,$x)=MB and protocolMessage(1,$x,$b)!=MB and mode=PASSIVE)then
+			if(protocolMessage(1,BOB,EVE)=MB and protocolMessage(1,EVE,SERVER)!=MB and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                 	protocolMessage(1,$x,$b):=MB
-                 	messageField($x,$b,1,MB):=messageField($a,$x,1,MB)
-                 	messageField($x,$b,2,MB):=messageField($a,$x,2,MB)
-                 	messageField($x,$b,3,MB):=messageField($a,$x,3,MB)
-                 	messageField($x,$b,4,MB):=messageField($a,$x,4,MB)
-                 	knowsIdentityCertificate($x,messageField($a,$x,1,MB)):=true
-                 	knowsNonce($x,messageField($a,$x,2,MB)):=true
-			        if(symDec(MB,1,3,4,$x)=true)then
+                 	protocolMessage(1,EVE,SERVER):=MB
+                 	messageField(EVE,SERVER,1,MB):=messageField(BOB,EVE,1,MB)
+                 	messageField(EVE,SERVER,2,MB):=messageField(BOB,EVE,2,MB)
+                 	messageField(EVE,SERVER,3,MB):=messageField(BOB,EVE,3,MB)
+                 	messageField(EVE,SERVER,4,MB):=messageField(BOB,EVE,4,MB)
+                 	knowsIdentityCertificate(EVE,messageField(BOB,EVE,1,MB)):=true
+                 	knowsNonce(EVE,messageField(BOB,EVE,2,MB)):=true
+//	        if(symDec(MB,1,3,4,EVE)=true)then
+			        if(knowsSymKey(EVE,KBS)=true)then
                       par 
-                    	knowsIdentityCertificate($x,messageField($a,$x,3,MB)):=true
-                    	knowsNonce($x,messageField($a,$x,4,MB)):=true
+                    	knowsIdentityCertificate(EVE,messageField(BOB,EVE,3,MB)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,4,MB)):=true
 			            symEnc(MB,1,3,4):=KBS
                       endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(1,$a,$x)=MB and protocolMessage(1,$x,$b)!=MB and mode=ACTIVE)then
+			if(protocolMessage(1,BOB,EVE)=MB and protocolMessage(1,EVE,SERVER)!=MB and mode=ACTIVE)then
 		          par 
-                 	protocolMessage(1,$x,$b):=MB
-                 	messageField($x,$b,1,MB):=messageField($a,$x,1,MB)
-                 	messageField($x,$b,2,MB):=messageField($a,$x,2,MB)
-                 	messageField($x,$b,3,MB):=messageField($a,$x,3,MB)
-                 	messageField($x,$b,4,MB):=messageField($a,$x,4,MB)
-                 	knowsIdentityCertificate($x,messageField($a,$x,1,MB)):=true
-                 	knowsNonce($x,messageField($a,$x,2,MB)):=true
-			        if(symDec(MB,1,3,4,$x)=true)then
+                 	protocolMessage(1,EVE,SERVER):=MB
+                 	messageField(EVE,SERVER,1,MB):=messageField(BOB,EVE,1,MB)
+                 	messageField(EVE,SERVER,2,MB):=messageField(BOB,EVE,2,MB)
+                 	messageField(EVE,SERVER,3,MB):=messageField(BOB,EVE,3,MB)
+                 	messageField(EVE,SERVER,4,MB):=messageField(BOB,EVE,4,MB)
+                 	knowsIdentityCertificate(EVE,messageField(BOB,EVE,1,MB)):=true
+                 	knowsNonce(EVE,messageField(BOB,EVE,2,MB)):=true
+//			        if(symDec(MB,1,3,4,EVE)=true)then
+			            if(knowsSymKey(EVE,KBS)=true)then
 	   			     par 
-                    	knowsIdentityCertificate($x,messageField($a,$x,3,MB)):=true
-                    	knowsNonce($x,messageField($a,$x,4,MB)):=true
+                    	knowsIdentityCertificate(EVE,messageField(BOB,EVE,3,MB)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,4,MB)):=true
 			        	symEnc(MB,1,3,4):=KBS
 	   			     endpar 
 			        endif 
@@ -283,72 +291,76 @@ definitions:
 		let ($x=agentE,$b=agentA,$a=agentS) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(4,$a,$x)=ME and protocolMessage(4,$x,$b)!=ME and mode=PASSIVE)then
+			if(protocolMessage(4,SERVER,EVE)=ME and protocolMessage(4,EVE,ALICE)!=ME and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 			          par
-			            knowsIdentityCertificate($x,messageField(agentB,$x,1,MD)):=true
-			            knowsNonce($x,messageField(agentB,$x,2,MD)):=true
-                 	protocolMessage(4,$x,$b):=ME
-                 	messageField($x,$b,1,ME):=messageField($a,$x,1,ME)
-                 	messageField($x,$b,2,ME):=messageField($a,$x,2,ME)
-                 	messageField($x,$b,3,ME):=messageField($a,$x,3,ME)
-                 	messageField($x,$b,4,ME):=messageField($a,$x,4,ME)
-                 	messageField($x,$b,5,ME):=messageField($a,$x,5,ME)
-                 	messageField($x,$b,6,ME):=messageField($a,$x,6,ME)
-                 	messageField($x,$b,7,ME):=messageField($a,$x,7,ME)
-                 	knowsNonce($x,messageField($a,$x,1,ME)):=true
-			        if(symDec(ME,1,2,4,$x)=true)then
+			            knowsIdentityCertificate(EVE,messageField(agentB,EVE,1,MD)):=true
+			            knowsNonce(EVE,messageField(agentB,EVE,2,MD)):=true
+                 	protocolMessage(4,EVE,ALICE):=ME
+                 	messageField(EVE,ALICE,1,ME):=messageField(SERVER,EVE,1,ME)
+                 	messageField(EVE,ALICE,2,ME):=messageField(SERVER,EVE,2,ME)
+                 	messageField(EVE,ALICE,3,ME):=messageField(SERVER,EVE,3,ME)
+                 	messageField(EVE,ALICE,4,ME):=messageField(SERVER,EVE,4,ME)
+                 	messageField(EVE,ALICE,5,ME):=messageField(SERVER,EVE,5,ME)
+                 	messageField(EVE,ALICE,6,ME):=messageField(SERVER,EVE,6,ME)
+                 	messageField(EVE,ALICE,7,ME):=messageField(SERVER,EVE,7,ME)
+                 	knowsNonce(EVE,messageField(SERVER,EVE,1,ME)):=true
+//	        if(symDec(ME,1,2,4,EVE)=true)then
+			        if(knowsSymKey(EVE,KAS)=true)then
                       par 
-                    	knowsIdentityCertificate($x,messageField($a,$x,2,ME)):=true
-                    	knowsSymKey($x,messageField($a,$x,3,ME)):=true
-                    	knowsNonce($x,messageField($a,$x,4,ME)):=true
+                    	knowsIdentityCertificate(EVE,messageField(SERVER,EVE,2,ME)):=true
+                    	knowsSymKey(EVE,messageField(SERVER,EVE,3,ME)):=true
+                    	knowsNonce(EVE,messageField(SERVER,EVE,4,ME)):=true
 			            symEnc(ME,1,2,4):=KAS
                       endpar 
 			        endif 
-			        if(symDec(ME,1,5,7,$x)=true)then
+//	        if(symDec(ME,1,5,7,EVE)=true)then
+			        if(knowsSymKey(EVE,KBS)=true)then
                       par 
-                    	knowsIdentityCertificate($x,messageField($a,$x,5,ME)):=true
-                    	knowsSymKey($x,messageField($a,$x,6,ME)):=true
-                    	knowsNonce($x,messageField($a,$x,7,ME)):=true
+                    	knowsIdentityCertificate(EVE,messageField(SERVER,EVE,5,ME)):=true
+                    	knowsSymKey(EVE,messageField(SERVER,EVE,6,ME)):=true
+                    	knowsNonce(EVE,messageField(SERVER,EVE,7,ME)):=true
 			            symEnc(ME,1,5,7):=KBS
                       endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(4,$a,$x)=ME and protocolMessage(4,$x,$b)!=ME and mode=ACTIVE)then
+			if(protocolMessage(4,SERVER,EVE)=ME and protocolMessage(4,EVE,ALICE)!=ME and mode=ACTIVE)then
 			          par
-			            knowsIdentityCertificate($x,messageField(agentB,$x,1,MD)):=true
-			            knowsNonce($x,messageField(agentB,$x,2,MD)):=true
-                 	protocolMessage(4,$x,$b):=ME
-                 	messageField($x,$b,1,ME):=messageField($a,$x,1,ME)
-                 	messageField($x,$b,2,ME):=messageField($a,$x,2,ME)
-                 	messageField($x,$b,4,ME):=messageField($a,$x,4,ME)
-                 	messageField($x,$b,5,ME):=messageField($a,$x,5,ME)
-                 	messageField($x,$b,7,ME):=messageField($a,$x,7,ME)
-                 	knowsNonce($x,messageField($a,$x,1,ME)):=true
-			        if(symDec(ME,1,2,4,$x)=true)then
+			            knowsIdentityCertificate(EVE,messageField(agentB,EVE,1,MD)):=true
+			            knowsNonce(EVE,messageField(agentB,EVE,2,MD)):=true
+                 	protocolMessage(4,EVE,ALICE):=ME
+                 	messageField(EVE,ALICE,1,ME):=messageField(SERVER,EVE,1,ME)
+                 	messageField(EVE,ALICE,2,ME):=messageField(SERVER,EVE,2,ME)
+                 	messageField(EVE,ALICE,4,ME):=messageField(SERVER,EVE,4,ME)
+                 	messageField(EVE,ALICE,5,ME):=messageField(SERVER,EVE,5,ME)
+                 	messageField(EVE,ALICE,7,ME):=messageField(SERVER,EVE,7,ME)
+                 	knowsNonce(EVE,messageField(SERVER,EVE,1,ME)):=true
+//			        if(symDec(ME,1,2,4,EVE)=true)then
+			            if(knowsSymKey(EVE,KAS)=true)then
 	   			     par 
-			         	messageField($x,$b,3,ME):=KNA
-                    	knowsIdentityCertificate($x,messageField($a,$x,2,ME)):=true
-                    	knowsSymKey($x,messageField($a,$x,3,ME)):=true
-                    	knowsNonce($x,messageField($a,$x,4,ME)):=true
+			         	messageField(EVE,ALICE,3,ME):=KNA
+                    	knowsIdentityCertificate(EVE,messageField(SERVER,EVE,2,ME)):=true
+                    	knowsSymKey(EVE,messageField(SERVER,EVE,3,ME)):=true
+                    	knowsNonce(EVE,messageField(SERVER,EVE,4,ME)):=true
 			        	symEnc(ME,1,2,4):=KAS
 	   			     endpar 
 			        else 
-			         	messageField($x,$b,3,ME):=messageField($a,$x,3,ME)
+			         	messageField(EVE,ALICE,3,ME):=messageField(SERVER,EVE,3,ME)
 			        endif 
-			        if(symDec(ME,1,5,7,$x)=true)then
+//			        if(symDec(ME,1,5,7,EVE)=true)then
+			            if(knowsSymKey(EVE,KBS)=true)then
 	   			     par 
-			         	messageField($x,$b,6,ME):=KNA
-                    	knowsIdentityCertificate($x,messageField($a,$x,5,ME)):=true
-                    	knowsSymKey($x,messageField($a,$x,6,ME)):=true
-                    	knowsNonce($x,messageField($a,$x,7,ME)):=true
+			         	messageField(EVE,ALICE,6,ME):=KNA
+                    	knowsIdentityCertificate(EVE,messageField(SERVER,EVE,5,ME)):=true
+                    	knowsSymKey(EVE,messageField(SERVER,EVE,6,ME)):=true
+                    	knowsNonce(EVE,messageField(SERVER,EVE,7,ME)):=true
 			        	symEnc(ME,1,5,7):=KBS
 	   			     endpar 
 			        else 
-			         	messageField($x,$b,6,ME):=messageField($a,$x,6,ME)
+			         	messageField(EVE,ALICE,6,ME):=messageField(SERVER,EVE,6,ME)
 			        endif 
 		          endpar 
 			endif 
@@ -361,17 +373,17 @@ definitions:
 			if(internalStateA=IDLE_MA)then 
 			   if(receiver!=AG_E)then
 			     par
-			         protocolMessage(0,$x,$e):=MA
-			         messageField($x,$e,1,MA):=CA
-			         messageField($x,$e,2,MA):=NA
+			         protocolMessage(0,ALICE,EVE):=MA
+			         messageField(ALICE,EVE,1,MA):=CA
+			         messageField(ALICE,EVE,2,MA):=NA
 			         internalStateA:=CHECK_END_A
 			     endpar
 			   else
 			       if(receiver=AG_E)then
 			         par
-			            protocolMessage(0,$x,$e):=MA
-			            messageField($x,$e,1,MA):=CA
-			            messageField($x,$e,2,MA):=NA
+			            protocolMessage(0,ALICE,EVE):=MA
+			            messageField(ALICE,EVE,1,MA):=CA
+			            messageField(ALICE,EVE,2,MA):=NA
 			            internalStateA:=CHECK_END_A
 			         endpar
 			       endif
@@ -380,28 +392,28 @@ definitions:
 		endlet
 	rule r_message_MB =
 		let ($x=agentB,$e=agentE) in
-			if(internalStateB=WAITING_MB and protocolMessage(0,$e,$x)=MA)then
+			if(internalStateB=WAITING_MB and protocolMessage(0,EVE,BOB)=MA)then
 			   if(receiver!=AG_E)then
 			          par
-			            knowsIdentityCertificate($x,messageField($e,$x,1,MA)):=true
-			            knowsNonce($x,messageField($e,$x,2,MA)):=true
-			            protocolMessage(1,$x,$e):=MB
-			            messageField($x,$e,1,MB):=CB
-			            messageField($x,$e,2,MB):=NB
-			            messageField($x,$e,3,MB):=messageField($e,$x,1,MA)
-			            messageField($x,$e,4,MB):=messageField($e,$x,2,MA)
+			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,1,MA)):=true
+			            knowsNonce(BOB,messageField(EVE,BOB,2,MA)):=true
+			            protocolMessage(1,BOB,EVE):=MB
+			            messageField(BOB,EVE,1,MB):=CB
+			            messageField(BOB,EVE,2,MB):=NB
+			            messageField(BOB,EVE,3,MB):=messageField(EVE,BOB,1,MA)
+			            messageField(BOB,EVE,4,MB):=messageField(EVE,BOB,2,MA)
 			            symEnc(MB,1,3,4):=KBS
 			            internalStateB:=WAITING_MD
 			          endpar
 			   else
 			          par
-			            knowsIdentityCertificate($x,messageField($e,$x,1,MA)):=true
-			            knowsNonce($x,messageField($e,$x,2,MA)):=true
-			            protocolMessage(1,$x,$e):=MB
-			            messageField($x,$e,1,MB):=CB
-			            messageField($x,$e,2,MB):=NB
-			            messageField($x,$e,3,MB):=messageField($e,$x,1,MA)
-			            messageField($x,$e,4,MB):=messageField($e,$x,2,MA)
+			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,1,MA)):=true
+			            knowsNonce(BOB,messageField(EVE,BOB,2,MA)):=true
+			            protocolMessage(1,BOB,EVE):=MB
+			            messageField(BOB,EVE,1,MB):=CB
+			            messageField(BOB,EVE,2,MB):=NB
+			            messageField(BOB,EVE,3,MB):=messageField(EVE,BOB,1,MA)
+			            messageField(BOB,EVE,4,MB):=messageField(EVE,BOB,2,MA)
 			            symEnc(MB,1,3,4):=KBS
 			            internalStateB:=WAITING_MD
 			         endpar
@@ -410,28 +422,28 @@ definitions:
 		endlet
 	rule r_message_MC =
 		let ($x=agentE,$b=agentB,$t=agentS) in
-			if(internalStateE=WAITING_MC and protocolMessage(1,$x,$t)=MB)then
+			if(internalStateE=WAITING_MC and protocolMessage(1,EVE,SERVER)=MB)then
 			     par
-			            protocolMessage(2,$x,$b):=MC
-			            messageField($x,$b,1,MC):=messageField(agentA,$x,1,MA)
-			            messageField($x,$b,2,MC):=KNA
-			            messageField($x,$b,3,MC):=messageField($b,$x,2,MB)
+			            protocolMessage(2,EVE,BOB):=MC
+			            messageField(EVE,BOB,1,MC):=messageField(agentA,EVE,1,MA)
+			            messageField(EVE,BOB,2,MC):=KNA
+			            messageField(EVE,BOB,3,MC):=messageField(BOB,EVE,2,MB)
 			            internalStateE:=WAITING_MF
 			          endpar
 			   endif
 		endlet
 	rule r_message_MD =
 		let ($x=agentB,$e=agentE) in
-			if(internalStateB=WAITING_MD and protocolMessage(2,$e,$x)=MC)then
+			if(internalStateB=WAITING_MD and protocolMessage(2,EVE,BOB)=MC)then
 			          par
-			            knowsSymKey($x,messageField($e,$x,2,MC)):=true
-			            knowsNonce($x,messageField($e,$x,3,MC)):=true
-			            protocolMessage(3,$x,$e):=MD
-			            messageField($x,$e,1,MD):=CB
-			            messageField($x,$e,2,MD):=NB2
-			            messageField($x,$e,3,MD):=messageField($e,$x,1,MC)
-			            messageField($x,$e,4,MD):=messageField($e,$x,2,MC)
-			            messageField($x,$e,5,MD):=messageField($e,$x,3,MC)
+			            knowsSymKey(BOB,messageField(EVE,BOB,2,MC)):=true
+			            knowsNonce(BOB,messageField(EVE,BOB,3,MC)):=true
+			            protocolMessage(3,BOB,EVE):=MD
+			            messageField(BOB,EVE,1,MD):=CB
+			            messageField(BOB,EVE,2,MD):=NB2
+			            messageField(BOB,EVE,3,MD):=messageField(EVE,BOB,1,MC)
+			            messageField(BOB,EVE,4,MD):=messageField(EVE,BOB,2,MC)
+			            messageField(BOB,EVE,5,MD):=messageField(EVE,BOB,3,MC)
 			            symEnc(MD,1,3,5):=KBS
 			            internalStateB:=CHECK_END_B
 			          endpar
@@ -439,24 +451,24 @@ definitions:
 		endlet
 	rule r_message_ME =
 		let ($x=agentS,$e=agentE,$f=agentB) in
-			if(internalStateS=WAITING_ME and protocolMessage(3,$f,$e)=MD)then
+			if(internalStateS=WAITING_ME and protocolMessage(3,BOB,EVE)=MD)then
 			   if(receiver!=AG_E)then
 			    par
-			            knowsIdentityCertificate($x,messageField($e,$x,1,MB)):=true
-			            knowsNonce($x,messageField($e,$x,2,MB)):=true
- 			        if(symDec(MB,1,3,4,$x)=true ) then
+			            knowsIdentityCertificate(SERVER,messageField(EVE,SERVER,1,MB)):=true
+			            knowsNonce(SERVER,messageField(EVE,SERVER,2,MB)):=true
+			        if(knowsSymKey(SERVER,KBS)=true ) then
 			          par
-			            knowsIdentityCertificate($x,messageField($e,$x,3,MB)):=true
-			            knowsNonce($x,messageField($e,$x,4,MB)):=true
-			            protocolMessage(4,$x,$e):=ME
-			            messageField($x,$e,1,ME):=messageField($e,$x,2,MB)
-			            messageField($x,$e,2,ME):=messageField($e,$x,1,MB)
-			            messageField($x,$e,3,ME):=KAB
-			            messageField($x,$e,4,ME):=messageField($e,$x,4,MB)
+			            knowsIdentityCertificate(SERVER,messageField(EVE,SERVER,3,MB)):=true
+			            knowsNonce(SERVER,messageField(EVE,SERVER,4,MB)):=true
+			            protocolMessage(4,SERVER,EVE):=ME
+			            messageField(SERVER,EVE,1,ME):=messageField(EVE,SERVER,2,MB)
+			            messageField(SERVER,EVE,2,ME):=messageField(EVE,SERVER,1,MB)
+			            messageField(SERVER,EVE,3,ME):=KAB
+			            messageField(SERVER,EVE,4,ME):=messageField(EVE,SERVER,4,MB)
 			            symEnc(ME,1,2,4):=KAS
-			            messageField($x,$e,5,ME):=messageField($e,$x,3,MB)
-			            messageField($x,$e,6,ME):=KAB
-			            messageField($x,$e,7,ME):=messageField($e,$x,2,MB)
+			            messageField(SERVER,EVE,5,ME):=messageField(EVE,SERVER,3,MB)
+			            messageField(SERVER,EVE,6,ME):=KAB
+			            messageField(SERVER,EVE,7,ME):=messageField(EVE,SERVER,2,MB)
 			            symEnc(ME,1,5,7):=KBS
 			            internalStateS:=END_S
 			          endpar
@@ -464,21 +476,21 @@ definitions:
 			    endpar
 			   else
 			    par
-			            knowsIdentityCertificate($x,messageField($e,$x,1,MB)):=true
-			            knowsNonce($x,messageField($e,$x,2,MB)):=true
- 			        if(symDec(MB,1,3,4,$x)=true  and receiver=AG_E) then
+			            knowsIdentityCertificate(SERVER,messageField(EVE,SERVER,1,MB)):=true
+			            knowsNonce(SERVER,messageField(EVE,SERVER,2,MB)):=true
+			        if(knowsSymKey(SERVER,KBS)=true  and receiver=AG_E) then
 			          par
-			            knowsIdentityCertificate($x,messageField($e,$x,3,MB)):=true
-			            knowsNonce($x,messageField($e,$x,4,MB)):=true
-			            protocolMessage(4,$x,$e):=ME
-			            messageField($x,$e,1,ME):=messageField($e,$x,2,MB)
-			            messageField($x,$e,2,ME):=messageField($e,$x,1,MB)
-			            messageField($x,$e,3,ME):=KAB
-			            messageField($x,$e,4,ME):=messageField($e,$x,4,MB)
+			            knowsIdentityCertificate(SERVER,messageField(EVE,SERVER,3,MB)):=true
+			            knowsNonce(SERVER,messageField(EVE,SERVER,4,MB)):=true
+			            protocolMessage(4,SERVER,EVE):=ME
+			            messageField(SERVER,EVE,1,ME):=messageField(EVE,SERVER,2,MB)
+			            messageField(SERVER,EVE,2,ME):=messageField(EVE,SERVER,1,MB)
+			            messageField(SERVER,EVE,3,ME):=KAB
+			            messageField(SERVER,EVE,4,ME):=messageField(EVE,SERVER,4,MB)
 			            symEnc(ME,1,2,4):=KAS
-			            messageField($x,$e,5,ME):=messageField($e,$x,3,MB)
-			            messageField($x,$e,6,ME):=KAB
-			            messageField($x,$e,7,ME):=messageField($e,$x,2,MB)
+			            messageField(SERVER,EVE,5,ME):=messageField(EVE,SERVER,3,MB)
+			            messageField(SERVER,EVE,6,ME):=KAB
+			            messageField(SERVER,EVE,7,ME):=messageField(EVE,SERVER,2,MB)
 			            symEnc(ME,1,5,7):=KBS
 			            internalStateS:=END_S
 			         endpar
@@ -489,36 +501,38 @@ definitions:
 		endlet
 	rule r_message_MF =
 		let ($x=agentE,$b=agentB,$t=agentA) in
-			if(internalStateE=WAITING_MF and protocolMessage(4,$x,$t)=ME)then
+			if(internalStateE=WAITING_MF and protocolMessage(4,EVE,ALICE)=ME)then
 			     par
-			            protocolMessage(5,$x,$b):=MF
-			            messageField($x,$b,1,MF):=messageField($b,$x,4,MD)
-			            messageField($x,$b,2,MF):=messageField($b,$x,5,MD)
+			            protocolMessage(5,EVE,BOB):=MF
+			            messageField(EVE,BOB,1,MF):=messageField(BOB,EVE,4,MD)
+			            messageField(EVE,BOB,2,MF):=messageField(BOB,EVE,5,MD)
 			            symEnc(MF,1,1,2):=KBS
-			            messageField($x,$b,3,MF):=messageField($b,$x,5,MD)
-			            symEnc(MF,1,3,3):=messageField($x,$b,2,MC)
+			            messageField(EVE,BOB,3,MF):=messageField(BOB,EVE,5,MD)
+			            symEnc(MF,1,3,3):=messageField(EVE,BOB,2,MC)
 			            internalStateE:=END_E
 			          endpar
 			   endif
 		endlet
 	rule r_check_ME =
 		let ($x=agentA,$e=agentE ,$t=agentB) in
-			if(internalStateA=CHECK_END_A and protocolMessage(4,$e,$x)=ME and protocolMessage(5,$e,$t)=MF)then
+			if(internalStateA=CHECK_END_A and protocolMessage(4,EVE,ALICE)=ME and protocolMessage(5,$e,$t)=MF)then
 			  par
 			        internalStateA:=END_A
-                 	knowsNonce($x,messageField($e,$x,1,ME)):=true
-			        if(symDec(ME,1,2,4,$x)=true)then
+                 	knowsNonce(ALICE,messageField(EVE,ALICE,1,ME)):=true
+//		        if(symDec(ME,1,2,4,ALICE)=true)then
+			        if(knowsSymKey(ALICE,KAS)=true)then
                       par 
-                    	knowsIdentityCertificate($x,messageField($e,$x,2,ME)):=true
-                    	knowsSymKey($x,messageField($e,$x,3,ME)):=true
-                    	knowsNonce($x,messageField($e,$x,4,ME)):=true
+                    	knowsIdentityCertificate(ALICE,messageField(EVE,ALICE,2,ME)):=true
+                    	knowsSymKey(ALICE,messageField(EVE,ALICE,3,ME)):=true
+                    	knowsNonce(ALICE,messageField(EVE,ALICE,4,ME)):=true
                       endpar 
 			        endif 
-			        if(symDec(ME,1,5,7,$x)=true)then
+//		        if(symDec(ME,1,5,7,ALICE)=true)then
+			        if(knowsSymKey(ALICE,KBS)=true)then
                       par 
-                    	knowsIdentityCertificate($x,messageField($e,$x,5,ME)):=true
-                    	knowsSymKey($x,messageField($e,$x,6,ME)):=true
-                    	knowsNonce($x,messageField($e,$x,7,ME)):=true
+                    	knowsIdentityCertificate(ALICE,messageField(EVE,ALICE,5,ME)):=true
+                    	knowsSymKey(ALICE,messageField(EVE,ALICE,6,ME)):=true
+                    	knowsNonce(ALICE,messageField(EVE,ALICE,7,ME)):=true
                       endpar 
 			        endif 
 			  endpar
@@ -526,22 +540,28 @@ definitions:
 		endlet
 	rule r_check_MF =
 		let ($x=agentB,$e=agentE) in
-			if(internalStateB=CHECK_END_B and protocolMessage(5,$e,$x)=MF)then
+			if(internalStateB=CHECK_END_B and protocolMessage(5,EVE,BOB)=MF)then
 			  par
 			        internalStateB:=END_B
-			        if(symDec(MF,1,1,2,$x)=true)then
+//		        if(symDec(MF,1,1,2,BOB)=true)then
+			        if(knowsSymKey(BOB,KBS)=true)then
                       par 
-                    	knowsSymKey($x,messageField($e,$x,1,MF)):=true
-                    	knowsNonce($x,messageField($e,$x,2,MF)):=true
+                    	knowsSymKey(BOB,messageField(EVE,BOB,1,MF)):=true
+                    	knowsNonce(BOB,messageField(EVE,BOB,2,MF)):=true
                       endpar 
 			        endif 
-			        if(symDec(MF,1,2,2,$x)=true)then
-                    	knowsNonce($x,messageField($e,$x,3,MF)):=true
+//		        if(symDec(MF,1,2,2,BOB)=true)then
+			        if(knowsSymKey(BOB,KNA)=true)then
+                    	knowsNonce(BOB,messageField(EVE,BOB,3,MF)):=true
 			        endif 
 			  endpar
 			endif
 		endlet
 
+// properties TAB=0 COL=0
+  CTLSPEC ef(knowsNonce(EVE,NB))
+// properties TAB=0 COL=1
+  CTLSPEC not(ef(knowsNonce(EVE,NB)))
 	main rule r_Main =
 	  par
             r_message_replay_MA[]
@@ -566,9 +586,9 @@ default init s0:
 	function internalStateB=WAITING_MB
 	function internalStateS=WAITING_ME
 	function internalStateE=WAITING_MC
-	function receiver=chosenReceiver
+	function receiver=AG_E
 	function knowsNonce($a in Agenti, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NB2) then true else false endif endif
 	function knowsIdentityCertificate($a in Agenti, $i in Knowledge)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CB) then true else false endif endif
 	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
-	function mode=chosenMode
+	function mode=PASSIVE
 

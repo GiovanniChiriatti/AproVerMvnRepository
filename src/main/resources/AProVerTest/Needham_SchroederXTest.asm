@@ -64,7 +64,7 @@ signature:
 	controlled messageField: Prod(Agenti,Agenti,FieldPosition,Message)->Knowledge
 
 	//attaker mode
-	monitored chosenMode: Modality
+	controlled chosenMode: Modality
 	//controlled for saving the attacker modality choice
 	controlled mode: Modality
 
@@ -73,7 +73,7 @@ signature:
 	//Receiver chosen
 	controlled receiver:Receiver
 	//Receiver chosen by user
-	monitored chosenReceiver:Receiver
+	controlled chosenReceiver:Receiver
 
 	/*------------------------------------------------------------------- */
 	//            Knowledge  management of the principals 
@@ -138,13 +138,13 @@ signature:
 definitions:
 	domain Level = {1}
 	domain FieldPosition = {1:2}
-	domain EncField1={1}
-	domain EncField2={2}
+	domain EncField1={1:2}
+	domain EncField2={1:2}
 	domain NumMsg={0:15}
 	domain SignField1={1}
-	domain SignField2={2}
+	domain SignField2={1}
 	domain HashField1={1}
-	domain HashField2={2}
+	domain HashField2={1}
 
 	function asim_keyAssociation($a in Knowledge)=
 	       switch( $a )
@@ -201,32 +201,32 @@ definitions:
 		let ($x=agentE,$b=agentB,$a=agentA) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(0,$a,$x)=NAK and protocolMessage(0,$x,$b)!=NAK and mode=PASSIVE)then
+			if(protocolMessage(0,ALICE,EVE)=NAK and protocolMessage(0,EVE,BOB)!=NAK and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                 	protocolMessage(0,$x,$b):=NAK
-                 	messageField($x,$b,1,NAK):=messageField($a,$x,1,NAK)
-                 	messageField($x,$b,2,NAK):=messageField($a,$x,2,NAK)
-			        if(asymDec(NAK,1,1,2,$x)=true)then
+                 	protocolMessage(0,EVE,BOB):=NAK
+                 	messageField(EVE,BOB,1,NAK):=messageField(ALICE,EVE,1,NAK)
+                 	messageField(EVE,BOB,2,NAK):=messageField(ALICE,EVE,2,NAK)
+			        if(asymDec(NAK,1,1,2,EVE)=true)then
                       par 
-                    	knowsNonce($x,messageField($a,$x,1,NAK)):=true
-                    	knowsIdentityCertificate($x,messageField($a,$x,2,NAK)):=true
+                    	knowsNonce(EVE,messageField(ALICE,EVE,1,NAK)):=true
+                    	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,2,NAK)):=true
 			            asymEnc(NAK,1,1,2):=PUBKB
                       endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(0,$a,$x)=NAK and protocolMessage(0,$x,$b)!=NAK and mode=ACTIVE)then
+			if(protocolMessage(0,ALICE,EVE)=NAK and protocolMessage(0,EVE,BOB)!=NAK and mode=ACTIVE)then
 		          par 
-                 	protocolMessage(0,$x,$b):=NAK
-                 	messageField($x,$b,1,NAK):=messageField($a,$x,1,NAK)
-                 	messageField($x,$b,2,NAK):=messageField($a,$x,2,NAK)
-			        if(asymDec(NAK,1,1,2,$x)=true)then
+                 	protocolMessage(0,EVE,BOB):=NAK
+                 	messageField(EVE,BOB,1,NAK):=messageField(ALICE,EVE,1,NAK)
+                 	messageField(EVE,BOB,2,NAK):=messageField(ALICE,EVE,2,NAK)
+			        if(asymDec(NAK,1,1,2,EVE)=true)then
 	   			     par 
-                    	knowsNonce($x,messageField($a,$x,1,NAK)):=true
-                    	knowsIdentityCertificate($x,messageField($a,$x,2,NAK)):=true
+                    	knowsNonce(EVE,messageField(ALICE,EVE,1,NAK)):=true
+                    	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,2,NAK)):=true
 			        	asymEnc(NAK,1,1,2):=PUBKB
 	   			     endpar 
 			        endif 
@@ -239,32 +239,32 @@ definitions:
 		let ($x=agentE,$b=agentA,$a=agentB) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(1,$a,$x)=NNK and protocolMessage(1,$x,$b)!=NNK and mode=PASSIVE)then
+			if(protocolMessage(1,BOB,EVE)=NNK and protocolMessage(1,EVE,ALICE)!=NNK and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                 	protocolMessage(1,$x,$b):=NNK
-                 	messageField($x,$b,1,NNK):=messageField($a,$x,1,NNK)
-                 	messageField($x,$b,2,NNK):=messageField($a,$x,2,NNK)
-			        if(asymDec(NNK,1,1,2,$x)=true)then
+                 	protocolMessage(1,EVE,ALICE):=NNK
+                 	messageField(EVE,ALICE,1,NNK):=messageField(BOB,EVE,1,NNK)
+                 	messageField(EVE,ALICE,2,NNK):=messageField(BOB,EVE,2,NNK)
+			        if(asymDec(NNK,1,1,2,EVE)=true)then
                       par 
-                    	knowsNonce($x,messageField($a,$x,1,NNK)):=true
-                    	knowsNonce($x,messageField($a,$x,2,NNK)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,1,NNK)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,2,NNK)):=true
 			            asymEnc(NNK,1,1,2):=PUBKA
                       endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(1,$a,$x)=NNK and protocolMessage(1,$x,$b)!=NNK and mode=ACTIVE)then
+			if(protocolMessage(1,BOB,EVE)=NNK and protocolMessage(1,EVE,ALICE)!=NNK and mode=ACTIVE)then
 		          par 
-                 	protocolMessage(1,$x,$b):=NNK
-                 	messageField($x,$b,1,NNK):=messageField($a,$x,1,NNK)
-                 	messageField($x,$b,2,NNK):=messageField($a,$x,2,NNK)
-			        if(asymDec(NNK,1,1,2,$x)=true)then
+                 	protocolMessage(1,EVE,ALICE):=NNK
+                 	messageField(EVE,ALICE,1,NNK):=messageField(BOB,EVE,1,NNK)
+                 	messageField(EVE,ALICE,2,NNK):=messageField(BOB,EVE,2,NNK)
+			        if(asymDec(NNK,1,1,2,EVE)=true)then
 	   			     par 
-                    	knowsNonce($x,messageField($a,$x,1,NNK)):=true
-                    	knowsNonce($x,messageField($a,$x,2,NNK)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,1,NNK)):=true
+                    	knowsNonce(EVE,messageField(BOB,EVE,2,NNK)):=true
 			        	asymEnc(NNK,1,1,2):=PUBKA
 	   			     endpar 
 			        endif 
@@ -277,28 +277,28 @@ definitions:
 		let ($x=agentE,$b=agentB,$a=agentA) in
 		  par 
 			//check the reception of the message and the modality of the attack
-			if(protocolMessage(2,$a,$x)=NK and protocolMessage(2,$x,$b)!=NK and mode=PASSIVE)then
+			if(protocolMessage(2,ALICE,EVE)=NK and protocolMessage(2,EVE,BOB)!=NK and mode=PASSIVE)then
 			        //in passive mode if the attacker knows the decryption key, the message payload is readable and it can be added to the attacker knowledge
 			        // the message must be sent unaltered
 		          par 
-                 	protocolMessage(2,$x,$b):=NK
-                 	messageField($x,$b,1,NK):=messageField($a,$x,1,NK)
-			        if(asymDec(NK,1,1,1,$x)=true)then
+                 	protocolMessage(2,EVE,BOB):=NK
+                 	messageField(EVE,BOB,1,NK):=messageField(ALICE,EVE,1,NK)
+			        if(asymDec(NK,1,1,1,EVE)=true)then
                       par 
-                    	knowsNonce($x,messageField($a,$x,1,NK)):=true
+                    	knowsNonce(EVE,messageField(ALICE,EVE,1,NK)):=true
 			            asymEnc(NK,1,1,1):=PUBKB
                       endpar 
 			        endif 
 		          endpar 
 			endif 
 			        //check the reception of the message and the modality of the attack
-			if(protocolMessage(2,$a,$x)=NK and protocolMessage(2,$x,$b)!=NK and mode=ACTIVE)then
+			if(protocolMessage(2,ALICE,EVE)=NK and protocolMessage(2,EVE,BOB)!=NK and mode=ACTIVE)then
 		          par 
-                 	protocolMessage(2,$x,$b):=NK
-                 	messageField($x,$b,1,NK):=messageField($a,$x,1,NK)
-			        if(asymDec(NK,1,1,1,$x)=true)then
+                 	protocolMessage(2,EVE,BOB):=NK
+                 	messageField(EVE,BOB,1,NK):=messageField(ALICE,EVE,1,NK)
+			        if(asymDec(NK,1,1,1,EVE)=true)then
 	   			     par 
-                    	knowsNonce($x,messageField($a,$x,1,NK)):=true
+                    	knowsNonce(EVE,messageField(ALICE,EVE,1,NK)):=true
 			        	asymEnc(NK,1,1,1):=PUBKB
 	   			     endpar 
 			        endif 
@@ -313,18 +313,18 @@ definitions:
 			if(internalStateA=IDLE_NAK)then 
 			   if(receiver!=AG_E)then
 			     par
-			         protocolMessage(0,$x,$e):=NAK
-			         messageField($x,$e,1,NAK):=NA
-			         messageField($x,$e,2,NAK):=ID_A
+			         protocolMessage(0,ALICE,EVE):=NAK
+			         messageField(ALICE,EVE,1,NAK):=NA
+			         messageField(ALICE,EVE,2,NAK):=ID_A
 			         asymEnc(NAK,1,1,2):=PUBKB
 			         internalStateA:=WAITING_NK
 			     endpar
 			   else
 			       if(receiver=AG_E)then
 			         par
-			            protocolMessage(0,$x,$e):=NAK
-			            messageField($x,$e,1,NAK):=NA
-			            messageField($x,$e,2,NAK):=ID_A
+			            protocolMessage(0,ALICE,EVE):=NAK
+			            messageField(ALICE,EVE,1,NAK):=NA
+			            messageField(ALICE,EVE,2,NAK):=ID_A
 			            asymEnc(NAK,1,1,2):=PUBKE
 			            internalStateA:=WAITING_NK
 			         endpar
@@ -334,27 +334,27 @@ definitions:
 		endlet
 	rule r_message_NNK =
 		let ($x=agentB,$e=agentE) in
-			if(internalStateB=WAITING_NNK and protocolMessage(0,$e,$x)=NAK)then
+			if(internalStateB=WAITING_NNK and protocolMessage(0,EVE,BOB)=NAK)then
 			   if(receiver!=AG_E)then
- 			        if(asymDec(NAK,1,1,2,$x)=true ) then
+ 			        if(asymDec(NAK,1,1,2,BOB)=true ) then
 			          par
-			            knowsNonce($x,messageField($e,$x,1,NAK)):=true
-			            knowsIdentityCertificate($x,messageField($e,$x,2,NAK)):=true
-			            protocolMessage(1,$x,$e):=NNK
-			            messageField($x,$e,1,NNK):=messageField($e,$x,1,NAK)
-			            messageField($x,$e,2,NNK):=NB
+			            knowsNonce(BOB,messageField(EVE,BOB,1,NAK)):=true
+			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,2,NAK)):=true
+			            protocolMessage(1,BOB,EVE):=NNK
+			            messageField(BOB,EVE,1,NNK):=messageField(EVE,BOB,1,NAK)
+			            messageField(BOB,EVE,2,NNK):=NB
 			            asymEnc(NNK,1,1,2):=PUBKA
 			            internalStateB:=CHECK_END_B
 			          endpar
 			        endif
 			   else
- 			        if(asymDec(NAK,1,1,2,$x)=true  and receiver=AG_E) then
+ 			        if(asymDec(NAK,1,1,2,BOB)=true  and receiver=AG_E) then
 			          par
-			            knowsNonce($x,messageField($e,$x,1,NAK)):=true
-			            knowsIdentityCertificate($x,messageField($e,$x,2,NAK)):=true
-			            protocolMessage(1,$x,$e):=NNK
-			            messageField($x,$e,1,NNK):=messageField($e,$x,1,NAK)
-			            messageField($x,$e,2,NNK):=NB
+			            knowsNonce(BOB,messageField(EVE,BOB,1,NAK)):=true
+			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,2,NAK)):=true
+			            protocolMessage(1,BOB,EVE):=NNK
+			            messageField(BOB,EVE,1,NNK):=messageField(EVE,BOB,1,NAK)
+			            messageField(BOB,EVE,2,NNK):=NB
 			            asymEnc(NNK,1,1,2):=PUBKA
 			            internalStateB:=CHECK_END_B
 			         endpar
@@ -364,25 +364,25 @@ definitions:
 		endlet
 	rule r_message_NK =
 		let ($x=agentA,$e=agentE) in
-			if(internalStateA=WAITING_NK and protocolMessage(1,$e,$x)=NNK)then
+			if(internalStateA=WAITING_NK and protocolMessage(1,EVE,ALICE)=NNK)then
 			   if(receiver!=AG_E)then
- 			        if(asymDec(NNK,1,1,2,$x)=true ) then
+ 			        if(asymDec(NNK,1,1,2,ALICE)=true ) then
 			          par
-			            knowsNonce($x,messageField($e,$x,1,NNK)):=true
-			            knowsNonce($x,messageField($e,$x,2,NNK)):=true
-			            protocolMessage(2,$x,$e):=NK
-			            messageField($x,$e,1,NK):=messageField($e,$x,2,NNK)
+			            knowsNonce(ALICE,messageField(EVE,ALICE,1,NNK)):=true
+			            knowsNonce(ALICE,messageField(EVE,ALICE,2,NNK)):=true
+			            protocolMessage(2,ALICE,EVE):=NK
+			            messageField(ALICE,EVE,1,NK):=messageField(EVE,ALICE,2,NNK)
 			            asymEnc(NK,1,1,1):=PUBKB
 			            internalStateA:=END_A
 			          endpar
 			        endif
 			   else
- 			        if(asymDec(NNK,1,1,2,$x)=true  and receiver=AG_E) then
+ 			        if(asymDec(NNK,1,1,2,ALICE)=true  and receiver=AG_E) then
 			          par
-			            knowsNonce($x,messageField($e,$x,1,NNK)):=true
-			            knowsNonce($x,messageField($e,$x,2,NNK)):=true
-			            protocolMessage(2,$x,$e):=NK
-			            messageField($x,$e,1,NK):=messageField($e,$x,2,NNK)
+			            knowsNonce(ALICE,messageField(EVE,ALICE,1,NNK)):=true
+			            knowsNonce(ALICE,messageField(EVE,ALICE,2,NNK)):=true
+			            protocolMessage(2,ALICE,EVE):=NK
+			            messageField(ALICE,EVE,1,NK):=messageField(EVE,ALICE,2,NNK)
 			            asymEnc(NK,1,1,1):=PUBKE
 			            internalStateA:=END_A
 			         endpar
@@ -392,16 +392,18 @@ definitions:
 		endlet
 	rule r_check_NK =
 		let ($x=agentB,$e=agentE) in
-			if(internalStateB=CHECK_END_B and protocolMessage(2,$e,$x)=NK)then
+			if(internalStateB=CHECK_END_B and protocolMessage(2,EVE,BOB)=NK)then
 			  par
 			        internalStateB:=END_B
-			        if(asymDec(NK,1,1,1,$x)=true)then
-                    	knowsNonce($x,messageField($e,$x,1,NK)):=true
+			        if(asymDec(NK,1,1,1,BOB)=true)then
+                    	knowsNonce(BOB,messageField(EVE,BOB,1,NK)):=true
 			        endif 
 			  endpar
 			endif
 		endlet
 
+// properties TAB=0 COL=0
+  CTLSPEC ef(knowsNonce(BOB,NB))
 	main rule r_Main =
 	  par
             r_message_replay_NAK[]
@@ -419,10 +421,10 @@ default init s0:
 	function agentE=EVE 
 	function internalStateA=IDLE_NAK
 	function internalStateB=WAITING_NNK
-	function receiver=chosenReceiver
+	function receiver=AG_E
 	function knowsNonce($a in Agenti, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NA) then true else if($a=agentE and $n=NE) then true else false endif endif endif
 	function knowsIdentityCertificate($a in Agenti, $i in Knowledge)=if($a=agentA and $i=ID_A) then true else if($a=agentB and $i=ID_B) then true else if($a=agentE and $i=ID_E) then true else false endif endif endif
 	function knowsAsymPrivKey($a in Agenti ,$k in Knowledge)=if(($a=agentA and $k=PRIVKA) or ($a=agentB and $k=PRIVKB) or ($a=agentE and $k=PRIVKE)) then true else false endif
 	function knowsAsymPubKey($a in Agenti ,$pk in Knowledge)=true
-	function mode=chosenMode
+	function mode=PASSIVE
 

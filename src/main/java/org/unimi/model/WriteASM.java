@@ -34,6 +34,7 @@ public class WriteASM {
 	private int encField2Old;
 	private String receiver;
 	private String modality;
+	private String typeConvert;
 	private int numOperationMessage;
 	private int lastMsgAlice, lastMsgBob, lastMsgEve,lastMsgServer;
 	private SecurityKey KeyActorFrom;
@@ -72,13 +73,14 @@ public class WriteASM {
 	public WriteASM(Boolean actorServer, Messages messages, SecurityKey aliceStart, SecurityKey bobStart,
 			SecurityKey eveStart, SecurityKey serverStart, String toolEve, int fieldPosition, int levelTot,
 			int numEncField, int numSignField, int numSymField, int numHashField, String nameFile, String acronym
-			,String receiver, String modality,String[][] properties)
+			,String receiver, String modality,String typeConvert,String[][] properties)
 			throws IOException {
 		System.out.println("*--------------- WriteASM --------------*");
 		//debug = true;
 		this.properties = properties;
 		this.modality = modality;
 		this.receiver=receiver;
+		this.typeConvert=typeConvert;
 		this.actorServer = actorServer;
 		this.messages = messages;
 		this.aliceStart = aliceStart;
@@ -453,44 +455,59 @@ public class WriteASM {
 		boolean startWrite=false;
 		while (line != null && !line.contains("definitions:")) {
 			if (startWrite) {
+				boolean justWrite = false;
 				if (line.contains("subsetof Agent") || line.contains("subsetof Any") || line.contains("static agent")) {
 					bNuSmv.write("// " + line);
 					bNuSmv.write("\n");
-				} else {
-					if (line.contains("controlled internalState")) {
+					justWrite = true;
+				} 
+				if (line.contains("controlled internalState")) {
 						bNuSmv.write("// " + line);
 						bNuSmv.write("\n");
 						bNuSmv.write(line.replace("Alice -> ", "").replace("Bob -> ", "").replace("Eve -> ", "")
 								.replace("Server -> ", ""));
 						bNuSmv.write("\n");
-					} else {
-						if (line.contains("enum domain Knowledge ={")) {
-							bNuSmv.write("// " + line);
-							bNuSmv.write("\n");
-							bNuSmv.write(line.replace("}", "|NULL}"));
-							bNuSmv.write("\n");
-						} else {
-							bNuSmv.write("\n");
-							String LineChange = line.replace("Agent", "Agenti");
-							LineChange = LineChange.replace("KnowledgeIdentityCertificate", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeBitString", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeSymKey", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeAsymPubKey", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeAsymPrivKey", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeSignPubKey", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeSignPrivKey", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeTag", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeDigest", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeHash", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeTimestamp", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeNonce", "Knowledge");
-							LineChange = LineChange.replace("KnowledgeOther", "Knowledge");
-							LineChange = LineChange.replace("monitored chosenReceiver:Receiver", "controlled chosenReceiver:Receiver");
-							LineChange = LineChange.replace("monitored chosenMode: Modality", "controlled chosenMode: Modality");
-							bNuSmv.write(LineChange);
-						}
-					}
-
+						justWrite = true;
+				} 
+				if (line.contains("enum domain Knowledge ={")) {
+						bNuSmv.write("// " + line);
+						bNuSmv.write("\n");
+						bNuSmv.write(line.replace("}", "|NULL}"));
+						bNuSmv.write("\n");
+						justWrite = true;
+				}
+				if (typeConvert.contains("IF(Knows...") &&(line.contains("static verifyHash:") 
+														|| line.contains("static verifySign:") 
+														|| line.contains("static sign_keyAssociation:") 
+														|| line.contains("static asymDec:") 
+														|| line.contains("static asim_keyAssociation:") 
+														|| line.contains("static asim_keyAssociation:") 
+														|| line.contains("static symDec:") 
+						)) {
+					bNuSmv.write("\n");
+					bNuSmv.write("// " + line);
+					bNuSmv.write("\n");
+					justWrite=true;
+				}
+				if (!justWrite ) {
+						bNuSmv.write("\n");
+						String LineChange = line.replace("Agent", "Agenti");
+						LineChange = LineChange.replace("KnowledgeIdentityCertificate", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeBitString", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeSymKey", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeAsymPubKey", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeAsymPrivKey", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeSignPubKey", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeSignPrivKey", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeTag", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeDigest", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeHash", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeTimestamp", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeNonce", "Knowledge");
+						LineChange = LineChange.replace("KnowledgeOther", "Knowledge");
+						LineChange = LineChange.replace("monitored chosenReceiver:Receiver", "controlled chosenReceiver:Receiver");
+						LineChange = LineChange.replace("monitored chosenMode: Modality", "controlled chosenMode: Modality");
+						bNuSmv.write(LineChange);
 				}
 			}
 			if (line.contains("signature:")) {startWrite=true;}
@@ -557,49 +574,100 @@ public class WriteASM {
 		}
 		bAsm.write("\n");
 		if (!elencoAsymPrivPub[0].isEmpty()) {
-			bAsm.write("	function asim_keyAssociation($a in KnowledgeAsymPubKey)=\n");
-			bAsm.write("	       switch( $a )\n");
-			bNuSmv.write("	function asim_keyAssociation($a in Knowledge)=\n");
-			bNuSmv.write("	       switch( $a )\n");
-			for (String s : elencoAsymPrivPub) {
-				if (s.isEmpty())
-					break;
-				bAsm.write("	              case " + s + "\n");
-				bNuSmv.write("	              case " + s + "\n");
+			if (typeConvert.contains("IF(Knows...")) {
+				bAsm.write("	function asim_keyAssociation($a in KnowledgeAsymPubKey)=\n");
+				bAsm.write("	       switch( $a )\n");
+				bNuSmv.write("//function asim_keyAssociation($a in Knowledge)=\n");
+				bNuSmv.write("//       switch( $a )\n");
+				for (String s : elencoAsymPrivPub) {
+					if (s.isEmpty())
+						break;
+					bAsm.write("	              case " + s + "\n");
+					bNuSmv.write("//              case " + s + "\n");
+				}
+				bNuSmv.write("//              otherwise NULL \n");
+				bAsm.write("	       endswitch\n");
+				bNuSmv.write("//       endswitch\n");
+			} else {
+				bAsm.write("	function asim_keyAssociation($a in KnowledgeAsymPubKey)=\n");
+				bAsm.write("	       switch( $a )\n");
+				bNuSmv.write("	function asim_keyAssociation($a in Knowledge)=\n");
+				bNuSmv.write("	       switch( $a )\n");
+				for (String s : elencoAsymPrivPub) {
+					if (s.isEmpty())
+						break;
+					bAsm.write("	              case " + s + "\n");
+					bNuSmv.write("	              case " + s + "\n");
+				}
+				bNuSmv.write("	              otherwise NULL \n");
+				bAsm.write("	       endswitch\n");
+				bNuSmv.write("	       endswitch\n");				
 			}
-			bNuSmv.write("	              otherwise NULL \n");
-			bAsm.write("	       endswitch\n");
-			bNuSmv.write("	       endswitch\n");
-		} else {
-			bNuSmv.write("	function asim_keyAssociation($a in Knowledge)=\n");
-			bNuSmv.write("	       switch( $a )\n");
-			bNuSmv.write("	              case NULL: NULL\n");
-			bNuSmv.write("	              otherwise NULL \n");
-			bNuSmv.write("	       endswitch\n");
+		}
+		if (elencoAsymPrivPub[0].isEmpty()) {
+			if (typeConvert.contains("IF(Knows...")) {
+				bNuSmv.write("//function asim_keyAssociation($a in Knowledge)=\n");
+				bNuSmv.write("//       switch( $a )\n");
+				bNuSmv.write("//              case NULL: NULL\n");
+				bNuSmv.write("//              otherwise NULL \n");
+				bNuSmv.write("//       endswitch\n");
+			} else {
+				bNuSmv.write("	function asim_keyAssociation($a in Knowledge)=\n");
+				bNuSmv.write("	       switch( $a )\n");
+				bNuSmv.write("	              case NULL: NULL\n");
+				bNuSmv.write("	              otherwise NULL \n");
+				bNuSmv.write("	       endswitch\n");
+			}
 		}
 
 		if (!elencoSignPrivPub[0].isEmpty()) {
-			bAsm.write("	function sign_keyAssociation($b in KnowledgeSignPrivKey)=\n");
-			bAsm.write("	       switch( $b )\n");
-			bNuSmv.write("	function sign_keyAssociation($b in Knowledge)=\n");
-			bNuSmv.write("	       switch( $b )\n");
-			for (String s : elencoSignPrivPub) {
-				if (s.isEmpty())
-					break;
-				bAsm.write("	              case " + s + "\n");
-				bNuSmv.write("	              case " + s + "\n");
+			if (typeConvert.contains("IF(Knows...")) {
+				bAsm.write("	function sign_keyAssociation($b in KnowledgeSignPrivKey)=\n");
+				bAsm.write("	       switch( $b )\n");
+				bNuSmv.write("//function sign_keyAssociation($b in Knowledge)=\n");
+				bNuSmv.write("//       switch( $b )\n");
+				for (String s : elencoSignPrivPub) {
+					if (s.isEmpty())
+						break;
+					bAsm.write("	              case " + s + "\n");
+					bNuSmv.write("//              case " + s + "\n");
+				}
+				bNuSmv.write("//              otherwise NULL \n");
+				bAsm.write("	       endswitch\n");
+				bNuSmv.write("//       endswitch\n");
+			} else {
+				bAsm.write("	function sign_keyAssociation($b in KnowledgeSignPrivKey)=\n");
+				bAsm.write("	       switch( $b )\n");
+				bNuSmv.write("	function sign_keyAssociation($b in Knowledge)=\n");
+				bNuSmv.write("	       switch( $b )\n");
+				for (String s : elencoSignPrivPub) {
+					if (s.isEmpty())
+						break;
+					bAsm.write("	              case " + s + "\n");
+					bNuSmv.write("	              case " + s + "\n");
+				}
+				bNuSmv.write("	              otherwise NULL \n");
+				bAsm.write("	       endswitch\n");
+				bNuSmv.write("	       endswitch\n");				
 			}
-			bNuSmv.write("	              otherwise NULL \n");
-			bAsm.write("	       endswitch\n");
-			bNuSmv.write("	       endswitch\n");
-		} else {
-			bNuSmv.write("	function sign_keyAssociation($b in Knowledge)=\n");
-			bNuSmv.write("	       switch( $b )\n");
-			bNuSmv.write("	              case NULL: NULL\n");
-			bNuSmv.write("	              otherwise NULL \n");
-			bNuSmv.write("	       endswitch\n");
 		}
 		
+		if (elencoSignPrivPub[0].isEmpty()) {
+			if (typeConvert.contains("IF(Knows...")) {
+				bNuSmv.write("//function sign_keyAssociation($b in Knowledge)=\n");
+				bNuSmv.write("//       switch( $b )\n");
+				bNuSmv.write("//              case NULL: NULL\n");
+				bNuSmv.write("//              otherwise NULL \n");
+				bNuSmv.write("//       endswitch\n");
+
+			} else {
+				bNuSmv.write("	function sign_keyAssociation($b in Knowledge)=\n");
+				bNuSmv.write("	       switch( $b )\n");
+				bNuSmv.write("	              case NULL: NULL\n");
+				bNuSmv.write("	              otherwise NULL \n");
+				bNuSmv.write("	       endswitch\n");
+			}
+		}
 		writeDefinitionNuSvm(bNuSmv,readCrypt);
 		writeMessageAttacker(bAsm,bNuSmv);
 		writeMessageHonest(bAsm,bNuSmv);
@@ -1165,8 +1233,21 @@ public class WriteASM {
 		String line = readCrypt.readLine();
 		boolean startWrite=false;
 		while (line != null) {
-			bNuSmv.write(line.replace("Agent", "Agenti"));
-			bNuSmv.write("\n");
+			if (typeConvert.contains("IF(Knows...") && (
+					!line.contains("function name(") &&
+ 					!line.contains("switch( $a )") &&
+ 					!line.contains("case AG_A:agentA") &&
+ 					!line.contains("case AG_E:agentE") &&
+ 					!line.contains("case AG_B:agentB") &&
+ 					!line.contains("case AG_S:agentS") &&
+ 					!line.contains("endswitch"))  
+					) {
+				bNuSmv.write("//"+ line.replace("Agent", "Agenti"));
+				bNuSmv.write("\n");
+			} else {
+				bNuSmv.write(line.replace("Agent", "Agenti"));
+				bNuSmv.write("\n");
+			}
 			line = readCrypt.readLine();
 		}
 		System.out.println("writeDefinitionNuSvm esco");
@@ -1392,21 +1473,6 @@ public class WriteASM {
 			String operation = "";
 			if (keyUsed != null) {
 				totOpz++;
-				/*
-				 * operation = findOperation(keyUsed, message.getActorfrom(),
-				 * message.getActorTo()); String[] msgEncField1EncField2 = new String[15];
-				 * String[] msgField = new String[15]; // determino i dati per la scrittura del
-				 * tipo di crittografia ha il messaggio String levelEncField1EncField2 =
-				 * calcLevelEncField1EncField2(listSubPayload[j], msgEncField1EncField2,
-				 * msgField, msgFieldTot); if (reversOperation(operation).equals("symEnc")) {
-				 * bAsm.write("                            	" + reversOperation(operation) + "("
-				 * + changNumMSG[i] + "," + levelEncField1EncField2 + "):=" +
-				 * findKeyEle(keyUsed, message.getActorfrom(), message.getActorTo(), true) +
-				 * "\n"); } else { bAsm.write("                            	" +
-				 * reversOperation(operation) + "(" + changNumMSG[i] + "," +
-				 * levelEncField1EncField2 + "):=" + findKeyEle(keyUsed, message.getActorfrom(),
-				 * message.getActorTo(), false) + "\n"); }
-				 */
 			} else {
 				// se nel sottomessaggio non c'è una funzione di crittografia si scrive la konw
 				String[] msgEncField1EncField2 = new String[15];
@@ -1452,8 +1518,14 @@ public class WriteASM {
 					bAsm.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
 					bAsm.write("                      par \n");
-					bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+					if (typeConvert.contains("IF(Knows...")) {
+						bNuSmv.write("//	        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ","+ self + ")=true)then\n");
+						bNuSmv.write("			        if(" + detKnow(operation) + "(" + self + "," + keyUsed + ")=true)then\n");
+					} else {
+						bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+								+ ","+ self + ")=true)then\n");
+					}
 					bNuSmv.write("                      par \n");
 					// si scrivono le conoscenze in base ai sotto peyload del messaggio
 					if(debug) {System.out.println("printKnowSubPayload -->1");}
@@ -1756,10 +1828,19 @@ public class WriteASM {
 				String[] msgFieldDet2 = detField(msgField, msgFieldTot, endMsgDet);
 				endMsgDet = contMsgFielDet(msgFieldDet2);
 				if (operation != null && !operation.isEmpty()) {
+					
 					bAsm.write("			            if(" + reversOperation(operation,"decod") + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
-					bNuSmv.write("			            if(" + reversOperation(operation,"decod") + "(" + changNumMSG[i] + "," + levelEncField1EncField2
-							+ ","+self +")=true)then\n");
+					if (typeConvert.contains("IF(Knows...")) {
+						bNuSmv.write("//		            if(" + reversOperation(operation, "decod") + "("
+								+ changNumMSG[i] + "," + levelEncField1EncField2 + "," + self + ")=true)then\n");
+						bNuSmv.write("			            if(" + detKnow(operation) + "(" + self + "," + keyUsed
+								+ ")=true)then\n");
+					} else {
+						bNuSmv.write("			            if(" + reversOperation(operation, "decod") + "("
+								+ changNumMSG[i] + "," + levelEncField1EncField2 + "," + self + ")=true)then\n");
+
+					}
 					if (debug) {
 						System.out.println("----------->"+levelEncField1EncField2.substring(2, 3)); 
 						System.out.println("===========>"+levelEncField1EncField2.substring(4, 5)); 
@@ -1967,8 +2048,15 @@ public class WriteASM {
 						+ ",self)=true)then\n");
 
 				bAsm.write("	   			     par \n");
-				bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
-						+ ","+self+")=true)then\n");
+				if (typeConvert.contains("IF(Knows...")) {
+					bNuSmv.write("//			        if(" + operation + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "," + self + ")=true)then\n");
+					bNuSmv.write("			            if(" + detKnow(operation) + "(" + self + "," + keyUsed
+							+ ")=true)then\n");
+				} else {
+					bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + ","
+							+ levelEncField1EncField2 + "," + self + ")=true)then\n");
+				}
 
 				bNuSmv.write("	   			     par \n");
 				String eleEve = findKeyEve(keyUsed);
@@ -2132,6 +2220,29 @@ public class WriteASM {
 				return "sign";
 			case "Hash":
 				return "hash";
+			default:
+				return null;
+			}
+		}
+		return null;
+	}
+	// determina quale algoritmo crittografico è stato usato prima di inviare il
+	// messaggio
+	private String detKnow(String operation) {
+		if (operation != null) {
+			switch (operation) {
+			case "asymDec":
+				return "KnowsAsymPubKey";
+			case "asymEnc":
+				return "KnowsAsymPrivKey";
+			case "symDec":
+				return "knowsSymKey";
+			case "verifySign":
+				return "KnowsSignPubKey";
+			case "sign":
+				return "KnowsSignPrivKey";
+			case "hash":
+				return "KnowsHash";
 			default:
 				return null;
 			}
@@ -4401,18 +4512,29 @@ public class WriteASM {
 				System.out.println("z3 operationPrev " + operationPrev);
 			}
 			if (operationPrev != null && !operationPrev.isEmpty() && messagePrev != message) {
+				if (!fistOperation) {
+					bAsm.write(" and " + operationPrev + "(" + changNumMSG[z] + "," + levelEncField1EncField2Prev
+							+ ",self)=true ");
+					if (typeConvert.contains("IF(Knows...")) {
+						bNuSmv.write(" and " + detKnow(operationPrev) + "(" + self + "," + keyUsedPrev
+								+ ")=true ");
+					} else {
+						bNuSmv.write(" and " + operationPrev + "(" + changNumMSG[z] + "," + levelEncField1EncField2Prev
+								+ ","+self+")=true ");					
+					}
+				}
 				if (fistOperation) {
 					bAsm.write(" 			        if(" + operationPrev + "(" + changNumMSG[z] + ","
 							+ levelEncField1EncField2Prev + ",self)=true ");
-					bNuSmv.write(" 			        if(" + operationPrev + "(" + changNumMSG[z] + ","
-							+ levelEncField1EncField2Prev + ","+self+")=true ");
+					if (typeConvert.contains("IF(Knows...")) {
+						bNuSmv.write("			        if(" + detKnow(operationPrev) + "(" + self + "," + keyUsedPrev
+								+ ")=true ");
+					} else {
+						bNuSmv.write(" 			        if(" + operationPrev + "(" + changNumMSG[z] + ","
+								+ levelEncField1EncField2Prev + ","+self+")=true ");						
+					}
 
 					fistOperation = false;
-				} else {
-					bAsm.write(" and " + operationPrev + "(" + changNumMSG[z] + "," + levelEncField1EncField2Prev
-							+ ",self)=true ");
-					bNuSmv.write(" and " + operationPrev + "(" + changNumMSG[z] + "," + levelEncField1EncField2Prev
-							+ ","+self+")=true ");
 				}
 			}
 		}
@@ -5165,8 +5287,15 @@ public class WriteASM {
 				if (operation != null && !operation.isEmpty()) {
 					bAsm.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ",self)=true)then\n");
-					bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+					if (typeConvert.contains("IF(Knows...")) {
+						bNuSmv.write("//		        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
 							+ ","+self+")=true)then\n");
+						bNuSmv.write("			        if(" + detKnow(operation) + "(" + self + "," + keyUsed
+								+ ")=true)then\n");
+					} else {
+						bNuSmv.write("			        if(" + operation + "(" + changNumMSG[i] + "," + levelEncField1EncField2
+								+ ","+self+")=true)then\n");						
+					}
 
 					int contaField=0;
 					for (String e : msgFieldDet) {

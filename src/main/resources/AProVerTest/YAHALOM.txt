@@ -1,0 +1,4 @@
+Execution of NuSMV code ...
+------------------------------------------------------------
+> NuSMV -dynamic -coi -quiet C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\YAHALOMTest.smv
+-- specification EF knowsNonce(BOB,NB)  is true

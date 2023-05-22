@@ -406,11 +406,9 @@ definitions:
 		endlet
 
 // properties TAB=0 COL=0
-  CTLSPEC not(ef(knowsNonce(BOB,NB)=true))
-// properties TAB=0 COL=1
-  CTLSPEC ef(knowsNonce(EVE,NB)=false)
+  CTLSPEC not(ef(not(knowsNonce(ALICE,NB))))
 // properties TAB=1 COL=0
-  CTLSPEC not(ef(knowsNonce(ALICE,NB)=false))
+  CTLSPEC ef(knowsNonce(ALICE,NB) or not(ef(not(knowsNonce(EVE,NB)))))
 	main rule r_Main =
 	  par
             r_message_replay_KK[]

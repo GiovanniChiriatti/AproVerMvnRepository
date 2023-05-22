@@ -1,0 +1,46 @@
+Execution of NuSMV code ...
+------------------------------------------------------------
+> NuSMV -dynamic -coi -quiet C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\Needham_SchroederNSSYMTest.smv
+-- specification EF knowsNonce(EVE,NB)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    knowsNonce(EVE,NB) = false
+    agentB = BOB
+    agentA = ALICE
+    agentE = EVE
+    agentS = SERVER
+    protocolMessage(0,ALICE,EVE) = undef
+    protocolMessage(0,EVE,SERVER) = undef
+    mode = PASSIVE
+    messageField(ALICE,EVE,3,MA) = undef
+    protocolMessage(1,EVE,ALICE) = undef
+    protocolMessage(1,SERVER,EVE) = undef
+    knowsSymKey(EVE,KAS) = false
+    messageField(SERVER,EVE,1,MB) = undef
+    protocolMessage(3,EVE,ALICE) = undef
+    protocolMessage(3,BOB,EVE) = undef
+    knowsSymKey(EVE,KAB) = false
+    messageField(BOB,EVE,1,MD) = undef
+    receiver = AG_E
+    internalStateA = IDLE_MA
+    internalStateS = WAITING_MB
+    messageField(SERVER,EVE,4,MB) = undef
+    knowsSymKey(EVE,KBS) = false
+    protocolMessage(2,ALICE,EVE) = undef
+    protocolMessage(2,EVE,BOB) = undef
+    messageField(ALICE,EVE,1,MC) = undef
+    messageField(SERVER,EVE,2,MB) = undef
+    messageField(EVE,SERVER,3,MA) = undef
+    knowsSymKey(BOB,KBS) = true
+    internalStateB = WAITING_MD
+    knowsSymKey(ALICE,KAS) = true
+    messageField(EVE,ALICE,4,MB) = undef
+    messageField(EVE,BOB,1,MC) = undef
+    knowsSymKey(ALICE,KBS) = false
+    messageField(EVE,ALICE,2,MB) = undef
+    name(AG_S) = SERVER
+    name(AG_E) = EVE
+    name(AG_B) = BOB
+    name(AG_A) = ALICE
