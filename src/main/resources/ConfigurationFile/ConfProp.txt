@@ -2,7 +2,7 @@ Confidentiality !ef
 Integrity !ef ag
 Authentication !ef
 Altre
-ef all future
+af all future
 ag all global
 ax all next
 ef exists future

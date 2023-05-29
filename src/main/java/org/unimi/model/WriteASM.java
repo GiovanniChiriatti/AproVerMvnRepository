@@ -2232,17 +2232,17 @@ public class WriteASM {
 		if (operation != null) {
 			switch (operation) {
 			case "asymDec":
-				return "KnowsAsymPubKey";
+				return "knowsAsymPubKey";
 			case "asymEnc":
-				return "KnowsAsymPrivKey";
+				return "knowsAsymPrivKey";
 			case "symDec":
 				return "knowsSymKey";
 			case "verifySign":
-				return "KnowsSignPubKey";
+				return "knowsSignPubKey";
 			case "sign":
-				return "KnowsSignPrivKey";
+				return "knowsSignPrivKey";
 			case "hash":
-				return "KnowsHash";
+				return "knowsHash";
 			default:
 				return null;
 			}

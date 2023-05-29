@@ -38,7 +38,7 @@
             <Button layoutX="296.0" layoutY="272.0" mnemonicParsing="false" onMouseClicked="#buttonCreateFiles" prefHeight="25.0" prefWidth="137.0" text="Start Creation Files" />
             <ComboBox fx:id="modality" layoutX="344.0" layoutY="65.0" prefWidth="150.0" promptText="modality" visible="false" />
             <ComboBox fx:id="receiver" layoutX="344.0" layoutY="27.0" prefWidth="150.0" promptText="receiver" visible="false" />
-            <ComboBox fx:id="typeConvert" layoutX="46.0" layoutY="272.0" prefWidth="150.0" promptText="Type Convert" />
+            <ComboBox fx:id="typeConvert" layoutX="46.0" layoutY="272.0" prefWidth="150.0" promptText="Type Convert" visible="false" />
          </children>
       </AnchorPane>
    </children>

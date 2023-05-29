@@ -89,7 +89,7 @@ public class SelectAProVerController {
 	final String symmetricKnow = "Symmetric Key";
 	final String hashKnow = "Hash";
 	final String bitstringKnow = "Bitstring";
-	final String idCertificateKnow = "Id Certificate														  Actor Proprity";
+	final String idCertificateKnow = "Id Certificate														  Actor Property";
 	final String nonceKnow = "Nonce";
 	final String signatureKnow = "Signature Public Key                                                        Signature Private Key";
 	final String tagKnow = "Tag";

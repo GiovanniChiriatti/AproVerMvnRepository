@@ -6,13 +6,9 @@ import CTLlibrary
 
 signature:
 
-
-  	domain Alice subsetof Agent
-  	domain Bob subsetof Agent
-  	domain Eve subsetof Agent
-  	domain Server subsetof Agent
-
-
+domain Agenti subsetof Agent
+//  	domain Alice subsetof Agenti
+//  	domain Eve subsetof Agenti
 
 	enum domain StateAlice = {IDLE_MA | WAITING_MC | CHECK_END_A | END_A}
 	enum domain StateBob = {WAITING_MD | CHECK_END_B | END_B}
@@ -62,9 +58,9 @@ signature:
 
 
 	//name of the message
-	controlled protocolMessage: Prod(NumMsg,Agent,Agent)-> Message
+	controlled protocolMessage: Prod(NumMsg,Agenti,Agenti)-> Message
 	// content of the message and in which field it goes
-	controlled messageField: Prod(Agent,Agent,FieldPosition,Message)->Knowledge
+	controlled messageField: Prod(Agenti,Agenti,FieldPosition,Message)->Knowledge
 
 	//attaker mode
 	controlled chosenMode: Modality
@@ -72,7 +68,7 @@ signature:
 	controlled mode: Modality
 
 	// FUNCTIONS SELECT THE RECEIVER
-	static name:Receiver -> Agent
+	static name:Receiver -> Agenti
 	//Receiver chosen
 	controlled receiver:Receiver
 	//Receiver chosen by user
@@ -81,43 +77,43 @@ signature:
 	/*------------------------------------------------------------------- */
 	//            Knowledge  management of the principals 
 	/*------------------------------------------------------------------- */
-	controlled knowsNonce:Prod(Agent,Knowledge)->Boolean
+	controlled knowsNonce:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsIdentityCertificate:Prod(Agent,Knowledge)->Boolean
+	controlled knowsIdentityCertificate:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsBitString:Prod(Agent,Knowledge)->Boolean
+//	controlled knowsBitString:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsSymKey:Prod(Agent,Knowledge)->Boolean
+	controlled knowsSymKey:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsAsymPubKey:Prod(Agent,Knowledge)->Boolean
+	controlled knowsAsymPubKey:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsAsymPrivKey:Prod(Agent,Knowledge)->Boolean
+	controlled knowsAsymPrivKey:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsSignPubKey:Prod(Agent,Knowledge)->Boolean
+	controlled knowsSignPubKey:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsSignPrivKey:Prod(Agent,Knowledge)->Boolean
+	controlled knowsSignPrivKey:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsTag:Prod(Agent,Knowledge)->Boolean
+	controlled knowsTag:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsDigest:Prod(Agent,Knowledge)->Boolean
+	controlled knowsDigest:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsHash:Prod(Agent,Knowledge)->Boolean
+	controlled knowsHash:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsTimestamp:Prod(Agent,Knowledge)->Boolean
+	controlled knowsTimestamp:Prod(Agenti,Knowledge)->Boolean
 
-	controlled knowsOther:Prod(Agent,Knowledge)->Boolean
+	controlled knowsOther:Prod(Agenti,Knowledge)->Boolean
 
 	/*------------------------------------------------------------------- */
 	//                  Cryptographic functions
 	/*------------------------------------------------------------------- */
 	//hash function applied from the field HashField1 to HashField2, the nesting level is Level
 	controlled hash: Prod(Message,Level,HashField1,HashField2)-> Knowledge
-// 	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean
+// 	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agenti)-> Boolean
 
 
 	//sign function applied from the field SignField1 to SignField2, the nesting level is Level
 	controlled sign: Prod(Message,Level,SignField1,SignField2)-> Knowledge
-// 	static verifySign: Prod(Message,Level,SignField1,SignField2,Agent)-> Boolean
+// 	static verifySign: Prod(Message,Level,SignField1,SignField2,Agenti)-> Boolean
 
 // 	static sign_keyAssociation: KnowledgeSignPrivKey -> KnowledgeSignPubKey
 
@@ -125,7 +121,7 @@ signature:
 	//asymmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled asymEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-// 	static asymDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+// 	static asymDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
 
 // 	static asim_keyAssociation: KnowledgeAsymPubKey -> KnowledgeAsymPrivKey
 
@@ -133,7 +129,7 @@ signature:
 	//symmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-// 	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+// 	static symDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
 
 // 	static agentA: Alice
 // 	static agentB: Bob
@@ -141,11 +137,11 @@ signature:
 // 	static agentS: Server
 
 
-	controlled agentA: Agent 
-	controlled agentB: Agent 
-	controlled agentE: Agent 
+	static agentA: Agenti 
+	static agentB: Agenti 
+	static agentE: Agenti 
+	static agentS: Agenti 
 
-	controlled agentS: Agent 
 definitions:
 	domain Level = {1:2}
 	domain FieldPosition = {1:5}
@@ -174,30 +170,31 @@ definitions:
 				case AG_E:agentE
 				case AG_B:agentB
 				case AG_S:agentS
+				 otherwise agentA
 			endswitch
 //
-//		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agent)=
+//		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agenti)=
 //			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
 //				true
 //			else
 //				false
 //			endif
 //
-//		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
+//		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
 //			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
 //				true
 //			else
 //				false
 //			endif
 //
-//		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
+//		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
 //			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
 //				true
 //			else
 //				false
 //			endif
 //
-//		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agent)=
+//		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agenti)=
 //			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
 //				true
 //			else
@@ -291,8 +288,15 @@ default init s0:
 	function internalStateB=WAITING_MD
 	function internalStateS=WAITING_MB
 	function receiver=AG_E
-	function knowsNonce($a in Agent, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
-	function knowsIdentityCertificate($a in Agent, $i in Knowledge)=if($a=agentA and $i=CA) or ($a=agentA and $i=CB) or ($a=agentA and $i=CE) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) or ($a=agentB and $i=CE) then true else if($a=agentE and $i=CE) then true else false endif endif endif
-	function knowsSymKey($a in Agent ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KEB) or ($a=agentB and $sk=KAB) or ($a=agentE and $sk=KEA) or ($a=agentE and $sk=KEB) or ($a=agentE and $sk=KES) or ($a=agentS and $sk=KAS) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAB)) then true else false endif
+	function knowsNonce($a in Agenti, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) then true else false endif endif
+	function knowsIdentityCertificate($a in Agenti, $i in Knowledge)=if($a=agentA and $i=CA) or ($a=agentA and $i=CB) or ($a=agentA and $i=CE) then true else if($a=agentB and $i=CA) or ($a=agentB and $i=CB) or ($a=agentB and $i=CE) then true else if($a=agentE and $i=CE) then true else false endif endif endif
+	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentA and $sk=KAB) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KEB) or ($a=agentB and $sk=KAB) or ($a=agentE and $sk=KEA) or ($a=agentE and $sk=KEB) or ($a=agentE and $sk=KES) or ($a=agentS and $sk=KAS) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAB)) then true else false endif
 	function mode=PASSIVE
+	agent Agenti:
+		r_agentARule[]
+
+	agent Agenti:
+		r_agentERule[]
+
+
 
