@@ -15,6 +15,7 @@ check 	internalStateA(agentA)=IDLE_KK;
 check	internalStateB(agentB)=WAITING_NK;
 check	knowsNonce(agentB,NB)=true;
 check	knowsNonce(agentA,NB)=false;
+check	knowsNonce(agentE,NB)=false;
 check	knowsAsymPubKey(agentA, PUBKB)=true;
 check	knowsAsymPubKey(agentB, PUBKB)=true;
 check	knowsSymKey(agentB, SKAB)=true;

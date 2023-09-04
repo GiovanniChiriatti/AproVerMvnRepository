@@ -171,12 +171,14 @@ NameMess MF
 ActorFrom Eve
 ActorTo Bob
 Eve Intercept true
-Messages {KNA,NB}-KBS-,{NB}-KNA-
+Messages {CA,KNA,NB}-KBS-,{NB}-KNA-
 dati SecurityFunctionsPartMessage j=0
-{KNA,NB}  - KBS - 
+{CA,KNA,NB}  - KBS - 
 dati listPartMessage j=0 k=0
-KNA
+CA
 dati listPartMessage j=0 k=1
+KNA
+dati listPartMessage j=0 k=2
 NB
 dati SecurityFunctionsPartMessage j=1
 {NB}  - KNA - 

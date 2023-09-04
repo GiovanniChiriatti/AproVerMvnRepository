@@ -1,0 +1,383 @@
+path /C:/Users/gioeg/AProVerDirectory/Aprover/src/main/resources/AProVerTest/test1SSLX.avalla
+
+** Simulation C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\test1SSLX.avalla **
+
+build the asm from scenario C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\TestSSLX.asm
+parsing file C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\TestSSLX.asm
+file successfully parsed for asm TestSSLX
+file:///C:/Users/gioeg/AProVerDirectory/Aprover/src/main/resources/AProVerTest/TestSSLX.asm
+parsing file C:\Users\gioeg\AppData\Local\Temp\asms_foravalla5668895057592501906\__tempAsmetaV1001025933518700874.asm
+file successfully parsed for asm __tempAsmetaV1001025933518700874
+check succeeded: internalStateA(agentA)=IDLE_KK 
+check succeeded: internalStateB(agentB)=WAITING_NK 
+check succeeded: knowsNonce(agentB,NB)=true 
+check succeeded: knowsNonce(agentA,NB)=false 
+check succeeded: knowsNonce(agentE,NB)=false 
+check succeeded: knowsAsymPubKey(agentA, PUBKB)=true 
+check succeeded: knowsAsymPubKey(agentB, PUBKB)=true 
+check succeeded: knowsSymKey(agentB, SKAB)=true 
+check succeeded: knowsSymKey(agentA, SKAB)=true 
+check succeeded: knowsSymKey(agentE, SKAB)=false 
+check succeeded: mode=PASSIVE 
+check succeeded: receiver=AG_E 
+<UpdateSet - 0>
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_CSNK
+messageField(agentA,agentE,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+result=1
+step__=1
+</UpdateSet>
+<State 1 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKE
+internalStateA(agentA)=WAITING_CSNK
+messageField(agentA,agentE,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+result=1
+step__=1
+</State 1 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: protocolMessage(0,agentA,agentE)= KK 
+check succeeded: messageField(agentA,agentE,1,KK)= SKAE 
+check succeeded: internalStateA(agentA)=WAITING_CSNK 
+check succeeded: asymEnc(KK,1,1,1)=PUBKE 
+check succeeded: protocolMessage(0,agentA,agentE)= KK 
+check succeeded: protocolMessage(0,agentB,agentE)!= KK 
+check succeeded: asymDec(KK,1,1,1,agentE)=true 
+<UpdateSet - 1>
+asymEnc(KK,1,1,1)=PUBKB
+knowsSymKey(agentE,SKAE)=true
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(0,agentE,agentB)=KK
+result=1
+step__=2
+</UpdateSet>
+<State 2 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_CSNK
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+result=1
+step__=2
+</State 2 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: protocolMessage(0,agentE,agentB)= KK 
+check succeeded: messageField(agentE,agentB,1,KK)=messageField(agentA,agentE,1,KK) 
+check succeeded: messageField(agentE,agentB,1,KK)=SKAE 
+check succeeded: knowsSymKey(agentE,messageField(agentA,agentE,1,KK))=true 
+check succeeded: asymEnc(KK,1,1,1) = PUBKB 
+check succeeded: internalStateB(agentB)=WAITING_NK 
+check succeeded: protocolMessage(0,agentE ,agentB)=KK 
+check succeeded: asymDec(KK,1,1,1,agentB)=true 
+<UpdateSet - 2>
+internalStateB(agentB)=CHECK_END_B
+knowsSymKey(agentB,SKAE)=true
+messageField(agentB,agentE,1,NK)=NB
+protocolMessage(1,agentB,agentE)=NK
+result=1
+step__=3
+symEnc(NK,1,1,1)=SKAE
+</UpdateSet>
+<State 3 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_CSNK
+internalStateB(agentB)=CHECK_END_B
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+result=1
+step__=3
+symEnc(NK,1,1,1)=SKAE
+</State 3 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: knowsSymKey(agentB,messageField(agentE,agentB,1,KK))=true 
+check succeeded: protocolMessage(1,agentB,agentE)=NK 
+check succeeded: messageField(agentB,agentE,1,NK)= NB 
+check succeeded: symEnc(NK,1,1,1)= messageField(agentE,agentB,1,KK) 
+check succeeded: messageField(agentE,agentB,1,KK)=SKAE 
+check succeeded: internalStateB(agentB)= CHECK_END_B 
+check succeeded: protocolMessage(1,agentB ,agentE)=NK 
+check succeeded: protocolMessage(1,agentE,agentA )!=NK 
+check succeeded: symDec(NK,1,1,1,agentE)=true 
+<UpdateSet - 3>
+knowsNonce(agentE,NB)=true
+messageField(agentE,agentA,1,NK)=NB
+protocolMessage(1,agentE,agentA)=NK
+result=1
+step__=4
+symEnc(NK,1,1,1)=SKAE
+</UpdateSet>
+<State 4 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=WAITING_CSNK
+internalStateB(agentB)=CHECK_END_B
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+result=1
+step__=4
+symEnc(NK,1,1,1)=SKAE
+</State 4 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: knowsNonce(agentE,messageField(agentB,agentE,1,NK))=true 
+check succeeded: messageField(agentB,agentE,1,NK)=NB 
+check succeeded: protocolMessage(1,agentE ,agentA)= NK 
+check succeeded: messageField(agentE,agentA,1,NK)= messageField(agentB,agentE,1,NK) 
+check succeeded: messageField(agentE,agentA,1,NK)= NB 
+check succeeded: symEnc(NK,1,1,1)= messageField(agentA,agentE,1,KK) 
+check succeeded: messageField(agentA,agentE,1,KK)=SKAE 
+check succeeded: internalStateA(agentA)=WAITING_CSNK 
+check succeeded: protocolMessage(1,agentE ,agentA)=NK 
+check succeeded: symDec(NK,1,1,1,agentA)=true 
+<UpdateSet - 4>
+internalStateA(agentA)=END_A
+knowsNonce(agentA,NB)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,2,CSNK)=NB
+protocolMessage(2,agentA,agentE)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=5
+symEnc(CSNK,2,1,2)=SKAE
+</UpdateSet>
+<State 5 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=CHECK_END_B
+knowsNonce(agentA,NB)=true
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentA,agentE,2,CSNK)=NB
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,KK)=SKAE
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+protocolMessage(2,agentA,agentE)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=5
+symEnc(CSNK,2,1,2)=SKAE
+symEnc(NK,1,1,1)=SKAE
+</State 5 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: protocolMessage(2,agentA,agentE)=CSNK 
+check succeeded: messageField(agentA,agentE,1,CSNK)=CA 
+check succeeded: messageField(agentA,agentE,2,CSNK)=messageField(agentE,agentA,1,NK) 
+check succeeded: messageField(agentE,agentA,1,NK)=NB 
+check succeeded: sign(CSNK,1,2,2)= SIGNPRIVKA 
+check succeeded: symEnc(CSNK,2,1,2)= messageField(agentA,agentE,1,KK) 
+check succeeded: messageField(agentA,agentE,1,KK)=SKAE 
+check succeeded: internalStateA(agentA)= END_A 
+check succeeded: protocolMessage(2,agentA,agentE)=CSNK 
+check succeeded: protocolMessage(2,agentE,agentB)!=CSNK 
+check succeeded: symDec(CSNK,2,1,2,agentE)=true 
+<UpdateSet - 5>
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentE,NB)=true
+messageField(agentE,agentB,1,CSNK)=CA
+messageField(agentE,agentB,2,CSNK)=NB
+protocolMessage(2,agentE,agentB)=CSNK
+result=1
+step__=6
+symEnc(CSNK,2,1,2)=SKEB
+</UpdateSet>
+<State 6 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=CHECK_END_B
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentA,NB)=true
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentA,agentE,2,CSNK)=NB
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,CSNK)=CA
+messageField(agentE,agentB,1,KK)=SKAE
+messageField(agentE,agentB,2,CSNK)=NB
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+protocolMessage(2,agentA,agentE)=CSNK
+protocolMessage(2,agentE,agentB)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=6
+symEnc(CSNK,2,1,2)=SKEB
+symEnc(NK,1,1,1)=SKAE
+</State 6 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: knowsNonce(agentE,messageField(agentA,agentE,2,CSNK))=true 
+check succeeded: protocolMessage(2,agentE,agentB )= CSNK 
+check succeeded: messageField(agentE,agentB,1,CSNK)= messageField(agentA,agentE,1,CSNK) 
+check succeeded: messageField(agentE,agentB,2,CSNK)= messageField(agentA,agentE,2,CSNK) 
+check succeeded: messageField(agentA,agentE,1,CSNK)=CA 
+check succeeded: messageField(agentA,agentE,2,CSNK)=NB 
+check succeeded: internalStateB(agentB)=CHECK_END_B 
+check succeeded: protocolMessage(2,agentE ,agentB)=CSNK 
+<UpdateSet - 6>
+internalStateB(agentB)=END_B
+knowsIdentityCertificate(agentB,CA)=true
+knowsNonce(agentB,NB)=true
+result=1
+step__=7
+</UpdateSet>
+<State 7 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentA,NB)=true
+knowsNonce(agentB,NB)=true
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentA,agentE,2,CSNK)=NB
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,CSNK)=CA
+messageField(agentE,agentB,1,KK)=SKAE
+messageField(agentE,agentB,2,CSNK)=NB
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+protocolMessage(2,agentA,agentE)=CSNK
+protocolMessage(2,agentE,agentB)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=7
+symEnc(CSNK,2,1,2)=SKEB
+symEnc(NK,1,1,1)=SKAE
+</State 7 (controlled)>
+check succeeded: mode=PASSIVE 
+check succeeded: symEnc(CSNK,2,1,2)=SKEB 
+check succeeded: sign(CSNK,1,2,2)=SIGNPRIVKA 
+check succeeded: sign_keyAssociation(sign(CSNK,1,2,2))=SIGNPUBKA 
+check succeeded: symDec(CSNK,2,1,2,agentB)=true 
+check succeeded: verifySign(CSNK,1,2,2,agentB)=true 
+check succeeded: internalStateB(agentB)= END_B 
+<UpdateSet - 7>
+result=1
+step__=8
+</UpdateSet>
+<State 8 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentA,NB)=true
+knowsNonce(agentB,NB)=true
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentA,agentE,2,CSNK)=NB
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,CSNK)=CA
+messageField(agentE,agentB,1,KK)=SKAE
+messageField(agentE,agentB,2,CSNK)=NB
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+protocolMessage(2,agentA,agentE)=CSNK
+protocolMessage(2,agentE,agentB)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=8
+symEnc(CSNK,2,1,2)=SKEB
+symEnc(NK,1,1,1)=SKAE
+</State 8 (controlled)>
+<UpdateSet - 8>
+</UpdateSet>
+<State 9 (controlled)>
+Alice={agentA}
+Bob={agentB}
+Eve={agentE}
+asymEnc(KK,1,1,1)=PUBKB
+internalStateA(agentA)=END_A
+internalStateB(agentB)=END_B
+knowsIdentityCertificate(agentB,CA)=true
+knowsIdentityCertificate(agentE,CA)=true
+knowsNonce(agentA,NB)=true
+knowsNonce(agentB,NB)=true
+knowsNonce(agentE,NB)=true
+knowsSymKey(agentB,SKAE)=true
+knowsSymKey(agentE,SKAE)=true
+messageField(agentA,agentE,1,CSNK)=CA
+messageField(agentA,agentE,1,KK)=SKAE
+messageField(agentA,agentE,2,CSNK)=NB
+messageField(agentB,agentE,1,NK)=NB
+messageField(agentE,agentA,1,NK)=NB
+messageField(agentE,agentB,1,CSNK)=CA
+messageField(agentE,agentB,1,KK)=SKAE
+messageField(agentE,agentB,2,CSNK)=NB
+protocolMessage(0,agentA,agentE)=KK
+protocolMessage(0,agentE,agentB)=KK
+protocolMessage(1,agentB,agentE)=NK
+protocolMessage(1,agentE,agentA)=NK
+protocolMessage(2,agentA,agentE)=CSNK
+protocolMessage(2,agentE,agentB)=CSNK
+result=1
+sign(CSNK,1,2,2)=SIGNPRIVKA
+step__=8
+symEnc(CSNK,2,1,2)=SKEB
+symEnc(NK,1,1,1)=SKAE
+</State 9 (controlled)>

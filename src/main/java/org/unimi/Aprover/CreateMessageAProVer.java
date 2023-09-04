@@ -708,7 +708,7 @@ public class CreateMessageAProVer {
        	
        	if (!otherElement.isEmpty()) {
        		Menu menu = new Menu();
-            prepareMenuItem(menu, "Key Recived", menuSecurityFunction);
+            prepareMenuItem(menu, "Key Received", menuSecurityFunction);
             MenuItem subMenuItem;
             for (String ele : otherElement.keySet()) {
             	subMenuItem = new MenuItem(ele);
