@@ -70,6 +70,7 @@ public class CreateProperties {
 	ObservableList<String> comboBoxListActor; 
 	ObservableList<String> comboBoxListOther = FXCollections.observableArrayList(); 
 	ObservableList<String>  data = FXCollections.observableArrayList();
+	ObservableList<String>  dataMsg = FXCollections.observableArrayList();
 	ObservableList<String> comboBoxListKnowledge; 
 	public static final ObservableList names =
             FXCollections.observableArrayList();
@@ -100,7 +101,7 @@ public class CreateProperties {
     private ImageView xPoint;
     
     @FXML
-    private ComboBox<String> actorKnow, typeKnowledge, ctlSel, otherComboBox;
+    private ComboBox<String> actorKnow, typeKnowledge, ctlSel, otherComboBox, nameMessage;
     
     @FXML
     private ToggleGroup group = new ToggleGroup();
@@ -233,6 +234,18 @@ public class CreateProperties {
 			}
 			ctlSel.setItems(data);
 		}
+		// inizializzazione CLT List 	
+		public void setNumMessages(String[] numMessages) {
+
+			dataMsg.add(" ");
+			for (int i=0; i< numMessages.length  ; i++) {
+				if (!(numMessages[i] == null)) {
+					dataMsg.add(numMessages[i]);
+				}
+			}
+			nameMessage.setItems(dataMsg);
+		}	
+
 		@FXML
 		public void typeKnowledgeSelected() {
 		//	System.out.println("typeKnowledgeSelected " + typeKnowledge.getValue());
@@ -504,6 +517,12 @@ public class CreateProperties {
 		//		System.out.println("ctlSel.getValue() "+ ctlSel.getValue());
 				expression=ctlSel.getValue().substring(0,ctlSel.getValue().indexOf(" "))+"(";
 			}
+			
+
+			if (nameMessage.getValue() != null && !nameMessage.getValue().isEmpty() && !nameMessage.getValue().equals(" ")) {
+				numSelect++;
+				expression=nameMessage.getValue();
+			}
 			if (actorKnow.getValue() != null && !actorKnow.getValue().isEmpty() && !actorKnow.getValue().equals(" ")) {
 				numSelect++;
 		//		System.out.println("actorKnow.getValue() "+ actorKnow.getValue());
@@ -566,6 +585,7 @@ public class CreateProperties {
 			numExpressionEle++;
 			expressionEle[numExpressionEle] = expressionValue.getText();
 			ctlSel.setValue(null);
+			nameMessage.setValue(null);
 			actorKnow.setValue(null);
 			otherComboBox.setValue(null);
 			listview.getSelectionModel().clearSelection();

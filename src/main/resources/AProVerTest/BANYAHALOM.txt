@@ -1,83 +1,209 @@
 Execution of NuSMV code ...
 ------------------------------------------------------------
 > NuSMV -dynamic -coi -quiet C:\Users\gioeg\AProVerDirectory\Aprover\src\main\resources\AProVerTest\BANYAHALOMTest.smv
--- specification EF knowsNonce(EVE,NB)  is true
--- specification !(EF knowsNonce(EVE,NB))  is false
+-- specification !(EF messageField(ALICE,EVE,1,MA) != messageField(EVE,BOB,1,MA))  is false
 -- as demonstrated by the following execution sequence
 Trace Description: CTL Counterexample 
 Trace Type: Counterexample 
   -> State: 1.1 <-
-    knowsNonce(EVE,NB) = false
-    agentB = BOB
-    agentS = SERVER
+    messageField(ALICE,EVE,1,MA) = undef
+    messageField(EVE,BOB,1,MA) = undef
+    receiver = AG_E
+    internalStateA = IDLE_MA
     agentE = EVE
     agentA = ALICE
-    mode = PASSIVE
+    protocolMessage(5,SERVER,BOB) = undef
     protocolMessage(4,EVE,ALICE) = undef
+    agentB = BOB
+    protocolMessage(5,BOB,EVE) = undef
+    protocolMessage(5,EVE,ALICE) = undef
+    protocolMessage(5,EVE,BOB) = undef
+    protocolMessage(5,ALICE,EVE) = undef
+    protocolMessage(5,EVE,SERVER) = undef
+    protocolMessage(5,BOB,ALICE) = undef
+    protocolMessage(5,BOB,BOB) = undef
+    protocolMessage(5,EVE,EVE) = undef
+    protocolMessage(5,ALICE,SERVER) = undef
+    protocolMessage(5,SERVER,SERVER) = undef
+    protocolMessage(5,BOB,SERVER) = undef
+    protocolMessage(5,ALICE,BOB) = undef
+    protocolMessage(5,ALICE,ALICE) = undef
+    protocolMessage(5,SERVER,EVE) = undef
+    protocolMessage(5,SERVER,ALICE) = undef
+    agentS = SERVER
+    mode = PASSIVE
     protocolMessage(4,SERVER,EVE) = undef
-    knowsSymKey(EVE,KAS) = false
-    messageField(SERVER,EVE,4,ME) = undef
-    knowsSymKey(EVE,KBS) = false
-    messageField(SERVER,EVE,7,ME) = undef
-    messageField(BOB,EVE,2,MB) = undef
-    protocolMessage(1,BOB,EVE) = undef
-    protocolMessage(1,EVE,SERVER) = undef
-    messageField(EVE,EVE,2,MD) = undef
-    protocolMessage(0,ALICE,EVE) = undef
-    protocolMessage(0,EVE,BOB) = undef
-    messageField(ALICE,EVE,2,MA) = undef
-    messageField(ALICE,EVE,2,MD) = undef
-    messageField(BOB,EVE,2,MD) = undef
-    messageField(BOB,EVE,4,MB) = undef
-    messageField(SERVER,EVE,2,MD) = undef
-    messageField(SERVER,EVE,1,ME) = undef
-    receiver = AG_E
+    internalStateE = WAITING_MC
     internalStateS = WAITING_ME
     protocolMessage(3,BOB,EVE) = undef
     knowsSymKey(SERVER,KBS) = true
-    messageField(SERVER,EVE,6,ME) = undef
-    messageField(SERVER,EVE,3,ME) = undef
-    messageField(EVE,SERVER,4,MB) = undef
-    messageField(EVE,SERVER,2,MB) = undef
+    protocolMessage(1,EVE,SERVER) = undef
     internalStateB = WAITING_MB
-    internalStateA = IDLE_MA
     protocolMessage(2,EVE,BOB) = undef
-    messageField(EVE,BOB,2,MA) = undef
-    protocolMessage(5,EVE,BOB) = undef
-    protocolMessage(5,BOB,BOB) = undef
-    protocolMessage(5,ALICE,BOB) = undef
-    protocolMessage(5,ALICE,EVE) = undef
-    protocolMessage(5,SERVER,BOB) = undef
-    protocolMessage(5,SERVER,SERVER) = undef
-    protocolMessage(5,SERVER,ALICE) = undef
-    protocolMessage(5,EVE,SERVER) = undef
-    protocolMessage(5,BOB,SERVER) = undef
-    protocolMessage(5,SERVER,EVE) = undef
-    protocolMessage(5,BOB,ALICE) = undef
-    protocolMessage(5,EVE,ALICE) = undef
-    protocolMessage(5,ALICE,SERVER) = undef
-    protocolMessage(5,BOB,EVE) = undef
-    protocolMessage(5,ALICE,ALICE) = undef
-    protocolMessage(5,EVE,EVE) = undef
-    internalStateE = WAITING_MC
+    protocolMessage(1,BOB,EVE) = undef
+    protocolMessage(0,EVE,BOB) = undef
+    protocolMessage(0,ALICE,EVE) = undef
     name(AG_S) = SERVER
     name(AG_E) = EVE
     name(AG_B) = BOB
     name(AG_A) = ALICE
   -> State: 1.2 <-
+    messageField(ALICE,EVE,1,MA) = CA
+    internalStateA = CHECK_END_A
+    protocolMessage(0,ALICE,EVE) = MA
+-- specification EF knowsSymKey(BOB,KNA)  is true
+-- specification (EF (knowsSymKey(BOB,KBS) & knowsSymKey(SERVER,KBS)) -> AG !knowsSymKey(EVE,KBS))  is true
+-- specification (EF knowsSymKey(BOB,KNA) -> AG !knowsSymKey(EVE,KNA))  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 2.1 <-
+    knowsSymKey(BOB,KNA) = false
+    knowsSymKey(EVE,KNA) = true
+    agentE = EVE
+    messageField(EVE,BOB,2,MC) = undef
+    internalStateB = WAITING_MB
+    protocolMessage(2,EVE,BOB) = undef
+    agentB = BOB
+    messageField(EVE,BOB,2,MF) = undef
+    knowsSymKey(BOB,KBS) = true
+    protocolMessage(5,EVE,BOB) = undef
+    agentS = SERVER
+    internalStateE = WAITING_MC
+    protocolMessage(1,EVE,SERVER) = undef
+    protocolMessage(0,EVE,BOB) = undef
+    receiver = AG_E
+    agentA = ALICE
+    protocolMessage(4,EVE,ALICE) = undef
+    messageField(BOB,EVE,4,MD) = undef
+    mode = PASSIVE
+    protocolMessage(1,BOB,EVE) = undef
+    protocolMessage(0,ALICE,EVE) = undef
+    protocolMessage(4,SERVER,EVE) = undef
+    internalStateA = IDLE_MA
+    internalStateS = WAITING_ME
+    protocolMessage(3,BOB,EVE) = undef
+    knowsSymKey(SERVER,KBS) = true
+    protocolMessage(5,SERVER,BOB) = undef
+    protocolMessage(5,BOB,EVE) = undef
+    protocolMessage(5,EVE,ALICE) = undef
+    protocolMessage(5,ALICE,EVE) = undef
+    protocolMessage(5,EVE,SERVER) = undef
+    protocolMessage(5,BOB,ALICE) = undef
+    protocolMessage(5,BOB,BOB) = undef
+    protocolMessage(5,EVE,EVE) = undef
+    protocolMessage(5,ALICE,SERVER) = undef
+    protocolMessage(5,SERVER,SERVER) = undef
+    protocolMessage(5,BOB,SERVER) = undef
+    protocolMessage(5,ALICE,BOB) = undef
+    protocolMessage(5,ALICE,ALICE) = undef
+    protocolMessage(5,SERVER,EVE) = undef
+    protocolMessage(5,SERVER,ALICE) = undef
+    knowsSymKey(EVE,KAS) = false
+    messageField(SERVER,EVE,3,ME) = undef
+    knowsSymKey(EVE,KBS) = false
+    messageField(SERVER,EVE,6,ME) = undef
+    name(AG_S) = SERVER
+    name(AG_E) = EVE
+    name(AG_B) = BOB
+    name(AG_A) = ALICE
+  -> State: 2.2 <-
+    protocolMessage(0,ALICE,EVE) = MA
+    internalStateA = CHECK_END_A
+  -> State: 2.3 <-
+    protocolMessage(0,EVE,BOB) = MA
+  -> State: 2.4 <-
+    internalStateB = WAITING_MD
+    protocolMessage(1,BOB,EVE) = MB
+  -> State: 2.5 <-
+    protocolMessage(1,EVE,SERVER) = MB
+  -> State: 2.6 <-
+    messageField(EVE,BOB,2,MC) = KNA
+    protocolMessage(2,EVE,BOB) = MC
+    internalStateE = WAITING_MF
+  -> State: 2.7 <-
+    knowsSymKey(BOB,KNA) = true
+    internalStateB = CHECK_END_B
+    messageField(BOB,EVE,4,MD) = KNA
+    protocolMessage(3,BOB,EVE) = MD
+-- specification EF knowsNonce(EVE,NB)  is true
+-- specification !(EF knowsNonce(EVE,NB))  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 3.1 <-
+    knowsNonce(EVE,NB) = false
+    agentB = BOB
+    messageField(BOB,EVE,2,MD) = undef
+    agentS = SERVER
+    agentA = ALICE
+    agentE = EVE
+    protocolMessage(4,EVE,ALICE) = undef
+    protocolMessage(4,SERVER,EVE) = undef
+    mode = PASSIVE
+    knowsSymKey(EVE,KAS) = false
+    messageField(SERVER,EVE,4,ME) = undef
+    messageField(BOB,EVE,2,MB) = undef
+    protocolMessage(1,BOB,EVE) = undef
+    protocolMessage(1,EVE,SERVER) = undef
+    messageField(EVE,EVE,2,MD) = undef
+    messageField(SERVER,EVE,2,MD) = undef
+    messageField(SERVER,EVE,1,ME) = undef
+    messageField(BOB,EVE,4,MB) = undef
+    knowsSymKey(EVE,KBS) = false
+    protocolMessage(0,ALICE,EVE) = undef
+    protocolMessage(0,EVE,BOB) = undef
+    messageField(ALICE,EVE,2,MA) = undef
+    messageField(ALICE,EVE,2,MD) = undef
+    messageField(SERVER,EVE,7,ME) = undef
+    internalStateB = WAITING_MB
+    protocolMessage(2,EVE,BOB) = undef
+    internalStateS = WAITING_ME
+    protocolMessage(3,BOB,EVE) = undef
+    receiver = AG_E
+    knowsSymKey(SERVER,KBS) = true
+    messageField(SERVER,EVE,6,ME) = undef
+    messageField(SERVER,EVE,3,ME) = undef
+    messageField(EVE,SERVER,4,MB) = undef
+    messageField(EVE,SERVER,2,MB) = undef
+    messageField(EVE,BOB,2,MA) = undef
+    internalStateA = IDLE_MA
+    protocolMessage(5,EVE,BOB) = undef
+    internalStateE = WAITING_MC
+    protocolMessage(5,SERVER,BOB) = undef
+    protocolMessage(5,BOB,EVE) = undef
+    protocolMessage(5,EVE,ALICE) = undef
+    protocolMessage(5,ALICE,EVE) = undef
+    protocolMessage(5,EVE,SERVER) = undef
+    protocolMessage(5,BOB,ALICE) = undef
+    protocolMessage(5,BOB,BOB) = undef
+    protocolMessage(5,EVE,EVE) = undef
+    protocolMessage(5,ALICE,SERVER) = undef
+    protocolMessage(5,SERVER,SERVER) = undef
+    protocolMessage(5,BOB,SERVER) = undef
+    protocolMessage(5,ALICE,BOB) = undef
+    protocolMessage(5,ALICE,ALICE) = undef
+    protocolMessage(5,SERVER,EVE) = undef
+    protocolMessage(5,SERVER,ALICE) = undef
+    name(AG_S) = SERVER
+    name(AG_E) = EVE
+    name(AG_B) = BOB
+    name(AG_A) = ALICE
+  -> State: 3.2 <-
     protocolMessage(0,ALICE,EVE) = MA
     messageField(ALICE,EVE,2,MA) = NA
     internalStateA = CHECK_END_A
-  -> State: 1.3 <-
+  -> State: 3.3 <-
     protocolMessage(0,EVE,BOB) = MA
     messageField(EVE,BOB,2,MA) = NA
-  -> State: 1.4 <-
+  -> State: 3.4 <-
     messageField(BOB,EVE,2,MB) = NB
     protocolMessage(1,BOB,EVE) = MB
     messageField(BOB,EVE,4,MB) = NA
     internalStateB = WAITING_MD
-  -> State: 1.5 <-
+  -> State: 3.5 <-
     knowsNonce(EVE,NB) = true
     protocolMessage(1,EVE,SERVER) = MB
     messageField(EVE,SERVER,4,MB) = NA
     messageField(EVE,SERVER,2,MB) = NB
+

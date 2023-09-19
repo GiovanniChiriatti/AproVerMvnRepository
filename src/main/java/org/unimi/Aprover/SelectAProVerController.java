@@ -3244,6 +3244,18 @@ public class SelectAProVerController {
 		} else {
 			controller.setActorList(false);
 		}
+		
+		String[] numMessages = new String[15];
+		int m=0;
+		for (int i = 0; i < 15; i++) {
+			if (!messages.getListMessages()[i].getActorfrom().isEmpty()) {
+				numMessages[m]= messages.getListMessages()[i].getNameMess();
+				m++;
+			}
+		}
+		
+		controller.setNumMessages(numMessages);
+		
 		controller.setCtlList(ctlEle);
         dialogStage.showAndWait();
         if(controller.getOperation().equals("Delete")){
@@ -3584,6 +3596,16 @@ public class SelectAProVerController {
 		} else {
 			controller.setActorList(false);
 		}
+		String[] numMessages = new String[15];
+		int m=0;
+		for (int i = 0; i < 15; i++) {
+			if (!messages.getListMessages()[i].getActorfrom().isEmpty()) {
+				numMessages[m]= messages.getListMessages()[i].getNameMess();
+				m++;
+			}
+		}
+		controller.setNumMessages(numMessages);
+		
 		controller.setCtlList(ctlEle);
 		
 		
@@ -4764,13 +4786,13 @@ public class SelectAProVerController {
 					Node node = propertiesIn.getNodeResult(propertiesIn.getRowFound(),propertiesIn.getColFound());
 					consoleNuSMV.add("Col="+propertiesIn.getRowFound()+"Row="+propertiesIn.getColFound()+"- "+ line);
 					if (line.contains(" is false")) {
-						nodeFalse[indTrue] = node;
+						nodeFalse[indFalse] = node;
 						indFalse++;
 				//		((Text) node).setText("False");
 						//((Text) node).setStyle("-fx-text-inner-color: red; -fx-font-size: 16px;");
 				//		((Text) node).setFill(Color.RED);
 					} else {
-						nodeTrue[indFalse] = node;
+						nodeTrue[indTrue] = node;
 						indTrue++;
 				//		((Text) node).setText("True");
 						//((Text) node).setStyle("-fx-text-fill: green; -fx-font-size: 16px;");

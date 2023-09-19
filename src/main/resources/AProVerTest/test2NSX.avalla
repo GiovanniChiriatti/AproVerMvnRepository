@@ -1,8 +1,8 @@
-scenario test1NSX
+scenario test2NSX
 
 //Test di receiver Eve in modalità Passiva
 
-load Needham_SchroederXTest.asm
+load TestNeedham_SchroederX.asm
 
 //controllo che nello stato inziale:
 //  stato iniziale di Alice sia IDLE_A
@@ -10,8 +10,8 @@ load Needham_SchroederXTest.asm
 // si impostano quindi le conoscenze per i singoli attori
 set chosenMode:=ACTIVE;
 set chosenReceiver:=AG_E;
-check 	internalStateA=IDLE_NAK;
-check	internalStateB=WAITING_NNK;
+check 	internalStateA(agentA)=IDLE_NAK;
+check	internalStateB(agentB)=WAITING_NNK;
 check	knowsNonce(agentA,NA)=true;
 check	knowsNonce(agentB,NB)=true;
 check	knowsIdentityCertificate(agentA, ID_A)=true;
@@ -43,7 +43,7 @@ check protocolMessage(0,agentA,agentE)= NAK;
 check messageField(agentA,agentE,1,NAK)=NA;
 check messageField(agentA,agentE,2,NAK)=ID_A;
 check asymEnc(NAK,1,1,2 )=PUBKE;
-check internalStateA= WAITING_NK;
+check internalStateA(agentA)= WAITING_NK;
         // Informazioni in input step 2	
 check protocolMessage(0,agentE,agentA)!= NAK;
 
@@ -59,7 +59,7 @@ check	messageField(agentE,agentB,1,NAK)=messageField(agentA,agentE,1,NAK);
 check	messageField(agentE,agentB,2,NAK)=messageField(agentA,agentE,2,NAK);
 check 	asymEnc(NAK,1,1,2)=PUBKB;
         // Informazioni in input step 3	
-check internalStateB=WAITING_NNK; 
+check internalStateB(agentB)=WAITING_NNK; 
 check protocolMessage(0,agentE ,agentB)=NAK;
 check asymDec(NAK,1,1,2,agentB)=true;
 
@@ -77,7 +77,7 @@ check	protocolMessage(1,agentB,agentE)=NNK;
 check	messageField(agentB,agentE,1,NNK)=NA;
 check	messageField(agentB,agentE,2,NNK)=NB;
 check	asymEnc(NNK,1,1,2)=PUBKA;
-check	internalStateB= CHECK_END_B;
+check	internalStateB(agentB)= CHECK_END_B;
         // Informazioni in input step 4	
 check protocolMessage(1,agentB ,agentE)=NNK;
 check protocolMessage(1,agentE ,agentA)!=NNK;
@@ -100,7 +100,7 @@ check 	messageField(agentB,agentE,1,NNK)=NA;
 check	messageField(agentB,agentE,2,NNK)=NB;
 
         // Informazioni in input step 5	
-check 	internalStateA=WAITING_NK;
+check 	internalStateA(agentA)=WAITING_NK;
 check 	protocolMessage(1,agentE ,agentA) =NNK;
 check 	asymDec(NNK,1,1,2,agentA)=true;
 
@@ -117,7 +117,7 @@ check 	knowsNonce(agentA,messageField(agentE,agentA,2,NNK))=true;
 check 	protocolMessage(2,agentA,agentE)=NK;
 check 	messageField(agentA,agentE,1,NK)=NB;	
 check 	asymEnc(NK,1,1,1)=PUBKE;
-check 	internalStateA= END_A;
+check 	internalStateA(agentA)= END_A;
 
         // Informazioni in input step 6	
 check protocolMessage(2,agentA,agentE)=NK ;
@@ -136,7 +136,7 @@ check	messageField(agentA,agentE,1,NK)=NB;
 check	protocolMessage(2,agentE,agentB)= NK;	
 
         // Informazioni in input step 6	
-check internalStateB=CHECK_END_B;
+check internalStateB(agentB)=CHECK_END_B;
 check protocolMessage(2,agentE,agentB)=NK;
 check asymDec(NK,1,1,1,agentB)=true;
 
@@ -149,4 +149,4 @@ check 	mode=ACTIVE;
 
 		//check informazioni aggiornate
 		
-check internalStateB=END_B;
+check internalStateB(agentB)=END_B;

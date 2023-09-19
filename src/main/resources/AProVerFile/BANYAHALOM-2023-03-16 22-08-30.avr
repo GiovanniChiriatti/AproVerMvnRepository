@@ -188,5 +188,9 @@ dati Properties
 TAB =0 Confidentiality
 COL =00 ef(knowsNonce(Eve,NB))
 COL =01 !ef(knowsNonce(Eve,NB))
+COL =02 ef(knowsSymKey(Bob,KNA))
 TAB =1 Integrity
+COL =10 !ef(messageField(Alice,Eve,1,MA)!=messageField(Eve,Bob,1,MA))
 TAB =2 Authentication
+COL =20 ef(knowsSymKey(Bob,KBS) and knowsSymKey(SERVER,KBS))->ag(!(knowsSymKey(EVE,KBS)))
+COL =21 ef(knowsSymKey(Bob,KNA))->ag(!(knowsSymKey(EVE,KNA)))

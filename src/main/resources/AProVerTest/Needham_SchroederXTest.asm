@@ -109,23 +109,29 @@ signature:
 	/*------------------------------------------------------------------- */
 	//hash function applied from the field HashField1 to HashField2, the nesting level is Level
 	controlled hash: Prod(Message,Level,HashField1,HashField2)-> Knowledge
-	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agenti)-> Boolean
+// 	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean
+
 
 	//sign function applied from the field SignField1 to SignField2, the nesting level is Level
 	controlled sign: Prod(Message,Level,SignField1,SignField2)-> Knowledge
-	static verifySign: Prod(Message,Level,SignField1,SignField2,Agenti)-> Boolean
-	static sign_keyAssociation: Knowledge -> Knowledge
+// 	static verifySign: Prod(Message,Level,SignField1,SignField2,Agent)-> Boolean
+
+// 	static sign_keyAssociation: KnowledgeSignPrivKey -> KnowledgeSignPubKey
+
 
 	//asymmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled asymEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-	static asymDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
-	static asim_keyAssociation: Knowledge -> Knowledge
+// 	static asymDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+
+// 	static asim_keyAssociation: KnowledgeAsymPubKey -> KnowledgeAsymPrivKey
+
 
 	//symmetric encryption function applied from the field EncField1 to EncField2
 	//the nesting level is Level
 	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> Knowledge
-	static symDec: Prod(Message,Level,EncField1,EncField2,Agenti)-> Boolean
+// 	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
+
 // 	static agentA: Alice
 // 	static agentB: Bob
 // 	static agentE: Eve
@@ -146,18 +152,18 @@ definitions:
 	domain HashField1={1}
 	domain HashField2={1}
 
-	function asim_keyAssociation($a in Knowledge)=
-	       switch( $a )
-	              case PUBKA: PRIVKA
-	              case PUBKB: PRIVKB
-	              case PUBKE: PRIVKE
-	              otherwise NULL 
-	       endswitch
-	function sign_keyAssociation($b in Knowledge)=
-	       switch( $b )
-	              case NULL: NULL
-	              otherwise NULL 
-	       endswitch
+//function asim_keyAssociation($a in Knowledge)=
+//       switch( $a )
+//              case PUBKA: PRIVKA
+//              case PUBKB: PRIVKB
+//              case PUBKE: PRIVKE
+//              otherwise NULL 
+//       endswitch
+//function sign_keyAssociation($b in Knowledge)=
+//       switch( $b )
+//              case NULL: NULL
+//              otherwise NULL 
+//       endswitch
 
 	function name($a in Receiver)=
 			switch( $a )
@@ -165,35 +171,35 @@ definitions:
 				case AG_E:agentE
 				case AG_B:agentB
 			endswitch
-
-		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agenti)=
-			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
-				true
-			else
-				false
-			endif
-
-		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
-			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
-				true
-			else
-				false
-			endif
-
-		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
-			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
-				true
-			else
-				false
-			endif
-
-		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agenti)=
-			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
-				true
-			else
-				false
-			endif
-
+//
+//		function verifySign($m in Message,$l in Level,$f1 in SignField1,$f2 in SignField2,$d in Agenti)=
+//			if(knowsSignPubKey($d,sign_keyAssociation(sign($m,$l,$f1,$f2)))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function symDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
+//			if(knowsSymKey($d,symEnc($m,$l,$f1,$f2))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agenti)=
+//			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
+//		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agenti)=
+//			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
+//				true
+//			else
+//				false
+//			endif
+//
 
 	/*ATTACKER RULES*/
 	rule r_message_replay_NAK =
@@ -208,7 +214,8 @@ definitions:
                  	protocolMessage(0,EVE,BOB):=NAK
                  	messageField(EVE,BOB,1,NAK):=messageField(ALICE,EVE,1,NAK)
                  	messageField(EVE,BOB,2,NAK):=messageField(ALICE,EVE,2,NAK)
-			        if(asymDec(NAK,1,1,2,EVE)=true)then
+//	        if(asymDec(NAK,1,1,2,EVE)=true)then
+			        if(knowsAsymPubKey(EVE,PUBKB)=true)then
                       par 
                     	knowsNonce(EVE,messageField(ALICE,EVE,1,NAK)):=true
                     	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,2,NAK)):=true
@@ -223,7 +230,8 @@ definitions:
                  	protocolMessage(0,EVE,BOB):=NAK
                  	messageField(EVE,BOB,1,NAK):=messageField(ALICE,EVE,1,NAK)
                  	messageField(EVE,BOB,2,NAK):=messageField(ALICE,EVE,2,NAK)
-			        if(asymDec(NAK,1,1,2,EVE)=true)then
+//			        if(asymDec(NAK,1,1,2,EVE)=true)then
+			            if(knowsAsymPubKey(EVE,PUBKB)=true)then
 	   			     par 
                     	knowsNonce(EVE,messageField(ALICE,EVE,1,NAK)):=true
                     	knowsIdentityCertificate(EVE,messageField(ALICE,EVE,2,NAK)):=true
@@ -246,7 +254,8 @@ definitions:
                  	protocolMessage(1,EVE,ALICE):=NNK
                  	messageField(EVE,ALICE,1,NNK):=messageField(BOB,EVE,1,NNK)
                  	messageField(EVE,ALICE,2,NNK):=messageField(BOB,EVE,2,NNK)
-			        if(asymDec(NNK,1,1,2,EVE)=true)then
+//	        if(asymDec(NNK,1,1,2,EVE)=true)then
+			        if(knowsAsymPubKey(EVE,PUBKA)=true)then
                       par 
                     	knowsNonce(EVE,messageField(BOB,EVE,1,NNK)):=true
                     	knowsNonce(EVE,messageField(BOB,EVE,2,NNK)):=true
@@ -261,7 +270,8 @@ definitions:
                  	protocolMessage(1,EVE,ALICE):=NNK
                  	messageField(EVE,ALICE,1,NNK):=messageField(BOB,EVE,1,NNK)
                  	messageField(EVE,ALICE,2,NNK):=messageField(BOB,EVE,2,NNK)
-			        if(asymDec(NNK,1,1,2,EVE)=true)then
+//			        if(asymDec(NNK,1,1,2,EVE)=true)then
+			            if(knowsAsymPubKey(EVE,PUBKA)=true)then
 	   			     par 
                     	knowsNonce(EVE,messageField(BOB,EVE,1,NNK)):=true
                     	knowsNonce(EVE,messageField(BOB,EVE,2,NNK)):=true
@@ -283,7 +293,8 @@ definitions:
 		          par 
                  	protocolMessage(2,EVE,BOB):=NK
                  	messageField(EVE,BOB,1,NK):=messageField(ALICE,EVE,1,NK)
-			        if(asymDec(NK,1,1,1,EVE)=true)then
+//	        if(asymDec(NK,1,1,1,EVE)=true)then
+			        if(knowsAsymPubKey(EVE,PUBKB)=true)then
                       par 
                     	knowsNonce(EVE,messageField(ALICE,EVE,1,NK)):=true
 			            asymEnc(NK,1,1,1):=PUBKB
@@ -296,7 +307,8 @@ definitions:
 		          par 
                  	protocolMessage(2,EVE,BOB):=NK
                  	messageField(EVE,BOB,1,NK):=messageField(ALICE,EVE,1,NK)
-			        if(asymDec(NK,1,1,1,EVE)=true)then
+//			        if(asymDec(NK,1,1,1,EVE)=true)then
+			            if(knowsAsymPubKey(EVE,PUBKB)=true)then
 	   			     par 
                     	knowsNonce(EVE,messageField(ALICE,EVE,1,NK)):=true
 			        	asymEnc(NK,1,1,1):=PUBKB
@@ -336,7 +348,7 @@ definitions:
 		let ($x=agentB,$e=agentE) in
 			if(internalStateB=WAITING_NNK and protocolMessage(0,EVE,BOB)=NAK)then
 			   if(receiver!=AG_E)then
- 			        if(asymDec(NAK,1,1,2,BOB)=true ) then
+			        if(knowsAsymPubKey(BOB,PUBKB)=true ) then
 			          par
 			            knowsNonce(BOB,messageField(EVE,BOB,1,NAK)):=true
 			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,2,NAK)):=true
@@ -348,7 +360,7 @@ definitions:
 			          endpar
 			        endif
 			   else
- 			        if(asymDec(NAK,1,1,2,BOB)=true  and receiver=AG_E) then
+			        if(knowsAsymPubKey(BOB,PUBKB)=true  and receiver=AG_E) then
 			          par
 			            knowsNonce(BOB,messageField(EVE,BOB,1,NAK)):=true
 			            knowsIdentityCertificate(BOB,messageField(EVE,BOB,2,NAK)):=true
@@ -366,7 +378,7 @@ definitions:
 		let ($x=agentA,$e=agentE) in
 			if(internalStateA=WAITING_NK and protocolMessage(1,EVE,ALICE)=NNK)then
 			   if(receiver!=AG_E)then
- 			        if(asymDec(NNK,1,1,2,ALICE)=true ) then
+			        if(knowsAsymPubKey(ALICE,PUBKA)=true ) then
 			          par
 			            knowsNonce(ALICE,messageField(EVE,ALICE,1,NNK)):=true
 			            knowsNonce(ALICE,messageField(EVE,ALICE,2,NNK)):=true
@@ -377,7 +389,7 @@ definitions:
 			          endpar
 			        endif
 			   else
- 			        if(asymDec(NNK,1,1,2,ALICE)=true  and receiver=AG_E) then
+			        if(knowsAsymPubKey(ALICE,PUBKA)=true  and receiver=AG_E) then
 			          par
 			            knowsNonce(ALICE,messageField(EVE,ALICE,1,NNK)):=true
 			            knowsNonce(ALICE,messageField(EVE,ALICE,2,NNK)):=true
@@ -395,7 +407,8 @@ definitions:
 			if(internalStateB=CHECK_END_B and protocolMessage(2,EVE,BOB)=NK)then
 			  par
 			        internalStateB:=END_B
-			        if(asymDec(NK,1,1,1,BOB)=true)then
+//		        if(asymDec(NK,1,1,1,BOB)=true)then
+			        if(knowsAsymPubKey(BOB,PUBKB)=true)then
                     	knowsNonce(BOB,messageField(EVE,BOB,1,NK)):=true
 			        endif 
 			  endpar

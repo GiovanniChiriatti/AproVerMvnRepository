@@ -106,8 +106,8 @@ signature:
 	//                  Cryptographic functions
 	/*------------------------------------------------------------------- */
 	//hash function applied from the field HashField1 to HashField2, the nesting level is Level
-	static hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeTag
-	static verifyHash: Prod(Message,Level,HashField1,HashField2,KnowledgeTag)-> Boolean
+	controlled hash: Prod(Message,Level,HashField1,HashField2)-> KnowledgeHash
+	static verifyHash: Prod(Message,Level,HashField1,HashField2,Agent)-> Boolean
 
 	//sign function applied from the field SignField1 to SignField2, the nesting level is Level
 	controlled sign: Prod(Message,Level,SignField1,SignField2)-> KnowledgeSignPrivKey
@@ -124,8 +124,6 @@ signature:
 	//the nesting level is Level
 	controlled symEnc: Prod(Message,Level,EncField1,EncField2)-> KnowledgeSymKey
 	static symDec: Prod(Message,Level,EncField1,EncField2,Agent)-> Boolean
-
-	static diffieHellman:Prod(KnowledgeAsymPubKey,KnowledgeAsymPrivKey)->KnowledgeSymKey
 
 	static agentA: Alice
 	static agentB: Bob
@@ -157,6 +155,13 @@ definitions:
 
 		function asymDec($m in Message,$l in Level,$f1 in EncField1,$f2 in EncField2,$d in Agent)=
 			if(knowsAsymPrivKey($d,asim_keyAssociation(asymEnc($m,$l,$f1,$f2)))=true)then
+				true
+			else
+				false
+			endif
+
+		function verifyHash($m in Message,$l in Level,$f1 in HashField1,$f2 in HashField2,$d in Agent)=
+			if(knowsHash($d,hash($m,$l,$f1,$f2))=true)then
 				true
 			else
 				false

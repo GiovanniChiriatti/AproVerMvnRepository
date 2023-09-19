@@ -46,7 +46,7 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Text>
-                  <AnchorPane layoutX="550.0" layoutY="76.0" prefHeight="193.0" prefWidth="220.0" style="-fx-border-color: transparent; -fx-border-radius: 15; -fx-background-color: transparent; -fx-background-radius: 15;">
+                  <AnchorPane layoutX="550.0" layoutY="161.0" prefHeight="193.0" prefWidth="220.0" style="-fx-border-color: transparent; -fx-border-radius: 15; -fx-background-color: transparent; -fx-background-radius: 15;">
                      <children>
                         <ListView fx:id="listview" layoutX="14.0" layoutY="61.0" prefHeight="122.0" prefWidth="199.0" />
                         <ComboBox fx:id="typeKnowledge" layoutX="14.0" layoutY="36.0" onAction="#typeKnowledgeSelected" prefHeight="25.0" prefWidth="199.0" visibleRowCount="8" />
@@ -88,6 +88,12 @@
       					</children>
       				</AnchorPane>
                   <Button fx:id="addExpression" layoutX="49.0" layoutY="126.0" mnemonicParsing="false" onAction="#addExpression" onMouseEntered="#helpFinishMessage" onMouseExited="#relasedHelp" prefHeight="25.0" prefWidth="414.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #83ED90; -fx-border-color: #548f60;" text="Add Expression" />
+                  <ComboBox fx:id="nameMessage" layoutX="632.0" layoutY="83.0" prefHeight="25.0" prefWidth="125.0" />
+                  <Text layoutX="553.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" wrappingWidth="89.3798828125">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Text>
 					</children>
 				</AnchorPane>
 				<Text fill="#f8f5f5" layoutX="26.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Properties" wrappingWidth="241.13671875">

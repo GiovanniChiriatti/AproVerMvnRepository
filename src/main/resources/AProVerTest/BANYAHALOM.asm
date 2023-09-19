@@ -1,6 +1,6 @@
 asm BANYAHALOM
 
-import CryptoLibraryBANYAHALOM
+import CryptoLibraryBYA
 
 
 signature:
@@ -306,11 +306,12 @@ definitions:
 			if(internalStateE(self)=WAITING_MF and protocolMessage(4,self,$t)=ME)then
 			     par
 			            protocolMessage(5,self,$b):=MF
-			            messageField(self,$b,1,MF):=messageField($b,self,4,MD)
-			            messageField(self,$b,2,MF):=messageField($b,self,5,MD)
-			            symEnc(MF,1,1,2):=KBS
+			            messageField(self,$b,1,MF):=messageField($b,self,3,MD)
+			            messageField(self,$b,2,MF):=messageField($b,self,4,MD)
 			            messageField(self,$b,3,MF):=messageField($b,self,5,MD)
-			            symEnc(MF,1,3,3):=messageField(self,$b,2,MC)
+			            symEnc(MF,1,1,3):=KBS
+			            messageField(self,$b,4,MF):=messageField($b,self,5,MD)
+			            symEnc(MF,1,4,4):=messageField(self,$b,2,MC)
 			            internalStateE(self):=END_E
 			          endpar
 			   endif
@@ -343,14 +344,15 @@ definitions:
 			if(internalStateB(self)=CHECK_END_B and protocolMessage(5,$e,self)=MF)then
 			  par
 			        internalStateB(self):=END_B
-			        if(symDec(MF,1,1,2,self)=true)then
+			        if(symDec(MF,1,1,3,self)=true)then
                       par 
-                    	knowsSymKey(self,messageField($e,self,1,MF)):=true
-                    	knowsNonce(self,messageField($e,self,2,MF)):=true
+                    	knowsIdentityCertificate(self,messageField($e,self,1,MF)):=true
+                    	knowsSymKey(self,messageField($e,self,2,MF)):=true
+                    	knowsNonce(self,messageField($e,self,3,MF)):=true
                       endpar 
 			        endif 
-			        if(symDec(MF,1,2,2,self)=true)then
-                    	knowsNonce(self,messageField($e,self,3,MF)):=true
+			        if(symDec(MF,1,3,3,self)=true)then
+                    	knowsNonce(self,messageField($e,self,4,MF)):=true
 			        endif 
 			  endpar
 			endif
@@ -396,7 +398,7 @@ default init s0:
 	function receiver=chosenReceiver
 	function knowsNonce($a in Agent, $n in KnowledgeNonce)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NB2) then true else false endif endif
 	function knowsIdentityCertificate($a in Agent, $i in KnowledgeIdentityCertificate)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CB) then true else false endif endif
-	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
+	function knowsSymKey($a in Agent ,$sk in KnowledgeSymKey)=if(($a=agentA and $sk=KAS) or ($a=agentB and $sk=KBS) or ($a=agentE and $sk=KNA) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
 	function mode=chosenMode
 
 	agent Alice:

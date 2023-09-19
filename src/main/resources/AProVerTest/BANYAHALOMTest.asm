@@ -504,11 +504,12 @@ definitions:
 			if(internalStateE=WAITING_MF and protocolMessage(4,EVE,ALICE)=ME)then
 			     par
 			            protocolMessage(5,EVE,BOB):=MF
-			            messageField(EVE,BOB,1,MF):=messageField(BOB,EVE,4,MD)
-			            messageField(EVE,BOB,2,MF):=messageField(BOB,EVE,5,MD)
-			            symEnc(MF,1,1,2):=KBS
+			            messageField(EVE,BOB,1,MF):=messageField(BOB,EVE,3,MD)
+			            messageField(EVE,BOB,2,MF):=messageField(BOB,EVE,4,MD)
 			            messageField(EVE,BOB,3,MF):=messageField(BOB,EVE,5,MD)
-			            symEnc(MF,1,3,3):=messageField(EVE,BOB,2,MC)
+			            symEnc(MF,1,1,3):=KBS
+			            messageField(EVE,BOB,4,MF):=messageField(BOB,EVE,5,MD)
+			            symEnc(MF,1,4,4):=messageField(EVE,BOB,2,MC)
 			            internalStateE:=END_E
 			          endpar
 			   endif
@@ -543,25 +544,37 @@ definitions:
 			if(internalStateB=CHECK_END_B and protocolMessage(5,EVE,BOB)=MF)then
 			  par
 			        internalStateB:=END_B
-//		        if(symDec(MF,1,1,2,BOB)=true)then
+//		        if(symDec(MF,1,1,3,BOB)=true)then
 			        if(knowsSymKey(BOB,KBS)=true)then
                       par 
-                    	knowsSymKey(BOB,messageField(EVE,BOB,1,MF)):=true
-                    	knowsNonce(BOB,messageField(EVE,BOB,2,MF)):=true
+                    	knowsIdentityCertificate(BOB,messageField(EVE,BOB,1,MF)):=true
+                    	knowsSymKey(BOB,messageField(EVE,BOB,2,MF)):=true
+                    	knowsNonce(BOB,messageField(EVE,BOB,3,MF)):=true
                       endpar 
 			        endif 
-//		        if(symDec(MF,1,2,2,BOB)=true)then
+//		        if(symDec(MF,1,3,3,BOB)=true)then
 			        if(knowsSymKey(BOB,KNA)=true)then
-                    	knowsNonce(BOB,messageField(EVE,BOB,3,MF)):=true
+                    	knowsNonce(BOB,messageField(EVE,BOB,4,MF)):=true
 			        endif 
 			  endpar
 			endif
 		endlet
 
 // properties TAB=0 COL=0
-  CTLSPEC ef(knowsNonce(EVE,NB))
+    CTLSPEC ef(knowsNonce(EVE,NB))
 // properties TAB=0 COL=1
-  CTLSPEC not(ef(knowsNonce(EVE,NB)))
+    CTLSPEC not(ef(knowsNonce(EVE,NB)))
+// properties TAB=0 COL=2
+    CTLSPEC ef(knowsSymKey(BOB,KNA))
+// properties TAB=1 COL=0
+//    CTLSPEC not(ef(messageField(EVE,BOB,1,MA)!= KNOWLEDGE_UNDEF and messageField(ALICE,EVE,1,MA)!=messageField(EVE,BOB,1,MA)))
+    CTLSPEC not(ef(messageField(ALICE,EVE,1,MA)!=messageField(EVE,BOB,1,MA)))
+
+// properties TAB=2 COL=0
+    CTLSPEC ef(knowsSymKey(BOB,KBS) and knowsSymKey(SERVER,KBS)) implies ag(not(knowsSymKey(EVE,KBS)))
+// properties TAB=2 COL=1
+    CTLSPEC ef(knowsSymKey(BOB,KNA)) implies ag(not(knowsSymKey(EVE,KNA)))
+
 	main rule r_Main =
 	  par
             r_message_replay_MA[]
@@ -589,6 +602,6 @@ default init s0:
 	function receiver=AG_E
 	function knowsNonce($a in Agenti, $n in Knowledge)=if($a=agentA and $n=NA) then true else if($a=agentB and $n=NB) or ($a=agentB and $n=NB2) then true else false endif endif
 	function knowsIdentityCertificate($a in Agenti, $i in Knowledge)=if($a=agentA and $i=CA) then true else if($a=agentB and $i=CB) then true else false endif endif
-	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentB and $sk=KBS) or ($a=agentB and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentE and $sk=KNA) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
+	function knowsSymKey($a in Agenti ,$sk in Knowledge)=if(($a=agentA and $sk=KAS) or ($a=agentB and $sk=KBS) or ($a=agentE and $sk=KNA) or ($a=agentS and $sk=KAB) or ($a=agentS and $sk=KBS) or ($a=agentS and $sk=KAS)) then true else false endif
 	function mode=PASSIVE
 

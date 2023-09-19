@@ -1,0 +1,377 @@
+scenario test4BYA
+
+//Test di receiver Eve in modalità Passiva
+
+load TestBANYAHALOM.asm
+
+
+set chosenMode:=PASSIVE;
+set chosenReceiver:=AG_B;
+//controllo che nello stato inziale:
+//  stato iniziale di Alice sia IDLE_A in quanto è l'agente che avvia il protocollo
+//  stato iniziale di Bob sia Waiting_MB in quanto è l'attore che avvia il secondo messaggio
+//  Eve avvia autonomamente il terzo messaggio e quindi il suo stato iniziale è Waiting_MC
+//	l'ultimo attore del protocollo è il Server che riceve da Bob il secondo messaggio ma per rispondere deve
+//     aspettare il 5 messaggio (Waiting_MB) in quanto Eve avvia il suo attacco con il metodo dell'interleavings 
+// si impostano quindi le conoscenze per i singoli attori
+
+check  internalStateA(agentA)=IDLE_MA;
+check  internalStateB(agentB)=WAITING_MB;
+check  internalStateS(agentS)=WAITING_ME;
+check  internalStateE(agentE)=WAITING_MC;
+
+check  knowsSymKey(agentA, KAS)=true;
+check  knowsSymKey(agentA, KBS)=false;
+check  knowsSymKey(agentA, KNA)=false;
+check  knowsSymKey(agentA, KAB)=false;
+
+check  knowsSymKey(agentB, KAS)=false;
+check  knowsSymKey(agentB, KBS)=true;
+check  knowsSymKey(agentB, KNA)=false;
+check  knowsSymKey(agentB, KAB)=false;
+
+check  knowsSymKey(agentE, KAS)=false;
+check  knowsSymKey(agentE, KBS)=false;
+check  knowsSymKey(agentE, KNA)=true;
+check  knowsSymKey(agentE, KAB)=false;
+
+check  knowsSymKey(agentS, KAS)=true;
+check  knowsSymKey(agentS, KBS)=true;
+check  knowsSymKey(agentS, KNA)=false;
+check  knowsSymKey(agentS, KAB)=true;
+
+check  knowsNonce(agentA,NA)=true;
+check  knowsNonce(agentA,NB)=false;
+
+check  knowsNonce(agentB,NA)=false;
+check  knowsNonce(agentB,NB)=true;
+
+check  knowsNonce(agentE,NA)=false;
+check  knowsNonce(agentE,NB)=false;
+
+check  knowsNonce(agentS,NA)=false;
+check  knowsNonce(agentS,NB)=false;
+
+check  knowsIdentityCertificate(agentA,CA)=true;
+check  knowsIdentityCertificate(agentA,CB)=false;
+
+check  knowsIdentityCertificate(agentB,CA)=false;
+check  knowsIdentityCertificate(agentB,CB)=true;
+
+check  knowsIdentityCertificate(agentE,CA)=false;
+check  knowsIdentityCertificate(agentE,CB)=false;
+
+check  knowsIdentityCertificate(agentS,CA)=false;
+check  knowsIdentityCertificate(agentS,CB)=false;
+
+check mode=PASSIVE;
+check receiver=AG_B;
+
+// step 1 -  Alice->Bob:{CA,NA} --trasformato --- Alice -> Eve {CA,NA} 
+
+
+// 
+// A->E:{CA,NA} 
+		//check informazioni base
+
+step
+check mode=PASSIVE;
+
+check protocolMessage(0,agentA,agentE)= MA;
+check messageField(agentA,agentE,1,MA)=CA;
+check messageField(agentA,agentE,2,MA)=NA;
+check internalStateA(agentA)= CHECK_END_A;
+
+        // Informazioni in input step 2	
+check protocolMessage(0,agentA,agentE)= MA;
+check protocolMessage(0,agentE,agentB)!= MA;
+
+//step 2   Alice->Bob:{CA,NA} --trasformato --- Eve -> Bob {CA,NA} 
+step
+
+check mode=PASSIVE;
+		//check informazioni aggiornate
+		
+check  knowsNonce(agentE,NA)=true;
+check  knowsIdentityCertificate(agentE,CA)=true;
+
+check protocolMessage(0,agentE,agentB)= MA;
+check messageField(agentE,agentB,1,MA)=messageField(agentA,agentE,1,MA);
+check messageField(agentE,agentB,1,MA)=CA;
+check messageField(agentE,agentB,2,MA)=messageField(agentA,agentE,2,MA);
+check messageField(agentE,agentB,2,MA)=NA;
+
+        // Informazioni in input step 3	
+check internalStateB(agentB)=WAITING_MB; 
+check protocolMessage(0,agentE,agentB)=MA;
+
+// step 3 -  Bob->Server:{CB,NB}{CA,NA}KBS --trasformato --- Bob -> Eve {CB,NB}{CA,NA}KBS 
+
+
+// 
+// B->E:{CB,NB}{CA,NA}KBS 
+		//check informazioni base
+
+step
+check mode=PASSIVE;
+		//check informazioni aggiornate
+		
+check  knowsNonce(agentB,NA)=true;
+check  knowsIdentityCertificate(agentB,CA)=true;
+
+check  messageField(agentB,agentE,1,MB)=CB;
+check  messageField(agentB,agentE,2,MB)=NB;
+check  messageField(agentB,agentE,3,MB)=messageField(agentE,agentB,1,MA);
+check  messageField(agentB,agentE,3,MB)=CA;
+check  messageField(agentB,agentE,4,MB)=messageField(agentE,agentB,2,MA);
+check  messageField(agentB,agentE,4,MB)=NA;
+check  symEnc(MB,1,3,4)=KBS;
+check  internalStateB(agentB)=WAITING_MD;
+
+        // Informazioni in input step 4	
+check protocolMessage(1,agentB,agentE)= MB;
+check protocolMessage(0,agentE,agentS)!= MB;
+check  symDec(MB,1,3,4,agentE)=false;
+
+
+// step 4 -  Bob->Server:{CB,NB}{CA,NA}KBS --trasformato --- Eve -> Server {CB,NB}{CA,NA}KBS 
+
+// 
+// E->S:{CB,NB}{CA,NA}KBS 
+		//check informazioni base
+
+step
+check mode=PASSIVE;
+
+		//check informazioni aggiornate
+check  knowsNonce(agentE,NB)=true;
+check  knowsIdentityCertificate(agentE,CB)=true;
+check  messageField(agentE,agentS,1,MB)=messageField(agentB,agentE,1,MB);
+check  messageField(agentE,agentS,2,MB)=messageField(agentB,agentE,2,MB);
+check  messageField(agentE,agentS,3,MB)=messageField(agentB,agentE,3,MB);
+check  messageField(agentE,agentS,4,MB)=messageField(agentB,agentE,4,MB);
+check  symDec(MB,1,3,4,agentE)=false;
+
+        // Informazioni in input step 5	
+check internalStateE(agentE)=WAITING_MC; 
+check protocolMessage(1,agentE,agentS)=MB;
+
+// step 5 -  Eve->Bob:{CA}{KNA,NB} 
+
+
+step
+check mode=PASSIVE;
+		//check informazioni aggiornate
+check  messageField(agentE,agentB,1,MC)=messageField(agentA,agentE,1,MA);
+check  messageField(agentE,agentB,1,MC)=CA;
+check  messageField(agentE,agentB,2,MC)=KNA;	
+check  messageField(agentE,agentB,3,MC)=messageField(agentB,agentE,2,MB);	
+check  messageField(agentE,agentB,3,MC)=NB;		
+check  protocolMessage(2,agentE,agentB)=MC;
+check  internalStateE(agentE)=WAITING_MF;
+	
+	        // Informazioni in input step 6	
+check internalStateB(agentB)=WAITING_MD; 
+check protocolMessage(2,agentE,agentB)=MC;
+		
+// step 6 -  Bob->Eve:{CB,NB2}{CA,KNA,NB}KBS 
+
+step
+check mode=PASSIVE;
+
+check  knowsNonce(agentB,NB)=true;
+check  knowsIdentityCertificate(agentB,CA)=true;
+check  knowsSymKey(agentB,KNA)=true;
+
+check  messageField(agentB,agentE,1,MD)=CB;
+check  messageField(agentB,agentE,2,MD)=NB2;
+check  messageField(agentB,agentE,3,MD)=messageField(agentE,agentB,1,MC);
+check  messageField(agentB,agentE,3,MD)=CA;
+check  messageField(agentB,agentE,4,MD)=messageField(agentE,agentB,2,MC);
+check  messageField(agentB,agentE,4,MD)=KNA;
+check  messageField(agentB,agentE,5,MD)=messageField(agentE,agentB,3,MC);
+check  messageField(agentB,agentE,5,MD)=NB;
+check  symEnc(MD,1,3,5)=KBS;
+check  protocolMessage(3,agentB,agentE)=MD;
+check  internalStateB(agentB)=CHECK_END_B;
+
+	        // Informazioni in input step 7	
+check internalStateS(agentS)=WAITING_ME; 
+check protocolMessage(3,agentB,agentE)=MD;
+check  symDec(MB,1,3,4,agentS)=true;
+		
+// step 7 -  Server->Alice:{NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS --trasformato --- Server -> Eve {NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS 
+
+// 
+// S->E:{NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS 
+		//check informazioni base
+
+step
+check mode=PASSIVE;
+
+check  knowsIdentityCertificate(agentS,messageField(agentE,agentS,1,MB))=true;
+check  knowsIdentityCertificate(agentS,CB)=true;
+check  messageField(agentE,agentS,1,MB)=CB;
+
+check  knowsNonce(agentS,messageField(agentE,agentS,2,MB))=true;
+check  knowsNonce(agentS,NB)=true;
+check  messageField(agentE,agentS,2,MB)=NB;
+
+check  knowsIdentityCertificate(agentS,CA)=true;
+check  messageField(agentE,agentS,3,MB)=CA;
+
+
+check  knowsNonce(agentS,NA)=true;
+check  messageField(agentE,agentS,4,MB)=NA;
+
+check  messageField(agentS,agentE,1,ME)=NB;
+check  messageField(agentS,agentE,2,ME)=CB;
+check  messageField(agentS,agentE,3,ME)=KAB;
+check  messageField(agentS,agentE,4,ME)=NA;
+check  symEnc(ME,1,2,4)=KAS;  
+
+check  messageField(agentS,agentE,5,ME)=CA;
+check  messageField(agentS,agentE,6,ME)=KAB;
+check  messageField(agentS,agentE,7,ME)=NB;
+check  symEnc(ME,1,5,7)=KBS;  
+check  protocolMessage(4,agentS,agentE)=ME;
+check  internalStateS(agentS)=END_S;
+
+	        // Informazioni in input step 8	
+check protocolMessage(4,agentE,agentA)!=ME;
+check protocolMessage(4,agentS,agentE)=ME;
+check  symDec(ME,1,2,4,agentE)=false;
+check  symDec(ME,1,5,7,agentE)=false;
+
+
+// step 8 -  Server->Alice:{NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS --trasformato --- Eve -> Alice {NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS 
+
+// 
+// E->A:{NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS 
+		//check informazioni base
+
+step
+check mode=PASSIVE;
+
+check knowsIdentityCertificate(agentE,messageField(agentB,agentE,1,MD))=true;
+check knowsIdentityCertificate(agentE,CB)=true;
+check knowsNonce(agentE,messageField(agentB,agentE,2,MD))=true;
+check knowsNonce(agentE,NB2)=true;
+
+
+check knowsNonce(agentE,messageField(agentS,agentE,1,ME))=true;
+check knowsNonce(agentE,NB)=true;
+check knowsIdentityCertificate(agentE,messageField(agentS,agentE,2,ME))=true;
+check knowsIdentityCertificate(agentE,CB)=true;
+check knowsSymKey(agentE,messageField(agentS,agentE,3,ME))=false;
+check knowsSymKey(agentE,KAB)=false;
+check knowsNonce(agentE,messageField(agentS,agentE,4,ME))=true;
+check knowsNonce(agentE,NA)=true;
+check knowsIdentityCertificate(agentE,messageField(agentS,agentE,5,ME))=true;
+check knowsIdentityCertificate(agentE,CA)=true;
+check knowsSymKey(agentE,messageField(agentS,agentE,6,ME))=false;
+check knowsSymKey(agentE,KAB)=false;
+check knowsNonce(agentE,messageField(agentS,agentE,7,ME))=true;
+check knowsNonce(agentE,NB)=true;
+
+check  messageField(agentE,agentA,1,ME)=messageField(agentS,agentE,1,ME);
+check  messageField(agentE,agentA,2,ME)=messageField(agentS,agentE,2,ME);
+check  messageField(agentE,agentA,3,ME)=messageField(agentS,agentE,3,ME);
+check  messageField(agentE,agentA,4,ME)=messageField(agentS,agentE,4,ME);
+check  messageField(agentE,agentA,5,ME)=messageField(agentS,agentE,5,ME);
+check  messageField(agentE,agentA,6,ME)=messageField(agentS,agentE,6,ME);
+check  messageField(agentE,agentA,7,ME)=messageField(agentS,agentE,7,ME);
+
+
+	        // Informazioni in input step 9	
+check internalStateE(agentE)=WAITING_MF; 
+check protocolMessage(4,agentE,agentA)=ME;
+
+// step 9 -  Eve->Bob:{CA,KNA,NB}KBS{NB}KNA
+
+
+step
+check mode=PASSIVE;
+		//check informazioni aggiornate
+
+check  messageField(agentE,agentB,1,MF)=CA;
+check  messageField(agentE,agentB,2,MF)=KNA;	
+check  messageField(agentE,agentB,3,MF)=NB;	
+check symEnc(MF,1,4,4)=KNA;
+check symEnc(MF,1,1,3)=KBS;
+
+check  internalStateE(agentE)=END_E;
+
+	        // Informazioni in input step 10	
+check internalStateA(agentA)=CHECK_END_A; 
+check protocolMessage(4,agentE,agentA)=ME;
+check internalStateB(agentB)=CHECK_END_B;
+check protocolMessage(5,agentE,agentB)=MF;
+
+
+
+// step 10 -  aggiornamento delle conoscenze di Alice e Bob
+//            per i messaggi ricevuti:
+//				Alice   --->  	{NB}{CB,KAB,NA}KAS{CA,KAB,NB}KBS 
+//				Bob		--->	{KNA,NB}KBS{NB}KNA
+
+
+step
+check mode=PASSIVE;
+
+
+		//check informazioni aggiornate Alice
+check internalStateA(agentA)=END_A;
+check  symDec(ME,1,2,4,agentA)=true;
+
+check  symDec(ME,1,5,7,agentA)=false;
+
+		//check informazioni aggiornate Bob
+check internalStateB(agentB)=END_B;
+
+check  symDec(MF,1,1,3,agentB)=true;
+check  symDec(MF,1,4,4,agentB)=true;
+
+check  knowsSymKey(agentA, KAS)=true;
+check  knowsSymKey(agentA, KBS)=false;
+check  knowsSymKey(agentA, KNA)=false;
+check  knowsSymKey(agentA, KAB)=true;
+
+check  knowsSymKey(agentB, KAS)=false;
+check  knowsSymKey(agentB, KBS)=true;
+check  knowsSymKey(agentB, KNA)=true;
+check  knowsSymKey(agentB, KAB)=false;
+
+check  knowsSymKey(agentE, KAS)=false;
+check  knowsSymKey(agentE, KBS)=false;
+check  knowsSymKey(agentE, KNA)=true;
+check  knowsSymKey(agentE, KAB)=false;
+
+check  knowsSymKey(agentS, KAS)=true;
+check  knowsSymKey(agentS, KBS)=true;
+check  knowsSymKey(agentS, KNA)=false;
+check  knowsSymKey(agentS, KAB)=true;
+
+check  knowsNonce(agentA,NA)=true;
+check  knowsNonce(agentA,NB)=true;
+
+check  knowsNonce(agentB,NA)=true;
+check  knowsNonce(agentB,NB)=true;
+
+check  knowsNonce(agentE,NA)=true;
+check  knowsNonce(agentE,NB)=true;
+
+check  knowsNonce(agentS,NA)=true;
+check  knowsNonce(agentS,NB)=true;
+
+check  knowsIdentityCertificate(agentA,CA)=true;
+check  knowsIdentityCertificate(agentA,CB)=true;
+
+check  knowsIdentityCertificate(agentB,CA)=true;
+check  knowsIdentityCertificate(agentB,CB)=true;
+
+check  knowsIdentityCertificate(agentE,CA)=true;
+check  knowsIdentityCertificate(agentE,CB)=true;
+
+check  knowsIdentityCertificate(agentS,CA)=true;
+check  knowsIdentityCertificate(agentS,CB)=true;

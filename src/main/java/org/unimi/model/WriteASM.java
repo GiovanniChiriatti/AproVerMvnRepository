@@ -6085,6 +6085,7 @@ public class WriteASM {
 				bNuSmv.write(" or ($a=agent" + agent.substring(0, 1) + " and $sk=" + ele.toUpperCase() + ")");
 			}
 		}
+		/*
 		for (String ele : KeyActor.getKnowAcq()) {
 			if (ele.contains("Symmetric Key")) {
 				if (!found) {
@@ -6104,8 +6105,9 @@ public class WriteASM {
 
 				}
 			}
+			
 		}
-
+*/
 		return found;
 	}
 
@@ -6183,7 +6185,9 @@ public class WriteASM {
 					if (propr.contains("!eg")) propr = propr.replace("!eg", "not(eg")+")";
 					if (propr.contains("!ex")) propr = propr.replace("!ex", "not(er")+")";
 					//propr = propr.replace("¬", "not(");
-					propr = propr.replace("!", "not");
+					propr = propr.replace("!(", "not(");
+					propr = propr.replace("->", " implies ");
+					propr = propr.replace("<->", " equivalence ");
 					bNuSmv.write("  " + propr + "\n");					
 				}
 			}
